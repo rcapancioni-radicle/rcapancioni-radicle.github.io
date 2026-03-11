@@ -231,9 +231,7 @@
 <script>
 window.addEventListener('load', async () => {
   try {
-    const data = await window.fs.readFile('image_3fbb4616-6491-4d76-b826-3cbe06c96ccd.png');
-    const b64 = btoa(Array.from(data, b => String.fromCharCode(b)).join(''));
-    document.getElementById('logoImg').src = 'data:image/png;base64,' + b64;
+    document.getElementById('logoImg').src = 'radicle_01.png';
   } catch(e) {
     // fallback SVG se il file non è disponibile
     const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 170">
