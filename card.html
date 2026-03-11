@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roberto Capancioni – Radicle S.R.L.</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f0f2f5;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+  }
+
+  /* Proporzione biglietto da visita 85.6 x 54 mm → ~3.37:1 → usiamo 680x220px */
+  .card {
+    background: #000;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 680px;
+    aspect-ratio: 85.6 / 54;
+    overflow: hidden;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.25);
+    display: flex;
+    position: relative;
+  }
+
+  /* Striscia rossa sinistra */
+  .left {
+    background: #c0392b;
+    width: 36%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 12px;
+    gap: 8px;
+    position: relative;
+  }
+  .left::after {
+    content: '';
+    position: absolute;
+    right: -1px; top: 0; bottom: 0;
+    width: 2px;
+    background: rgba(255,255,255,0.08);
+  }
+  .logo-wrap { width: 80%; max-width: 110px; }
+  .logo-wrap img { width: 100%; height: auto; display: block; }
+
+  .avatar {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(255,255,255,0.3);
+  }
+  .avatar img { width:100%; height:100%; object-fit:cover; }
+
+  .qr-wrap { text-align: center; }
+  .qr-wrap img { width: 56px; height: 56px; border-radius: 6px; background:#fff; padding:2px; }
+  .qr-label {
+    font-size: 7px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 3px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* Contenuto destra */
+  .right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 14px 18px;
+    gap: 0;
+  }
+
+  .name {
+    font-size: clamp(13px, 2.5vw, 20px);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.1;
+  }
+  .role {
+    font-size: clamp(8px, 1.5vw, 11px);
+    color: #c0392b;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 2px;
+    margin-bottom: 10px;
+  }
+
+  .rows { display: flex; flex-direction: column; gap: 5px; }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+  }
+  .row-icon {
+    font-size: clamp(9px, 1.6vw, 13px);
+    width: 16px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .row-text {
+    font-size: clamp(8px, 1.4vw, 11px);
+    color: #ccc;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .row-text.red { color: #e74c3c; }
+
+  .divider-h {
+    height: 1px;
+    background: rgba(255,255,255,0.07);
+    margin: 7px 0;
+  }
+
+  .bottom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+  .piva {
+    font-size: clamp(7px, 1.2vw, 9px);
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 0.3px;
+  }
+  .badge {
+    font-size: clamp(6px, 1.1vw, 8px);
+    color: #c0392b;
+    border: 1px solid rgba(192,57,43,0.4);
+    padding: 2px 6px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+  }
+
+  .save-btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 5px 14px;
+    background: #c0392b;
+    color: #fff;
+    font-size: clamp(8px, 1.3vw, 10px);
+    font-weight: 700;
+    border-radius: 20px;
+    text-decoration: none;
+    letter-spacing: 0.5px;
+    transition: background 0.2s;
+    align-self: flex-start;
+  }
+  .save-btn:hover { background: #a93226; }
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- Colonna sinistra rossa -->
+  <div class="left">
+    <div class="logo-wrap">
+      <img src="radicle_01.png" alt="Radicle">
+    </div>
+    <div class="avatar">
+      <img src="robertocapancioni_foto.jpg" alt="Roberto Capancioni">
+    </div>
+    <div class="qr-wrap">
+      <img src="qrcode_rcapancioni-radicle_card.png" alt="QR Code">
+      <div class="qr-label">Inquadra</div>
+    </div>
+  </div>
+
+  <!-- Colonna destra nera -->
+  <div class="right">
+    <div class="name">Roberto Capancioni</div>
+    <div class="role">Amministratore Unico · Radicle S.R.L.</div>
+
+    <div class="rows">
+      <a class="row" href="tel:+393516454302">
+        <span class="row-icon">📞</span>
+        <span class="row-text red">+39 351 645 4302</span>
+      </a>
+      <a class="row" href="mailto:roberto.capancioni@radicle.it">
+        <span class="row-icon">✉️</span>
+        <span class="row-text">roberto.capancioni@radicle.it</span>
+      </a>
+      <a class="row" href="https://www.radicle.it" target="_blank">
+        <span class="row-icon">🌐</span>
+        <span class="row-text red">www.radicle.it</span>
+      </a>
+      <a class="row" href="https://www.linkedin.com/in/robertocapancioni/" target="_blank">
+        <span class="row-icon">💼</span>
+        <span class="row-text">linkedin · robertocapancioni</span>
+      </a>
+      <a class="row" href="https://maps.google.com/?q=Via+Trentino+137,+Porto+Sant'Elpidio+FM" target="_blank">
+        <span class="row-icon">📍</span>
+        <span class="row-text">Via Trentino 137 · Porto Sant'Elpidio (FM)</span>
+      </a>
+    </div>
+
+    <div class="divider-h"></div>
+
+    <div class="bottom-row">
+      <span class="piva">P.IVA 02595780442</span>
+      <span class="badge">⚡ Start-up Innovativa</span>
+    </div>
+
+    <a class="save-btn" href="roberto_capancioni.vcf">📲 Salva Contatto</a>
+  </div>
+
+</div>
+</body>
+</html>
