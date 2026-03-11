@@ -8,7 +8,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    background: #0a0a0a;
+    background: #f0f2f5;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -16,32 +16,29 @@
     padding: 24px;
   }
   .card {
-    background: #111;
+    background: #fff;
     border-radius: 24px;
     max-width: 420px;
     width: 100%;
     overflow: hidden;
-    box-shadow: 0 24px 64px rgba(0,0,0,0.7);
-    border: 1px solid #222;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    border: 1px solid #e8e8e8;
   }
   .header {
     background: #000;
     padding: 36px 32px 28px;
     text-align: center;
-    position: relative;
-    border-bottom: 1px solid #1a1a1a;
+    border-bottom: 3px solid #c0392b;
   }
   .logo-wrap {
-    margin: 0 auto 18px;
-    width: 200px;
+    margin: 0 auto 16px;
+    width: 180px;
   }
   .logo-wrap img { width: 100%; height: auto; display: block; }
   .name {
     font-size: 20px;
     font-weight: 700;
     color: #fff;
-    letter-spacing: 0.3px;
-    margin-top: 4px;
   }
   .role {
     font-size: 12px;
@@ -53,8 +50,8 @@
   }
   .badge {
     display: inline-block;
-    background: rgba(192,57,43,0.12);
-    border: 1px solid rgba(192,57,43,0.35);
+    background: rgba(192,57,43,0.15);
+    border: 1px solid rgba(192,57,43,0.4);
     color: #c0392b;
     font-size: 10px;
     font-weight: 700;
@@ -68,7 +65,7 @@
   .section-title {
     font-size: 10px;
     font-weight: 700;
-    color: #3a3a3a;
+    color: #aaa;
     text-transform: uppercase;
     letter-spacing: 1.5px;
     margin: 18px 0 8px;
@@ -83,30 +80,30 @@
     color: inherit;
     transition: opacity 0.2s;
   }
-  .info-row:hover { opacity: 0.7; }
-  .info-row + .info-row { border-top: 1px solid #1a1a1a; }
+  .info-row:hover { opacity: 0.65; }
+  .info-row + .info-row { border-top: 1px solid #f0f0f0; }
   .icon {
     width: 38px; height: 38px;
     border-radius: 11px;
     display: flex; align-items: center; justify-content: center;
     font-size: 17px;
     flex-shrink: 0;
-    background: #1a1a1a;
+    background: #f5f5f5;
   }
   .info-label {
     font-size: 10px;
-    color: #444;
+    color: #aaa;
     margin-bottom: 2px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
   }
   .info-value {
     font-size: 14px;
-    color: #ccc;
+    color: #222;
     font-weight: 500;
   }
   .info-value.link { color: #c0392b; }
-  .divider { height: 1px; background: #1a1a1a; margin: 6px 0 2px; }
+  .divider { height: 1px; background: #f0f0f0; margin: 6px 0 2px; }
   .save-btn {
     display: block;
     width: 100%;
@@ -122,6 +119,7 @@
     transition: background 0.2s, transform 0.1s;
     margin-top: 24px;
     border-radius: 13px;
+    text-decoration: none;
   }
   .save-btn:hover { background: #a93226; transform: translateY(-1px); }
   .save-btn:active { transform: translateY(0); }
@@ -129,17 +127,19 @@
     text-align: center;
     padding: 14px 28px 24px;
     font-size: 11px;
-    color: #2a2a2a;
+    color: #bbb;
   }
-  .footer a { color: #5a1a1a; text-decoration: none; }
+  .footer a { color: #c0392b; text-decoration: none; }
 </style>
 </head>
 <body>
 <div class="card">
   <div class="header">
     <div class="logo-wrap">
-      <!-- SOSTITUISCI src="LOGO_BASE64_HERE" con il base64 del logo -->
-      <img id="logoImg" src="" alt="Radicle">
+      <img src="radicle_01.png" alt="Radicle">
+    </div>
+    <div style="margin: 0 auto 14px; width: 90px; height: 90px; border-radius: 50%; overflow: hidden; border: 3px solid #c0392b; box-shadow: 0 4px 16px rgba(192,57,43,0.3);">
+      <img src="robertocapancioni_foto.jpg" alt="Roberto Capancioni" style="width:100%;height:100%;object-fit:cover;">
     </div>
     <div class="name">Roberto Capancioni</div>
     <div class="role">Amministratore Unico</div>
@@ -227,51 +227,5 @@
     <a href="https://www.radicle.it" target="_blank">radicle.it</a> · Software Gestionale SaaS &amp; On-Premise
   </div>
 </div>
-
-<script>
-window.addEventListener('load', async () => {
-  try {
-    document.getElementById('logoImg').src = 'radicle_01.png';
-  } catch(e) {
-    // fallback SVG se il file non è disponibile
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 170">
-      <rect width="400" height="170" fill="black"/>
-      <text x="10" y="105" font-family="Arial Black,Impact,sans-serif" font-size="88" font-weight="900" fill="#c0392b" letter-spacing="-1">RADICLE</text>
-      <g transform="translate(197,110)" stroke="#c0392b" stroke-width="3.5" fill="none" stroke-linecap="round">
-        <line x1="0" y1="0" x2="0" y2="26"/>
-        <line x1="0" y1="16" x2="-20" y2="40"/>
-        <line x1="0" y1="16" x2="20" y2="40"/>
-        <line x1="-20" y1="40" x2="-28" y2="54"/>
-        <line x1="-20" y1="40" x2="-10" y2="54"/>
-        <line x1="20" y1="40" x2="10" y2="54"/>
-        <line x1="20" y1="40" x2="28" y2="54"/>
-      </g>
-    </svg>`;
-    const blob = new Blob([svg], {type:'image/svg+xml'});
-    document.getElementById('logoImg').src = URL.createObjectURL(blob);
-  }
-});
-
-function downloadVCard() {
-  const vcard = `BEGIN:VCARD
-VERSION:3.0
-FN:Roberto Capancioni
-N:Capancioni;Roberto;;;
-ORG:Radicle S.R.L.
-TITLE:Amministratore Unico
-TEL;type=CELL:+393516454302
-EMAIL;type=INTERNET;type=WORK:roberto.capancioni2@ingpec.eu
-EMAIL;type=INTERNET;type=WORK:radiclesrl@pec.it
-URL:https://www.radicle.it
-ADR;type=WORK:;;Via Trentino 137;Porto Sant'Elpidio;FM;63821;Italy
-NOTE:P.IVA: 02595780442 - REA: FM-312902 - Start-up Innovativa
-END:VCARD`;
-  const blob = new Blob([vcard], {type:'text/vcard'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = 'Roberto_Capancioni_Radicle.vcf';
-  a.click(); URL.revokeObjectURL(url);
-}
-</script>
 </body>
 </html>
