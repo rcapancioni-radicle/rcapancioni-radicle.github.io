@@ -792,6 +792,9 @@ function capturePositions() {
     for (const cell of x6graph.getCells()) {
         if (cell.isNode()) lastErdPos.set(cell.id, cell.getPosition());
     }
+    try {
+        localStorage.setItem(LS_ERD_POS, JSON.stringify([...lastErdPos.entries()]));
+    } catch (_) {}
 }
 
 let x6graph = null;
@@ -836,8 +839,12 @@ function initGraph() {
         const id = cell.id;
         if (collapsed.has(id)) collapsed.delete(id);
         else collapsed.add(id);
+        try { localStorage.setItem(LS_ERD_COL, JSON.stringify([...collapsed])); } catch (_) {}
         if (lastErdData) renderErdCells(lastErdData, true);
     });
+
+    // Save positions after drag
+    x6graph.on('node:moved', () => capturePositions());
 }
 
 /** Build edge attrs for a link. Mandatory FK = solid line, optional = dashed. */
@@ -903,8 +910,12 @@ function renderERD(data) {
     initGraph();
     if (!x6graph) return;
     lastErdData = data;
-    lastErdPos  = computeLayout(data);
-    renderErdCells(data, false);
+    const hadSaved = lastErdPos.size > 0;
+    const freshPos = computeLayout(data);
+    for (const item of data.items) {
+        if (!lastErdPos.has(item.name)) lastErdPos.set(item.name, freshPos.get(item.name) || { x: 0, y: 0 });
+    }
+    renderErdCells(data, hadSaved);
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -921,7 +932,9 @@ const btnCopy      = document.getElementById('btn-copy');
 const btnShare     = document.getElementById('btn-share');
 
 // ── LocalStorage key ─────────────────────────────────────────────
-const LS_KEY = 'radicle-qsql-v1';
+const LS_KEY     = 'radicle-qsql-v1';
+const LS_ERD_POS = 'radicle-qsql-erd-pos-v1';
+const LS_ERD_COL = 'radicle-qsql-erd-col-v1';
 
 // ── Restore from URL hash (priority) or localStorage ─────────────
 (function restoreInput() {
@@ -938,6 +951,14 @@ const LS_KEY = 'radicle-qsql-v1';
         if (saved) inputEl.value = saved;
     } catch (_) {}
 })();
+
+// ── Restore ERD positions + collapsed state ───────────────────────
+try {
+    const sp = localStorage.getItem(LS_ERD_POS);
+    if (sp) lastErdPos = new Map(JSON.parse(sp));
+    const sc = localStorage.getItem(LS_ERD_COL);
+    if (sc) for (const id of JSON.parse(sc)) collapsed.add(id);
+} catch (_) {}
 
 // ── Copy DDL to clipboard ─────────────────────────────────────────
 let _lastDdlText = '';
