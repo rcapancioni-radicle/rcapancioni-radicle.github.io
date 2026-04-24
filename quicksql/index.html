@@ -916,6 +916,11 @@ function renderERD(data) {
         if (!lastErdPos.has(item.name)) lastErdPos.set(item.name, freshPos.get(item.name) || { x: 0, y: 0 });
     }
     renderErdCells(data, hadSaved);
+    if (hadSaved) {
+        // Positions restored from storage: layout is correct but viewport needs fitting
+        x6graph.zoomToFit({ padding: 40, maxScale: 1 });
+        x6graph.centerContent();
+    }
 }
 
 // ════════════════════════════════════════════════════════════════
