@@ -942,12 +942,24 @@ const LS_ERD_POS = 'radicle-qsql-erd-pos-v1';
 const LS_ERD_COL = 'radicle-qsql-erd-col-v1';
 
 // ── Restore from URL hash (priority) or localStorage ─────────────
+// Hash formats:
+//   v2:<json>  → full state: { q: qsql, p: [[name,{x,y}],...], c: [id,...] }
+//   <text>     → legacy: plain QSQL text only
+let _erdRestoredFromHash = false;
 (function restoreInput() {
     try {
         const hash = window.location.hash.slice(1);
         if (hash) {
-            inputEl.value = decodeURIComponent(hash);
             history.replaceState(null, '', window.location.pathname);
+            if (hash.startsWith('v2:')) {
+                const data = JSON.parse(decodeURIComponent(hash.slice(3)));
+                inputEl.value = data.q || '';
+                if (data.p) lastErdPos = new Map(data.p);
+                if (data.c) for (const id of data.c) collapsed.add(id);
+                _erdRestoredFromHash = true;
+            } else {
+                inputEl.value = decodeURIComponent(hash);
+            }
             return;
         }
     } catch (_) {}
@@ -957,13 +969,15 @@ const LS_ERD_COL = 'radicle-qsql-erd-col-v1';
     } catch (_) {}
 })();
 
-// ── Restore ERD positions + collapsed state ───────────────────────
-try {
-    const sp = localStorage.getItem(LS_ERD_POS);
-    if (sp) lastErdPos = new Map(JSON.parse(sp));
-    const sc = localStorage.getItem(LS_ERD_COL);
-    if (sc) for (const id of JSON.parse(sc)) collapsed.add(id);
-} catch (_) {}
+// ── Restore ERD positions + collapsed state (localStorage fallback) ─
+if (!_erdRestoredFromHash) {
+    try {
+        const sp = localStorage.getItem(LS_ERD_POS);
+        if (sp) lastErdPos = new Map(JSON.parse(sp));
+        const sc = localStorage.getItem(LS_ERD_COL);
+        if (sc) for (const id of JSON.parse(sc)) collapsed.add(id);
+    } catch (_) {}
+}
 
 // ── Copy DDL to clipboard ─────────────────────────────────────────
 let _lastDdlText = '';
@@ -985,8 +999,16 @@ btnCopy.addEventListener('click', () => {
 
 // ── Share URL ────────────────────────────────────────────────────
 btnShare.addEventListener('click', () => {
-    const url = window.location.href.split('#')[0]
-              + '#' + encodeURIComponent(inputEl.value);
+    let fragment;
+    if (lastErdPos.size > 0 || collapsed.size > 0) {
+        const data = { q: inputEl.value };
+        if (lastErdPos.size > 0) data.p = [...lastErdPos.entries()];
+        if (collapsed.size > 0) data.c = [...collapsed];
+        fragment = 'v2:' + encodeURIComponent(JSON.stringify(data));
+    } else {
+        fragment = encodeURIComponent(inputEl.value);
+    }
+    const url = window.location.href.split('#')[0] + '#' + fragment;
     navigator.clipboard.writeText(url).then(() => {
         const prev = btnShare.textContent;
         btnShare.textContent = '✓ link copiato';
