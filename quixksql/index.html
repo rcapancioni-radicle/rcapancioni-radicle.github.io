@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radicle QuickSQL — Interactive</title>
+    <!-- AntV X6 v2 — UMD bundle (local copy) -->
+    <script src="dist/antv-x6/2.18.1/index.min.js"></script>
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:           #1e1e1e;
+            --bg-ui:        #252526;
+            --bg-panel:     #2d2d2d;
+            --border:       #3c3c3c;
+            --text:         #d4d4d4;
+            --text-muted:   #888;
+            --caret:        #aeafad;
+
+            /* Quick SQL tokens */
+            --qs-comment:     #6a9955;
+            --qs-setting:     #608b4e;
+            --qs-table:       #4fc1ff;
+            --qs-column:      #9cdcfe;
+            --qs-directive:   #c586c0;
+            --qs-datatype:    #4ec9b0;
+            --qs-number:      #b5cea8;
+            --qs-annotation:  #d7ba7d;
+            --qs-keyword:     #569cd6;
+
+            /* SQL DDL tokens */
+            --sql-keyword:    #569cd6;
+            --sql-datatype:   #4ec9b0;
+            --sql-string:     #ce9178;
+            --sql-number:     #b5cea8;
+            --sql-comment:    #6a9955;
+            --sql-identifier: #9cdcfe;
+            --sql-constraint: #c586c0;
+        }
+
+        body {
+            font-family: 'Cascadia Code', 'Consolas', monospace;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg);
+            color: var(--text);
+            font-size: 13px;
+        }
+
+        header {
+            padding: 6px 16px;
+            background: var(--bg-ui);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        header .logo-link { display: flex; align-items: center; flex-shrink: 0; }
+        header .logo-img  { height: 22px; border-radius: 3px; background: #fff; padding: 2px 5px; display: block; }
+        header .title     { color: #4fc1ff; font-weight: bold; font-size: 14px; }
+        header .subtitle  { color: var(--text-muted); font-size: 11px; }
+        header .spacer    { flex: 1; }
+        header .radicle-link {
+            color: var(--text-muted);
+            font-size: 10px;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+        header .radicle-link:hover { color: var(--text); }
+
+        /* ── DDL toolbar ── */
+        .ddl-toolbar {
+            display: flex;
+            gap: 6px;
+            padding: 4px 10px;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+            align-items: center;
+        }
+        .tool-btn {
+            padding: 3px 11px;
+            background: #2a2d2e;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            color: var(--text-muted);
+            font: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            transition: color .15s, border-color .15s;
+        }
+        .tool-btn:hover  { color: var(--text); border-color: #6a6a6a; }
+        .tool-btn.ok     { color: #4ec9b0; border-color: #4ec9b0; }
+
+        #error {
+            display: none;
+            padding: 5px 16px;
+            background: #5a1d1d;
+            color: #f48771;
+            font-size: 12px;
+            border-bottom: 1px solid #be1100;
+            flex-shrink: 0;
+        }
+
+        .panels {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .panel {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .panel + .panel { border-left: 2px solid var(--border); }
+
+        .panel-label {
+            padding: 3px 12px;
+            background: var(--bg-panel);
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+
+        /* ── Overlay editor (textarea + pre) ── */
+        .editor-wrap {
+            position: relative;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .editor-wrap textarea,
+        .editor-wrap .hl-layer {
+            position: absolute;
+            inset: 0;
+            padding: 14px 16px;
+            font-family: inherit;
+            font-size: inherit;
+            line-height: 1.65;
+            tab-size: 4;
+            white-space: pre;
+            word-wrap: normal;
+            overflow-wrap: normal;
+            border: none;
+            margin: 0;
+        }
+
+        .editor-wrap textarea {
+            color: transparent;
+            background: transparent;
+            caret-color: var(--caret);
+            resize: none;
+            outline: none;
+            overflow: auto;
+            z-index: 1;
+            /* hide scrollbar — dragged by .hl-layer's via JS */
+            scrollbar-width: none;
+        }
+        .editor-wrap textarea::-webkit-scrollbar { display: none; }
+
+        .editor-wrap .hl-layer {
+            background: var(--bg);
+            overflow: hidden;   /* scrolled via JS from textarea */
+            pointer-events: none;
+            z-index: 0;
+            color: var(--text);
+        }
+
+        /* ── Tab bar ── */
+        .panel-tabs {
+            display: flex;
+            background: var(--bg-panel);
+            border-bottom: 1px solid var(--border);
+            flex-shrink: 0;
+        }
+        .tab-btn {
+            padding: 5px 16px;
+            background: transparent;
+            border: none;
+            border-right: 1px solid var(--border);
+            color: var(--text-muted);
+            font: inherit;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-btn:hover  { color: var(--text); }
+        .tab-btn.active { color: var(--text); border-bottom-color: #007acc; background: var(--bg); }
+
+        /* ── Tab content panes ── */
+        .tab-pane          { display: none; flex: 1; overflow: hidden; }
+        .tab-pane.active   { display: flex; flex-direction: column; }
+
+        /* ── DDL output panel ── */
+        #output {
+            flex: 1;
+            padding: 14px 16px;
+            background: var(--bg);
+            overflow: auto;
+            line-height: 1.65;
+            white-space: pre;
+            word-wrap: normal;
+        }
+
+        /* ── ERD diagram panel ── */
+        #erd-container {
+            flex: 1;
+            overflow: hidden;
+            background: var(--bg);
+        }
+
+        /* ── Status footer ── */
+        footer {
+            padding: 3px 12px;
+            background: #007acc;
+            color: #fff;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+        /* ── Quick SQL token colors ── */
+        .qs-comment    { color: var(--qs-comment);    font-style: italic; }
+        .qs-setting    { color: var(--qs-setting);    font-style: italic; }
+        .qs-table      { color: var(--qs-table);      font-weight: bold;  }
+        .qs-column     { color: var(--qs-column); }
+        .qs-directive  { color: var(--qs-directive); }
+        .qs-datatype   { color: var(--qs-datatype); }
+        .qs-number     { color: var(--qs-number); }
+        .qs-annotation { color: var(--qs-annotation); }
+        .qs-keyword    { color: var(--qs-keyword);    font-weight: bold;  }
+
+        /* ── SQL token colors ── */
+        .sql-keyword    { color: var(--sql-keyword);    font-weight: bold; }
+        .sql-datatype   { color: var(--sql-datatype); }
+        .sql-string     { color: var(--sql-string); }
+        .sql-number     { color: var(--sql-number); }
+        .sql-comment    { color: var(--sql-comment);    font-style: italic; }
+        .sql-identifier { color: var(--sql-identifier); }
+        .sql-constraint { color: var(--sql-constraint); }
+    </style>
+</head>
+<body class="vscode-dark">
+
+<header>
+    <a href="https://radicle.it" target="_blank" rel="noopener" class="logo-link">
+        <img src="img/radicle_01.png" class="logo-img" alt="Radicle">
+    </a>
+    <span class="title">QuickSQL</span>
+    <span class="subtitle">- Write shorthand on the left, the Oracle DDL appears on the right in real time</span>
+    <span class="spacer"></span>
+    <a href="https://radicle.it" target="_blank" rel="noopener" class="radicle-link">radicle.it</a>
+</header>
+<div id="error"></div>
+
+<div class="panels">
+
+    <div class="panel">
+        <div class="panel-label">Quick SQL — shorthand</div>
+        <div class="editor-wrap">
+            <pre class="hl-layer" id="qs-hl" aria-hidden="true"></pre>
+            <textarea id="input" spellcheck="false">departments /insert 2
+   name /nn
+   location
+   country
+   employees /insert 4
+      name /nn vc50
+      email /lower
+      cost center num
+      date hired
+      job vc255
+
+emp_v = departments employees
+
+# settings = { "prefix": null, "semantics": "CHAR", "DV": false, pk: identityDataType }
+</textarea>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-tabs">
+            <button class="tab-btn active" data-tab="ddl">DDL Oracle SQL</button>
+            <button class="tab-btn"        data-tab="erd">ER Diagram</button>
+        </div>
+        <div class="tab-pane active" data-tab="ddl">
+            <div class="ddl-toolbar">
+                <button id="btn-copy"  class="tool-btn">Copy DDL</button>
+                <button id="btn-share" class="tool-btn">Share link</button>
+            </div>
+            <pre id="output"></pre>
+        </div>
+        <div class="tab-pane" data-tab="erd">
+            <div id="erd-container"></div>
+        </div>
+    </div>
+
+</div>
+
+<footer id="status">pronto</footer>
+
+<script type="module">
+import { toDDL, toERD } from './dist/quick-sql.js';
+// Graph resolved lazily inside initGraph() — X6 load failure won't break DDL
+
+// ════════════════════════════════════════════════════════════════
+//  Utilities
+// ════════════════════════════════════════════════════════════════
+
+function esc(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function span(cls, text) {
+    return `<span class="${cls}">${esc(text)}</span>`;
+}
+
+/**
+ * Generic left-to-right tokenizer.
+ * tokens: array of { re: RegExp (no /g flag needed), cls: string }
+ *         ordered by priority (first wins at same position)
+ * defaultCls: class for unmatched text (null = plain escaped text)
+ */
+function tokenize(text, tokens, defaultCls) {
+    let html = '';
+    let pos  = 0;
+
+    while (pos < text.length) {
+        let bestIdx   = text.length;
+        let bestMatch = null;
+        let bestCls   = null;
+
+        for (const tok of tokens) {
+            const re = new RegExp(tok.re.source, 'i');
+            const m  = re.exec(text.slice(pos));
+            if (m) {
+                const abs = pos + m.index;
+                if (abs < bestIdx) {
+                    bestIdx   = abs;
+                    bestMatch = m[0];
+                    bestCls   = tok.cls;
+                }
+            }
+        }
+
+        if (!bestMatch) {
+            const rest = text.slice(pos);
+            html += defaultCls ? span(defaultCls, rest) : esc(rest);
+            break;
+        }
+
+        if (bestIdx > pos) {
+            const before = text.slice(pos, bestIdx);
+            html += defaultCls ? span(defaultCls, before) : esc(before);
+        }
+
+        html += span(bestCls, bestMatch);
+        pos = bestIdx + bestMatch.length;
+    }
+    return html;
+}
+
+// ════════════════════════════════════════════════════════════════
+//  Quick SQL highlighter
+// ════════════════════════════════════════════════════════════════
+
+const QS_INLINE = [
+    { re: /\[[^\]]*\]/,       cls: 'qs-comment'    },  // [inline comment]
+    { re: /\{[^}]*\}/,        cls: 'qs-annotation' },  // {annotation}
+    { re: /\/\S+/,            cls: 'qs-directive'  },  // /directive
+    { re: /\b\d+\b/,          cls: 'qs-number'     },  // standalone number
+    // datatypes — ordered longest → shortest to avoid partial matches
+    {
+        re: /\b(timestamp\s+with\s+local\s+time\s+zone|timestamp\s+with\s+time\s+zone|sdo_geometry|timestamp|boolean|varchar2|varchar|integer|tswtz|string|number|vector|geometry|tstz|blob|clob|json|file|date|char|bool|int|num|vc(?:32k|\d+k?|\(\d+\))?|vect(?:\d+|\(\d+\))?|ts)\b/,
+        cls: 'qs-datatype',
+    },
+];
+
+/**
+ * Tokenize the "content" part of a Quick SQL line
+ * (everything after the leading whitespace).
+ * nameClass: css class for the name portion (table or column).
+ */
+function qsLineContent(content, nameClass) {
+    // Find end of "name" (the human-language column/table name):
+    // the name ends just before the first /directive, {annotation},
+    // [comment], -- comment, or a datatype keyword.
+    // We use a lookahead-style scan: find the first token match in the content.
+    const firstToken = (() => {
+        let bestIdx = content.length;
+        for (const tok of QS_INLINE) {
+            const m = new RegExp(tok.re.source, 'i').exec(content);
+            if (m && m.index < bestIdx) bestIdx = m.index;
+        }
+        return bestIdx;
+    })();
+
+    // The name is everything before the first token (rtrimmed of spaces)
+    const namePart   = content.slice(0, firstToken).trimEnd();
+    const afterName  = content.slice(namePart.length);
+
+    let html = namePart ? span(nameClass, namePart) : '';
+    // leading space between name and rest (preserve it as plain)
+    const leadingSpace = afterName.match(/^\s+/);
+    if (leadingSpace) {
+        html += esc(leadingSpace[0]);
+    }
+    html += tokenize(afterName.trimStart(), QS_INLINE, null);
+    return html;
+}
+
+function highlightQuickSQL(text) {
+    const lines   = text.split('\n');
+    const result  = [];
+    let inBlock   = false;   // inside /* ... */ block comment
+
+    for (const line of lines) {
+        // ── still inside a block comment ──
+        if (inBlock) {
+            const end = line.indexOf('*/');
+            if (end !== -1) {
+                result.push(
+                    span('qs-comment', line.slice(0, end + 2)) +
+                    qsLineContent(line.slice(end + 2), 'qs-column')
+                );
+                inBlock = false;
+            } else {
+                result.push(span('qs-comment', line));
+            }
+            continue;
+        }
+
+        const trimmed = line.trimStart();
+        const indent  = line.length - trimmed.length;
+
+        // ── empty line ──
+        if (!trimmed) { result.push(''); continue; }
+
+        // ── settings line  (#...) ──
+        if (trimmed.startsWith('#')) {
+            result.push(span('qs-setting', line));
+            continue;
+        }
+
+        // ── line comment (--) ──
+        if (trimmed.startsWith('--')) {
+            result.push(esc(' '.repeat(indent)) + span('qs-comment', trimmed));
+            continue;
+        }
+
+        // ── block comment start ──
+        if (trimmed.startsWith('/*')) {
+            const end = line.indexOf('*/');
+            if (end !== -1) {
+                result.push(
+                    span('qs-comment', line.slice(0, end + 2)) +
+                    qsLineContent(line.slice(end + 2), 'qs-column')
+                );
+            } else {
+                result.push(span('qs-comment', line));
+                inBlock = true;
+            }
+            continue;
+        }
+
+        // ── view / dv line ──
+        if (/^(view|dv)\s/i.test(trimmed)) {
+            const kwEnd = trimmed.indexOf(' ');
+            const kw    = trimmed.slice(0, kwEnd);
+            const rest  = trimmed.slice(kwEnd);
+            result.push(
+                esc(' '.repeat(indent)) +
+                span('qs-keyword', kw) +
+                esc(rest)
+            );
+            continue;
+        }
+
+        // ── star/snowflake prefix (> or <) ──
+        const starMatch = /^([<>]\s*)/.exec(trimmed);
+        const prefix    = starMatch ? starMatch[1] : '';
+        const content   = trimmed.slice(prefix.length);
+
+        // ── table (0 indent) vs column (positive indent) ──
+        const nameClass = indent === 0 ? 'qs-table' : 'qs-column';
+
+        result.push(
+            esc(' '.repeat(indent)) +
+            (prefix ? span('qs-directive', prefix) : '') +
+            qsLineContent(content, nameClass)
+        );
+    }
+
+    return result.join('\n');
+}
+
+// ════════════════════════════════════════════════════════════════
+//  Oracle DDL SQL highlighter
+// ════════════════════════════════════════════════════════════════
+
+// Multi-word keywords must come before their shorter sub-words
+const SQL_KEYWORDS =
+    'CREATE\\s+OR\\s+REPLACE|CREATE|OR\\s+REPLACE|' +
+    'PRIMARY\\s+KEY|FOREIGN\\s+KEY|NOT\\s+NULL|ON\\s+DELETE\\s+CASCADE|' +
+    'ON\\s+DELETE\\s+SET\\s+NULL|ON\\s+DELETE|' +
+    'IMMUTABLE\\s+TABLE|BLOCKCHAIN\\s+TABLE|' +
+    'INSERT\\s+INTO|' +
+    'TABLE|VIEW|INDEX|SEQUENCE|TRIGGER|PROCEDURE|FUNCTION|PACKAGE|' +
+    'INSERT|INTO|VALUES|SELECT|FROM|WHERE|' +
+    'CONSTRAINT|REFERENCES|DEFAULT|UNIQUE|CHECK|ENABLE|DISABLE|' +
+    'AUDIT|COMMENT|IS|AS|BEGIN|END|DECLARE|RETURN|' +
+    'HASHING\\s+USING|AFTER\\s+INSERT|UNTIL|DAYS|ROWS|BY|' +
+    'GRANT|REVOKE|ALTER|DROP|RENAME|TO|ON|NO\\s+DROP|NO\\s+DELETE|' +
+    'NULL|TRUE|FALSE|AND|OR|NOT|IN|BETWEEN|LIKE|ALL';
+
+const SQL_DATATYPES =
+    'TIMESTAMP\\s+WITH\\s+LOCAL\\s+TIME\\s+ZONE|' +
+    'TIMESTAMP\\s+WITH\\s+TIME\\s+ZONE|' +
+    'VARCHAR2|NVARCHAR2|NCHAR|INTEGER|FLOAT|CLOB|BLOB|' +
+    'TIMESTAMP|BOOLEAN|NUMBER|DATE|CHAR|RAW|LONG|' +
+    'BINARY_FLOAT|BINARY_DOUBLE|SDO_GEOMETRY|XMLTYPE|VECTOR';
+
+const SQL_TOKENS = [
+    { re: new RegExp('/\\*[\\s\\S]*?\\*/'),                    cls: 'sql-comment'    },
+    { re: /--[^\n]*/,                                          cls: 'sql-comment'    },
+    { re: /'(?:[^'\\]|\\.)*'/,                                 cls: 'sql-string'     },
+    { re: /"(?:[^"\\]|\\.)*"/,                                 cls: 'sql-identifier' },
+    { re: /\b\d+(?:\.\d+)?\b/,                                cls: 'sql-number'     },
+    { re: new RegExp(`\\b(${SQL_DATATYPES})\\b`),              cls: 'sql-datatype'   },
+    { re: new RegExp(`\\b(${SQL_KEYWORDS})\\b`),               cls: 'sql-keyword'    },
+];
+
+function highlightSQL(text) {
+    return tokenize(text, SQL_TOKENS, null);
+}
+
+// ════════════════════════════════════════════════════════════════
+//  X6 ERD renderer
+// ════════════════════════════════════════════════════════════════
+
+const NODE_W   = 240;
+const HEADER_H = 32;
+const COL_H    = 20;
+const GAP_X    = 100;
+const GAP_Y    = 80;
+const RADIUS   = 6;
+
+// Per-group header palette (hsl-based, dark-mode friendly)
+const GROUP_PALETTE = [
+    { fill: '#162636', text: '#4fc1ff', border: '#1e6aa8' },   // blue
+    { fill: '#1e2716', text: '#b5cea8', border: '#4e7a30' },   // green
+    { fill: '#261626', text: '#c586c0', border: '#8040a0' },   // purple
+    { fill: '#261e10', text: '#d7ba7d', border: '#a07030' },   // amber
+    { fill: '#261616', text: '#f48771', border: '#a03030' },   // red
+    { fill: '#162626', text: '#4ec9b0', border: '#207060' },   // teal
+];
+
+// State persisted across re-renders
+let lastErdData = null;
+let lastErdPos  = new Map();
+const collapsed = new Set();
+
+function nodeH(item, isCollapsed) {
+    if (isCollapsed) return HEADER_H;
+    return HEADER_H + (item.columns || []).length * COL_H + 2;
+}
+
+/**
+ * Pre-compute per-table column roles and group color from ERD data.
+ * Returns { pkCols, fkCols, groupColor } keyed by table name.
+ */
+function buildErdMeta(data) {
+    const meta = new Map();
+    for (const item of data.items) {
+        meta.set(item.name, { pkCols: new Set(), fkCols: new Set(), groupColor: null });
+    }
+
+    // PK columns: source_id in links identifies the PK of the source table
+    for (const { source, source_id } of data.links) {
+        meta.get(source)?.pkCols.add(source_id);
+    }
+    // FK columns: target_id in links identifies the FK column of the target table
+    for (const { target, target_id } of data.links) {
+        meta.get(target)?.fkCols.add(target_id);
+    }
+
+    // Group coloring — assign palette entry per group name
+    const groupEntries = Object.entries(data.groups || {});
+    groupEntries.forEach(([, tables], gi) => {
+        const color = GROUP_PALETTE[gi % GROUP_PALETTE.length];
+        for (const tbl of tables) {
+            if (meta.has(tbl)) meta.get(tbl).groupColor = color;
+        }
+    });
+
+    return meta;
+}
+
+/** Build X6 markup + attrs for one ER table node (pure SVG, no foreignObject). */
+function buildNodeDef(item, { isCollapsed = false, pkCols = new Set(), fkCols = new Set(), groupColor = null } = {}) {
+    const isView  = item.type === 'view';
+    const gc      = groupColor || (isView
+        ? { fill: '#162620', text: '#9cdcfe', border: '#2a8a5a' }
+        : { fill: '#162636', text: '#4fc1ff', border: '#1e6aa8' });
+
+    const h  = nodeH(item, isCollapsed);
+    const cols = isCollapsed ? [] : (item.columns || []);
+
+    // X6 v2 applies transform="translate(NODE_W/2, h/2)" to every <text> in markup,
+    // and wraps content in <tspan dy="0.3em">.
+    // Compensate: x_set = ax - cx,  y_set = ay - cy - 0.3*fontSize
+    const cx = NODE_W / 2;
+    const cy = h / 2;
+    const tx = (ax)        => ax - cx;
+    const ty = (ay, fs=12) => ay - cy - 0.3 * fs;
+
+    // Header background path (top corners rounded; bottom straight when expanded)
+    const hpExpanded = `M ${RADIUS} 0 H ${NODE_W-RADIUS} Q ${NODE_W} 0 ${NODE_W} ${RADIUS}`
+                     + ` V ${HEADER_H} H 0 V ${RADIUS} Q 0 0 ${RADIUS} 0 Z`;
+    const hpCollapsed = `M ${RADIUS} 0 H ${NODE_W-RADIUS} Q ${NODE_W} 0 ${NODE_W} ${RADIUS}`
+                      + ` V ${h-RADIUS} Q ${NODE_W} ${h} ${NODE_W-RADIUS} ${h}`
+                      + ` H ${RADIUS} Q 0 ${h} 0 ${h-RADIUS} V ${RADIUS} Q 0 0 ${RADIUS} 0 Z`;
+    const hp = isCollapsed ? hpCollapsed : hpExpanded;
+
+    // Left accent bar (3 px coloured strip inside header left edge)
+    const accentPath = isCollapsed
+        ? `M ${RADIUS} 1 H ${RADIUS+3} V ${h-1} H ${RADIUS} Q 1 ${h} 1 ${h-RADIUS} V ${RADIUS} Q 1 1 ${RADIUS} 1 Z`
+        : `M ${RADIUS} 1 H ${RADIUS+3} V ${HEADER_H-1} H ${RADIUS} V ${RADIUS} Q 1 1 ${RADIUS} 1 Z`;
+
+    const toggleGlyph = isCollapsed ? '▶' : '▾';
+
+    const markup = [
+        { tagName: 'rect', selector: 'body'    },
+        { tagName: 'path', selector: 'hdr'     },
+        { tagName: 'path', selector: 'accent'  },
+        { tagName: 'text', selector: 'hdr-lbl' },
+        { tagName: 'text', selector: 'hdr-tog' },
+    ];
+    if (!isCollapsed && cols.length > 0) {
+        markup.push({ tagName: 'line', selector: 'divider' });
+    }
+
+    const attrs = {
+        body: {
+            width: NODE_W, height: h,
+            fill: '#1a1a1a',
+            stroke: gc.border, strokeWidth: 1.5,
+            rx: RADIUS, ry: RADIUS,
+            filter: 'url(#qs-shadow)',
+        },
+        hdr:    { d: hp, fill: gc.fill, stroke: 'none' },
+        accent: { d: accentPath, fill: gc.border, stroke: 'none' },
+        'hdr-lbl': {
+            text: item.name,
+            x: tx(RADIUS + 8),
+            y: ty(HEADER_H / 2 + 4),
+            fill: gc.text,
+            'font-size': 12, 'font-weight': 'bold',
+            'text-anchor': 'start',
+        },
+        'hdr-tog': {
+            text: toggleGlyph,
+            x: tx(NODE_W - 10),
+            y: ty(HEADER_H / 2 + 4, 10),   // match font-size=10 for correct dy offset
+            fill: gc.text,
+            'font-size': 10, 'font-weight': 'normal',
+            'text-anchor': 'end',
+        },
+        divider: {
+            x1: 0, y1: HEADER_H, x2: NODE_W, y2: HEADER_H,
+            stroke: gc.border, strokeWidth: 1,
+        },
+    };
+
+    cols.forEach((col, i) => {
+        const y0  = HEADER_H + i * COL_H;
+        const ym  = y0 + COL_H / 2;
+        const isPk = pkCols.has(col.name);
+        const isFk = fkCols.has(col.name);
+
+        // Row background
+        const rowFill = isPk ? '#1b2a12'
+                      : isFk ? '#0e1c2c'
+                      : (i % 2 === 0 ? '#202020' : '#252527');
+
+        // Role tag ("PK" / "FK") as a separate text selector
+        const hasTag = isPk || isFk;
+        const tagText = isPk ? 'PK' : 'FK';
+        const tagFill = isPk ? '#b8a030' : '#4080c0';
+
+        const nameX = hasTag ? tx(RADIUS + 8 + 26) : tx(RADIUS + 8);
+        const nameFill = isPk ? '#c5a400'
+                       : isFk ? '#9cdcfe'
+                       : '#d4d4d4';
+
+        markup.push(
+            { tagName: 'rect', selector: `rr${i}` },
+            { tagName: 'text', selector: `cn${i}`  },
+            { tagName: 'text', selector: `ct${i}`  },
+        );
+        if (hasTag) markup.push({ tagName: 'text', selector: `tg${i}` });
+
+        attrs[`rr${i}`] = {
+            x: 0, y: y0, width: NODE_W, height: COL_H,
+            fill: rowFill, stroke: 'none',
+        };
+        if (hasTag) {
+            attrs[`tg${i}`] = {
+                text: tagText,
+                x: tx(RADIUS + 8),
+                y: ty(ym, 9),
+                fill: tagFill,
+                'font-size': 9, 'font-weight': 'bold',
+                'text-anchor': 'start',
+            };
+        }
+        attrs[`cn${i}`] = {
+            text: col.name,
+            x: nameX,
+            y: ty(ym, 11),
+            fill: nameFill,
+            'font-size': 11, 'text-anchor': 'start',
+        };
+        attrs[`ct${i}`] = {
+            text: col.datatype || '',
+            x: tx(NODE_W - 10),
+            y: ty(ym, 10),
+            fill: '#4ec9b0',
+            'font-size': 10, 'text-anchor': 'end',
+        };
+    });
+
+    return { markup, attrs, width: NODE_W, height: h };
+}
+
+/** Hierarchical BFS layout: root tables at top, FK children below. */
+function computeLayout(data) {
+    const { items, links } = data;
+    const childOf  = new Map(items.map(i => [i.name, []]));
+    const parentOf = new Map(items.map(i => [i.name, []]));
+
+    for (const { source, target } of links) {
+        childOf.get(source)?.push(target);
+        parentOf.get(target)?.push(source);
+    }
+
+    const level = new Map();
+    const queue = items
+        .filter(i => !(parentOf.get(i.name) || []).length)
+        .map(i => [i.name, 0]);
+    if (!queue.length && items.length) queue.push([items[0].name, 0]);
+
+    while (queue.length) {
+        const [name, lv] = queue.shift();
+        if (level.has(name) && level.get(name) >= lv) continue;
+        level.set(name, lv);
+        for (const c of (childOf.get(name) || [])) queue.push([c, lv + 1]);
+    }
+    for (const { name } of items) if (!level.has(name)) level.set(name, 0);
+
+    const byLv = new Map();
+    for (const [name, lv] of level) {
+        if (!byLv.has(lv)) byLv.set(lv, []);
+        byLv.get(lv).push(name);
+    }
+
+    const nameToItem = new Map(items.map(i => [i.name, i]));
+    const pos = new Map();
+    let y = 0;
+    for (const [, names] of [...byLv.entries()].sort(([a], [b]) => a - b)) {
+        const maxH = Math.max(...names.map(n => nodeH(nameToItem.get(n) || { columns: [] }, false)));
+        let x = 0;
+        for (const name of names) { pos.set(name, { x, y }); x += NODE_W + GAP_X; }
+        y += maxH + GAP_Y;
+    }
+    return pos;
+}
+
+/** Snapshot current node positions before a re-render that preserves layout. */
+function capturePositions() {
+    if (!x6graph) return;
+    for (const cell of x6graph.getCells()) {
+        if (cell.isNode()) lastErdPos.set(cell.id, cell.getPosition());
+    }
+}
+
+let x6graph = null;
+
+function initGraph() {
+    if (x6graph) return;
+    const X6 = window.X6;
+    if (!X6 || !X6.Graph) {
+        erdContainer.innerHTML =
+            '<div style="padding:20px;color:#f48771;font-size:12px">'
+            + 'X6 non caricato — controlla il percorso di dist/antv-x6/2.18.1/index.min.js</div>';
+        return;
+    }
+    const { Graph } = X6;
+    const w = erdContainer.clientWidth  || 800;
+    const h = erdContainer.clientHeight || 600;
+    x6graph = new Graph({
+        container: erdContainer,
+        width: w, height: h,
+        background: { color: '#1a1a1a' },
+        grid: false,
+        mousewheel: { enabled: true, zoomAtMousePosition: true, factor: 1.1, minScale: 0.15, maxScale: 4 },
+        panning:     { enabled: true },
+        interacting: { nodeMovable: true },
+        connecting:  { enabled: false },
+    });
+
+    // Inject SVG drop-shadow filter once
+    const svgEl = erdContainer.querySelector('svg');
+    if (svgEl) {
+        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+        defs.innerHTML =
+            '<filter id="qs-shadow" x="-30%" y="-30%" width="160%" height="160%">'
+            + '<feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="rgba(0,0,0,0.7)"/>'
+            + '</filter>';
+        svgEl.insertBefore(defs, svgEl.firstChild);
+    }
+
+    // Toggle collapse on node click (X6 fires node:click only on real clicks, not drags)
+    x6graph.on('node:click', ({ cell }) => {
+        capturePositions();
+        const id = cell.id;
+        if (collapsed.has(id)) collapsed.delete(id);
+        else collapsed.add(id);
+        if (lastErdData) renderErdCells(lastErdData, true);
+    });
+}
+
+/** Build edge attrs for a link. Mandatory FK = solid line, optional = dashed. */
+function edgeStyle(mandatory) {
+    const color = mandatory ? 'rgba(160,160,190,0.6)' : 'rgba(140,140,160,0.4)';
+    return {
+        line: {
+            stroke: color,
+            strokeWidth: 1.5,
+            strokeDasharray: mandatory ? '' : '6 4',
+            sourceMarker: {
+                tagName: 'path',
+                // "one" side: single perpendicular bar at the source
+                d: 'M 0 -6 L 0 6',
+                stroke: color, fill: 'none', strokeWidth: 1.5,
+            },
+            targetMarker: {
+                tagName: 'path',
+                // Crow's foot: all three lines START at (0,0) — the entity
+                // connection point — and DIVERGE toward the source (x−).
+                // In X6 targetMarker coords x+ is the edge direction (into target),
+                // so x− is back along the line toward source.
+                d: 'M -12 -7 L 0 0 L -12 7 M 0 0 L -12 0',
+                stroke: color, fill: 'none', strokeWidth: 1.5,
+            },
+        },
+    };
+}
+
+/** Internal: populate the X6 graph with nodes + edges. */
+function renderErdCells(data, keepPositions) {
+    x6graph.clearCells();
+    const erdMeta = buildErdMeta(data);
+
+    for (const item of data.items) {
+        const pos  = lastErdPos.get(item.name) || { x: 0, y: 0 };
+        const meta = erdMeta.get(item.name) || {};
+        x6graph.addNode({
+            id: item.name, ...pos,
+            ...buildNodeDef(item, { isCollapsed: collapsed.has(item.name), ...meta }),
+        });
+    }
+
+    for (const link of data.links) {
+        try {
+            x6graph.addEdge({
+                source:    { cell: link.source },
+                target:    { cell: link.target },
+                attrs:     edgeStyle(link.mandatory !== false),
+                router:    { name: 'orth' },
+                connector: { name: 'rounded', args: { radius: 8 } },
+            });
+        } catch (_) { /* skip invalid refs */ }
+    }
+
+    if (!keepPositions) {
+        x6graph.zoomToFit({ padding: 40, maxScale: 1 });
+        x6graph.centerContent();
+    }
+}
+
+function renderERD(data) {
+    initGraph();
+    if (!x6graph) return;
+    lastErdData = data;
+    lastErdPos  = computeLayout(data);
+    renderErdCells(data, false);
+}
+
+// ════════════════════════════════════════════════════════════════
+//  Wiring
+// ════════════════════════════════════════════════════════════════
+
+const inputEl      = document.getElementById('input');
+const qsHl         = document.getElementById('qs-hl');
+const outputEl     = document.getElementById('output');
+const erdContainer = document.getElementById('erd-container');
+const errorEl      = document.getElementById('error');
+const statusEl     = document.getElementById('status');
+const btnCopy      = document.getElementById('btn-copy');
+const btnShare     = document.getElementById('btn-share');
+
+// ── LocalStorage key ─────────────────────────────────────────────
+const LS_KEY = 'radicle-qsql-v1';
+
+// ── Restore from URL hash (priority) or localStorage ─────────────
+(function restoreInput() {
+    try {
+        const hash = window.location.hash.slice(1);
+        if (hash) {
+            inputEl.value = decodeURIComponent(hash);
+            history.replaceState(null, '', window.location.pathname);
+            return;
+        }
+    } catch (_) {}
+    try {
+        const saved = localStorage.getItem(LS_KEY);
+        if (saved) inputEl.value = saved;
+    } catch (_) {}
+})();
+
+// ── Copy DDL to clipboard ─────────────────────────────────────────
+let _lastDdlText = '';
+
+function flashBtn(btn) {
+    btn.classList.add('ok');
+    setTimeout(() => btn.classList.remove('ok'), 1400);
+}
+
+btnCopy.addEventListener('click', () => {
+    if (!_lastDdlText) return;
+    navigator.clipboard.writeText(_lastDdlText).then(() => {
+        const prev = btnCopy.textContent;
+        btnCopy.textContent = '✓ copiato';
+        flashBtn(btnCopy);
+        setTimeout(() => { btnCopy.textContent = prev; }, 1400);
+    });
+});
+
+// ── Share URL ────────────────────────────────────────────────────
+btnShare.addEventListener('click', () => {
+    const url = window.location.href.split('#')[0]
+              + '#' + encodeURIComponent(inputEl.value);
+    navigator.clipboard.writeText(url).then(() => {
+        const prev = btnShare.textContent;
+        btnShare.textContent = '✓ link copiato';
+        flashBtn(btnShare);
+        setTimeout(() => { btnShare.textContent = prev; }, 1400);
+    });
+});
+
+let activeTab = 'ddl';
+let lastRenderedInput = null;   // quicksql text last used to build the diagram
+let erdDebounceTimer  = null;   // debounce handle for live-typing ERD updates
+
+/**
+ * Update the ERD diagram.
+ * keepPositions = true  → smart update: existing nodes keep their dragged positions.
+ * keepPositions = false → full fresh auto-layout (first render only).
+ * No-op when input hasn't changed since the last successful render.
+ */
+function updateDiagram(keepPositions = false) {
+    const src = inputEl.value;
+    if (x6graph && src === lastRenderedInput) return;
+    try {
+        const data = toERD(src);
+        // Snapshot previous item list BEFORE overwriting lastErdData so we can
+        // bridge positions when settings change table names (prefix / schema).
+        const prevItems = lastErdData ? lastErdData.items : [];
+        lastRenderedInput = src;
+        lastErdData = data;
+
+        if (keepPositions && x6graph) {
+            // lastErdPos already has positions captured when the user left the tab
+            // (or from the previous debounced update). For each new item:
+            //   1. Exact name match — keep the stored position.
+            //   2. Same-index fallback — handles settings changes that rename all
+            //      tables consistently (e.g. adding prefix:"app" or schema:"s").
+            //   3. Fresh layout position for genuinely new tables.
+            const freshPos = computeLayout(data);
+            for (let idx = 0; idx < data.items.length; idx++) {
+                const item = data.items[idx];
+                if (lastErdPos.has(item.name)) continue;                // ① exact
+                const prev = prevItems[idx];
+                if (prev && lastErdPos.has(prev.name)) {                // ② same index
+                    lastErdPos.set(item.name, lastErdPos.get(prev.name));
+                } else {                                                  // ③ fresh
+                    lastErdPos.set(item.name, freshPos.get(item.name) || { x: 0, y: 0 });
+                }
+            }
+            renderErdCells(data, true);
+        } else {
+            renderERD(data);   // first render: compute full fresh layout
+        }
+    } catch (e) {
+        // Transient error (e.g. mid-typing invalid JSON in # settings).
+        // Leave the graph and lastRenderedInput untouched so the next
+        // successful parse will still find the correct positions in lastErdPos.
+        if (x6graph) {
+            statusEl.textContent = 'ERD: ' + (e && e.message ? e.message : e).toString().slice(0, 100);
+        } else {
+            erdContainer.innerHTML =
+                `<div style="padding:20px;color:#f48771;font-size:12px;white-space:pre-wrap">`
+                + `Errore diagramma:\n${e && e.message ? e.message : e}</div>`;
+        }
+    }
+}
+
+// Tab switching.
+// KEY: capture positions the moment the user LEAVES the ERD tab, while the
+// graph is still fully visible and its layout is stable.  If we wait until
+// the tab becomes visible again, X6 may have already adjusted node positions
+// in response to the container going display:none → display:flex.
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        if (tab === activeTab) return;
+        if (activeTab === 'erd') capturePositions();   // ← snapshot before hiding
+        activeTab = tab;
+        document.querySelectorAll('.tab-btn').forEach(b =>
+            b.classList.toggle('active', b.dataset.tab === tab));
+        document.querySelectorAll('.tab-pane').forEach(p =>
+            p.classList.toggle('active', p.dataset.tab === tab));
+        if (tab === 'erd') requestAnimationFrame(() => updateDiagram(true));
+    });
+});
+
+// Live text update.
+function update() {
+    const src = inputEl.value;
+    qsHl.innerHTML = highlightQuickSQL(src) + '\n ';
+    try {
+        localStorage.setItem(LS_KEY, src);
+    } catch (_) {}
+    try {
+        const ddl = toDDL(src);
+        _lastDdlText = ddl;
+        outputEl.innerHTML = highlightSQL(ddl) + '\n ';
+        errorEl.style.display = 'none';
+        statusEl.textContent = `${ddl.split('\n').length} righe DDL generate`;
+    } catch (e) {
+        _lastDdlText = '';
+        errorEl.textContent  = e.message || String(e);
+        errorEl.style.display = 'block';
+        statusEl.textContent  = 'errore di sintassi';
+    }
+    // Debounce ERD updates: wait 350 ms after the last keystroke before
+    // refreshing the diagram.  This prevents mid-typing resets (e.g. when
+    // # settings JSON is temporarily incomplete) and avoids rapid re-renders.
+    if (activeTab === 'erd') {
+        if (erdDebounceTimer) clearTimeout(erdDebounceTimer);
+        erdDebounceTimer = setTimeout(() => {
+            capturePositions();          // snapshot current dragged positions
+            erdDebounceTimer = null;
+            updateDiagram(true);
+        }, 350);
+    }
+}
+
+inputEl.addEventListener('scroll', () => {
+    qsHl.scrollTop  = inputEl.scrollTop;
+    qsHl.scrollLeft = inputEl.scrollLeft;
+});
+
+inputEl.addEventListener('keydown', e => {
+    if (e.key !== 'Tab') return;
+    e.preventDefault();
+    const s = inputEl.selectionStart;
+    const v = inputEl.value;
+    inputEl.value = v.slice(0, s) + '   ' + v.slice(inputEl.selectionEnd);
+    inputEl.selectionStart = inputEl.selectionEnd = s + 3;
+    update();
+});
+
+inputEl.addEventListener('input', update);
+update();
+</script>
+
+</body>
+</html>
