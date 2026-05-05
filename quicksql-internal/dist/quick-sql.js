@@ -13015,7 +13015,7 @@ ${i});
 `, f;
   }
   _generateSvcBody(a) {
-    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_dal", r = n + "_hks", l = n + "_svc", d = n + "_audit", f = (a.getPkName() ?? "id").toLowerCase(), m = this._hasVersionCol(a), h = this._hasUniqueCol(a), o = this._hasAuditLog(a), u = this._svcParamCols(a);
+    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_dal", r = n + "_hks", l = n + "_svc", d = n + "_aud", f = (a.getPkName() ?? "id").toLowerCase(), m = this._hasVersionCol(a), h = this._hasUniqueCol(a), o = this._hasAuditLog(a), u = this._svcParamCols(a);
     let x = `create or replace package body ${l} as
 
 `;
@@ -13213,7 +13213,7 @@ ${i}${i});
 `, g;
   }
   _generateAuditSpec(a) {
-    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_audit";
+    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_aud";
     let r = `create or replace package ${s} as
 
 `;
@@ -13228,7 +13228,7 @@ ${i}${i});
 `, r;
   }
   _generateAuditBody(a) {
-    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_dal", r = n + "_audit", l = (a.getPkName() ?? "id").toLowerCase(), d = String(a.getOptionValue("auditlog") || "").trim() || "app_audit_log", f = (this.ctx.objPrefix() + d).toLowerCase(), m = f + "_svc", h = this._hasVersionCol(a), o = Object.keys(a.fks ?? {}).map((B) => B.toLowerCase()), u = this._svcCols(a).map((B) => B.parseName().toLowerCase()), g = (this.ctx.find(d)?.children ?? []).some((B) => B.parseName().toLowerCase() === "old_values"), T = this._hasSyntheticTenantId(a), k = [l, ...T ? ["tenant_id"] : [], ...o, ...u];
+    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_dal", r = n + "_aud", l = (a.getPkName() ?? "id").toLowerCase(), d = String(a.getOptionValue("auditlog") || "").trim() || "app_audit_log", f = (this.ctx.objPrefix() + d).toLowerCase(), m = f + "_svc", h = this._hasVersionCol(a), o = Object.keys(a.fks ?? {}).map((B) => B.toLowerCase()), u = this._svcCols(a).map((B) => B.parseName().toLowerCase()), g = (this.ctx.find(d)?.children ?? []).some((B) => B.parseName().toLowerCase() === "old_values"), T = this._hasSyntheticTenantId(a), k = [l, ...T ? ["tenant_id"] : [], ...o, ...u];
     h && k.push("row_version");
     let y = `create or replace package body ${r} as
 
@@ -13757,8 +13757,9 @@ no delete until 16 days after insert` : "";
 `, this._ddl.optionEQvalue("api", "layered") && a.trimmedContent().toLowerCase().includes("/api") ? (l += "drop package " + r + n + `_dal;
 `, l += "drop package " + r + n + `_hks;
 `, l += "drop package " + r + n + `_svc;
-`, a.isOption("auditlog") && (l += "drop package " + r + n + `_audit;
-`)) : this._ddl.optionEQvalue("api", "yes") && (l += "drop package " + r + n + `_api;
+`, a.isOption("auditlog") && (l += "drop package " + r + n + `_aud;
+`), l += "drop package " + r + n + `_apx;
+`) : this._ddl.optionEQvalue("api", "yes") && (l += "drop package " + r + n + `_api;
 `), this._ddl.optionEQvalue("pk", "SEQ") && (l += "drop sequence " + r + n + this._naming.seq + `;
 `)), l.toLowerCase();
   }
