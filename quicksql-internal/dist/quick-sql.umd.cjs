@@ -714,7 +714,7 @@ no delete until 16 days after insert`:"";f!==""&&d!==""&&(d=`
 `,f}generateDDL(a){if(a.inferType()==="view"||a.inferType()==="dv")return"";const n=this._orderedTableNodes(a);let s="";for(let r=0;r<n.length;r++)s+=this.generateTable(n[r]);return s}generateDrop(a){const n=this._ddl.objPrefix()+a.parseName(),s=this._ddl.getOptionValue("db"),r=s&&s.length>0&&23<=(q(s)??0)?"if exists ":"";let l="";return a.inferType()==="view"&&(l="drop view "+r+n+`;
 `),a.inferType()==="table"&&(l="drop table "+r+n+` cascade constraints;
 `,this._ddl.optionEQvalue("api","layered")&&a.trimmedContent().toLowerCase().includes("/api")?(l+="drop package "+r+n+`_dal;
-`,l+="drop package "+r+n+`_hooks;
+`,l+="drop package "+r+n+`_hks;
 `,l+="drop package "+r+n+`_svc;
 `,a.isOption("auditlog")&&(l+="drop package "+r+n+`_audit;
 `)):this._ddl.optionEQvalue("api","yes")&&(l+="drop package "+r+n+`_api;
@@ -793,7 +793,4 @@ end;
 `,n+=a(this.input),n+=`
 `;for(const s of this.unknownOptions())n+="*** Unknown setting: "+s+`
 `;return n+=`
- Non-default options:
-# settings = `+JSON.stringify(this.nonDefaultOptions())+`
-`,n+=`
 */`,n}getErrors(){return this._errors!=null?this._errors:(this._errors=Oa.findErrors(this),this._errors)}version(){return Ce()}}function We(p,a){return Ba(p,a)}function Ue(p,a){return new U(p,a).getERD()}function Ke(p,a){return new U(p,a).getDDL()}function Je(p,a){return new U(p,a).getErrors()}function Ce(){return"2.0.0"}U.toDDL=Ke,U.toERD=Ue,U.toErrors=Je,U.fromJSON=We,U.version=Ce,U.lexer=Q,F.BaseGenerator=Ee,F.default=U,F.fromJSON=We,F.qsql_version=Ce,F.quicksql=U,F.registerGenerator=Sa,F.toDDL=Ke,F.toERD=Ue,F.toErrors=Je,Object.defineProperties(F,{__esModule:{value:!0},[Symbol.toStringTag]:{value:"Module"}})}));

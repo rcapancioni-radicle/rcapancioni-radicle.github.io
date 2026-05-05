@@ -13755,7 +13755,7 @@ no delete until 16 days after insert` : "";
     return a.inferType() === "view" && (l = "drop view " + r + n + `;
 `), a.inferType() === "table" && (l = "drop table " + r + n + ` cascade constraints;
 `, this._ddl.optionEQvalue("api", "layered") && a.trimmedContent().toLowerCase().includes("/api") ? (l += "drop package " + r + n + `_dal;
-`, l += "drop package " + r + n + `_hooks;
+`, l += "drop package " + r + n + `_hks;
 `, l += "drop package " + r + n + `_svc;
 `, a.isOption("auditlog") && (l += "drop package " + r + n + `_audit;
 `)) : this._ddl.optionEQvalue("api", "yes") && (l += "drop package " + r + n + `_api;
@@ -14533,9 +14533,6 @@ class J {
       n += "*** Unknown setting: " + s + `
 `;
     return n += `
- Non-default options:
-# settings = ` + JSON.stringify(this.nonDefaultOptions()) + `
-`, n += `
 */`, n;
   }
   getErrors() {
