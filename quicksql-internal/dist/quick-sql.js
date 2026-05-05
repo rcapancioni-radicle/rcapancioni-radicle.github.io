@@ -13235,12 +13235,14 @@ ${i}${i});
     if (g) {
       const B = k.map((N) => `${i}${i}${i}'${N}' value p_row.${N}`);
       y += `${i}function f_to_json (p_row in ${n}%rowtype) return clob is
+`, y += `${i}${i}l_result clob;
 `, y += `${i}begin
-`, y += `${i}${i}return json_object(
+`, y += `${i}${i}select json_object(
 `, y += B.join(`,
 `) + `
 `, y += `${i}${i}${i}returning clob
-`, y += `${i}${i});
+`, y += `${i}${i}) into l_result from dual;
+`, y += `${i}${i}return l_result;
 `, y += `${i}end f_to_json;
 
 `;

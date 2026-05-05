@@ -532,12 +532,14 @@ ${i}${i});
 `,r}_generateAuditBody(a){const n=(this.ctx.objPrefix()+a.parseName()).toLowerCase(),s=n+"_dal",r=n+"_audit",l=(a.getPkName()??"id").toLowerCase(),d=String(a.getOptionValue("auditlog")||"").trim()||"app_audit_log",f=(this.ctx.objPrefix()+d).toLowerCase(),m=f+"_svc",h=this._hasVersionCol(a),o=Object.keys(a.fks??{}).map(B=>B.toLowerCase()),u=this._svcCols(a).map(B=>B.parseName().toLowerCase()),g=(this.ctx.find(d)?.children??[]).some(B=>B.parseName().toLowerCase()==="old_values"),T=this._hasSyntheticTenantId(a),k=[l,...T?["tenant_id"]:[],...o,...u];h&&k.push("row_version");let y=`create or replace package body ${r} as
 
 `;if(g){const B=k.map(L=>`${i}${i}${i}'${L}' value p_row.${L}`);y+=`${i}function f_to_json (p_row in ${n}%rowtype) return clob is
+`,y+=`${i}${i}l_result clob;
 `,y+=`${i}begin
-`,y+=`${i}${i}return json_object(
+`,y+=`${i}${i}select json_object(
 `,y+=B.join(`,
 `)+`
 `,y+=`${i}${i}${i}returning clob
-`,y+=`${i}${i});
+`,y+=`${i}${i}) into l_result from dual;
+`,y+=`${i}${i}return l_result;
 `,y+=`${i}end f_to_json;
 
 `}return y+=`${i}procedure p_log (
