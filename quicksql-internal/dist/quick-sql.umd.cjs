@@ -479,6 +479,7 @@ ${i}${i}p_${x.padEnd(13)} out ${n}.${x}%type`),g+=`
 ${i}) is
 `,g+=`${i}${i}l_row ${n}%rowtype;
 `,g+=`${i}begin
+`,g+=`${i}${i}if p_id is null then return; end if;  -- INSERT mode: leave OUT params null
 `,g+=`${i}${i}l_row := ${s}.get(p_id => p_id);
 `;for(const{name:y}of m)g+=`${i}${i}p_${y} := l_row.${y};
 `;d&&(g+=`${i}${i}p_row_version := l_row.row_version;
