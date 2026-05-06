@@ -123,7 +123,49 @@ export function initSettingsPanel() {
     const btnSettings = document.getElementById('btn-settings');
     const searchEl    = document.getElementById('sett-search');
     const clearBtn    = document.getElementById('sett-search-clear');
+    const applyBtn    = document.getElementById('btn-sett-apply');
     const body        = panel.querySelector('.sett-body');
+
+    // ── Dirty-state tracking ──────────────────────────────────────
+    let _snapshot = {};
+
+    function ctrlValue(el) {
+        if (!el) return '';
+        return el.type === 'checkbox' ? (el.checked ? 'yes' : '') : el.value;
+    }
+
+    function captureSnapshot() {
+        _snapshot = {};
+        body.querySelectorAll('.sett-row').forEach(row => {
+            const ctrl = row.querySelector('select, input[type=text], input[type=checkbox]');
+            if (ctrl && ctrl.id) _snapshot[ctrl.id] = ctrlValue(ctrl);
+        });
+    }
+
+    function refreshDirty() {
+        let n = 0;
+        body.querySelectorAll('.sett-row').forEach(row => {
+            const ctrl = row.querySelector('select, input[type=text], input[type=checkbox]');
+            if (!ctrl || !ctrl.id) return;
+            const dirty = ctrlValue(ctrl) !== (_snapshot[ctrl.id] ?? '');
+            row.classList.toggle('sett-row--dirty', dirty);
+            if (dirty) n++;
+        });
+        applyBtn.classList.toggle('has-changes', n > 0);
+        applyBtn.textContent = n > 0
+            ? `Apply (${n} change${n > 1 ? 's' : ''})`
+            : 'Apply settings';
+    }
+
+    function clearDirty() {
+        body.querySelectorAll('.sett-row--dirty').forEach(r => r.classList.remove('sett-row--dirty'));
+        applyBtn.classList.remove('has-changes');
+        applyBtn.textContent = 'Apply settings';
+    }
+
+    body.addEventListener('change', refreshDirty);
+    body.addEventListener('input',  refreshDirty);
+    // ─────────────────────────────────────────────────────────────
 
     function filterSettings() {
         const q = searchEl.value.trim().toLowerCase();
@@ -160,16 +202,19 @@ export function initSettingsPanel() {
         const isOpen = panel.classList.toggle('open');
         if (isOpen) {
             syncSettingsForm();
+            captureSnapshot();
             const r = btnSettings.getBoundingClientRect();
             panel.style.top   = r.bottom + 4 + 'px';
             panel.style.right = window.innerWidth - r.right + 'px';
         } else {
+            clearDirty();
             resetSearch();
         }
     });
 
     document.getElementById('btn-sett-close').addEventListener('click', () => {
         panel.classList.remove('open');
+        clearDirty();
         resetSearch();
     });
 
@@ -203,6 +248,7 @@ export function initSettingsPanel() {
             overridesettings: v('sett-overridesettings'),
             verbose:          v('sett-verbose'),
         });
+        clearDirty();
         panel.classList.remove('open');
         resetSearch();
     });
@@ -210,6 +256,7 @@ export function initSettingsPanel() {
     document.addEventListener('click', (e) => {
         if (!panel.contains(e.target) && e.target !== btnSettings) {
             panel.classList.remove('open');
+            clearDirty();
             resetSearch();
         }
     });

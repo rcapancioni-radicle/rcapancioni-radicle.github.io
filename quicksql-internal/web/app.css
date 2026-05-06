@@ -542,9 +542,19 @@ footer.status-error  { background: var(--error-bg); color: var(--error-text); bo
     width: 100%; padding: 6px; background: var(--accent);
     border: none; border-radius: 4px; color: #fff;
     font: inherit; font-size: 11px; cursor: pointer;
-    transition: background .15s;
+    transition: background .15s, box-shadow .15s;
 }
 .sett-apply:hover { background: var(--accent-hover); }
+.sett-apply.has-changes {
+    box-shadow: 0 0 0 2px rgba(86,156,214,0.5);
+}
+
+/* dirty-state: row modified but not yet applied */
+.sett-row--dirty {
+    border-left: 2px solid var(--sql-keyword);
+    padding-left: 4px;
+}
+.sett-row--dirty > label { color: var(--text); }
 
 /* ── Autocomplete popup ───────────────────────────────────────────── */
 #autocomplete {
