@@ -75,7 +75,12 @@ export function writeSettings(s) {
 
 export function syncSettingsForm() {
     const s   = parseSettings();
-    const set = (id, key) => { document.getElementById(id).value = s[key] || ''; };
+    const set = (id, key) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (el.type === 'checkbox') el.checked = s[key] === 'yes';
+        else el.value = s[key] || '';
+    };
     set('sett-pk',               'pk');
     set('sett-genpk',            'genpk');
     set('sett-prefixpk',         'prefixpkwithtname');
@@ -163,8 +168,17 @@ export function initSettingsPanel() {
         }
     });
 
+    document.getElementById('btn-sett-close').addEventListener('click', () => {
+        panel.classList.remove('open');
+        resetSearch();
+    });
+
     document.getElementById('btn-sett-apply').addEventListener('click', () => {
-        const v = (id) => document.getElementById(id).value;
+        const v = (id) => {
+            const el = document.getElementById(id);
+            if (!el) return '';
+            return el.type === 'checkbox' ? (el.checked ? 'yes' : '') : el.value;
+        };
         writeSettings({
             pk:               v('sett-pk'),       genpk:           v('sett-genpk'),
             prefixpk:         v('sett-prefixpk'),

@@ -7,6 +7,7 @@
     <!-- AntV X6 v2 — UMD bundle (local copy) -->
     <script src="dist/antv-x6/2.18.1/index.min.js"></script>
     <link rel="stylesheet" href="web/app.css">
+    <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
     <!-- Apply saved theme before first paint to avoid flash -->
     <script>
         (function(){
@@ -27,9 +28,9 @@
     <span class="spacer"></span>
     <button id="btn-examples" class="tool-btn">Examples ▾</button>
     <button id="btn-settings" class="tool-btn">⚙ Settings</button>
-    <button id="btn-help"     class="tool-btn">? Help</button>
-    <button id="btn-theme"    class="tool-btn" title="Toggle light/dark theme">☀</button>
-    <a href="https://radicle.it" target="_blank" rel="noopener" class="radicle-link">radicle.it</a>
+    <button id="btn-help"     class="tool-btn" aria-label="Help">ⓘ Help</button>
+    <button id="btn-theme"    class="tool-btn" aria-pressed="true">☀</button>
+    <span class="app-version" id="app-version"></span>
 </header>
 
 <!-- Examples dropdown -->
@@ -37,7 +38,7 @@
 
 <!-- Settings dropdown -->
 <div id="settings-panel">
-    <div class="sett-hdr">Settings</div>
+    <div class="sett-hdr">Settings<button class="sett-close" id="btn-sett-close" aria-label="Close settings">&times;</button></div>
     <div class="sett-body">
 
         <div class="sett-search-wrap">
@@ -59,19 +60,11 @@
         </div>
         <div class="sett-row">
             <label for="sett-genpk">Auto PK</label>
-            <select id="sett-genpk">
-                <option value="">— default (yes) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-genpk"><span class="sett-toggle-slider"></span></label>
         </div>
         <div class="sett-row">
             <label for="sett-prefixpk">Prefix PK with table name</label>
-            <select id="sett-prefixpk">
-                <option value="">— default (no) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-prefixpk"><span class="sett-toggle-slider"></span></label>
         </div>
 
         <div class="sett-group">Naming</div>
@@ -132,69 +125,37 @@
         <div class="sett-group">Auto Columns</div>
         <div class="sett-row">
             <label for="sett-audit">Audit columns</label>
-            <select id="sett-audit">
-                <option value="">— default (no) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-audit"><span class="sett-toggle-slider"></span></label>
         </div>
         <div class="sett-row">
             <label for="sett-rowver">Row version</label>
-            <select id="sett-rowver">
-                <option value="">— default (no) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-rowver"><span class="sett-toggle-slider"></span></label>
         </div>
         <div class="sett-row">
             <label for="sett-rowkey">Row key (alphanumeric)</label>
-            <select id="sett-rowkey">
-                <option value="">— default (no) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-rowkey"><span class="sett-toggle-slider"></span></label>
         </div>
         <div class="sett-row">
             <label for="sett-aienrich">AI enrichment</label>
-            <select id="sett-aienrich">
-                <option value="">— default (no) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-aienrich"><span class="sett-toggle-slider"></span></label>
         </div>
 
         <div class="sett-group">Output</div>
         <div class="sett-row">
             <label for="sett-drop">Include DROP statements</label>
-            <select id="sett-drop">
-                <option value="">— default (no) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-drop"><span class="sett-toggle-slider"></span></label>
         </div>
         <div class="sett-row">
             <label for="sett-inserts">Generate INSERTs</label>
-            <select id="sett-inserts">
-                <option value="">— default (yes) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-inserts"><span class="sett-toggle-slider"></span></label>
         </div>
         <div class="sett-row">
             <label for="sett-dv">Duality views</label>
-            <select id="sett-dv">
-                <option value="">— default (no) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-dv"><span class="sett-toggle-slider"></span></label>
         </div>
         <div class="sett-row">
             <label for="sett-edit">Editionable</label>
-            <select id="sett-edit">
-                <option value="">— default (no) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-edit"><span class="sett-toggle-slider"></span></label>
         </div>
         <div class="sett-row">
             <label for="sett-api">Table API (TAPI)</label>
@@ -207,19 +168,11 @@
         </div>
         <div class="sett-row">
             <label for="sett-apex">APEX</label>
-            <select id="sett-apex">
-                <option value="">— default (no) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-apex"><span class="sett-toggle-slider"></span></label>
         </div>
         <div class="sett-row">
             <label for="sett-compress">Table compression</label>
-            <select id="sett-compress">
-                <option value="">— default (no) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-compress"><span class="sett-toggle-slider"></span></label>
         </div>
 
         <div class="sett-group">FK &amp; Identifiers</div>
@@ -234,11 +187,7 @@
         </div>
         <div class="sett-row">
             <label for="sett-longvc">Long VARCHAR2 (32767)</label>
-            <select id="sett-longvc">
-                <option value="">— default (no) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-longvc"><span class="sett-toggle-slider"></span></label>
         </div>
         <div class="sett-row">
             <label for="sett-namelen">Max identifier length</label>
@@ -248,11 +197,7 @@
         <div class="sett-group">Multi-tenancy &amp; Data</div>
         <div class="sett-row">
             <label for="sett-tenantid">Tenant ID column</label>
-            <select id="sett-tenantid">
-                <option value="">— default (no) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-tenantid"><span class="sett-toggle-slider"></span></label>
         </div>
         <div class="sett-row">
             <label for="sett-tenantref">Tenant reference table</label>
@@ -288,19 +233,11 @@
         </div>
         <div class="sett-row">
             <label for="sett-overridesettings">Override UI settings</label>
-            <select id="sett-overridesettings">
-                <option value="">— default (no) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-overridesettings"><span class="sett-toggle-slider"></span></label>
         </div>
         <div class="sett-row">
             <label for="sett-verbose">Verbose (show all settings)</label>
-            <select id="sett-verbose">
-                <option value="">— default (no) —</option>
-                <option value="yes">yes</option>
-                <option value="no">no</option>
-            </select>
+            <label class="sett-toggle"><input type="checkbox" id="sett-verbose"><span class="sett-toggle-slider"></span></label>
         </div>
 
     </div>
@@ -313,9 +250,9 @@
 <div class="panels">
 
     <div class="panel">
-        <div class="schema-tabs" id="schema-tabs"></div>
-        <div class="editor-tools">
-            <button id="btn-compare" class="tool-btn" title="Insert # --- delimiter to compare two schema versions">⇄ Compare versions</button>
+        <div class="schema-tabs-wrap">
+            <div class="schema-tabs" id="schema-tabs"></div>
+            <button id="btn-compare" class="tool-btn" title="Insert # --- delimiter to compare two schema versions">⇄ Compare</button>
         </div>
         <div class="editor-wrap">
             <div class="cur-line" id="cur-line"></div>
@@ -343,25 +280,25 @@ emp_v = departments employees
 
     <div class="panel">
         <div class="panel-tabs">
-            <button class="tab-btn active" data-tab="ddl">DDL Oracle SQL</button>
+            <button class="tab-btn active" data-tab="ddl">DDL</button>
             <button class="tab-btn"        data-tab="erd">ER Diagram</button>
         </div>
         <div class="tab-pane active" data-tab="ddl">
             <div class="ddl-toolbar">
-                <button id="btn-copy"     class="tool-btn">Copy DDL</button>
-                <button id="btn-download" class="tool-btn">Download .sql</button>
-                <button id="btn-share"    class="tool-btn">Share link</button>
+                <button id="btn-copy"     class="tool-btn">⧉ Copy</button>
+                <button id="btn-download" class="tool-btn">↓ Download</button>
+                <button id="btn-share"    class="tool-btn">↗ Share</button>
             </div>
             <div id="mig-warnings"></div>
             <pre id="output"></pre>
         </div>
         <div class="tab-pane" data-tab="erd">
             <div class="erd-toolbar">
-                <button id="btn-erd-fit"   class="tool-btn">⊡ Fit</button>
+                <button id="btn-erd-fit"   class="tool-btn">⤢ Fit</button>
                 <button id="btn-erd-zin"   class="tool-btn">+ Zoom</button>
                 <button id="btn-erd-zout"  class="tool-btn">− Zoom</button>
                 <span class="sep"></span>
-                <button id="btn-erd-reset" class="tool-btn">↺ Reset layout</button>
+                <button id="btn-erd-reset" class="tool-btn">↺ Reset</button>
             </div>
             <div id="erd-container"></div>
         </div>
@@ -401,7 +338,7 @@ emp_v = departments employees
             </div>
         </details>
 
-        <details class="hdw-sec" open>
+        <details class="hdw-sec">
             <summary>Tables</summary>
             <div class="hdw-content">
                 <table class="ref">
@@ -505,7 +442,7 @@ employees
    email vc200 /nn
    phone vc50</code>
                 <p class="hdw-note" style="margin-top:8px">Any number of dashes works — <code>#--</code>, <code># ---</code>, <code>#----</code> are all equivalent.</p>
-                <p class="hdw-note" style="margin-top:4px">Use the <strong>⇄ Compare versions</strong> button (above the editor) to insert the separator automatically. The button has no effect if the separator is already present.</p>
+                <p class="hdw-note" style="margin-top:4px">Use the <strong>⇄ Compare</strong> button (above the editor) to insert the separator automatically. The button has no effect if the separator is already present.</p>
                 <table class="ref" style="margin-top:6px">
                     <tr><td>No separator</td><td>Normal DDL mode — full CREATE TABLE script</td></tr>
                     <tr><td>With separator</td><td>Migration mode — ALTER TABLE / CREATE TABLE incremental script</td></tr>
@@ -549,56 +486,16 @@ employees   [main workforce table]
         <details class="hdw-sec">
             <summary>Settings</summary>
             <div class="hdw-content">
-                <p class="hdw-note">Add at the end of the file or use the <strong>⚙ Settings</strong> panel in the header.</p>
+                <p class="hdw-note">Use the <strong>⚙ Settings</strong> panel in the header to configure options visually, or add a <code># settings = { … }</code> line to your script.</p>
                 <code class="hdw-eg"># settings = { pk: seq, semantics: CHAR, db: 23c }</code>
-                <table class="ref" style="margin-top:6px">
-                    <tr><td>pk</td><td><em>identityDataType</em> | <em>guid</em> | <em>seq</em> | <em>none</em></td></tr>
-                    <tr><td>genpk</td><td><em>yes</em> | <em>no</em> — auto-generate PK column</td></tr>
-                    <tr><td>prefixpkwithtname</td><td><em>yes</em> | <em>no</em> — prefix PK col with table name</td></tr>
-                    <tr><td>prefix</td><td>Object prefix (e.g. <em>app_</em>)</td></tr>
-                    <tr><td>schema</td><td>Oracle schema name (e.g. <em>HR</em>)</td></tr>
-                    <tr><td>dialect</td><td>SQL dialect — <em>oracle</em> (default)</td></tr>
-                    <tr><td>db</td><td>Oracle version: <em>23c</em>, <em>19c</em>, <em>21c</em> …</td></tr>
-                    <tr><td>semantics</td><td><em>CHAR</em> | <em>BYTE</em></td></tr>
-                    <tr><td>date</td><td><em>DATE</em> | <em>TIMESTAMP</em> | <em>tswtz</em> | <em>tswltz</em></td></tr>
-                    <tr><td>boolean</td><td><em>native</em> (23c) | <em>yn</em> (char Y/N)</td></tr>
-                    <tr><td>language</td><td>Sample data locale: <em>EN</em> | <em>JP</em> | <em>KO</em></td></tr>
-                    <tr><td>auditcols</td><td><em>yes</em> | <em>no</em> — created/updated/by columns</td></tr>
-                    <tr><td>rowversion</td><td><em>yes</em> | <em>no</em> — row version for OCC</td></tr>
-                    <tr><td>rowkey</td><td><em>yes</em> | <em>no</em> — alphanumeric row identifier</td></tr>
-                    <tr><td>aienrichment</td><td><em>yes</em> | <em>no</em> — AI enrichment columns</td></tr>
-                    <tr><td>drop</td><td><em>yes</em> | <em>no</em> — include DROP statements</td></tr>
-                    <tr><td>inserts</td><td><em>yes</em> | <em>no</em> — generate INSERT data</td></tr>
-                    <tr><td>dv</td><td><em>yes</em> | <em>no</em> — enable JSON Duality Views</td></tr>
-                    <tr><td>editionable</td><td><em>yes</em> | <em>no</em></td></tr>
-                    <tr><td>api</td><td><em>yes</em> | <em>no</em> | <em>layered</em> — Table API (TAPI) package</td></tr>
-                    <tr><td>apex</td><td><em>yes</em> | <em>no</em> — use APEX$SESSION for audit user</td></tr>
-                    <tr><td>compress</td><td><em>yes</em> | <em>no</em> — CREATE TABLE … COMPRESS</td></tr>
-                    <tr><td>ondelete</td><td><em>cascade</em> | <em>restrict</em> | <em>set null</em> — FK ON DELETE</td></tr>
-                    <tr><td>longvc</td><td><em>yes</em> | <em>no</em> — allow VARCHAR2(32767) instead of 4000</td></tr>
-                    <tr><td>tenantid</td><td><em>yes</em> | <em>no</em> — add TENANT_ID column to every table</td></tr>
-                    <tr><td>overridesettings</td><td><em>yes</em> | <em>no</em> — ignore UI settings; use only inline settings</td></tr>
-                    <tr><td>verbose</td><td><em>yes</em> | <em>no</em> — show all settings in generated DDL</td></tr>
-                    <tr><td>resetsettings</td><td>reset all settings to defaults</td></tr>
-                </table>
-                <p class="hdw-note" style="margin-top:6px"><strong>Audit column name overrides:</strong></p>
-                <table class="ref">
-                    <tr><td>createdcol</td><td>Name of the creation-timestamp column (default: <em>created</em>)</td></tr>
-                    <tr><td>createdbycol</td><td>Name of the creation-user column (default: <em>created_by</em>)</td></tr>
-                    <tr><td>updatedcol</td><td>Name of the update-timestamp column (default: <em>updated</em>)</td></tr>
-                    <tr><td>updatedbycol</td><td>Name of the update-user column (default: <em>updated_by</em>)</td></tr>
-                    <tr><td>transcontext</td><td>SQL expression for current language in <code>_resolved</code> views<br><em>default: sys_context('APP_CTX','LANG')</em></td></tr>
-                    <tr><td>namelen</td><td>Max identifier length — <em>128</em> (12.2+) or <em>30</em> for older DBs</td></tr>
-                    <tr><td>datalimit</td><td>Global cap on INSERT rows generated per table</td></tr>
-                </table>
-                <p class="hdw-note" style="margin-top:6px"><a href="doc/user/quick-sql-grammar.md#settings" target="_blank">→ Full reference: Settings</a></p>
+                <p class="hdw-note" style="margin-top:6px"><a href="doc/user/quick-sql-grammar.md#settings" target="_blank">→ Full settings reference (all keys and values)</a></p>
             </div>
         </details>
 
-        <details class="hdw-sec" open>
+        <details class="hdw-sec">
             <summary>Quick Examples</summary>
             <div class="hdw-content">
-                <p class="hdw-note"><strong>Schema migration</strong> — write the old schema, then <code># ---</code>, then the new schema. The DDL panel switches to migration mode automatically (or use the <strong>⇄ Compare versions</strong> button):</p>
+                <p class="hdw-note"><strong>Schema migration</strong> — write the old schema, then <code># ---</code>, then the new schema. The DDL panel switches to migration mode automatically (or use the <strong>⇄ Compare</strong> button):</p>
                 <code class="hdw-eg">employees
    name vc100 /nn
    email vc200

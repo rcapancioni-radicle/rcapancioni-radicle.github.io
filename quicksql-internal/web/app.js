@@ -83,20 +83,24 @@ function update() {
             outputText   = result.sql + makeFooter(src);
             const s      = result.summary;
             const manual = s.statementsRequiringIntervention;
-            btnCopy.textContent  = 'Copy Migration SQL';
+            btnCopy.textContent  = '⧉ Copy Migration';
             statusEl.textContent = `Migration: +${s.tablesAdded} · ~${s.tablesModified} modified · ${s.statementsTotal} statements` +
                 (manual ? ` · ⚠ ${manual} manual` : '') + settingsSummary(v2);
-            migWarningsEl.innerHTML = result.warnings.map(w => {
-                const cls = w.level === 'DESTRUCTIVE' ? 'mig-warn-destructive'
-                          : w.level === 'LOSSY'        ? 'mig-warn-lossy'
-                          :                              'mig-warn-info';
-                const loc = w.column ? `[${w.table}.${w.column}]` : `[${w.table}]`;
-                return `<div class="mig-warn ${cls}">&#9888; ${w.level}  ${loc}  ${w.message}</div>`;
-            }).join('');
+            statusEl.className = 'status-active';
+            const warns = result.warnings;
+            migWarningsEl.innerHTML = (warns.length > 0 ? '<div class="mig-warn-hdr">⚠ Migration notices</div>' : '') +
+                warns.map(w => {
+                    const cls = w.level === 'DESTRUCTIVE' ? 'mig-warn-destructive'
+                              : w.level === 'LOSSY'        ? 'mig-warn-lossy'
+                              :                              'mig-warn-info';
+                    const loc = w.column ? `[${w.table}.${w.column}]` : `[${w.table}]`;
+                    return `<div class="mig-warn ${cls}">&#9888; ${w.level}  ${loc}  ${w.message}</div>`;
+                }).join('');
         } else {
             outputText           = toDDL(src);
-            btnCopy.textContent  = 'Copy DDL';
+            btnCopy.textContent  = '⧉ Copy';
             statusEl.textContent = `${outputText.split('\n').length} DDL lines generated${settingsSummary(src)}`;
+            statusEl.className   = 'status-active';
             migWarningsEl.innerHTML = '';
         }
         state.lastDdlText     = outputText;
@@ -112,7 +116,8 @@ function update() {
         errorEl.textContent     = e.message || String(e);
         errorEl.style.display   = 'block';
         statusEl.textContent    = 'syntax error';
-        btnCopy.textContent     = 'Copy DDL';
+        statusEl.className      = 'status-error';
+        btnCopy.textContent     = '⧉ Copy';
         migWarningsEl.innerHTML = '';
     }
 
@@ -136,6 +141,7 @@ function update() {
         html.dataset.theme   = theme;
         btn.textContent      = theme === 'light' ? '🌙' : '☀';
         btn.title            = theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme';
+        btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
         try { localStorage.setItem('qsql-theme', theme); } catch (_) {}
         applyErdTheme();
     }
@@ -156,6 +162,9 @@ initAcCallbacks({ update });
 
 loadTabs();   // parse URL hash / localStorage → state.tabs
 update();     // initial render
+
+const verEl = document.getElementById('app-version');
+if (verEl) verEl.textContent = 'v' + qsql_version();
 
 // ── Output tab switching ──────────────────────────────────────────
 
@@ -252,7 +261,7 @@ document.getElementById('btn-download').addEventListener('click', () => {
     const a        = document.createElement('a');
     a.href         = URL.createObjectURL(blob);
     const ts       = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-');
-    a.download     = DIFF_DELIMITER.test(inputEl.value) ? `migration-${ts}.sql` : 'schema.sql';
+    a.download     = DIFF_DELIMITER.test(inputEl.value) ? `migration-${ts}.sql` : `schema-${ts}.sql`;
     a.click();
     URL.revokeObjectURL(a.href);
 });

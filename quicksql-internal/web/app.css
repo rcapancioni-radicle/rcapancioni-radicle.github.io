@@ -156,7 +156,13 @@ header .title {
 }
 header .subtitle {
     color: var(--text-muted);
-    font-size: 11px;
+    font-size: 12px;
+}
+header .app-version {
+    color: var(--text-muted);
+    font-size: 10px;
+    letter-spacing: 0.4px;
+    flex-shrink: 0;
 }
 header .spacer { flex: 1; }
 
@@ -337,13 +343,16 @@ header .radicle-link:hover { color: var(--text); }
 
 /* ── Status footer ────────────────────────────────────────────────── */
 footer {
-    padding: 4px 14px;
-    background: var(--accent);
-    color: #fff;
-    font-size: 11px;
+    padding: 3px 14px;
+    background: var(--bg-ui);
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    font-size: 10px;
     flex-shrink: 0;
     letter-spacing: 0.2px;
 }
+footer.status-active { background: var(--accent); color: #fff; border-top-color: var(--accent); }
+footer.status-error  { background: var(--error-bg); color: var(--error-text); border-top-color: var(--error-border); }
 
 /* ── Quick SQL token colors ───────────────────────────────────────── */
 .qs-comment    { color: var(--qs-comment);    font-style: italic; }
@@ -391,10 +400,23 @@ footer {
 
 /* ── Resize handle ────────────────────────────────────────────────── */
 .resize-handle {
-    width: 5px; background: var(--border);
+    width: 6px; background: var(--border);
     cursor: col-resize; flex-shrink: 0; transition: background .12s;
+    position: relative;
+}
+.resize-handle::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 2px; height: 24px;
+    background: var(--border-hover);
+    border-radius: 1px;
+    transition: background .12s;
 }
 .resize-handle:hover, .resize-handle.dragging { background: var(--accent); }
+.resize-handle:hover::before,
+.resize-handle.dragging::before { background: var(--accent); }
 
 /* ── Schema tabs ──────────────────────────────────────────────────── */
 .schema-tabs {
@@ -467,14 +489,21 @@ footer {
 }
 #settings-panel.open { display: flex; }
 .sett-hdr {
+    display: flex; align-items: center; justify-content: space-between;
     padding: 9px 14px 8px;
     font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px;
     color: var(--text-muted); border-bottom: 1px solid var(--border);
     flex-shrink: 0;
 }
+.sett-close {
+    background: none; border: none; color: var(--text-muted);
+    font-size: 18px; cursor: pointer; line-height: 1; padding: 0 2px;
+    flex-shrink: 0;
+}
+.sett-close:hover { color: var(--text); }
 .sett-body { flex: 1; overflow-y: auto; padding: 10px 14px 6px; }
 .sett-group {
-    font-size: 9px; text-transform: uppercase; letter-spacing: 0.8px;
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px;
     color: var(--rw-red); margin: 10px 0 5px; opacity: 0.9; font-weight: 700;
 }
 .sett-group:first-child { margin-top: 0; }
@@ -608,13 +637,39 @@ kbd {
     border-left: 2px solid var(--rw-red);
 }
 
-/* ── Migration diff ──────────────────────────────────────────────── */
-
-.editor-tools {
-    display: flex; align-items: center; gap: 4px;
-    padding: 3px 6px; border-bottom: 1px solid var(--border);
-    background: var(--bg-panel); flex-shrink: 0;
+/* ── Schema tabs + compare button row ────────────────────────────── */
+.schema-tabs-wrap {
+    display: flex;
+    align-items: center;
+    background: var(--bg-panel);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
 }
+.schema-tabs-wrap > .schema-tabs {
+    flex: 1;
+    border-bottom: none;
+}
+.schema-tabs-wrap > #btn-compare {
+    margin: 3px 6px;
+    flex-shrink: 0;
+}
+
+/* ── Toggle switch ───────────────────────────────────────────────── */
+.sett-toggle { position: relative; display: inline-block; width: 36px; height: 18px; flex-shrink: 0; margin-left: auto; }
+.sett-toggle input { opacity: 0; width: 0; height: 0; position: absolute; }
+.sett-toggle-slider {
+    position: absolute; inset: 0; background: var(--border);
+    border-radius: 18px; transition: background .2s; cursor: pointer;
+}
+.sett-toggle input:checked + .sett-toggle-slider { background: var(--accent); }
+.sett-toggle-slider::before {
+    content: ''; position: absolute;
+    width: 14px; height: 14px; left: 2px; bottom: 2px;
+    background: white; border-radius: 50%; transition: transform .2s;
+}
+.sett-toggle input:checked + .sett-toggle-slider::before { transform: translateX(18px); }
+
+/* ── Migration diff ──────────────────────────────────────────────── */
 
 .qs-migration-sep {
     color: var(--accent);
@@ -622,6 +677,11 @@ kbd {
 }
 
 #mig-warnings { flex-shrink: 0; }
+.mig-warn-hdr {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px;
+    color: var(--text-muted); padding: 5px 12px 3px;
+    border-bottom: 1px solid var(--border);
+}
 .mig-warn {
     font-size: 11px;
     font-family: 'Cascadia Code', 'Consolas', monospace;
