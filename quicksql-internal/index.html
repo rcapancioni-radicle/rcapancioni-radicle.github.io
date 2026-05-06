@@ -314,6 +314,9 @@
 
     <div class="panel">
         <div class="schema-tabs" id="schema-tabs"></div>
+        <div class="editor-tools">
+            <button id="btn-compare" class="tool-btn" title="Insert # --- v2 delimiter to compare two schema versions">⇄ Compare versions</button>
+        </div>
         <div class="editor-wrap">
             <div class="cur-line" id="cur-line"></div>
             <div class="ln-layer" id="ln-layer" aria-hidden="true"></div>
@@ -342,7 +345,6 @@ emp_v = departments employees
         <div class="panel-tabs">
             <button class="tab-btn active" data-tab="ddl">DDL Oracle SQL</button>
             <button class="tab-btn"        data-tab="erd">ER Diagram</button>
-            <button class="tab-btn"        data-tab="diff">⇄ Diff / Migrate</button>
         </div>
         <div class="tab-pane active" data-tab="ddl">
             <div class="ddl-toolbar">
@@ -350,6 +352,7 @@ emp_v = departments employees
                 <button id="btn-download" class="tool-btn">Download .sql</button>
                 <button id="btn-share"    class="tool-btn">Share link</button>
             </div>
+            <div id="mig-warnings"></div>
             <pre id="output"></pre>
         </div>
         <div class="tab-pane" data-tab="erd">
@@ -361,27 +364,6 @@ emp_v = departments employees
                 <button id="btn-erd-reset" class="tool-btn">↺ Reset layout</button>
             </div>
             <div id="erd-container"></div>
-        </div>
-        <div class="tab-pane" data-tab="diff">
-            <div class="diff-editors">
-                <div class="diff-editor-col">
-                    <div class="diff-editor-label">Old Schema <span class="diff-editor-hint">(v1)</span></div>
-                    <textarea id="diff-old" class="diff-textarea" spellcheck="false" placeholder="Paste the old QSQL schema here…"></textarea>
-                </div>
-                <div class="diff-vsep"></div>
-                <div class="diff-editor-col">
-                    <div class="diff-editor-label">New Schema <span class="diff-editor-hint">(v2)</span></div>
-                    <textarea id="diff-new" class="diff-textarea" spellcheck="false" placeholder="Paste the new QSQL schema here…"></textarea>
-                </div>
-            </div>
-            <div class="diff-output-wrap">
-                <div class="diff-toolbar">
-                    <span id="diff-status" class="diff-status"></span>
-                    <button id="btn-diff-copy" class="tool-btn">Copy SQL</button>
-                </div>
-                <div id="diff-warnings"></div>
-                <pre id="diff-output"></pre>
-            </div>
         </div>
     </div>
 
