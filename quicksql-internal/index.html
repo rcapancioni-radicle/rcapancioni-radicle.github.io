@@ -491,6 +491,33 @@ emp_v = departments employees
         </details>
 
         <details class="hdw-sec">
+            <summary>Schema Migration</summary>
+            <div class="hdw-content">
+                <p class="hdw-note">Write the old schema, add a separator line starting with <code>#</code> and at least two dashes, then write the new schema. The DDL panel switches to migration mode automatically.</p>
+                <code class="hdw-eg">employees
+   name vc100 /nn
+   email vc200
+
+# ---
+
+employees
+   name vc100 /nn
+   email vc200 /nn
+   phone vc50</code>
+                <p class="hdw-note" style="margin-top:8px">Any number of dashes works — <code>#--</code>, <code># ---</code>, <code>#----</code> are all equivalent.</p>
+                <p class="hdw-note" style="margin-top:4px">Use the <strong>⇄ Compare versions</strong> button (above the editor) to insert the separator automatically. The button has no effect if the separator is already present.</p>
+                <table class="ref" style="margin-top:6px">
+                    <tr><td>No separator</td><td>Normal DDL mode — full CREATE TABLE script</td></tr>
+                    <tr><td>With separator</td><td>Migration mode — ALTER TABLE / CREATE TABLE incremental script</td></tr>
+                    <tr><td>⚠ DESTRUCTIVE</td><td>Column dropped, NOT NULL added — requires manual step</td></tr>
+                    <tr><td>⚠ LOSSY</td><td>Column size reduced or type changed — data may be truncated</td></tr>
+                    <tr><td>INFO</td><td>Suspected column rename — verify before applying</td></tr>
+                </table>
+                <p class="hdw-note" style="margin-top:6px"><a href="doc/user/quick-sql-grammar.md#schema-migration" target="_blank">→ Full reference: Schema Migration</a></p>
+            </div>
+        </details>
+
+        <details class="hdw-sec">
             <summary>Comments</summary>
             <div class="hdw-content">
                 <p class="hdw-note">Comments are ignored by the DDL generator.</p>
