@@ -598,6 +598,26 @@ doctors /api /auditlog app_audit_log
    email     vc200 /nn /unique
 
 # settings = {"prefix": "a01_", "auditcols": "yes", "rowversion": "yes", "api": "layered", "apex": "yes"}</code>
+                <p class="hdw-note" style="margin-top:10px">Migration script — <code>toDiff(oldQsql, newQsql)</code> generates incremental ALTER TABLE DDL between two schema versions; the result includes executable SQL, per-statement metadata, warnings (DESTRUCTIVE / LOSSY / INFO), and a summary:</p>
+                <code class="hdw-eg">// v1 — original schema
+const v1 = `employees
+  name vc100 /nn
+  email vc200`;
+
+// v2 — added phone, email became NOT NULL, new table
+const v2 = `employees
+  name vc100 /nn
+  email vc200 /nn
+  phone vc50
+
+departments
+  dept_name vc100 /nn`;
+
+const result = toDiff(v1, v2);
+// result.sql        → runnable migration script
+// result.statements → [{kind, table, sql, requiresManualIntervention}, ...]
+// result.warnings   → [{level: 'DESTRUCTIVE'|'LOSSY'|'INFO', ...}, ...]
+// result.summary    → {tablesAdded, tablesDropped, tablesModified, ...}</code>
                 <p class="hdw-note" style="margin-top:10px"><a href="doc/user/examples.md" target="_blank">→ 15 annotated scenarios with DDL output</a></p>
             </div>
         </details>
@@ -610,6 +630,7 @@ doctors /api /auditlog app_audit_log
                     <tr><td><code>toDDL(qsql, optionsJson?)</code></td><td>Convert QSQL to Oracle DDL string</td></tr>
                     <tr><td><code>toERD(qsql, optionsJson?)</code></td><td>Return ER diagram graph object</td></tr>
                     <tr><td><code>toErrors(qsql)</code></td><td>Return array of <code>{from, to, message, severity}</code></td></tr>
+                    <tr><td><code>toDiff(oldQsql, newQsql, optionsJson?)</code></td><td>Compute incremental Oracle ALTER TABLE migration between two QSQL versions; returns <code>{sql, statements, warnings, summary}</code></td></tr>
                     <tr><td><code>fromJSON(json)</code></td><td>Convert JSON document to QSQL string</td></tr>
                     <tr><td><code>qsql_version()</code></td><td>Return library version string</td></tr>
                 </table>
