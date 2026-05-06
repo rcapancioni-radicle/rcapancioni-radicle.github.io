@@ -571,14 +571,20 @@ employees   [main workforce table]
         <details class="hdw-sec" open>
             <summary>Quick Examples</summary>
             <div class="hdw-content">
-                <p class="hdw-note"><strong>Migration diff</strong> — <code>toDiff(oldQsql, newQsql)</code> computes incremental ALTER TABLE DDL between two schema versions:</p>
-                <code class="hdw-eg">const v1 = `employees\n  name vc100 /nn\n  email vc200`;
-const v2 = `employees\n  name vc100 /nn\n  email vc200 /nn\n  phone vc50\n\ndepartments\n  dept_name vc100 /nn`;
-const { sql, statements, warnings, summary } = toDiff(v1, v2);
-// sql        → runnable migration script (ALTER TABLE, CREATE TABLE …)
-// statements → [{kind, table, column, sql, requiresManualIntervention}, …]
-// warnings   → [{level: 'DESTRUCTIVE'|'LOSSY'|'INFO', table, message}, …]
-// summary    → {tablesAdded, tablesDropped, tablesModified, …}</code>
+                <p class="hdw-note"><strong>Schema migration</strong> — write the old schema, then <code># --- v2</code>, then the new schema. The DDL panel switches to migration mode automatically (or use the <strong>⇄ Compare versions</strong> button):</p>
+                <code class="hdw-eg">employees
+   name vc100 /nn
+   email vc200
+
+# --- v2
+
+employees
+   name vc100 /nn
+   email vc200 /nn
+   phone vc50
+
+departments
+   dept_name vc100 /nn</code>
                 <p class="hdw-note" style="margin-top:10px">Schema with automatic parent-child hierarchy:</p>
                 <code class="hdw-eg">departments /insert 2
    name /nn
