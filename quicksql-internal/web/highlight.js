@@ -101,7 +101,8 @@ export function highlightQuickSQL(text) {
         const indent  = line.length - trimmed.length;
 
         if (!trimmed)                     { result.push(''); continue; }
-        if (trimmed.startsWith('#'))      { result.push(span('qs-setting', line)); continue; }
+        if (/^#\s*---\s*v2\s*$/i.test(trimmed)) { result.push(span('qs-migration-sep', line)); continue; }
+        if (trimmed.startsWith('#'))             { result.push(span('qs-setting', line)); continue; }
         if (trimmed.startsWith('--'))     { result.push(esc(' '.repeat(indent)) + span('qs-comment', trimmed)); continue; }
 
         if (trimmed.startsWith('/*')) {

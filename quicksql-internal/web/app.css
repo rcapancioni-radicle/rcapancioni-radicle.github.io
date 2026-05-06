@@ -607,3 +607,41 @@ kbd {
     border-radius: 4px; margin: 6px 0; display: block;
     border-left: 2px solid var(--rw-red);
 }
+
+/* ── Migration diff ──────────────────────────────────────────────── */
+
+.editor-tools {
+    display: flex; align-items: center; gap: 4px;
+    padding: 3px 6px; border-bottom: 1px solid var(--border);
+    background: var(--bg-panel); flex-shrink: 0;
+}
+
+.qs-migration-sep {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+#mig-warnings { flex-shrink: 0; }
+.mig-warn {
+    font-size: 11px;
+    font-family: 'Cascadia Code', 'Consolas', monospace;
+    padding: 4px 12px;
+    border-left: 3px solid transparent;
+    line-height: 1.4;
+}
+.mig-warn-destructive {
+    background: var(--error-bg); border-color: var(--error-border); color: var(--error-text);
+}
+.mig-warn-lossy {
+    background: #3A2800; border-color: #D4921A; color: #F0B452;
+}
+.mig-warn-info {
+    background: #002840; border-color: #1A7ACC; color: #52A8F0;
+}
+[data-theme="light"] .mig-warn-lossy {
+    background: #FFF8E8; border-color: #B8710A; color: #7A4C00;
+}
+[data-theme="light"] .mig-warn-info {
+    background: #E8F4FF; border-color: #1A7ACC; color: #0A4A8A;
+}
+

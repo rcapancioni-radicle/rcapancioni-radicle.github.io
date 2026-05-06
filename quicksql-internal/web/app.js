@@ -1,4 +1,4 @@
-import { toDDL }                                                  from '../dist/quick-sql.js';
+import { toDDL, toDiff }                                           from '../dist/quick-sql.js';
 import { state, LS_ERD_POS, LS_ERD_COL }                          from './state.js';
 import { highlightQuickSQL, highlightSQL }                          from './highlight.js';
 import { capturePositions, updateDiagram, renderERD, applyErdTheme } from './erd.js';
@@ -17,10 +17,13 @@ const errorEl   = document.getElementById('error');
 const statusEl  = document.getElementById('status');
 const lnEl      = document.getElementById('ln-layer');
 const curLineEl = document.getElementById('cur-line');
-const btnCopy   = document.getElementById('btn-copy');
-const btnShare  = document.getElementById('btn-share');
+const btnCopy        = document.getElementById('btn-copy');
+const btnShare       = document.getElementById('btn-share');
+const migWarningsEl  = document.getElementById('mig-warnings');
 
 // ── Core update loop ──────────────────────────────────────────────
+
+const DIFF_DELIMITER = /^#\s*---\s*v2\s*$/im;
 
 function updateCurLine() {
     if (!curLineEl) return;
@@ -47,22 +50,48 @@ function update() {
     const curTab = state.tabs.find(t => t.id === state.activeSchemaTabId);
     if (curTab) { curTab.qsql = src; saveTabs(); }
 
+    const delimMatch = DIFF_DELIMITER.exec(src);
+
     try {
-        const ddl = toDDL(src);
-        state.lastDdlText = ddl;
+        let outputText;
+        if (delimMatch) {
+            const v1     = src.slice(0, delimMatch.index);
+            const v2     = src.slice(delimMatch.index + delimMatch[0].length);
+            const result = toDiff(v1, v2);
+            outputText   = result.sql;
+            const s      = result.summary;
+            const manual = s.statementsRequiringIntervention;
+            btnCopy.textContent  = 'Copy Migration SQL';
+            statusEl.textContent = `Migration: +${s.tablesAdded} · ~${s.tablesModified} modified · ${s.statementsTotal} statements` +
+                (manual ? ` · ⚠ ${manual} manual` : '');
+            migWarningsEl.innerHTML = result.warnings.map(w => {
+                const cls = w.level === 'DESTRUCTIVE' ? 'mig-warn-destructive'
+                          : w.level === 'LOSSY'        ? 'mig-warn-lossy'
+                          :                              'mig-warn-info';
+                const loc = w.column ? `[${w.table}.${w.column}]` : `[${w.table}]`;
+                return `<div class="mig-warn ${cls}">&#9888; ${w.level}  ${loc}  ${w.message}</div>`;
+            }).join('');
+        } else {
+            outputText           = toDDL(src);
+            btnCopy.textContent  = 'Copy DDL';
+            statusEl.textContent = `${outputText.split('\n').length} DDL lines generated`;
+            migWarningsEl.innerHTML = '';
+        }
+        state.lastDdlText     = outputText;
         errorEl.style.display = 'none';
-        statusEl.textContent  = `${ddl.split('\n').length} DDL lines generated`;
         // Skip expensive highlight pass when DDL panel is not visible.
         if (state.activeTab === 'ddl') {
-            renderDdl(ddl);
+            renderDdl(outputText);
         } else {
             ddlStale = true;   // will be flushed on tab switch
         }
     } catch (e) {
-        state.lastDdlText     = '';
-        errorEl.textContent   = e.message || String(e);
-        errorEl.style.display = 'block';
-        statusEl.textContent  = 'syntax error';
+        state.lastDdlText       = '';
+        errorEl.textContent     = e.message || String(e);
+        errorEl.style.display   = 'block';
+        statusEl.textContent    = 'syntax error';
+        btnCopy.textContent     = 'Copy DDL';
+        migWarningsEl.innerHTML = '';
     }
 
     if (state.activeTab === 'erd') {
@@ -197,12 +226,21 @@ btnShare.addEventListener('click', () => {
 
 document.getElementById('btn-download').addEventListener('click', () => {
     if (!state.lastDdlText) return;
-    const blob = new Blob([state.lastDdlText], { type: 'text/plain' });
-    const a    = document.createElement('a');
-    a.href     = URL.createObjectURL(blob);
-    a.download = 'schema.sql';
+    const blob     = new Blob([state.lastDdlText], { type: 'text/plain' });
+    const a        = document.createElement('a');
+    a.href         = URL.createObjectURL(blob);
+    const ts       = new Date().toISOString().slice(0, 19).replace(/[T:]/g, '-');
+    a.download     = DIFF_DELIMITER.test(inputEl.value) ? `migration-${ts}.sql` : 'schema.sql';
     a.click();
     URL.revokeObjectURL(a.href);
+});
+
+document.getElementById('btn-compare').addEventListener('click', () => {
+    if (DIFF_DELIMITER.test(inputEl.value)) return;
+    inputEl.value += '\n\n# --- v2\n\n';
+    inputEl.selectionStart = inputEl.selectionEnd = inputEl.value.length;
+    inputEl.focus();
+    update();
 });
 
 // ── Settings panel ────────────────────────────────────────────────
@@ -232,6 +270,28 @@ document.addEventListener('keydown', (e) => {
 // ── Examples ─────────────────────────────────────────────────────
 
 const EXAMPLES = [
+    {
+        label: 'Schema Migration (# --- v2)', desc: 'Incremental ALTER TABLE migration between two schema versions',
+        qsql:
+`employees
+   name vc100 /nn
+   email vc200
+   department vc100
+
+# --- v2
+
+employees
+   name vc100 /nn
+   email vc200 /nn
+   phone vc50
+
+departments
+   dept_name vc100 /nn
+   employees
+      name vc100 /nn
+      email vc200 /nn
+      phone vc50`,
+    },
     {
         label: 'HR — Human Resources', desc: 'Departments, employees, jobs',
         qsql:
@@ -578,3 +638,4 @@ document.getElementById('btn-erd-reset').addEventListener('click', () => {
 // ── Autocomplete setup ────────────────────────────────────────────
 
 initAutocomplete();
+
