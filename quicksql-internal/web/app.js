@@ -25,6 +25,23 @@ const migWarningsEl  = document.getElementById('mig-warnings');
 
 const DIFF_DELIMITER = /^#\s*-{2,}\s*$/m;
 
+function settingsSummary(src) {
+    const m = /^#\s*settings\s*=\s*\{([^}]*)\}/im.exec(src);
+    if (!m) return '';
+    const body   = m[1];
+    const get    = (key) => new RegExp(`\\b${key}\\s*[=:]\\s*["']?([^,}"'\\s]+)`, 'i').exec(body)?.[1];
+    const parts  = [];
+    const prefix = get('prefix');
+    const db     = get('db');
+    const pk     = get('pk');
+    const api    = get('api');
+    if (prefix && prefix !== 'null') parts.push(`prefix: ${prefix}`);
+    if (db)                          parts.push(`db: ${db}`);
+    if (pk)                          parts.push(`pk: ${pk}`);
+    if (api)                         parts.push(`api: ${api}`);
+    return parts.length ? '  ·  ' + parts.join('  ·  ') : '';
+}
+
 function updateCurLine() {
     if (!curLineEl) return;
     const s       = inputEl.selectionStart;
@@ -63,7 +80,7 @@ function update() {
             const manual = s.statementsRequiringIntervention;
             btnCopy.textContent  = 'Copy Migration SQL';
             statusEl.textContent = `Migration: +${s.tablesAdded} · ~${s.tablesModified} modified · ${s.statementsTotal} statements` +
-                (manual ? ` · ⚠ ${manual} manual` : '');
+                (manual ? ` · ⚠ ${manual} manual` : '') + settingsSummary(v2);
             migWarningsEl.innerHTML = result.warnings.map(w => {
                 const cls = w.level === 'DESTRUCTIVE' ? 'mig-warn-destructive'
                           : w.level === 'LOSSY'        ? 'mig-warn-lossy'
@@ -74,7 +91,7 @@ function update() {
         } else {
             outputText           = toDDL(src);
             btnCopy.textContent  = 'Copy DDL';
-            statusEl.textContent = `${outputText.split('\n').length} DDL lines generated`;
+            statusEl.textContent = `${outputText.split('\n').length} DDL lines generated${settingsSummary(src)}`;
             migWarningsEl.innerHTML = '';
         }
         state.lastDdlText     = outputText;
