@@ -23,7 +23,7 @@ const migWarningsEl  = document.getElementById('mig-warnings');
 
 // ── Core update loop ──────────────────────────────────────────────
 
-const DIFF_DELIMITER = /^#\s*---\s*v2\s*$/im;
+const DIFF_DELIMITER = /^#\s*-{2,}\s*$/m;
 
 function updateCurLine() {
     if (!curLineEl) return;
@@ -237,7 +237,7 @@ document.getElementById('btn-download').addEventListener('click', () => {
 
 document.getElementById('btn-compare').addEventListener('click', () => {
     if (DIFF_DELIMITER.test(inputEl.value)) return;
-    inputEl.value += '\n\n# --- v2\n\n';
+    inputEl.value += '\n\n# ---\n\n';
     inputEl.selectionStart = inputEl.selectionEnd = inputEl.value.length;
     inputEl.focus();
     update();
@@ -271,14 +271,14 @@ document.addEventListener('keydown', (e) => {
 
 const EXAMPLES = [
     {
-        label: 'Schema Migration (# --- v2)', desc: 'Incremental ALTER TABLE migration between two schema versions',
+        label: 'Schema Migration (# ---)', desc: 'Incremental ALTER TABLE migration between two schema versions',
         qsql:
 `employees
    name vc100 /nn
    email vc200
    department vc100
 
-# --- v2
+# ---
 
 employees
    name vc100 /nn

@@ -315,7 +315,7 @@
     <div class="panel">
         <div class="schema-tabs" id="schema-tabs"></div>
         <div class="editor-tools">
-            <button id="btn-compare" class="tool-btn" title="Insert # --- v2 delimiter to compare two schema versions">⇄ Compare versions</button>
+            <button id="btn-compare" class="tool-btn" title="Insert # --- delimiter to compare two schema versions">⇄ Compare versions</button>
         </div>
         <div class="editor-wrap">
             <div class="cur-line" id="cur-line"></div>
@@ -571,12 +571,12 @@ employees   [main workforce table]
         <details class="hdw-sec" open>
             <summary>Quick Examples</summary>
             <div class="hdw-content">
-                <p class="hdw-note"><strong>Schema migration</strong> — write the old schema, then <code># --- v2</code>, then the new schema. The DDL panel switches to migration mode automatically (or use the <strong>⇄ Compare versions</strong> button):</p>
+                <p class="hdw-note"><strong>Schema migration</strong> — write the old schema, then <code># ---</code>, then the new schema. The DDL panel switches to migration mode automatically (or use the <strong>⇄ Compare versions</strong> button):</p>
                 <code class="hdw-eg">employees
    name vc100 /nn
    email vc200
 
-# --- v2
+# ---
 
 employees
    name vc100 /nn
