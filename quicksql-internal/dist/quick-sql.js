@@ -42,7 +42,7 @@ function be(x, e) {
     n.has(o) ? (r.length > 0 && (t.push(r), r = ""), t.push(o)) : r += o;
   return r.length > 0 && t.push(r), t;
 }
-const Ye = -10, ve = -11;
+const Ye = -10, ye = -11;
 class q {
   constructor(e, n, t, r, o, d = 0) {
     this.type = r, this.value = e, this.begin = n, this.end = t, this.line = o, this.col = d, this.lowerValue = e.toLowerCase();
@@ -148,7 +148,7 @@ function Xe(x, e, n) {
       p.value += m, p.type = "line-comment";
       continue;
     }
-    if (p?.type === "identifier" && p.end === ve && p.value.startsWith("@")) {
+    if (p?.type === "identifier" && p.end === ye && p.value.startsWith("@")) {
       if (m !== `
 ` && m !== "\r") {
         p.value += m;
@@ -163,11 +163,11 @@ function Xe(x, e, n) {
       continue;
     }
     if (e && m === '"') {
-      t.push(new q(m, c - 1, ve, "dquoted-string", u, h));
+      t.push(new q(m, c - 1, ye, "dquoted-string", u, h));
       continue;
     }
     if (m === "`" && r.includes("`")) {
-      t.push(new q(m, c - 1, ve, "bquoted-string", u, h));
+      t.push(new q(m, c - 1, ye, "bquoted-string", u, h));
       continue;
     }
     if (m.length === 1 && r.includes(m)) {
@@ -377,7 +377,7 @@ function sa(x, e, n, t, r, o) {
 function la(x, e, n) {
   return !!(0 <= n || x === "hiredate" || x.endsWith("_date") || x.startsWith("date_of_") || x.startsWith("created") || x.startsWith("updated") || 1 < e.length && e[1].value === "d");
 }
-class ye {
+class ve {
   constructor(e, n, t, r) {
     this.one2many2oneUnsupoorted = void 0, this.line = e, this.parent = t, this.children = [], t !== null && t.children.push(this), this.fks = null, this._ctx = r, this.comment = null;
     function o(u) {
@@ -508,7 +508,7 @@ class ye {
       const m = this.src[l].value, p = '"' + m + '"';
       if (this.src[l].type !== "constant.numeric" && m !== fe(p)) {
         r = this.content.substring(this.src[e].begin, this.src[n - 1].end);
-        const b = 0 < String(this._ctx.getOptionValue("prefix") ?? "").length, y = fe(r) ?? r, A = b ? y : _e(y);
+        const b = 0 < String(this._ctx.getOptionValue("prefix") ?? "").length, v = fe(r) ?? r, A = b ? v : _e(v);
         return this.parsedName = t + A, this.parsedName;
       }
     }
@@ -549,8 +549,8 @@ class ye {
     let t = n.endsWith("_name") || n.startsWith("name") || n.startsWith("email") ? this._ctx.getOptionValue("namelen") || 255 : 4e3;
     const r = this.indexOf("vc", !0);
     if (0 < r) {
-      let P = e[r].value.substring(2);
-      P === "" && this.indexOf("(") === r + 1 && (P = e[r + 2].value), t = oa(e, r, P !== "" ? parseInt(P) : t);
+      let B = e[r].value.substring(2);
+      B === "" && this.indexOf("(") === r + 1 && (B = e[r + 2].value), t = oa(e, r, B !== "" ? parseInt(B) : t);
     }
     let o = "varchar";
     const d = this.indexOf("date");
@@ -562,8 +562,8 @@ class ye {
     h !== null && (o = "vector", u = h.substring(6));
     const l = this.parent, m = H(l.parseName(), "_", this.parseName());
     let p = !1;
-    const b = n.endsWith("_yn") || n.startsWith("is_"), y = He.some((P) => 0 < this.indexOf(P));
-    (b || y) && (o = "varchar", t = 1, p = !0);
+    const b = n.endsWith("_yn") || n.startsWith("is_"), v = He.some((B) => 0 < this.indexOf(B));
+    (b || v) && (o = "varchar", t = 1, p = !0);
     const A = this._ctx.getOptionValue("db");
     p && (this._ctx.getOptionValue("boolean") === "native" || this._ctx.getOptionValue("boolean") !== "yn" && A && A.length > 0 && 23 <= (ie(A) ?? 0)) && (p = !1, o = "boolean");
     const C = o === "boolean";
@@ -572,21 +572,21 @@ class ye {
     const N = this.indexOf("num", !0);
     if (0 < N) {
       o = "number";
-      const P = this.indexOf(")");
-      0 < P && (w = this.content.substring(e[N + 1].begin, e[P].end).toLowerCase());
+      const B = this.indexOf(")");
+      0 < B && (w = this.content.substring(e[N + 1].begin, e[B].end).toLowerCase());
     }
     if (la(n, e, d)) {
-      const P = String(this._ctx.getOptionValue("Date Data Type") ?? "").toLowerCase();
-      P === ia ? o = "timestamp" : P === na ? o = "tswtz" : P === aa ? o = "tswltz" : o = "date";
+      const B = String(this._ctx.getOptionValue("Date Data Type") ?? "").toLowerCase();
+      B === ia ? o = "timestamp" : B === na ? o = "tswtz" : B === aa ? o = "tswltz" : o = "date";
     }
     r < 0 && (this.occursBeforeOption("clob") && (o = "clob"), (this.occursBeforeOption("blob") || this.occursBeforeOption("file")) && (o = "blob"), this.occursBeforeOption("json") && (o = "json"));
-    for (const P in Se) if (this.occursBeforeOption(Se[P])) {
+    for (const B in Se) if (this.occursBeforeOption(Se[B])) {
       o = "geometry";
       break;
     }
     this.isOption("domain") && A && A.length > 0 && 23 <= (ie(A) ?? 0) && (o = this.getOptionValue("domain") ?? o), this.occursBeforeOption("tswltz") && c !== 0 ? o = "tswltz" : this.occursBeforeOption("tswtz") || this.occursBeforeOption("tstz") ? o = "tswtz" : this.occursBeforeOption("ts") && (o = "timestamp");
-    const B = { base: o, colName: n, varcharLen: t, needsBoolCheck: p, isNativeBoolean: C, parent_child: m };
-    return w !== void 0 && (B.numericSpec = w), u !== void 0 && (B.vectorSpec = u), B;
+    const E = { base: o, colName: n, varcharLen: t, needsBoolCheck: p, isNativeBoolean: C, parent_child: m };
+    return w !== void 0 && (E.numericSpec = w), u !== void 0 && (E.vectorSpec = u), E;
   }
   inferType() {
     if (this.children !== null && 0 < this.children.length) return "table";
@@ -842,29 +842,29 @@ function Pe(x) {
         d = "";
         continue;
       }
-      let p = new ye(u.line - 1, d, null, x), b = !1;
-      for (let y = 0; y < n.length; y++) {
-        const A = n[y];
+      let p = new ve(u.line - 1, d, null, x), b = !1;
+      for (let v = 0; v < n.length; v++) {
+        const A = n[v];
         if (p.apparentDepth() <= A.apparentDepth())
-          if (0 < y) {
-            const C = n[y - 1];
-            p = new ye(u.line - 1, d, C, x), n[y] = p, n = n.slice(0, y + 1), b = !0;
+          if (0 < v) {
+            const C = n[v - 1];
+            p = new ve(u.line - 1, d, C, x), n[v] = p, n = n.slice(0, v + 1), b = !0;
             break;
           } else
             n[0] = p, n = n.slice(0, 1), t.push(p), b = !0;
       }
       if (!b) {
         if (0 < n.length) {
-          const y = n[n.length - 1];
-          p = new ye(u.line - 1, d, y, x);
+          const v = n[n.length - 1];
+          p = new ve(u.line - 1, d, v, x);
         }
         n.push(p), p.apparentDepth() === 0 && t.push(p);
       }
       if (p.isMany2One()) {
-        const y = p.parent;
-        y.fks === null && (y.fks = {});
+        const v = p.parent;
+        v.fks === null && (v.fks = {});
         let A = p.refId();
-        A === null && (A = p.parseName()), y.fks[p.parseName() + "_id"] = A;
+        A === null && (A = p.parseName()), v.fks[p.parseName() + "_id"] = A;
       }
       d = "";
       continue;
@@ -890,9 +890,9 @@ function Pe(x) {
         }
         if (l !== null) {
           if (l += b.value, l === "=" || l.charAt(l.length - 1) !== "}") continue;
-          const y = l.substring(1);
+          const v = l.substring(1);
           try {
-            x.data = JSON.parse(y), o = null, d = "";
+            x.data = JSON.parse(v), o = null, d = "";
             continue e;
           } catch {
           }
@@ -990,9 +990,9 @@ function ua() {
           var f = 0;
           if (Object.prototype.toString.call(arguments[s]) === "[object String]")
             for (var g = 0; g < arguments[s].length; g++) {
-              for (var v = 0, k = 0; k < arguments[s].length; k++)
-                v = arguments[s].charCodeAt(k) + (v << 6) + (v << 16) - v;
-              f += v;
+              for (var y = 0, k = 0; k < arguments[s].length; k++)
+                y = arguments[s].charCodeAt(k) + (y << 6) + (y << 16) - y;
+              f += y;
             }
           else
             f = arguments[s];
@@ -1018,11 +1018,11 @@ function ua() {
         if (a)
           throw new RangeError(s);
       }
-      var y = function() {
+      var v = function() {
         throw new Error("No Base64 encoder available.");
       };
       (function() {
-        typeof btoa == "function" ? y = btoa : typeof Buffer == "function" && (y = function(s) {
+        typeof btoa == "function" ? v = btoa : typeof Buffer == "function" && (v = function(s) {
           return new Buffer(s).toString("base64");
         });
       })(), l.prototype.bool = function(a) {
@@ -1051,14 +1051,14 @@ function ua() {
           a.fixed && a.precision,
           "Chance: Cannot specify both fixed and precision."
         );
-        var s, f = Math.pow(10, a.fixed), g = n / f, v = -g;
+        var s, f = Math.pow(10, a.fixed), g = n / f, y = -g;
         b(
-          a.min && a.fixed && a.min < v,
-          "Chance: Min specified is out of range with fixed. Min should be, at least, " + v
+          a.min && a.fixed && a.min < y,
+          "Chance: Min specified is out of range with fixed. Min should be, at least, " + y
         ), b(
           a.max && a.fixed && a.max > g,
           "Chance: Max specified is out of range with fixed. Max should be, at most, " + g
-        ), a = m(a, { min: v, max: g }), s = this.integer({ min: a.min * f, max: a.max * f });
+        ), a = m(a, { min: y, max: g }), s = this.integer({ min: a.min * f, max: a.max * f });
         var k = (s / f).toFixed(a.fixed);
         return parseFloat(k);
       }, l.prototype.integer = function(a) {
@@ -1069,8 +1069,8 @@ function ua() {
           for (var s in a.exclude)
             b(!Number.isInteger(a.exclude[s]), "Chance: exclude must be numbers.");
           var f = a.min + this.natural({ max: a.max - a.min - a.exclude.length }), g = a.exclude.sort((k, I) => k - I);
-          for (var v in g) {
-            if (f < g[v])
+          for (var y in g) {
+            if (f < g[y])
               break;
             f++;
           }
@@ -1079,12 +1079,12 @@ function ua() {
         return this.integer(a);
       }, l.prototype.prime = function(a) {
         a = m(a, { min: 0, max: 1e4 }), b(a.min < 0, "Chance: Min cannot be less than zero."), b(a.min > a.max, "Chance: Min cannot be greater than Max.");
-        var s = P.primes[P.primes.length - 1];
+        var s = B.primes[B.primes.length - 1];
         if (a.max > s)
           for (var f = s + 2; f <= a.max; ++f)
-            this.is_prime(f) && P.primes.push(f);
-        var g = P.primes.filter(function(v) {
-          return v >= a.min && v <= a.max;
+            this.is_prime(f) && B.primes.push(f);
+        var g = B.primes.filter(function(y) {
+          return y >= a.min && y <= a.max;
         });
         return this.pick(g);
       }, l.prototype.is_prime = function(a) {
@@ -1153,16 +1153,16 @@ function ua() {
       };
       function N(a) {
         for (var s = [], f = "identity", g = 0; g < a.length; g++) {
-          var v = a[g];
+          var y = a[g];
           switch (f) {
             case "escape":
-              s.push(new C(v)), f = "identity";
+              s.push(new C(y)), f = "identity";
               break;
             case "identity":
-              v === "{" ? f = "replace" : v === "\\" ? f = "escape" : s.push(new A(v));
+              y === "{" ? f = "replace" : y === "\\" ? f = "escape" : s.push(new A(y));
               break;
             case "replace":
-              v === "}" ? f = "identity" : s.push(new w(v));
+              y === "}" ? f = "identity" : s.push(new w(y));
               break;
           }
         }
@@ -1196,20 +1196,20 @@ function ua() {
           return T.indexOf(F) !== -1;
         };
         f && (g = f.comparator || g);
-        for (var v = [], k = 0, I, _ = s * 50, S = h.call(arguments, 2); v.length < s; ) {
+        for (var y = [], k = 0, I, _ = s * 50, S = h.call(arguments, 2); y.length < s; ) {
           var M = JSON.parse(JSON.stringify(S));
-          if (I = a.apply(this, M), g(v, I) || (v.push(I), k = 0), ++k > _)
+          if (I = a.apply(this, M), g(y, I) || (y.push(I), k = 0), ++k > _)
             throw new RangeError("Chance: num is likely too large for sample set");
         }
-        return v;
+        return y;
       }, l.prototype.n = function(a, s) {
         b(
           typeof a != "function",
           "Chance: The first argument must be a function."
         ), typeof s > "u" && (s = 1);
-        var f = s, g = [], v = h.call(arguments, 2);
+        var f = s, g = [], y = h.call(arguments, 2);
         for (f = Math.max(0, f), null; f--; null)
-          g.push(a.apply(this, v));
+          g.push(a.apply(this, y));
         return g;
       }, l.prototype.pad = function(a, s, f) {
         return f = f || "0", a = a + "", a.length >= s ? a : new Array(s - a.length + 1).join(f) + a;
@@ -1232,26 +1232,26 @@ function ua() {
           return [this.pickone(a)];
         var f = a.slice(0), g = f.length;
         return this.n(function() {
-          var v = this.natural({ max: --g }), k = f[v];
-          return f[v] = f[g], k;
+          var y = this.natural({ max: --g }), k = f[y];
+          return f[y] = f[g], k;
         }, Math.min(g, s));
       }, l.prototype.shuffle = function(a) {
-        for (var s = [], f = 0, g = Number(a.length), v = p(g), k = g - 1, I, _ = 0; _ < g; _++)
-          I = this.natural({ max: k }), f = v[I], s[_] = a[f], v[I] = v[k], k -= 1;
+        for (var s = [], f = 0, g = Number(a.length), y = p(g), k = g - 1, I, _ = 0; _ < g; _++)
+          I = this.natural({ max: k }), f = y[I], s[_] = a[f], y[I] = y[k], k -= 1;
         return s;
       }, l.prototype.weighted = function(a, s, f) {
         if (a.length !== s.length)
           throw new RangeError("Chance: Length of array and weights must match");
-        for (var g = 0, v, k = 0; k < s.length; ++k) {
-          if (v = s[k], isNaN(v))
+        for (var g = 0, y, k = 0; k < s.length; ++k) {
+          if (y = s[k], isNaN(y))
             throw new RangeError("Chance: All weights must be numbers");
-          v > 0 && (g += v);
+          y > 0 && (g += y);
         }
         if (g === 0)
           throw new RangeError("Chance: No valid entries in array weights");
         var I = this.random() * g, _ = 0, S = -1, M;
         for (k = 0; k < s.length; ++k) {
-          if (v = s[k], _ += v, v > 0) {
+          if (y = s[k], _ += y, y > 0) {
             if (I <= _) {
               M = k;
               break;
@@ -1269,12 +1269,12 @@ function ua() {
         return f.join(g);
       }, l.prototype.sentence = function(a) {
         a = m(a);
-        var s = a.words || this.natural({ min: 12, max: 18 }), f = a.punctuation, g, v = this.n(this.word, s);
-        return g = v.join(" "), g = this.capitalize(g), f !== !1 && !/^[.?;!:]$/.test(f) && (f = "."), f && (g += f), g;
+        var s = a.words || this.natural({ min: 12, max: 18 }), f = a.punctuation, g, y = this.n(this.word, s);
+        return g = y.join(" "), g = this.capitalize(g), f !== !1 && !/^[.?;!:]$/.test(f) && (f = "."), f && (g += f), g;
       }, l.prototype.syllable = function(a) {
         a = m(a);
-        for (var s = a.length || this.natural({ min: 2, max: 3 }), f = "bcdfghjklmnprstvwz", g = "aeiou", v = f + g, k = "", I, _ = 0; _ < s; _++)
-          _ === 0 ? I = this.character({ pool: v }) : f.indexOf(I) === -1 ? I = this.character({ pool: f }) : I = this.character({ pool: g }), k += I;
+        for (var s = a.length || this.natural({ min: 2, max: 3 }), f = "bcdfghjklmnprstvwz", g = "aeiou", y = f + g, k = "", I, _ = 0; _ < s; _++)
+          _ === 0 ? I = this.character({ pool: y }) : f.indexOf(I) === -1 ? I = this.character({ pool: f }) : I = this.character({ pool: g }), k += I;
         return a.capitalize && (k = this.capitalize(k)), k;
       }, l.prototype.word = function(a) {
         a = m(a), b(
@@ -1332,9 +1332,9 @@ function ua() {
       }, l.prototype.birthday = function(a) {
         var s = this.age(a), f = /* @__PURE__ */ new Date(), g = f.getFullYear();
         if (a && a.type) {
-          var v = /* @__PURE__ */ new Date(), k = /* @__PURE__ */ new Date();
-          v.setFullYear(g - s - 1), k.setFullYear(g - s), a = m(a, {
-            min: v,
+          var y = /* @__PURE__ */ new Date(), k = /* @__PURE__ */ new Date();
+          y.setFullYear(g - s - 1), k.setFullYear(g - s), a = m(a, {
+            min: y,
             max: k
           });
         } else if (a && (a.minAge !== void 0 || a.maxAge !== void 0)) {
@@ -1357,8 +1357,8 @@ function ua() {
         f = 11 - f % 11, f >= 10 && (f = 0);
         var g = f * 2 + s[8] * 3 + s[7] * 4 + s[6] * 5 + s[5] * 6 + s[4] * 7 + s[3] * 8 + s[2] * 9 + s[1] * 10 + s[0] * 11;
         g = 11 - g % 11, g >= 10 && (g = 0);
-        var v = "" + s[0] + s[1] + s[2] + "." + s[3] + s[4] + s[5] + "." + s[6] + s[7] + s[8] + "-" + f + g;
-        return a.formatted ? v : v.replace(/\D/g, "");
+        var y = "" + s[0] + s[1] + s[2] + "." + s[3] + s[4] + s[5] + "." + s[6] + s[7] + s[8] + "-" + f + g;
+        return a.formatted ? y : y.replace(/\D/g, "");
       }, l.prototype.cnpj = function(a) {
         a = m(a, {
           formatted: !0
@@ -1367,8 +1367,8 @@ function ua() {
         f = 11 - f % 11, f < 2 && (f = 0);
         var g = f * 2 + s[11] * 3 + s[10] * 4 + s[9] * 5 + s[8] * 6 + s[7] * 7 + s[6] * 8 + s[5] * 9 + s[4] * 2 + s[3] * 3 + s[2] * 4 + s[1] * 5 + s[0] * 6;
         g = 11 - g % 11, g < 2 && (g = 0);
-        var v = "" + s[0] + s[1] + "." + s[2] + s[3] + s[4] + "." + s[5] + s[6] + s[7] + "/" + s[8] + s[9] + s[10] + s[11] + "-" + f + g;
-        return a.formatted ? v : v.replace(/\D/g, "");
+        var y = "" + s[0] + s[1] + "." + s[2] + s[3] + s[4] + "." + s[5] + s[6] + s[7] + "/" + s[8] + s[9] + s[10] + s[11] + "-" + f + g;
+        return a.formatted ? y : y.replace(/\D/g, "");
       }, l.prototype.first = function(a) {
         return a = m(a, { gender: this.gender(), nationality: "en" }), this.pick(this.get("firstNames")[a.gender.toLowerCase()][a.nationality.toLowerCase()]);
       }, l.prototype.profession = function(a) {
@@ -1392,30 +1392,30 @@ function ua() {
         }
         return a = a + (10 - parseInt(s.toString().slice(-1))).toString().slice(-1), a;
       }, l.prototype.mrz = function(a) {
-        var s = function(v) {
+        var s = function(y) {
           var k = "<ABCDEFGHIJKLMNOPQRSTUVWXYXZ".split(""), I = [7, 3, 1], _ = 0;
-          return typeof v != "string" && (v = v.toString()), v.split("").forEach(function(S, M) {
+          return typeof y != "string" && (y = y.toString()), y.split("").forEach(function(S, M) {
             var T = k.indexOf(S);
             T !== -1 ? S = T === 0 ? 0 : T + 9 : S = parseInt(S, 10), S *= I[M % I.length], _ += S;
           }), _ % 10;
-        }, f = function(v) {
+        }, f = function(y) {
           var k = function(_) {
             return new Array(_ + 1).join("<");
           }, I = [
             "P<",
-            v.issuer,
-            v.last.toUpperCase(),
+            y.issuer,
+            y.last.toUpperCase(),
             "<<",
-            v.first.toUpperCase(),
-            k(39 - (v.last.length + v.first.length + 2)),
-            v.passportNumber,
-            s(v.passportNumber),
-            v.nationality,
-            v.dob,
-            s(v.dob),
-            v.gender,
-            v.expiry,
-            s(v.expiry),
+            y.first.toUpperCase(),
+            k(39 - (y.last.length + y.first.length + 2)),
+            y.passportNumber,
+            s(y.passportNumber),
+            y.nationality,
+            y.dob,
+            s(y.dob),
+            y.gender,
+            y.expiry,
+            s(y.expiry),
             k(14),
             s(k(14))
           ].join("");
@@ -1426,19 +1426,19 @@ function ua() {
           last: this.last(),
           passportNumber: this.integer({ min: 1e8, max: 999999999 }),
           dob: (function() {
-            var v = g.birthday({ type: "adult" });
+            var y = g.birthday({ type: "adult" });
             return [
-              v.getFullYear().toString().substr(2),
-              g.pad(v.getMonth() + 1, 2),
-              g.pad(v.getDate(), 2)
+              y.getFullYear().toString().substr(2),
+              g.pad(y.getMonth() + 1, 2),
+              g.pad(y.getDate(), 2)
             ].join("");
           })(),
           expiry: (function() {
-            var v = /* @__PURE__ */ new Date();
+            var y = /* @__PURE__ */ new Date();
             return [
-              (v.getFullYear() + 5).toString().substr(2),
-              g.pad(v.getMonth() + 1, 2),
-              g.pad(v.getDate(), 2)
+              (y.getFullYear() + 5).toString().substr(2),
+              g.pad(y.getMonth() + 1, 2),
+              g.pad(y.getDate(), 2)
             ].join("");
           })(),
           gender: this.gender() === "Female" ? "F" : "M",
@@ -1505,7 +1505,7 @@ function ua() {
       }, l.prototype.apple_token = function() {
         return this.string({ pool: "abcdef1234567890", length: 64 });
       }, l.prototype.wp8_anid2 = function() {
-        return y(this.hash({ length: 32 }));
+        return v(this.hash({ length: 32 }));
       }, l.prototype.wp7_anid = function() {
         return "A=" + this.guid().replace(/-/g, "").toUpperCase() + "&E=" + this.hash({ length: 3 }) + "&W=" + this.integer({ min: 0, max: 9 });
       }, l.prototype.bb_pin = function() {
@@ -1514,7 +1514,7 @@ function ua() {
         var s = null, f = "//www.gravatar.com/avatar/", g = {
           http: "http",
           https: "https"
-        }, v = {
+        }, y = {
           bmp: "bmp",
           gif: "gif",
           jpg: "jpg",
@@ -1557,18 +1557,18 @@ function ua() {
           if (a.constructor === "Array")
             return null;
         }
-        return _ = m(a, _), _.email || (_.email = this.email()), _.protocol = g[_.protocol] ? _.protocol + ":" : "", _.size = parseInt(_.size, 0) ? _.size : "", _.rating = I[_.rating] ? _.rating : "", _.fallback = k[_.fallback] ? _.fallback : "", _.fileExtension = v[_.fileExtension] ? _.fileExtension : "", s = _.protocol + f + this.bimd5.md5(_.email) + (_.fileExtension ? "." + _.fileExtension : "") + (_.size || _.rating || _.fallback ? "?" : "") + (_.size ? "&s=" + _.size.toString() : "") + (_.rating ? "&r=" + _.rating : "") + (_.fallback ? "&d=" + _.fallback : ""), s;
+        return _ = m(a, _), _.email || (_.email = this.email()), _.protocol = g[_.protocol] ? _.protocol + ":" : "", _.size = parseInt(_.size, 0) ? _.size : "", _.rating = I[_.rating] ? _.rating : "", _.fallback = k[_.fallback] ? _.fallback : "", _.fileExtension = y[_.fileExtension] ? _.fileExtension : "", s = _.protocol + f + this.bimd5.md5(_.email) + (_.fileExtension ? "." + _.fileExtension : "") + (_.size || _.rating || _.fallback ? "?" : "") + (_.size ? "&s=" + _.size.toString() : "") + (_.rating ? "&r=" + _.rating : "") + (_.fallback ? "&d=" + _.fallback : ""), s;
       }, l.prototype.color = function(a) {
         function s(K, de) {
           return [K, K, K].join(de || "");
         }
         function f(K) {
-          var de = K ? "rgba" : "rgb", ge = K ? "," + this.floating({ min: V, max: Z }) : "", Ce = v ? s(this.natural({ min: k, max: I }), ",") : this.natural({ min: M, max: T }) + "," + this.natural({ min: F, max: $ }) + "," + this.natural({ max: 255 });
+          var de = K ? "rgba" : "rgb", ge = K ? "," + this.floating({ min: V, max: Z }) : "", Ce = y ? s(this.natural({ min: k, max: I }), ",") : this.natural({ min: M, max: T }) + "," + this.natural({ min: F, max: D }) + "," + this.natural({ max: 255 });
           return de + "(" + Ce + ge + ")";
         }
         function g(K, de, ge) {
           var Ce = ge ? "#" : "", re = "";
-          return v ? (re = s(this.pad(this.hex({ min: k, max: I }), 2)), a.format === "shorthex" && (re = s(this.hex({ min: 0, max: 15 })))) : a.format === "shorthex" ? re = this.pad(this.hex({ min: Math.floor(_ / 16), max: Math.floor(S / 16) }), 1) + this.pad(this.hex({ min: Math.floor(M / 16), max: Math.floor(T / 16) }), 1) + this.pad(this.hex({ min: Math.floor(F / 16), max: Math.floor($ / 16) }), 1) : _ !== void 0 || S !== void 0 || M !== void 0 || T !== void 0 || F !== void 0 || $ !== void 0 ? re = this.pad(this.hex({ min: _, max: S }), 2) + this.pad(this.hex({ min: M, max: T }), 2) + this.pad(this.hex({ min: F, max: $ }), 2) : re = this.pad(this.hex({ min: k, max: I }), 2) + this.pad(this.hex({ min: k, max: I }), 2) + this.pad(this.hex({ min: k, max: I }), 2), Ce + re;
+          return y ? (re = s(this.pad(this.hex({ min: k, max: I }), 2)), a.format === "shorthex" && (re = s(this.hex({ min: 0, max: 15 })))) : a.format === "shorthex" ? re = this.pad(this.hex({ min: Math.floor(_ / 16), max: Math.floor(S / 16) }), 1) + this.pad(this.hex({ min: Math.floor(M / 16), max: Math.floor(T / 16) }), 1) + this.pad(this.hex({ min: Math.floor(F / 16), max: Math.floor(D / 16) }), 1) : _ !== void 0 || S !== void 0 || M !== void 0 || T !== void 0 || F !== void 0 || D !== void 0 ? re = this.pad(this.hex({ min: _, max: S }), 2) + this.pad(this.hex({ min: M, max: T }), 2) + this.pad(this.hex({ min: F, max: D }), 2) : re = this.pad(this.hex({ min: k, max: I }), 2) + this.pad(this.hex({ min: k, max: I }), 2) + this.pad(this.hex({ min: k, max: I }), 2), Ce + re;
         }
         a = m(a, {
           format: this.pick(["hex", "shorthex", "rgb", "rgba", "0x", "name"]),
@@ -1585,8 +1585,8 @@ function ua() {
           min_alpha: 0,
           max_alpha: 1
         });
-        var v = a.grayscale, k = a.min, I = a.max, _ = a.min_red, S = a.max_red, M = a.min_green, T = a.max_green, F = a.min_blue, $ = a.max_blue, V = a.min_alpha, Z = a.max_alpha;
-        a.min_red === void 0 && (_ = k), a.max_red === void 0 && (S = I), a.min_green === void 0 && (M = k), a.max_green === void 0 && (T = I), a.min_blue === void 0 && (F = k), a.max_blue === void 0 && ($ = I), a.min_alpha === void 0 && (V = 0), a.max_alpha === void 0 && (Z = 1), v && k === 0 && I === 255 && _ !== void 0 && S !== void 0 && (k = (_ + M + F) / 3, I = (S + T + $) / 3);
+        var y = a.grayscale, k = a.min, I = a.max, _ = a.min_red, S = a.max_red, M = a.min_green, T = a.max_green, F = a.min_blue, D = a.max_blue, V = a.min_alpha, Z = a.max_alpha;
+        a.min_red === void 0 && (_ = k), a.max_red === void 0 && (S = I), a.min_green === void 0 && (M = k), a.max_green === void 0 && (T = I), a.min_blue === void 0 && (F = k), a.max_blue === void 0 && (D = I), a.min_alpha === void 0 && (V = 0), a.max_alpha === void 0 && (Z = 1), y && k === 0 && I === 255 && _ !== void 0 && S !== void 0 && (k = (_ + M + F) / 3, I = (S + T + D) / 3);
         var J;
         if (a.format === "hex")
           J = g.call(this, 2, 6, !0);
@@ -1688,8 +1688,8 @@ function ua() {
           a,
           a && a.format && [s, f].includes(a.format.toLowerCase()) ? { min: 0, max: 89, fixed: 4 } : { fixed: 5, min: -90, max: 90, format: g }
         );
-        var v = a.format.toLowerCase();
-        switch ((v === s || v === f) && (b(a.min < 0 || a.min > 89, "Chance: Min specified is out of range. Should be between 0 - 89"), b(a.max < 0 || a.max > 89, "Chance: Max specified is out of range. Should be between 0 - 89"), b(a.fixed > 4, "Chance: Fixed specified should be below or equal to 4")), v) {
+        var y = a.format.toLowerCase();
+        switch ((y === s || y === f) && (b(a.min < 0 || a.min > 89, "Chance: Min specified is out of range. Should be between 0 - 89"), b(a.max < 0 || a.max > 89, "Chance: Max specified is out of range. Should be between 0 - 89"), b(a.fixed > 4, "Chance: Fixed specified should be below or equal to 4")), y) {
           case s:
             return this.integer({ min: a.min, max: a.max }) + "\xB0" + this.floating({ min: 0, max: 59, fixed: a.fixed });
           case f:
@@ -1704,8 +1704,8 @@ function ua() {
           a,
           a && a.format && [s, f].includes(a.format.toLowerCase()) ? { min: 0, max: 179, fixed: 4 } : { fixed: 5, min: -180, max: 180, format: g }
         );
-        var v = a.format.toLowerCase();
-        switch ((v === s || v === f) && (b(a.min < 0 || a.min > 179, "Chance: Min specified is out of range. Should be between 0 - 179"), b(a.max < 0 || a.max > 179, "Chance: Max specified is out of range. Should be between 0 - 179"), b(a.fixed > 4, "Chance: Fixed specified should be below or equal to 4")), v) {
+        var y = a.format.toLowerCase();
+        switch ((y === s || y === f) && (b(a.min < 0 || a.min > 179, "Chance: Min specified is out of range. Should be between 0 - 179"), b(a.max < 0 || a.max > 179, "Chance: Max specified is out of range. Should be between 0 - 179"), b(a.fixed > 4, "Chance: Fixed specified should be below or equal to 4")), y) {
           case s:
             return this.integer({ min: a.min, max: a.max }) + "\xB0" + this.floating({ min: 0, max: 59.9999, fixed: a.fixed });
           case f:
@@ -1716,10 +1716,10 @@ function ua() {
         }
       }, l.prototype.phone = function(a) {
         var s = this, f, g = function(F) {
-          var $ = [];
+          var D = [];
           return F.sections.forEach(function(V) {
-            $.push(s.string({ pool: "0123456789", length: V }));
-          }), F.area + $.join(" ");
+            D.push(s.string({ pool: "0123456789", length: V }));
+          }), F.area + D.join(" ");
         };
         a = m(a, {
           formatted: !0,
@@ -1727,10 +1727,10 @@ function ua() {
           mobile: !1,
           exampleNumber: !1
         }), a.formatted || (a.parens = !1);
-        var v;
+        var y;
         switch (a.country) {
           case "fr":
-            a.mobile ? (f = this.pick(["06", "07"]) + s.string({ pool: "0123456789", length: 8 }), v = a.formatted ? f.match(/../g).join(" ") : f) : (f = this.pick([
+            a.mobile ? (f = this.pick(["06", "07"]) + s.string({ pool: "0123456789", length: 8 }), y = a.formatted ? f.match(/../g).join(" ") : f) : (f = this.pick([
               // Valid zone and département codes.
               "01" + this.pick(["30", "34", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "53", "55", "56", "58", "60", "64", "69", "70", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83"]) + s.string({ pool: "0123456789", length: 6 }),
               "02" + this.pick(["14", "18", "22", "23", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "40", "41", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "56", "57", "61", "62", "69", "72", "76", "77", "78", "85", "90", "96", "97", "98", "99"]) + s.string({ pool: "0123456789", length: 6 }),
@@ -1738,13 +1738,13 @@ function ua() {
               "04" + this.pick(["11", "13", "15", "20", "22", "26", "27", "30", "32", "34", "37", "42", "43", "44", "50", "56", "57", "63", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "88", "89", "90", "91", "92", "93", "94", "95", "97", "98"]) + s.string({ pool: "0123456789", length: 6 }),
               "05" + this.pick(["08", "16", "17", "19", "24", "31", "32", "33", "34", "35", "40", "45", "46", "47", "49", "53", "55", "56", "57", "58", "59", "61", "62", "63", "64", "65", "67", "79", "81", "82", "86", "87", "90", "94"]) + s.string({ pool: "0123456789", length: 6 }),
               "09" + s.string({ pool: "0123456789", length: 8 })
-            ]), v = a.formatted ? f.match(/../g).join(" ") : f);
+            ]), y = a.formatted ? f.match(/../g).join(" ") : f);
             break;
           case "uk":
             a.mobile ? (f = this.pick([
               { area: "07" + this.pick(["4", "5", "7", "8", "9"]), sections: [2, 6] },
               { area: "07624 ", sections: [6] }
-            ]), v = a.formatted ? g(f) : g(f).replace(" ", "")) : (f = this.pick([
+            ]), y = a.formatted ? g(f) : g(f).replace(" ", "")) : (f = this.pick([
               //valid area codes of major cities/counties followed by random numbers in required format.
               { area: "01" + this.character({ pool: "234569" }) + "1 ", sections: [3, 4] },
               { area: "020 " + this.character({ pool: "378" }), sections: [3, 4] },
@@ -1759,7 +1759,7 @@ function ua() {
               { area: "017" + this.pick(["26", "44", "50", "68"]) + " ", sections: [6] },
               { area: "018" + this.pick(["27", "37", "84", "97"]) + " ", sections: [6] },
               { area: "019" + this.pick(["00", "05", "35", "46", "49", "63", "95"]) + " ", sections: [6] }
-            ]), v = a.formatted ? g(f) : g(f).replace(" ", "", "g"));
+            ]), y = a.formatted ? g(f) : g(f).replace(" ", "", "g"));
             break;
           case "za":
             a.mobile ? (f = this.pick([
@@ -1769,31 +1769,31 @@ function ua() {
               "071" + this.pick(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]) + s.string({ pool: "0123456789", length: 6 }),
               "07" + this.pick(["2", "3", "4", "6", "7", "8", "9"]) + s.string({ pool: "0123456789", length: 7 }),
               "08" + this.pick(["0", "1", "2", "3", "4", "5"]) + s.string({ pool: "0123456789", length: 7 })
-            ]), v = a.formatted || f) : (f = this.pick([
+            ]), y = a.formatted || f) : (f = this.pick([
               "01" + this.pick(["0", "1", "2", "3", "4", "5", "6", "7", "8"]) + s.string({ pool: "0123456789", length: 7 }),
               "02" + this.pick(["1", "2", "3", "4", "7", "8"]) + s.string({ pool: "0123456789", length: 7 }),
               "03" + this.pick(["1", "2", "3", "5", "6", "9"]) + s.string({ pool: "0123456789", length: 7 }),
               "04" + this.pick(["1", "2", "3", "4", "5", "6", "7", "8", "9"]) + s.string({ pool: "0123456789", length: 7 }),
               "05" + this.pick(["1", "3", "4", "6", "7", "8"]) + s.string({ pool: "0123456789", length: 7 })
-            ]), v = a.formatted || f);
+            ]), y = a.formatted || f);
             break;
           case "us":
             var k = this.areacode(a).toString(), I = this.natural({ min: 2, max: 9 }).toString() + this.natural({ min: 0, max: 9 }).toString() + this.natural({ min: 0, max: 9 }).toString(), _ = this.natural({ min: 1e3, max: 9999 }).toString();
-            v = a.formatted ? k + " " + I + "-" + _ : k + I + _;
+            y = a.formatted ? k + " " + I + "-" + _ : k + I + _;
             break;
           case "br":
             var S = this.pick(["11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "24", "27", "28", "31", "32", "33", "34", "35", "37", "38", "41", "42", "43", "44", "45", "46", "47", "48", "49", "51", "53", "54", "55", "61", "62", "63", "64", "65", "66", "67", "68", "69", "71", "73", "74", "75", "77", "79", "81", "82", "83", "84", "85", "86", "87", "88", "89", "91", "92", "93", "94", "95", "96", "97", "98", "99"]), M;
             a.mobile ? M = "9" + s.string({ pool: "0123456789", length: 4 }) : M = this.natural({ min: 2e3, max: 5999 }).toString();
             var T = s.string({ pool: "0123456789", length: 4 });
-            v = a.formatted ? "(" + S + ") " + M + "-" + T : S + M + T;
+            y = a.formatted ? "(" + S + ") " + M + "-" + T : S + M + T;
             break;
         }
-        return v;
+        return y;
       }, l.prototype.postal = function() {
         var a = this.character({ pool: "XVTSRPNKLMHJGECBA" }), s = a + this.natural({ max: 9 }) + this.character({ alpha: !0, casing: "upper" }), f = this.natural({ max: 9 }) + this.character({ alpha: !0, casing: "upper" }) + this.natural({ max: 9 });
         return s + " " + f;
       }, l.prototype.postcode = function() {
-        var a = this.pick(this.get("postcodeAreas")).code, s = this.natural({ max: 9 }), f = this.bool() ? this.character({ alpha: !0, casing: "upper" }) : "", g = a + s + f, v = this.natural({ max: 9 }), k = this.character({ alpha: !0, casing: "upper" }) + this.character({ alpha: !0, casing: "upper" }), I = v + k;
+        var a = this.pick(this.get("postcodeAreas")).code, s = this.natural({ max: 9 }), f = this.bool() ? this.character({ alpha: !0, casing: "upper" }) : "", g = a + s + f, y = this.natural({ max: 9 }), k = this.character({ alpha: !0, casing: "upper" }) + this.character({ alpha: !0, casing: "upper" }), I = y + k;
         return g + " " + I;
       }, l.prototype.counties = function(a) {
         return a = m(a, { country: "uk" }), this.get("counties")[a.country.toLowerCase()];
@@ -1810,8 +1810,8 @@ function ua() {
         var s;
         switch (a.country.toLowerCase()) {
           case "us":
-            var f = this.get("us_states_and_dc"), g = this.get("territories"), v = this.get("armed_forces");
-            s = [], a.us_states_and_dc && (s = s.concat(f)), a.territories && (s = s.concat(g)), a.armed_forces && (s = s.concat(v));
+            var f = this.get("us_states_and_dc"), g = this.get("territories"), y = this.get("armed_forces");
+            s = [], a.us_states_and_dc && (s = s.concat(f)), a.territories && (s = s.concat(g)), a.armed_forces && (s = s.concat(y));
             break;
           case "it":
           case "mx":
@@ -1850,8 +1850,8 @@ function ua() {
             american: !0,
             string: !1
           });
-          var g = typeof a.min < "u" ? a.min.getTime() : 1, v = typeof a.max < "u" ? a.max.getTime() : 864e13;
-          f = new Date(this.integer({ min: g, max: v }));
+          var g = typeof a.min < "u" ? a.min.getTime() : 1, y = typeof a.max < "u" ? a.max.getTime() : 864e13;
+          f = new Date(this.integer({ min: g, max: y }));
         } else {
           var k = this.month({ raw: !0 }), I = k.days;
           a && a.month && (I = this.get("months")[(a.month % 12 + 12) % 12].days), a = m(a, {
@@ -1927,8 +1927,8 @@ function ua() {
       }, l.prototype.currency_pair = function(a) {
         var s = this.unique(this.currency, 2, {
           comparator: function(f, g) {
-            return f.reduce(function(v, k) {
-              return v || k.code === g.code;
+            return f.reduce(function(y, k) {
+              return y || k.code === g.code;
             }, !1);
           }
         });
@@ -1969,22 +1969,22 @@ function ua() {
         return a = this.pad(a, 7) + this.pad(this.pick(this.provinces({ country: "it" })).code, 3), a + this.luhn_calculate(a);
       }, l.prototype.cf = function(a) {
         a = a || {};
-        var s = a.gender ? a.gender : this.gender(), f = a.first ? a.first : this.first({ gender: s, nationality: "it" }), g = a.last ? a.last : this.last({ nationality: "it" }), v = a.birthday ? a.birthday : this.birthday(), k = a.city ? a.city : this.pickone(["A", "B", "C", "D", "E", "F", "G", "H", "I", "L", "M", "Z"]) + this.pad(this.natural({ max: 999 }), 3), I = [], _ = function(T, F) {
-          var $, V = [];
-          return T.length < 3 ? V = T.split("").concat("XXX".split("")).splice(0, 3) : ($ = T.toUpperCase().split("").map(function(Z) {
+        var s = a.gender ? a.gender : this.gender(), f = a.first ? a.first : this.first({ gender: s, nationality: "it" }), g = a.last ? a.last : this.last({ nationality: "it" }), y = a.birthday ? a.birthday : this.birthday(), k = a.city ? a.city : this.pickone(["A", "B", "C", "D", "E", "F", "G", "H", "I", "L", "M", "Z"]) + this.pad(this.natural({ max: 999 }), 3), I = [], _ = function(T, F) {
+          var D, V = [];
+          return T.length < 3 ? V = T.split("").concat("XXX".split("")).splice(0, 3) : (D = T.toUpperCase().split("").map(function(Z) {
             return "BCDFGHJKLMNPRSTVWZ".indexOf(Z) !== -1 ? Z : void 0;
-          }).join(""), $.length > 3 && (F ? $ = $.substr(0, 3) : $ = $[0] + $.substr(2, 2)), $.length < 3 && (V = $, $ = T.toUpperCase().split("").map(function(Z) {
+          }).join(""), D.length > 3 && (F ? D = D.substr(0, 3) : D = D[0] + D.substr(2, 2)), D.length < 3 && (V = D, D = T.toUpperCase().split("").map(function(Z) {
             return "AEIOU".indexOf(Z) !== -1 ? Z : void 0;
-          }).join("").substr(0, 3 - V.length)), V = V + $), V;
-        }, S = function(T, F, $) {
+          }).join("").substr(0, 3 - V.length)), V = V + D), V;
+        }, S = function(T, F, D) {
           var V = ["A", "B", "C", "D", "E", "H", "L", "M", "P", "R", "S", "T"];
-          return T.getFullYear().toString().substr(2) + V[T.getMonth()] + $.pad(T.getDate() + (F.toLowerCase() === "female" ? 40 : 0), 2);
+          return T.getFullYear().toString().substr(2) + V[T.getMonth()] + D.pad(T.getDate() + (F.toLowerCase() === "female" ? 40 : 0), 2);
         }, M = function(T) {
-          for (var F = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", $ = "ABCDEFGHIJABCDEFGHIJKLMNOPQRSTUVWXYZ", V = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", Z = "BAKPLCQDREVOSFTGUHMINJWZYX", J = 0, K = 0; K < 15; K++)
-            K % 2 !== 0 ? J += V.indexOf($[F.indexOf(T[K])]) : J += Z.indexOf($[F.indexOf(T[K])]);
+          for (var F = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", D = "ABCDEFGHIJABCDEFGHIJKLMNOPQRSTUVWXYZ", V = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", Z = "BAKPLCQDREVOSFTGUHMINJWZYX", J = 0, K = 0; K < 15; K++)
+            K % 2 !== 0 ? J += V.indexOf(D[F.indexOf(T[K])]) : J += Z.indexOf(D[F.indexOf(T[K])]);
           return V[J % 26];
         };
-        return I = I.concat(_(g, !0), _(f), S(v, s, this), k.toUpperCase().split("")).join(""), I += M(I.toUpperCase()), I.toUpperCase();
+        return I = I.concat(_(g, !0), _(f), S(y, s, this), k.toUpperCase().split("")).join(""), I += M(I.toUpperCase()), I.toUpperCase();
       }, l.prototype.pl_pesel = function() {
         for (var a = this.natural({ min: 1, max: 9999999999 }), s = this.pad(a, 10).split(""), f = 0; f < s.length; f++)
           s[f] = parseInt(s[f]);
@@ -2001,9 +2001,9 @@ function ua() {
         var g = (8 * s[0] + 9 * s[1] + 2 * s[2] + 3 * s[3] + 4 * s[4] + 5 * s[5] + 6 * s[6] + 7 * s[7]) % 11;
         return g === 10 && (g = 0), s.join("") + g;
       }, l.prototype.music_genre = function(a = "general") {
-        if (!(a.toLowerCase() in P.music_genres))
+        if (!(a.toLowerCase() in B.music_genres))
           throw new Error(`Unsupported genre: ${a}`);
-        const s = P.music_genres[a.toLowerCase()], f = this.integer({ min: 0, max: s.length - 1 });
+        const s = B.music_genres[a.toLowerCase()], f = this.integer({ min: 0, max: s.length - 1 });
         return s[f];
       }, l.prototype.note = function(a) {
         a = m(a, { notes: "flatKey" });
@@ -2035,18 +2035,18 @@ function ua() {
       }, l.prototype.coin = function() {
         return this.bool() ? "heads" : "tails";
       };
-      function B(a) {
+      function E(a) {
         return function() {
           return this.natural(a);
         };
       }
-      l.prototype.d4 = B({ min: 1, max: 4 }), l.prototype.d6 = B({ min: 1, max: 6 }), l.prototype.d8 = B({ min: 1, max: 8 }), l.prototype.d10 = B({ min: 1, max: 10 }), l.prototype.d12 = B({ min: 1, max: 12 }), l.prototype.d20 = B({ min: 1, max: 20 }), l.prototype.d30 = B({ min: 1, max: 30 }), l.prototype.d100 = B({ min: 1, max: 100 }), l.prototype.rpg = function(a, s) {
+      l.prototype.d4 = E({ min: 1, max: 4 }), l.prototype.d6 = E({ min: 1, max: 6 }), l.prototype.d8 = E({ min: 1, max: 8 }), l.prototype.d10 = E({ min: 1, max: 10 }), l.prototype.d12 = E({ min: 1, max: 12 }), l.prototype.d20 = E({ min: 1, max: 20 }), l.prototype.d30 = E({ min: 1, max: 30 }), l.prototype.d100 = E({ min: 1, max: 100 }), l.prototype.rpg = function(a, s) {
         if (s = m(s), a) {
           var f = a.toLowerCase().split("d"), g = [];
           if (f.length !== 2 || !parseInt(f[0], 10) || !parseInt(f[1], 10))
             throw new Error("Chance: Invalid format provided. Please provide #d# where the first # is the number of dice to roll, the second # is the max of each die");
-          for (var v = f[0]; v > 0; v--)
-            g[v - 1] = this.natural({ min: 1, max: f[1] });
+          for (var y = f[0]; y > 0; y--)
+            g[y - 1] = this.natural({ min: 1, max: f[1] });
           return typeof s.sum < "u" && s.sum ? g.reduce(function(k, I) {
             return k + I;
           }) : g;
@@ -2066,8 +2066,8 @@ function ua() {
         var s = a.toString(), f = +s.substring(s.length - 1);
         return f === this.luhn_calculate(+s.substring(0, s.length - 1));
       }, l.prototype.luhn_calculate = function(a) {
-        for (var s = a.toString().split("").reverse(), f = 0, g, v = 0, k = s.length; k > v; ++v)
-          g = +s[v], v % 2 === 0 && (g *= 2, g > 9 && (g -= 9)), f += g;
+        for (var s = a.toString().split("").reverse(), f = 0, g, y = 0, k = s.length; k > y; ++y)
+          g = +s[y], y % 2 === 0 && (g *= 2, g > 9 && (g -= 9)), f += g;
         return f * 9 % 10;
       }, l.prototype.md5 = function(a) {
         var s = { str: "", key: null, raw: !1 };
@@ -2085,25 +2085,25 @@ function ua() {
           throw new Error("A parameter is required to return an md5 hash.");
         return this.bimd5.md5(s.str, s.key, s.raw);
       }, l.prototype.file = function(a) {
-        var s = a || {}, f = "fileExtension", g = Object.keys(this.get("fileExtension")), v, k;
-        if (v = this.word({ length: s.length }), s.extension)
-          return k = s.extension, v + "." + k;
+        var s = a || {}, f = "fileExtension", g = Object.keys(this.get("fileExtension")), y, k;
+        if (y = this.word({ length: s.length }), s.extension)
+          return k = s.extension, y + "." + k;
         if (s.extensions) {
           if (Array.isArray(s.extensions))
-            return k = this.pickone(s.extensions), v + "." + k;
+            return k = this.pickone(s.extensions), y + "." + k;
           if (s.extensions.constructor === Object) {
             var I = s.extensions, _ = Object.keys(I);
-            return k = this.pickone(I[this.pickone(_)]), v + "." + k;
+            return k = this.pickone(I[this.pickone(_)]), y + "." + k;
           }
           throw new Error("Chance: Extensions must be an Array or Object");
         }
         if (s.fileType) {
           var S = s.fileType;
           if (g.indexOf(S) !== -1)
-            return k = this.pickone(this.get(f)[S]), v + "." + k;
+            return k = this.pickone(this.get(f)[S]), y + "." + k;
           throw new RangeError("Chance: Expect file type value to be 'raster', 'vector', '3d' or 'document'");
         }
-        return k = this.pickone(this.get(f)[this.pickone(g)]), v + "." + k;
+        return k = this.pickone(this.get(f)[this.pickone(g)]), y + "." + k;
       }, l.prototype.fileWithContent = function(a) {
         var s = a || {}, f = "fileName" in s ? s.fileName : this.file().split(".")[0];
         if (f += "." + ("fileExtension" in s ? s.fileExtension : this.file().split(".")[1]), typeof s.fileSize != "number")
@@ -2114,7 +2114,7 @@ function ua() {
         };
         return g;
       };
-      var P = {
+      var B = {
         firstNames: {
           male: {
             en: ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Charles", "Thomas", "Christopher", "Daniel", "Matthew", "George", "Donald", "Anthony", "Paul", "Mark", "Edward", "Steven", "Kenneth", "Andrew", "Brian", "Joshua", "Kevin", "Ronald", "Timothy", "Jason", "Jeffrey", "Frank", "Gary", "Ryan", "Nicholas", "Eric", "Stephen", "Jacob", "Larry", "Jonathan", "Scott", "Raymond", "Justin", "Brandon", "Gregory", "Samuel", "Benjamin", "Patrick", "Jack", "Henry", "Walter", "Dennis", "Jerry", "Alexander", "Peter", "Tyler", "Douglas", "Harold", "Aaron", "Jose", "Adam", "Arthur", "Zachary", "Carl", "Nathan", "Albert", "Kyle", "Lawrence", "Joe", "Willie", "Gerald", "Roger", "Keith", "Jeremy", "Terry", "Harry", "Ralph", "Sean", "Jesse", "Roy", "Louis", "Billy", "Austin", "Bruce", "Eugene", "Christian", "Bryan", "Wayne", "Russell", "Howard", "Fred", "Ethan", "Jordan", "Philip", "Alan", "Juan", "Randy", "Vincent", "Bobby", "Dylan", "Johnny", "Phillip", "Victor", "Clarence", "Ernest", "Martin", "Craig", "Stanley", "Shawn", "Travis", "Bradley", "Leonard", "Earl", "Gabriel", "Jimmy", "Francis", "Todd", "Noah", "Danny", "Dale", "Cody", "Carlos", "Allen", "Frederick", "Logan", "Curtis", "Alex", "Joel", "Luis", "Norman", "Marvin", "Glenn", "Tony", "Nathaniel", "Rodney", "Melvin", "Alfred", "Steve", "Cameron", "Chad", "Edwin", "Caleb", "Evan", "Antonio", "Lee", "Herbert", "Jeffery", "Isaac", "Derek", "Ricky", "Marcus", "Theodore", "Elijah", "Luke", "Jesus", "Eddie", "Troy", "Mike", "Dustin", "Ray", "Adrian", "Bernard", "Leroy", "Angel", "Randall", "Wesley", "Ian", "Jared", "Mason", "Hunter", "Calvin", "Oscar", "Clifford", "Jay", "Shane", "Ronnie", "Barry", "Lucas", "Corey", "Manuel", "Leo", "Tommy", "Warren", "Jackson", "Isaiah", "Connor", "Don", "Dean", "Jon", "Julian", "Miguel", "Bill", "Lloyd", "Charlie", "Mitchell", "Leon", "Jerome", "Darrell", "Jeremiah", "Alvin", "Brett", "Seth", "Floyd", "Jim", "Blake", "Micheal", "Gordon", "Trevor", "Lewis", "Erik", "Edgar", "Vernon", "Devin", "Gavin", "Jayden", "Chris", "Clyde", "Tom", "Derrick", "Mario", "Brent", "Marc", "Herman", "Chase", "Dominic", "Ricardo", "Franklin", "Maurice", "Max", "Aiden", "Owen", "Lester", "Gilbert", "Elmer", "Gene", "Francisco", "Glen", "Cory", "Garrett", "Clayton", "Sam", "Jorge", "Chester", "Alejandro", "Jeff", "Harvey", "Milton", "Cole", "Ivan", "Andre", "Duane", "Landon"],
@@ -11653,8 +11653,8 @@ function ua() {
         return s;
       };
       function L(a, s) {
-        for (var f = ae(a), g, v = 0, k = f.length; v < k; v++)
-          g = f[v], s[g] = a[g] || s[g];
+        for (var f = ae(a), g, y = 0, k = f.length; y < k; y++)
+          g = f[y], s[g] = a[g] || s[g];
       }
       function z(a, s) {
         for (var f = 0, g = a.length; f < g; f++)
@@ -11665,7 +11665,7 @@ function ua() {
         return f ? z(a, g) : L(a, g), g;
       }
       l.prototype.get = function(a) {
-        return Q(P[a]);
+        return Q(B[a]);
       }, l.prototype.mac_address = function(a) {
         a = m(a), a.separator || (a.separator = a.networkVersion ? "." : ":");
         var s = "ABCDEF1234567890", f = "";
@@ -11682,11 +11682,11 @@ function ua() {
           "Chance: Standard deviation (dev) must be a number"
         ), a.pool.length > 0)
           return this.normal_pool(a);
-        var s, f, g, v, k = a.mean, I = a.dev;
+        var s, f, g, y, k = a.mean, I = a.dev;
         do
           f = this.random() * 2 - 1, g = this.random() * 2 - 1, s = f * f + g * g;
         while (s >= 1);
-        return v = f * Math.sqrt(-2 * Math.log(s) / s), I * v + k;
+        return y = f * Math.sqrt(-2 * Math.log(s) / s), I * y + k;
       }, l.prototype.normal_pool = function(a) {
         var s = 0;
         do {
@@ -11714,7 +11714,7 @@ function ua() {
         }
         return s + this.character({ alpha: !0, casing: "upper" }) + this.character({ alpha: !0, casing: "upper" }) + this.character({ alpha: !0, casing: "upper" });
       }, l.prototype.set = function(a, s) {
-        typeof a == "string" ? P[a] = s : P = Q(a, P);
+        typeof a == "string" ? B[a] = s : B = Q(a, B);
       }, l.prototype.tv = function(a) {
         return this.radio(a);
       }, l.prototype.cnpj = function() {
@@ -11727,7 +11727,7 @@ function ua() {
       }, l.prototype.mersenne_twister = function(a) {
         return new U(a);
       }, l.prototype.blueimp_md5 = function() {
-        return new D();
+        return new $();
       };
       var U = function(a) {
         a === void 0 && (a = Math.floor(Math.random() * Math.pow(10, 13))), this.N = 624, this.M = 397, this.MATRIX_A = 2567483615, this.UPPER_MASK = 2147483648, this.LOWER_MASK = 2147483647, this.mt = new Array(this.N), this.mti = this.N + 1, this.init_genrand(a);
@@ -11736,10 +11736,10 @@ function ua() {
         for (this.mt[0] = a >>> 0, this.mti = 1; this.mti < this.N; this.mti++)
           a = this.mt[this.mti - 1] ^ this.mt[this.mti - 1] >>> 30, this.mt[this.mti] = (((a & 4294901760) >>> 16) * 1812433253 << 16) + (a & 65535) * 1812433253 + this.mti, this.mt[this.mti] >>>= 0;
       }, U.prototype.init_by_array = function(a, s) {
-        var f = 1, g = 0, v, k;
-        for (this.init_genrand(19650218), v = this.N > s ? this.N : s; v; v--)
+        var f = 1, g = 0, y, k;
+        for (this.init_genrand(19650218), y = this.N > s ? this.N : s; y; y--)
           k = this.mt[f - 1] ^ this.mt[f - 1] >>> 30, this.mt[f] = (this.mt[f] ^ (((k & 4294901760) >>> 16) * 1664525 << 16) + (k & 65535) * 1664525) + a[g] + g, this.mt[f] >>>= 0, f++, g++, f >= this.N && (this.mt[0] = this.mt[this.N - 1], f = 1), g >= s && (g = 0);
-        for (v = this.N - 1; v; v--)
+        for (y = this.N - 1; y; y--)
           k = this.mt[f - 1] ^ this.mt[f - 1] >>> 30, this.mt[f] = (this.mt[f] ^ (((k & 4294901760) >>> 16) * 1566083941 << 16) + (k & 65535) * 1566083941) - f, this.mt[f] >>>= 0, f++, f >= this.N && (this.mt[0] = this.mt[this.N - 1], f = 1);
         this.mt[0] = 2147483648;
       }, U.prototype.genrand_int32 = function() {
@@ -11765,64 +11765,64 @@ function ua() {
         var a = this.genrand_int32() >>> 5, s = this.genrand_int32() >>> 6;
         return (a * 67108864 + s) * (1 / 9007199254740992);
       };
-      var D = function() {
+      var $ = function() {
       };
-      D.prototype.VERSION = "1.0.1", D.prototype.safe_add = function(s, f) {
-        var g = (s & 65535) + (f & 65535), v = (s >> 16) + (f >> 16) + (g >> 16);
-        return v << 16 | g & 65535;
-      }, D.prototype.bit_roll = function(a, s) {
+      $.prototype.VERSION = "1.0.1", $.prototype.safe_add = function(s, f) {
+        var g = (s & 65535) + (f & 65535), y = (s >> 16) + (f >> 16) + (g >> 16);
+        return y << 16 | g & 65535;
+      }, $.prototype.bit_roll = function(a, s) {
         return a << s | a >>> 32 - s;
-      }, D.prototype.md5_cmn = function(a, s, f, g, v, k) {
-        return this.safe_add(this.bit_roll(this.safe_add(this.safe_add(s, a), this.safe_add(g, k)), v), f);
-      }, D.prototype.md5_ff = function(a, s, f, g, v, k, I) {
-        return this.md5_cmn(s & f | ~s & g, a, s, v, k, I);
-      }, D.prototype.md5_gg = function(a, s, f, g, v, k, I) {
-        return this.md5_cmn(s & g | f & ~g, a, s, v, k, I);
-      }, D.prototype.md5_hh = function(a, s, f, g, v, k, I) {
-        return this.md5_cmn(s ^ f ^ g, a, s, v, k, I);
-      }, D.prototype.md5_ii = function(a, s, f, g, v, k, I) {
-        return this.md5_cmn(f ^ (s | ~g), a, s, v, k, I);
-      }, D.prototype.binl_md5 = function(a, s) {
+      }, $.prototype.md5_cmn = function(a, s, f, g, y, k) {
+        return this.safe_add(this.bit_roll(this.safe_add(this.safe_add(s, a), this.safe_add(g, k)), y), f);
+      }, $.prototype.md5_ff = function(a, s, f, g, y, k, I) {
+        return this.md5_cmn(s & f | ~s & g, a, s, y, k, I);
+      }, $.prototype.md5_gg = function(a, s, f, g, y, k, I) {
+        return this.md5_cmn(s & g | f & ~g, a, s, y, k, I);
+      }, $.prototype.md5_hh = function(a, s, f, g, y, k, I) {
+        return this.md5_cmn(s ^ f ^ g, a, s, y, k, I);
+      }, $.prototype.md5_ii = function(a, s, f, g, y, k, I) {
+        return this.md5_cmn(f ^ (s | ~g), a, s, y, k, I);
+      }, $.prototype.binl_md5 = function(a, s) {
         a[s >> 5] |= 128 << s % 32, a[(s + 64 >>> 9 << 4) + 14] = s;
-        var f, g, v, k, I, _ = 1732584193, S = -271733879, M = -1732584194, T = 271733878;
+        var f, g, y, k, I, _ = 1732584193, S = -271733879, M = -1732584194, T = 271733878;
         for (f = 0; f < a.length; f += 16)
-          g = _, v = S, k = M, I = T, _ = this.md5_ff(_, S, M, T, a[f], 7, -680876936), T = this.md5_ff(T, _, S, M, a[f + 1], 12, -389564586), M = this.md5_ff(M, T, _, S, a[f + 2], 17, 606105819), S = this.md5_ff(S, M, T, _, a[f + 3], 22, -1044525330), _ = this.md5_ff(_, S, M, T, a[f + 4], 7, -176418897), T = this.md5_ff(T, _, S, M, a[f + 5], 12, 1200080426), M = this.md5_ff(M, T, _, S, a[f + 6], 17, -1473231341), S = this.md5_ff(S, M, T, _, a[f + 7], 22, -45705983), _ = this.md5_ff(_, S, M, T, a[f + 8], 7, 1770035416), T = this.md5_ff(T, _, S, M, a[f + 9], 12, -1958414417), M = this.md5_ff(M, T, _, S, a[f + 10], 17, -42063), S = this.md5_ff(S, M, T, _, a[f + 11], 22, -1990404162), _ = this.md5_ff(_, S, M, T, a[f + 12], 7, 1804603682), T = this.md5_ff(T, _, S, M, a[f + 13], 12, -40341101), M = this.md5_ff(M, T, _, S, a[f + 14], 17, -1502002290), S = this.md5_ff(S, M, T, _, a[f + 15], 22, 1236535329), _ = this.md5_gg(_, S, M, T, a[f + 1], 5, -165796510), T = this.md5_gg(T, _, S, M, a[f + 6], 9, -1069501632), M = this.md5_gg(M, T, _, S, a[f + 11], 14, 643717713), S = this.md5_gg(S, M, T, _, a[f], 20, -373897302), _ = this.md5_gg(_, S, M, T, a[f + 5], 5, -701558691), T = this.md5_gg(T, _, S, M, a[f + 10], 9, 38016083), M = this.md5_gg(M, T, _, S, a[f + 15], 14, -660478335), S = this.md5_gg(S, M, T, _, a[f + 4], 20, -405537848), _ = this.md5_gg(_, S, M, T, a[f + 9], 5, 568446438), T = this.md5_gg(T, _, S, M, a[f + 14], 9, -1019803690), M = this.md5_gg(M, T, _, S, a[f + 3], 14, -187363961), S = this.md5_gg(S, M, T, _, a[f + 8], 20, 1163531501), _ = this.md5_gg(_, S, M, T, a[f + 13], 5, -1444681467), T = this.md5_gg(T, _, S, M, a[f + 2], 9, -51403784), M = this.md5_gg(M, T, _, S, a[f + 7], 14, 1735328473), S = this.md5_gg(S, M, T, _, a[f + 12], 20, -1926607734), _ = this.md5_hh(_, S, M, T, a[f + 5], 4, -378558), T = this.md5_hh(T, _, S, M, a[f + 8], 11, -2022574463), M = this.md5_hh(M, T, _, S, a[f + 11], 16, 1839030562), S = this.md5_hh(S, M, T, _, a[f + 14], 23, -35309556), _ = this.md5_hh(_, S, M, T, a[f + 1], 4, -1530992060), T = this.md5_hh(T, _, S, M, a[f + 4], 11, 1272893353), M = this.md5_hh(M, T, _, S, a[f + 7], 16, -155497632), S = this.md5_hh(S, M, T, _, a[f + 10], 23, -1094730640), _ = this.md5_hh(_, S, M, T, a[f + 13], 4, 681279174), T = this.md5_hh(T, _, S, M, a[f], 11, -358537222), M = this.md5_hh(M, T, _, S, a[f + 3], 16, -722521979), S = this.md5_hh(S, M, T, _, a[f + 6], 23, 76029189), _ = this.md5_hh(_, S, M, T, a[f + 9], 4, -640364487), T = this.md5_hh(T, _, S, M, a[f + 12], 11, -421815835), M = this.md5_hh(M, T, _, S, a[f + 15], 16, 530742520), S = this.md5_hh(S, M, T, _, a[f + 2], 23, -995338651), _ = this.md5_ii(_, S, M, T, a[f], 6, -198630844), T = this.md5_ii(T, _, S, M, a[f + 7], 10, 1126891415), M = this.md5_ii(M, T, _, S, a[f + 14], 15, -1416354905), S = this.md5_ii(S, M, T, _, a[f + 5], 21, -57434055), _ = this.md5_ii(_, S, M, T, a[f + 12], 6, 1700485571), T = this.md5_ii(T, _, S, M, a[f + 3], 10, -1894986606), M = this.md5_ii(M, T, _, S, a[f + 10], 15, -1051523), S = this.md5_ii(S, M, T, _, a[f + 1], 21, -2054922799), _ = this.md5_ii(_, S, M, T, a[f + 8], 6, 1873313359), T = this.md5_ii(T, _, S, M, a[f + 15], 10, -30611744), M = this.md5_ii(M, T, _, S, a[f + 6], 15, -1560198380), S = this.md5_ii(S, M, T, _, a[f + 13], 21, 1309151649), _ = this.md5_ii(_, S, M, T, a[f + 4], 6, -145523070), T = this.md5_ii(T, _, S, M, a[f + 11], 10, -1120210379), M = this.md5_ii(M, T, _, S, a[f + 2], 15, 718787259), S = this.md5_ii(S, M, T, _, a[f + 9], 21, -343485551), _ = this.safe_add(_, g), S = this.safe_add(S, v), M = this.safe_add(M, k), T = this.safe_add(T, I);
+          g = _, y = S, k = M, I = T, _ = this.md5_ff(_, S, M, T, a[f], 7, -680876936), T = this.md5_ff(T, _, S, M, a[f + 1], 12, -389564586), M = this.md5_ff(M, T, _, S, a[f + 2], 17, 606105819), S = this.md5_ff(S, M, T, _, a[f + 3], 22, -1044525330), _ = this.md5_ff(_, S, M, T, a[f + 4], 7, -176418897), T = this.md5_ff(T, _, S, M, a[f + 5], 12, 1200080426), M = this.md5_ff(M, T, _, S, a[f + 6], 17, -1473231341), S = this.md5_ff(S, M, T, _, a[f + 7], 22, -45705983), _ = this.md5_ff(_, S, M, T, a[f + 8], 7, 1770035416), T = this.md5_ff(T, _, S, M, a[f + 9], 12, -1958414417), M = this.md5_ff(M, T, _, S, a[f + 10], 17, -42063), S = this.md5_ff(S, M, T, _, a[f + 11], 22, -1990404162), _ = this.md5_ff(_, S, M, T, a[f + 12], 7, 1804603682), T = this.md5_ff(T, _, S, M, a[f + 13], 12, -40341101), M = this.md5_ff(M, T, _, S, a[f + 14], 17, -1502002290), S = this.md5_ff(S, M, T, _, a[f + 15], 22, 1236535329), _ = this.md5_gg(_, S, M, T, a[f + 1], 5, -165796510), T = this.md5_gg(T, _, S, M, a[f + 6], 9, -1069501632), M = this.md5_gg(M, T, _, S, a[f + 11], 14, 643717713), S = this.md5_gg(S, M, T, _, a[f], 20, -373897302), _ = this.md5_gg(_, S, M, T, a[f + 5], 5, -701558691), T = this.md5_gg(T, _, S, M, a[f + 10], 9, 38016083), M = this.md5_gg(M, T, _, S, a[f + 15], 14, -660478335), S = this.md5_gg(S, M, T, _, a[f + 4], 20, -405537848), _ = this.md5_gg(_, S, M, T, a[f + 9], 5, 568446438), T = this.md5_gg(T, _, S, M, a[f + 14], 9, -1019803690), M = this.md5_gg(M, T, _, S, a[f + 3], 14, -187363961), S = this.md5_gg(S, M, T, _, a[f + 8], 20, 1163531501), _ = this.md5_gg(_, S, M, T, a[f + 13], 5, -1444681467), T = this.md5_gg(T, _, S, M, a[f + 2], 9, -51403784), M = this.md5_gg(M, T, _, S, a[f + 7], 14, 1735328473), S = this.md5_gg(S, M, T, _, a[f + 12], 20, -1926607734), _ = this.md5_hh(_, S, M, T, a[f + 5], 4, -378558), T = this.md5_hh(T, _, S, M, a[f + 8], 11, -2022574463), M = this.md5_hh(M, T, _, S, a[f + 11], 16, 1839030562), S = this.md5_hh(S, M, T, _, a[f + 14], 23, -35309556), _ = this.md5_hh(_, S, M, T, a[f + 1], 4, -1530992060), T = this.md5_hh(T, _, S, M, a[f + 4], 11, 1272893353), M = this.md5_hh(M, T, _, S, a[f + 7], 16, -155497632), S = this.md5_hh(S, M, T, _, a[f + 10], 23, -1094730640), _ = this.md5_hh(_, S, M, T, a[f + 13], 4, 681279174), T = this.md5_hh(T, _, S, M, a[f], 11, -358537222), M = this.md5_hh(M, T, _, S, a[f + 3], 16, -722521979), S = this.md5_hh(S, M, T, _, a[f + 6], 23, 76029189), _ = this.md5_hh(_, S, M, T, a[f + 9], 4, -640364487), T = this.md5_hh(T, _, S, M, a[f + 12], 11, -421815835), M = this.md5_hh(M, T, _, S, a[f + 15], 16, 530742520), S = this.md5_hh(S, M, T, _, a[f + 2], 23, -995338651), _ = this.md5_ii(_, S, M, T, a[f], 6, -198630844), T = this.md5_ii(T, _, S, M, a[f + 7], 10, 1126891415), M = this.md5_ii(M, T, _, S, a[f + 14], 15, -1416354905), S = this.md5_ii(S, M, T, _, a[f + 5], 21, -57434055), _ = this.md5_ii(_, S, M, T, a[f + 12], 6, 1700485571), T = this.md5_ii(T, _, S, M, a[f + 3], 10, -1894986606), M = this.md5_ii(M, T, _, S, a[f + 10], 15, -1051523), S = this.md5_ii(S, M, T, _, a[f + 1], 21, -2054922799), _ = this.md5_ii(_, S, M, T, a[f + 8], 6, 1873313359), T = this.md5_ii(T, _, S, M, a[f + 15], 10, -30611744), M = this.md5_ii(M, T, _, S, a[f + 6], 15, -1560198380), S = this.md5_ii(S, M, T, _, a[f + 13], 21, 1309151649), _ = this.md5_ii(_, S, M, T, a[f + 4], 6, -145523070), T = this.md5_ii(T, _, S, M, a[f + 11], 10, -1120210379), M = this.md5_ii(M, T, _, S, a[f + 2], 15, 718787259), S = this.md5_ii(S, M, T, _, a[f + 9], 21, -343485551), _ = this.safe_add(_, g), S = this.safe_add(S, y), M = this.safe_add(M, k), T = this.safe_add(T, I);
         return [_, S, M, T];
-      }, D.prototype.binl2rstr = function(a) {
+      }, $.prototype.binl2rstr = function(a) {
         var s, f = "";
         for (s = 0; s < a.length * 32; s += 8)
           f += String.fromCharCode(a[s >> 5] >>> s % 32 & 255);
         return f;
-      }, D.prototype.rstr2binl = function(a) {
+      }, $.prototype.rstr2binl = function(a) {
         var s, f = [];
         for (f[(a.length >> 2) - 1] = void 0, s = 0; s < f.length; s += 1)
           f[s] = 0;
         for (s = 0; s < a.length * 8; s += 8)
           f[s >> 5] |= (a.charCodeAt(s / 8) & 255) << s % 32;
         return f;
-      }, D.prototype.rstr_md5 = function(a) {
+      }, $.prototype.rstr_md5 = function(a) {
         return this.binl2rstr(this.binl_md5(this.rstr2binl(a), a.length * 8));
-      }, D.prototype.rstr_hmac_md5 = function(a, s) {
-        var f, g = this.rstr2binl(a), v = [], k = [], I;
-        for (v[15] = k[15] = void 0, g.length > 16 && (g = this.binl_md5(g, a.length * 8)), f = 0; f < 16; f += 1)
-          v[f] = g[f] ^ 909522486, k[f] = g[f] ^ 1549556828;
-        return I = this.binl_md5(v.concat(this.rstr2binl(s)), 512 + s.length * 8), this.binl2rstr(this.binl_md5(k.concat(I), 640));
-      }, D.prototype.rstr2hex = function(a) {
-        var s = "0123456789abcdef", f = "", g, v;
-        for (v = 0; v < a.length; v += 1)
-          g = a.charCodeAt(v), f += s.charAt(g >>> 4 & 15) + s.charAt(g & 15);
+      }, $.prototype.rstr_hmac_md5 = function(a, s) {
+        var f, g = this.rstr2binl(a), y = [], k = [], I;
+        for (y[15] = k[15] = void 0, g.length > 16 && (g = this.binl_md5(g, a.length * 8)), f = 0; f < 16; f += 1)
+          y[f] = g[f] ^ 909522486, k[f] = g[f] ^ 1549556828;
+        return I = this.binl_md5(y.concat(this.rstr2binl(s)), 512 + s.length * 8), this.binl2rstr(this.binl_md5(k.concat(I), 640));
+      }, $.prototype.rstr2hex = function(a) {
+        var s = "0123456789abcdef", f = "", g, y;
+        for (y = 0; y < a.length; y += 1)
+          g = a.charCodeAt(y), f += s.charAt(g >>> 4 & 15) + s.charAt(g & 15);
         return f;
-      }, D.prototype.str2rstr_utf8 = function(a) {
+      }, $.prototype.str2rstr_utf8 = function(a) {
         return unescape(encodeURIComponent(a));
-      }, D.prototype.raw_md5 = function(a) {
+      }, $.prototype.raw_md5 = function(a) {
         return this.rstr_md5(this.str2rstr_utf8(a));
-      }, D.prototype.hex_md5 = function(a) {
+      }, $.prototype.hex_md5 = function(a) {
         return this.rstr2hex(this.raw_md5(a));
-      }, D.prototype.raw_hmac_md5 = function(a, s) {
+      }, $.prototype.raw_hmac_md5 = function(a, s) {
         return this.rstr_hmac_md5(this.str2rstr_utf8(a), this.str2rstr_utf8(s));
-      }, D.prototype.hex_hmac_md5 = function(a, s) {
+      }, $.prototype.hex_hmac_md5 = function(a, s) {
         return this.rstr2hex(this.raw_hmac_md5(a, s));
-      }, D.prototype.md5 = function(a, s, f) {
+      }, $.prototype.md5 = function(a, s, f) {
         return s ? f ? this.raw_hmac_md5(s, a) : this.hex_hmac_md5(s, a) : f ? this.raw_md5(a) : this.hex_md5(a);
       }, x.exports && (e = x.exports = l), e.Chance = l, typeof importScripts < "u" && (chance = new l(), self.Chance = l), typeof window == "object" && typeof window.document == "object" && (window.Chance = l, window.chance = new l());
     })();
@@ -11830,7 +11830,7 @@ function ua() {
 }
 var da = ua();
 const ma = /* @__PURE__ */ fa(da);
-function De(x, e, n, t) {
+function $e(x, e, n, t) {
   const r = new ma(Ie++), o = n.toUpperCase(), d = x.toUpperCase(), c = e.toUpperCase();
   if (t != null && 0 < t.length) {
     const h = t.length;
@@ -11884,7 +11884,7 @@ function ce() {
   const x = Math.sin(Ie++) * 1e4;
   return x - Math.floor(x);
 }
-function $e(x) {
+function De(x) {
   return x.lastIndexOf(`,
 `) === x.length - 2 && (x = x.substring(0, x.length - 2) + `
 `), x;
@@ -11951,8 +11951,8 @@ class pa {
         }
         const m = r.findChild(h);
         let p = m ? m.inferType() : "number", b = h;
-        const y = this._ddl.find(l);
-        y != null ? p = this._fkColType(y) ?? p : this._ddl.find(h)?.isMany2One?.() && !h.endsWith("_id") && (b = (O(h) ?? h) + "_id"), o.columns.push({ name: b, datatype: p });
+        const v = this._ddl.find(l);
+        v != null ? p = this._fkColType(v) ?? p : this._ddl.find(h)?.isMany2One?.() && !h.endsWith("_id") && (b = (O(h) ?? h) + "_id"), o.columns.push({ name: b, datatype: p });
       }
       const c = r.getExplicitPkName();
       for (const h of r.children)
@@ -12081,7 +12081,7 @@ commit;
     for (const h of e.regularColumns())
       d != null && h.parseName() === "id" || h.isOption("pk") || (o += i + h.parseName() + `,
 `);
-    if (o = $e(o), o += `) values (
+    if (o = De(o), o += `) values (
 `, d != null)
       u = n + 1, o += i + u + `,
 `;
@@ -12093,7 +12093,7 @@ commit;
     }
     for (const h in e.fks ?? {}) {
       const l = e.fks[h], { type: m, values: p } = this._resolveFkSampleValues(e, h, l, t, u, r), b = String(this._ddl.getOptionValue("Data Language") ?? "EN");
-      o += i + String(Ne(b, De(r, (O(l) ?? l) + "_id", m, p))) + `,
+      o += i + String(Ne(b, $e(r, (O(l) ?? l) + "_id", m, p))) + `,
 `;
     }
     for (const h of e.regularColumns()) {
@@ -12101,14 +12101,14 @@ commit;
       let l = h.parseValues();
       const m = h.parseName();
       if (t != null) {
-        const y = t[m];
-        y != null && (l = [y]);
+        const v = t[m];
+        v != null && (l = [v]);
       }
-      const p = String(this._ddl.getOptionValue("Data Language") ?? "EN"), b = De(r, m, this.colType(h._inferTypeFull()), l);
+      const p = String(this._ddl.getOptionValue("Data Language") ?? "EN"), b = $e(r, m, this.colType(h._inferTypeFull()), l);
       o += i + String(Ne(p, b)) + `,
 `;
     }
-    return o = $e(o), o += `);
+    return o = De(o), o += `);
 `, o;
   }
   _resolveFkSampleValues(e, n, t, r, o, d) {
@@ -12122,8 +12122,8 @@ commit;
       else {
         const p = d + "_" + t, b = this._ddl.data?.[p];
         if (b != null)
-          for (const y in b) {
-            const A = b[y];
+          for (const v in b) {
+            const A = b[v];
             if (A[d + "_id"] === o) {
               const C = A[n];
               C != null && (typeof C == "string" && (h = "STRING"), u = [C]);
@@ -12131,7 +12131,7 @@ commit;
             }
           }
         else {
-          const y = c?.getPkName() ?? null, A = y != null ? l[y] : void 0;
+          const v = c?.getPkName() ?? null, A = v != null ? l[v] : void 0;
           A != null && (typeof A == "string" && (h = "STRING"), u = [A]);
         }
       }
@@ -12256,16 +12256,16 @@ annotations (` + e.annotations + ")"), o += ` as
     for (let h = 2; h < n.length; h++) {
       const l = r[n[h].value];
       if (l === null) continue;
-      const m = n[h].value, p = t[m], b = d[m] ?? {}, y = " ".repeat(c - (p.length + 1 + 2));
-      u += i + p + ".id" + i + y + (O(m) ?? m) + `_id,
+      const m = n[h].value, p = t[m], b = d[m] ?? {}, v = " ".repeat(c - (p.length + 1 + 2));
+      u += i + p + ".id" + i + v + (O(m) ?? m) + `_id,
 `;
       for (const A of l.children)
         if (A.children.length === 0) {
           const C = A.parseName();
           let w = "";
           if (1 < (o[C] ?? 0) && (w = (O(m) ?? m) + "_"), b[C]) {
-            const B = `coalesce(${"t_" + m}.trans_${C}, ${p}.${C})`;
-            u += i + B + i + w + C + `,
+            const E = `coalesce(${"t_" + m}.trans_${C}, ${p}.${C})`;
+            u += i + E + i + w + C + `,
 `;
           } else {
             const N = " ".repeat(c - (p.length + 1 + C.length));
@@ -12338,17 +12338,17 @@ annotations (` + e.annotations + ")"), o += ` as
         const b = r[l];
         c += i + "left join " + p + `
 `;
-        for (let y = 0; y < b.length; y++) {
-          const A = t[b[y].parentTable], C = y === 0 ? "on " : "and ";
-          c += i + i + C + m + "." + b[y].fkCol + " = " + A + `.id
+        for (let v = 0; v < b.length; v++) {
+          const A = t[b[v].parentTable], C = v === 0 ? "on " : "and ";
+          c += i + i + C + m + "." + b[v].fkCol + " = " + A + `.id
 `;
         }
       } else
         c += i + "cross join " + p + `
 `;
       if (o[l]) {
-        const b = d[l], y = this.ctx.objPrefix() + l + "_trans", A = "t_" + l, C = (O(l) ?? l) + "_id", w = b.getGenIdColName() ?? b.getExplicitPkName() ?? "id";
-        c += i + "left join " + y + " " + A + `
+        const b = d[l], v = this.ctx.objPrefix() + l + "_trans", A = "t_" + l, C = (O(l) ?? l) + "_id", w = b.getGenIdColName() ?? b.getExplicitPkName() ?? "id";
+        c += i + "left join " + v + " " + A + `
 `, c += i + i + "on " + A + "." + C + " = " + m + "." + w + `
 `, c += i + i + "and " + A + ".language_code = " + u + `
 `;
@@ -12396,36 +12396,36 @@ annotations (` + e.annotations + ")"), o += ` as
       const p = n[m].value, b = this.ctx.find(p);
       if (b === null) continue;
       b.lateInitFks();
-      let y = !1;
+      let v = !1;
       if (b.fks !== null) {
-        for (const P in b.fks)
-          if (b.fks[P] === o.parseName()) {
-            y = !0;
+        for (const B in b.fks)
+          if (b.fks[B] === o.parseName()) {
+            v = !0;
             break;
           }
       }
       const A = b.getGenIdColName() ?? b.getExplicitPkName() ?? "id";
       let C = 3;
-      for (const P of b.children) {
-        if (P.children.length > 0 || P.refId() !== null) continue;
-        const G = P.parseName().length;
+      for (const B of b.children) {
+        if (B.children.length > 0 || B.refId() !== null) continue;
+        const G = B.parseName().length;
         G > C && (C = G);
       }
       const w = {};
-      if (b.fks !== null) for (const P in b.fks) w[P] = !0;
-      const N = y ? `[{
+      if (b.fks !== null) for (const B in b.fks) w[B] = !0;
+      const N = v ? `[{
 ` : `{
-`, B = y ? "}]" : "}";
+`, E = v ? "}]" : "}";
       c += i + p + " ".repeat(h - p.length) + " : " + this.ctx.objPrefix() + b.parseName() + " " + d + `
 `, c += i + N, c += i + i + "_id" + " ".repeat(C - 3) + " : " + A + `,
 `;
-      for (const P of b.regularColumns()) {
-        const G = P.parseName();
+      for (const B of b.regularColumns()) {
+        const G = B.parseName();
         G === A || w[G] || (c += i + i + G + " ".repeat(C - G.length) + " : " + G + `,
 `);
       }
       c = c.replace(/,\n$/, `
-`), c += i + B + `,
+`), c += i + E + `,
 `;
     }
     return c = c.replace(/,\n$/, `
@@ -12456,8 +12456,8 @@ annotations (` + e.annotations + ")"), o += ` as
     for (const p of n) {
       const b = "trans_" + p.parseName();
       l = i + " ".repeat(c - b.length);
-      const y = se(p._inferTypeFull(), o, d);
-      h += i + b + l + y + `,
+      const v = se(p._inferTypeFull(), o, d);
+      h += i + b + l + v + `,
 `;
     }
     h += i + "constraint " + r + this.naming.uk + " unique (" + u + `, language_code)
@@ -12488,8 +12488,8 @@ select `;
     for (const p in e.fks ?? {}) {
       if (0 < p.indexOf(",")) continue;
       const b = this.ctx.find(e.fks[p]);
-      let y = "";
-      b !== null && b.isMany2One && b.isMany2One() && !p.endsWith("_id") && (y = "_id"), h.push("k." + p + y);
+      let v = "";
+      b !== null && b.isMany2One && b.isMany2One() && !p.endsWith("_id") && (v = "_id"), h.push("k." + p + v);
     }
     const m = {};
     for (const p of n) m[p.parseName()] = !0;
@@ -12893,7 +12893,7 @@ ${i}${i}returning ${r}
 `, l += `${i}end insert_row;
 
 `;
-    const y = [
+    const v = [
       ...u.map((A) => `${A.toLowerCase()} = p_row.${A.toLowerCase()}`),
       ...c.map((A) => `${A.parseName().toLowerCase()} = p_row.${A.parseName().toLowerCase()}`)
     ];
@@ -12902,7 +12902,7 @@ ${i}${i}returning ${r}
 `, l += `${i}begin
 `, l += `${i}${i}l_id := p_row.${r};
 `, l += `${i}${i}update ${n} set
-`, l += `${i}${i}${i}` + y.join(`,
+`, l += `${i}${i}${i}` + v.join(`,
 ${i}${i}${i}`) + `
 `, l += `${i}${i}where ${r} = l_id`, o && (l += `
 ${i}${i}  and row_version = p_row.row_version`), l += `;
@@ -13118,11 +13118,11 @@ ${i});
 
 `, p += `${i}procedure upd (
 `;
-    const y = [];
-    y.push(`${i}${i}p_id           in  ${n}.${r}%type`);
+    const v = [];
+    v.push(`${i}${i}p_id           in  ${n}.${r}%type`);
     for (const { name: A, nullable: C } of c)
-      y.push(`${i}${i}p_${A.padEnd(13)} in  ${n}.${A}%type${C ? " default null" : ""}`);
-    return o && y.push(`${i}${i}p_row_version  in  ${n}.row_version%type`), p += y.join(`,
+      v.push(`${i}${i}p_${A.padEnd(13)} in  ${n}.${A}%type${C ? " default null" : ""}`);
+    return o && v.push(`${i}${i}p_row_version  in  ${n}.row_version%type`), p += v.join(`,
 `) + `
 ${i});
 
@@ -13166,10 +13166,10 @@ ${i}) is
 
 `, b += `${i}procedure ins (
 `;
-    const y = [];
+    const v = [];
     for (const { name: C, nullable: w } of u)
-      y.push(`${i}${i}p_${C.padEnd(13)} in  ${n}.${C}%type${w ? " default null" : ""}`);
-    y.push(`${i}${i}p_id           out ${n}.${o}%type`), b += y.join(`,
+      v.push(`${i}${i}p_${C.padEnd(13)} in  ${n}.${C}%type${w ? " default null" : ""}`);
+    v.push(`${i}${i}p_id           out ${n}.${o}%type`), b += v.join(`,
 `) + `
 ${i}) is
 `, b += `${i}${i}l_rec ${t}.t_rec;
@@ -13228,7 +13228,7 @@ ${i}${i});
 `, r;
   }
   _generateAuditBody(e) {
-    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), t = n + "_dal", r = n + "_aud", o = (e.getPkName() ?? "id").toLowerCase(), d = String(e.getOptionValue("auditlog") || "").trim() || "app_audit_log", c = (this.ctx.objPrefix() + d).toLowerCase(), u = c + "_svc", h = this._hasVersionCol(e), l = Object.keys(e.fks ?? {}).map((w) => w.toLowerCase()), m = this._svcCols(e).map((w) => w.parseName().toLowerCase()), b = (this.ctx.find(d)?.children ?? []).some((w) => w.parseName().toLowerCase() === "old_values"), y = this._hasSyntheticTenantId(e), A = [o, ...y ? ["tenant_id"] : [], ...l, ...m];
+    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), t = n + "_dal", r = n + "_aud", o = (e.getPkName() ?? "id").toLowerCase(), d = String(e.getOptionValue("auditlog") || "").trim() || "app_audit_log", c = (this.ctx.objPrefix() + d).toLowerCase(), u = c + "_svc", h = this._hasVersionCol(e), l = Object.keys(e.fks ?? {}).map((w) => w.toLowerCase()), m = this._svcCols(e).map((w) => w.parseName().toLowerCase()), b = (this.ctx.find(d)?.children ?? []).some((w) => w.parseName().toLowerCase() === "old_values"), v = this._hasSyntheticTenantId(e), A = [o, ...v ? ["tenant_id"] : [], ...l, ...m];
     h && A.push("row_version");
     let C = `create or replace package body ${r} as
 
@@ -13347,8 +13347,8 @@ end ` + n.toLowerCase() + `_api;
 `, c.toLowerCase();
   }
 }
-const va = " not null";
-function ya(x) {
+const ya = " not null";
+function va(x) {
   return x.lastIndexOf(`,
 `) === x.length - 2 && (x = x.substring(0, x.length - 2) + `
 `), x;
@@ -13442,12 +13442,12 @@ class ke extends pa {
     for (let r in e.fks) {
       let o = e.fks[r];
       if (0 < r.indexOf(",")) {
-        const y = this._ddl.find(o), A = be(r, ", ");
+        const v = this._ddl.find(o), A = be(r, ", ");
         for (let C = 0; C < A.length; C++) {
           const w = A[C];
           if (w === ",") continue;
-          const N = y?.findChild(w), B = i + " ".repeat(e.maxChildNameLen() - w.length);
-          t += i + w + B + (N ? this._toOracleType(N._inferTypeFull()) : "number") + `,
+          const N = v?.findChild(w), E = i + " ".repeat(e.maxChildNameLen() - w.length);
+          t += i + w + E + (N ? this._toOracleType(N._inferTypeFull()) : "number") + `,
 `;
         }
         continue;
@@ -13463,57 +13463,57 @@ class ke extends pa {
       if (this._ddl.optionEQvalue("tenantid", !0) && !e.isOption("notenantid") && u !== null && !u.isOption("notenantid") && p !== "tenant_id") {
         t += `,
 `;
-        const y = m + o, A = y + "_tid_id_uix", C = y + "_tid_id_uq", w = `create unique index ${A}
-    on ${y} (tenant_id, id);
-`, N = `alter table ${y}
+        const v = m + o, A = v + "_tid_id_uix", C = v + "_tid_id_uq", w = `create unique index ${A}
+    on ${v} (tenant_id, id);
+`, N = `alter table ${v}
     add constraint ${C}
     unique (tenant_id, id) using index ${A};
 `;
         this._ddl.postponedAltersSet.has(w) || (this._ddl.postponedAlters.push(w), this._ddl.postponedAltersSet.add(w), this._ddl.postponedAlters.push(N), this._ddl.postponedAltersSet.add(N));
-        let B = "";
-        e.isOption("cascade") ? B = " on delete cascade" : e.isOption("setnull") && (B = " on delete set null");
+        let E = "";
+        e.isOption("cascade") ? E = " on delete cascade" : e.isOption("setnull") && (E = " on delete set null");
         for (const ae in e.children) {
           const L = e.children[ae];
           if (p === L.parseName()) {
-            L.isOption("cascade") ? B = " on delete cascade" : L.isOption("setnull") && (B = " on delete set null");
+            L.isOption("cascade") ? E = " on delete cascade" : L.isOption("setnull") && (E = " on delete set null");
             break;
           }
         }
-        B || (B = this._globalOnDelete());
-        const P = n + "_" + p + this._naming.fk, G = "alter table " + n + " add constraint " + P + `
+        E || (E = this._globalOnDelete());
+        const B = n + "_" + p + this._naming.fk, G = "alter table " + n + " add constraint " + B + `
     foreign key (tenant_id, ` + p + `)
-    references ` + m + o + " (tenant_id, id)" + B + `;
+    references ` + m + o + " (tenant_id, id)" + E + `;
 `;
         this._ddl.postponedAltersSet.has(G) || (this._ddl.postponedAlters.push(G), this._ddl.postponedAltersSet.add(G));
       } else if (u !== null && (u.line < e.line || u.isMany2One())) {
         t += i + i + " ".repeat(e.maxChildNameLen()) + "constraint " + n + "_" + r + this._naming.fk + `
 `;
-        let y = "";
-        e.isOption("cascade") ? y = " on delete cascade" : e.isOption("setnull") && (y = " on delete set null");
+        let v = "";
+        e.isOption("cascade") ? v = " on delete cascade" : e.isOption("setnull") && (v = " on delete set null");
         let A = "";
         for (const C in e.children) {
           const w = e.children[C];
           if (r === w.parseName()) {
-            (w.isOption("nn") || w.isOption("notnull")) && (A = va), w.isOption("cascade") ? y = " on delete cascade" : w.isOption("setnull") && (y = " on delete set null");
+            (w.isOption("nn") || w.isOption("notnull")) && (A = ya), w.isOption("cascade") ? v = " on delete cascade" : w.isOption("setnull") && (v = " on delete set null");
             break;
           }
         }
-        y || (y = this._globalOnDelete()), t += i + i + " ".repeat(e.maxChildNameLen()) + "references " + m + o + y + A + `,
+        v || (v = this._globalOnDelete()), t += i + i + " ".repeat(e.maxChildNameLen()) + "references " + m + o + v + A + `,
 `;
       } else {
         t += `,
 `;
-        let y = "";
-        e.isOption("cascade") ? y = " on delete cascade" : e.isOption("setnull") && (y = " on delete set null");
+        let v = "";
+        e.isOption("cascade") ? v = " on delete cascade" : e.isOption("setnull") && (v = " on delete set null");
         for (const C in e.children) {
           const w = e.children[C];
           if (r === w.parseName()) {
-            w.isOption("cascade") ? y = " on delete cascade" : w.isOption("setnull") && (y = " on delete set null");
+            w.isOption("cascade") ? v = " on delete cascade" : w.isOption("setnull") && (v = " on delete set null");
             break;
           }
         }
-        y || (y = this._globalOnDelete());
-        const A = "alter table " + n + " add constraint " + n + "_" + r + "_fk foreign key (" + r + ") references " + m + o + y + `;
+        v || (v = this._globalOnDelete());
+        const A = "alter table " + n + " add constraint " + n + "_" + r + "_fk foreign key (" + r + ") references " + m + o + v + `;
 `;
         this._ddl.postponedAltersSet.has(A) || (this._ddl.postponedAlters.push(A), this._ddl.postponedAltersSet.add(A));
       }
@@ -13739,7 +13739,7 @@ no delete until 16 days after insert` : "";
     e.isOption("immutable") && r && (o = "immutable ");
     const d = e.getGenIdColName();
     let c = this._genSequence(e, n);
-    return c += this._genTableHeader(e, n, o, d), c += this._genTenantIdColumn(e), c += this._genFkColumns(e, n), c += this._genRowKeyColumn(e, n), c += this._genRegularColumns(e, n, d), c += this._genRowVersionColumn(e), c += this._genAuditColumns(e), c += this._genAdditionalColumns(e), c += e.genConstraint(), c = ya(c), c += this._genTableFooter(e, n, o, r), c += this._genMultiColFkAlters(e, n), c += this._genIndexes(e, n, r), this._genTenantIdFk(e, n), c += this._genComments(e, n), c += `
+    return c += this._genTableHeader(e, n, o, d), c += this._genTenantIdColumn(e), c += this._genFkColumns(e, n), c += this._genRowKeyColumn(e, n), c += this._genRegularColumns(e, n, d), c += this._genRowVersionColumn(e), c += this._genAuditColumns(e), c += this._genAdditionalColumns(e), c += e.genConstraint(), c = va(c), c += this._genTableFooter(e, n, o, r), c += this._genMultiColFkAlters(e, n), c += this._genIndexes(e, n, r), this._genTenantIdFk(e, n), c += this._genComments(e, n), c += `
 `, c;
   }
   generateDDL(e) {
@@ -13919,8 +13919,8 @@ modify ` + n + " generated always  as identity restart start with " + t + `;
     if (this._ddl.optionEQvalue("aienrichment", !0) && h != null && h.length >= 2 && (ie(h) ?? 0) >= 26) {
       const l = [], m = {}, p = this._ddl.objPrefix();
       for (const b of e) {
-        const y = b.inferType(), A = b.getAnnotationPairs(), C = (p + b.parseName()).toUpperCase();
-        if (y === "table") {
+        const v = b.inferType(), A = b.getAnnotationPairs(), C = (p + b.parseName()).toUpperCase();
+        if (v === "table") {
           for (const w of A) {
             if (w.label.toUpperCase() === "TGROUP") {
               w.value != null && (m[w.value] || (m[w.value] = []), m[w.value].push(C));
@@ -13930,18 +13930,18 @@ modify ` + n + " generated always  as identity restart start with " + t + `;
           }
           for (const w of b.children) {
             if (w.children.length > 0) continue;
-            const N = w.getAnnotationPairs(), B = C + "." + w.parseName().toUpperCase();
-            for (const P of N)
-              P.value != null && l.push(`    metadata_annotations.set('${P.label}', '${P.value}', '${B}', 'TABLE COLUMN');`);
+            const N = w.getAnnotationPairs(), E = C + "." + w.parseName().toUpperCase();
+            for (const B of N)
+              B.value != null && l.push(`    metadata_annotations.set('${B.label}', '${B.value}', '${E}', 'TABLE COLUMN');`);
           }
-        } else if (y === "view")
+        } else if (v === "view")
           for (const w of A)
             w.value != null && l.push(`    metadata_annotations.set('${w.label}', '${w.value}', '${C}', 'VIEW');`);
       }
       for (const b of Object.keys(m)) {
         l.push(`    metadata_annotations.create_group('${b}');`);
-        for (const y of m[b])
-          l.push(`    metadata_annotations.add_to_group('${b}', '${y}', 'TABLE');`);
+        for (const v of m[b])
+          l.push(`    metadata_annotations.add_to_group('${b}', '${v}', 'TABLE');`);
       }
       l.length > 0 && (t += `-- AI enrichment
 begin
@@ -13987,7 +13987,7 @@ const Aa = {
   // overridden to 17 for bodies in _step()
   create_view: 16
 };
-function E(x, e, n, t, r = !1) {
+function P(x, e, n, t, r = !1) {
   const o = { kind: x, table: e, sql: n, requiresManualIntervention: r };
   return t !== void 0 && (o.column = t), o;
 }
@@ -13998,24 +13998,24 @@ function X(x, e, n, t, r = !1) {
 class _a {
   compute(e, n) {
     const t = [], r = [], o = this._tableMap(e), d = this._tableMap(n), c = this._viewMap(e), u = this._viewMap(n), h = [];
-    for (const [y, A] of o)
-      d.has(y) || h.push(A);
-    for (const y of this._reverseTopoSort(h, e))
-      t.push(...this._dropTable(y, e)), r.push(X("DESTRUCTIVE", y.parseName(), `table dropped: ${y.parseName()}`));
+    for (const [v, A] of o)
+      d.has(v) || h.push(A);
+    for (const v of this._reverseTopoSort(h, e))
+      t.push(...this._dropTable(v, e)), r.push(X("DESTRUCTIVE", v.parseName(), `table dropped: ${v.parseName()}`));
     const l = [];
-    for (const [y, A] of d)
-      o.has(y) || l.push(A);
-    for (const y of this._topoSort(l, n))
-      t.push(...this._createTable(y, n));
-    for (const [y, A] of d) {
-      const C = o.get(y);
+    for (const [v, A] of d)
+      o.has(v) || l.push(A);
+    for (const v of this._topoSort(l, n))
+      t.push(...this._createTable(v, n));
+    for (const [v, A] of d) {
+      const C = o.get(v);
       if (C == null) continue;
       const { stmts: w, warns: N } = this._diffTable(C, A, e, n);
       t.push(...w), r.push(...N);
     }
     t.push(...this._diffViews(c, u, n));
-    const m = this._order(t), p = this._buildPreamble(m, r), b = m.map((y) => y.sql.endsWith(`
-`) ? y.sql : y.sql + `
+    const m = this._order(t), p = this._buildPreamble(m, r), b = m.map((v) => v.sql.endsWith(`
+`) ? v.sql : v.sql + `
 `).join(`
 `);
     return {
@@ -14065,16 +14065,16 @@ class _a {
     const t = [], r = e.parseName(), o = n.objPrefix() + r, c = Y(n) ? "if exists " : "", u = e.trimmedContent().toLowerCase().includes("/api");
     if (n.optionEQvalue("api", "layered") && u)
       for (const h of this._layeredPkgNames(e, n))
-        t.push(E("drop_package", r, `drop package ${c}${h};
+        t.push(P("drop_package", r, `drop package ${c}${h};
 `));
-    else (n.optionEQvalue("api", "yes") || u) && t.push(E("drop_package", r, `drop package ${c}${o}_api;
+    else (n.optionEQvalue("api", "yes") || u) && t.push(P("drop_package", r, `drop package ${c}${o}_api;
 `));
-    return n.optionEQvalue("pk", "SEQ") && t.push(E(
+    return n.optionEQvalue("pk", "SEQ") && t.push(P(
       "drop_sequence",
       r,
       `drop sequence ${c}${o}${R.seq};
 `
-    )), t.push(E(
+    )), t.push(P(
       "drop_table",
       r,
       `drop table ${c}${o} cascade constraints;
@@ -14084,7 +14084,7 @@ class _a {
   // ── Create table ──────────────────────────────────────────────────────────
   _createTable(e, n) {
     const t = [], r = e.parseName(), o = n.objPrefix() + r, d = new ke(n);
-    n.optionEQvalue("pk", "SEQ") && t.push(E(
+    n.optionEQvalue("pk", "SEQ") && t.push(P(
       "add_sequence",
       r,
       `create sequence  ${o}${R.seq};
@@ -14095,7 +14095,7 @@ class _a {
     const h = n.postponedAlters.slice(c);
     for (const m of h) u += m + `
 `;
-    t.push(E("create_table", r, u));
+    t.push(P("create_table", r, u));
     const l = e.trimmedContent().toLowerCase().includes("/api");
     if (n.optionEQvalue("api", "layered") && l) {
       const m = new oe(n, R);
@@ -14110,18 +14110,15 @@ class _a {
   _diffTable(e, n, t, r) {
     const o = [], d = [], c = n.parseName(), u = r.objPrefix() + c;
     e.lateInitFks(), n.lateInitFks();
-    const h = e.getPkName() ?? e.getGenIdColName() ?? "id", l = n.getPkName() ?? n.getGenIdColName() ?? "id";
-    if (h !== l)
-      throw new Error(`PK column change not supported on table "${c}": ${h} \u2192 ${l}`);
-    const m = this._colMap(e), p = this._colMap(n), b = [];
-    for (const [L, z] of m)
-      p.has(L) || b.push(z);
-    const y = [];
-    for (const [L, z] of p)
-      m.has(L) || y.push(z);
-    const A = this._detectRenames(b, y), C = new Set([...A.keys()].map((L) => L.parseName())), w = new Set([...A.values()].map((L) => L.parseName()));
-    for (const [L, z] of A)
-      o.push(E(
+    const h = this._colMap(e), l = this._colMap(n), m = [];
+    for (const [L, z] of h)
+      l.has(L) || m.push(z);
+    const p = [];
+    for (const [L, z] of l)
+      h.has(L) || p.push(z);
+    const b = this._detectRenames(m, p), v = new Set([...b.keys()].map((L) => L.parseName())), A = new Set([...b.values()].map((L) => L.parseName()));
+    for (const [L, z] of b)
+      o.push(P(
         "rename_hint",
         c,
         `-- alter table ${u} rename column ${L.parseName()} to ${z.parseName()};
@@ -14133,21 +14130,21 @@ class _a {
         `suspected rename: ${L.parseName()} \u2192 ${z.parseName()} (verify before applying)`,
         L.parseName()
       ));
-    for (const L of b)
-      C.has(L.parseName()) || (o.push(...this._dropColumn(u, c, L)), d.push(X("DESTRUCTIVE", c, `column dropped: ${L.parseName()}`, L.parseName())));
-    for (const L of y) {
-      if (w.has(L.parseName())) continue;
+    for (const L of m)
+      v.has(L.parseName()) || (o.push(...this._dropColumn(u, c, L)), d.push(X("DESTRUCTIVE", c, `column dropped: ${L.parseName()}`, L.parseName())));
+    for (const L of p) {
+      if (A.has(L.parseName())) continue;
       const { stmts: z, warns: Q } = this._addColumn(u, c, L, r);
       o.push(...z), d.push(...Q);
     }
-    for (const [L, z] of p) {
-      const Q = m.get(L);
+    for (const [L, z] of l) {
+      const Q = h.get(L);
       if (Q == null) continue;
-      const { stmts: U, warns: D } = this._modifyColumn(u, c, Q, z, t, r);
-      o.push(...U), d.push(...D);
+      const { stmts: U, warns: $ } = this._modifyColumn(u, c, Q, z, t, r);
+      o.push(...U), d.push(...$);
     }
-    const N = e.hasRowVersion(), B = n.hasRowVersion();
-    !N && B && (o.push(E(
+    const C = e.hasRowVersion(), w = n.hasRowVersion();
+    !C && w && (o.push(P(
       "add_column",
       c,
       `-- \u26A0 MANUAL INTERVENTION REQUIRED
@@ -14165,41 +14162,134 @@ class _a {
       "rowversion added \u2014 requires manual column initialization",
       "row_version",
       !0
-    ))), N && !B && (o.push(E(
+    ))), C && !w && (o.push(P(
       "set_unused",
       c,
       `alter table ${u} set unused column row_version;
 `,
       "row_version"
-    )), o.push(E(
+    )), o.push(P(
       "drop_unused_columns",
       c,
       `-- [MAINTENANCE] safe to defer to a maintenance window
 alter table ${u} drop unused columns;
 `,
       "row_version"
-    )), d.push(X("DESTRUCTIVE", c, "row_version column dropped", "row_version"))), o.push(...this._diffFKs(e, n, t, r)), o.push(...this._diffIndexes(e, n, t, r)), o.push(...this._diffTriggers(e, n, t, r));
-    const P = b.some((L) => !C.has(L.parseName())) || y.some((L) => !w.has(L.parseName())) || o.some((L) => L.kind === "modify_column"), { stmts: G, warns: ae } = this._diffPackages(e, n, t, r, P);
+    )), d.push(X("DESTRUCTIVE", c, "row_version column dropped", "row_version")));
+    const { stmts: N, warns: E } = this._diffPk(e, n, t, r, h, l);
+    o.push(...N), d.push(...E), o.push(...this._diffFKs(e, n, t, r)), o.push(...this._diffIndexes(e, n, t, r)), o.push(...this._diffTriggers(e, n, t, r));
+    const B = m.some((L) => !v.has(L.parseName())) || p.some((L) => !A.has(L.parseName())) || o.some((L) => L.kind === "modify_column"), { stmts: G, warns: ae } = this._diffPackages(e, n, t, r, B);
     return o.push(...G), d.push(...ae), { stmts: o, warns: d };
+  }
+  // ── PK descriptor ────────────────────────────────────────────────────────
+  _pkDesc(e, n) {
+    const t = e.parseName(), r = n.objPrefix() + t, o = e.getExplicitPkName();
+    if (o != null) {
+      const c = o.includes(",") ? o.split(",").map((h) => h.trim()) : [o], u = c.length === 1 ? `${r}_${c[0]}_pk` : `${r}_pk`;
+      return { type: "business", columns: c, constraintName: u };
+    }
+    const d = e.getGenIdColName();
+    return d != null ? { type: "surrogate", columns: [d], constraintName: `${r}_pk` } : { type: "none", columns: [], constraintName: "" };
+  }
+  // ── Diff PK ───────────────────────────────────────────────────────────────
+  _diffPk(e, n, t, r, o, d) {
+    const c = [], u = [], h = n.parseName(), l = t.objPrefix() + h, m = r.objPrefix() + h, p = this._pkDesc(e, t), b = this._pkDesc(n, r);
+    if (p.type === b.type && p.columns.join(",") === b.columns.join(","))
+      return { stmts: c, warns: u };
+    const v = p.type === "none" ? "none" : `${p.type}(${p.columns.join(", ")})`, A = b.type === "none" ? "none" : `${b.type}(${b.columns.join(", ")})`;
+    u.push(X(
+      "DESTRUCTIVE",
+      h,
+      `Primary key change on "${h}": ${v} \u2192 ${A}. All FKs referencing this table must be dropped and re-created. Data migration required.`,
+      void 0,
+      !0
+    ));
+    for (const C of b.columns) {
+      const w = o.get(C), N = d.get(C);
+      N == null || this._isNotNull(N) || (w == null ? c.push(P(
+        "modify_column",
+        h,
+        `-- \u26A0 MANUAL INTERVENTION REQUIRED
+-- Populate ${C} for existing rows, then add NOT NULL:
+-- update ${m} set ${C} = ??? where ${C} is null;
+-- commit;
+-- alter table ${m} modify (${C} not null);
+`,
+        C,
+        !0
+      )) : this._isNotNull(w) || c.push(P(
+        "modify_column",
+        h,
+        `-- \u26A0 MANUAL INTERVENTION REQUIRED
+-- Ensure all rows have a non-null ${C} value, then:
+-- alter table ${m} modify (${C} not null);
+`,
+        C,
+        !0
+      )));
+    }
+    if (p.constraintName && c.push(P(
+      "modify_column",
+      h,
+      `-- \u26A0 MANUAL INTERVENTION REQUIRED
+-- Drop the old primary key constraint before continuing:
+-- alter table ${l} drop constraint ${p.constraintName};
+`,
+      void 0,
+      !0
+    )), p.type === "surrogate") {
+      const C = p.columns[0];
+      d.has(C) || (c.push(P(
+        "set_unused",
+        h,
+        `alter table ${l} set unused column ${C};
+`,
+        C
+      )), c.push(P(
+        "drop_unused_columns",
+        h,
+        `-- [MAINTENANCE] safe to defer to a maintenance window
+alter table ${l} drop unused columns;
+`,
+        C
+      ))), t.optionEQvalue("pk", "SEQ") && c.push(P(
+        "drop_sequence",
+        h,
+        `drop sequence ${l}${R.seq};
+`
+      ));
+    }
+    if (b.columns.length > 0) {
+      const C = b.columns.join(", ");
+      c.push(P(
+        "add_fk",
+        h,
+        `-- \u26A0 MANUAL INTERVENTION REQUIRED
+-- After all PK columns are NOT NULL, add the primary key:
+-- alter table ${m} add constraint ${b.constraintName} primary key (${C});
+`,
+        void 0,
+        !0
+      ));
+    }
+    return { stmts: c, warns: u };
   }
   // ── Diff triggers ─────────────────────────────────────────────────────────
   _diffTriggers(e, n, t, r) {
-    const o = [], d = n.parseName(), c = (t.objPrefix() + d).toLowerCase();
-    (r.objPrefix() + d).toLowerCase();
-    const u = (y) => JSON.stringify({
-      lower: y.children.filter((A) => A.isOption("lower")).map((A) => A.parseName()),
-      upper: y.children.filter((A) => A.isOption("upper") && !A.isOption("lower")).map((A) => A.parseName()),
-      rv: y.hasRowVersion(),
-      audit: y.hasAuditCols(),
-      rowkey: y.hasRowKey()
+    const o = [], d = n.parseName(), c = (t.objPrefix() + d).toLowerCase(), u = (v) => JSON.stringify({
+      lower: v.children.filter((A) => A.isOption("lower")).map((A) => A.parseName()),
+      upper: v.children.filter((A) => A.isOption("upper") && !A.isOption("lower")).map((A) => A.parseName()),
+      rv: v.hasRowVersion(),
+      audit: v.hasAuditCols(),
+      rowkey: v.hasRowKey()
     });
     if (u(e) === u(n)) return o;
-    const h = (y) => y.children.some((A) => A.isOption("lower") || A.isOption("upper")), l = h(e) || e.hasRowVersion() || e.hasAuditCols() || e.hasRowKey(), m = h(e) || e.hasRowVersion() || e.hasAuditCols(), p = h(n) || n.hasRowVersion() || n.hasAuditCols() || n.hasRowKey(), b = h(n) || n.hasRowVersion() || n.hasAuditCols();
-    if (l && o.push(E("drop_trigger", d, `drop trigger ${c}${R.bi};
-`)), m && o.push(E("drop_trigger", d, `drop trigger ${c}${R.bu};
+    const h = (v) => v.children.some((A) => A.isOption("lower") || A.isOption("upper")), l = h(e) || e.hasRowVersion() || e.hasAuditCols() || e.hasRowKey(), m = h(e) || e.hasRowVersion() || e.hasAuditCols(), p = h(n) || n.hasRowVersion() || n.hasAuditCols() || n.hasRowKey(), b = h(n) || n.hasRowVersion() || n.hasAuditCols();
+    if (l && o.push(P("drop_trigger", d, `drop trigger ${c}${R.bi};
+`)), m && o.push(P("drop_trigger", d, `drop trigger ${c}${R.bu};
 `)), p || b) {
       const A = new oe(r, R).generateTrigger(n);
-      A && o.push(E("create_trigger", d, A));
+      A && o.push(P("create_trigger", d, A));
     }
     return o;
   }
@@ -14238,31 +14328,31 @@ alter table ${u} drop unused columns;
     const o = [], d = [], c = Y(r), u = t._inferTypeFull(), h = se(u, r.semantics(), c), l = t.parseName(), m = this._isNotNull(t);
     let p = "";
     if (t.isOption("default")) {
-      const y = t.getDefaultValue() ?? "", A = ["sysdate", "current_date", "current_timestamp", "systimestamp", "localtimestamp"], w = h.startsWith("integer") || h.startsWith("number") || h.startsWith("date") || h.startsWith("timestamp") || A.includes(y.toLowerCase()) ? "" : "'";
-      p += A.includes(y.toLowerCase()) ? ` default on null ${y}` : ` default on null ${w}${y}${w}`;
+      const v = t.getDefaultValue() ?? "", A = ["sysdate", "current_date", "current_timestamp", "systimestamp", "localtimestamp"], w = h.startsWith("integer") || h.startsWith("number") || h.startsWith("date") || h.startsWith("timestamp") || A.includes(v.toLowerCase()) ? "" : "'";
+      p += A.includes(v.toLowerCase()) ? ` default on null ${v}` : ` default on null ${w}${v}${w}`;
     }
     (t.isOption("hidden") || t.isOption("invincible")) && (p += " invisible");
     const b = `${l} ${h}${p}`;
     if (m) {
-      const y = t.isOption("default") ? t.getDefaultValue() ?? "???" : "???", A = ["sysdate", "current_date", "current_timestamp", "systimestamp", "localtimestamp"], C = h.startsWith("integer") || h.startsWith("number") || h.startsWith("date") || h.startsWith("timestamp") || A.includes(y.toLowerCase()), w = !t.isOption("default") || C ? "" : "'", N = A.includes(y.toLowerCase()) ? y : `${w}${y}${w}`, B = t.isOption("default");
-      o.push(E(
+      const v = t.isOption("default") ? t.getDefaultValue() ?? "???" : "???", A = ["sysdate", "current_date", "current_timestamp", "systimestamp", "localtimestamp"], C = h.startsWith("integer") || h.startsWith("number") || h.startsWith("date") || h.startsWith("timestamp") || A.includes(v.toLowerCase()), w = !t.isOption("default") || C ? "" : "'", N = A.includes(v.toLowerCase()) ? v : `${w}${v}${w}`, E = t.isOption("default");
+      o.push(P(
         "add_column",
         n,
         `alter table ${e} add (${b});
 `,
         l
-      )), o.push(E(
+      )), o.push(P(
         "add_column",
         n,
         `-- \u26A0 MANUAL INTERVENTION REQUIRED
-` + (B ? `-- Populate existing rows with the default value before step 3.
+` + (E ? `-- Populate existing rows with the default value before step 3.
 ` : `-- Populate existing rows before step 3. Replace ??? with the correct expression.
 `) + `-- update ${e} set ${l} = ${N} where ${l} is null;
 -- commit;
 `,
         l,
         !0
-      )), o.push(E(
+      )), o.push(P(
         "modify_column",
         n,
         `alter table ${e} modify (${l} not null);
@@ -14276,7 +14366,7 @@ alter table ${u} drop unused columns;
         !0
       ));
     } else
-      o.push(E(
+      o.push(P(
         "add_column",
         n,
         `alter table ${e} add (${b});
@@ -14284,40 +14374,40 @@ alter table ${u} drop unused columns;
         l
       ));
     if (t.isOption("check") || t.isOption("values")) {
-      const y = t.isOption("check") ? t.getValues("check") : t.getValues("values"), A = H(r.objPrefix(), `${n}_${l}`, R.ck);
-      o.push(E(
+      const v = t.isOption("check") ? t.getValues("check") : t.getValues("values"), A = H(r.objPrefix(), `${n}_${l}`, R.ck);
+      o.push(P(
         "add_column",
         n,
-        `alter table ${e} add constraint ${A} check (${l} in (${y}));
+        `alter table ${e} add constraint ${A} check (${l} in (${v}));
 `,
         l
       ));
     } else if (t.isOption("between")) {
-      const y = t.getBetweenClause() ?? "", A = H(`${n}_${l}`, R.bet);
-      o.push(E(
+      const v = t.getBetweenClause() ?? "", A = H(`${n}_${l}`, R.bet);
+      o.push(P(
         "add_column",
         n,
-        `alter table ${e} add constraint ${A} check (${l} between ${y});
+        `alter table ${e} add constraint ${A} check (${l} between ${v});
 `,
         l
       ));
     }
     if (t.isOption("unique") || t.isOption("uk")) {
-      const y = `${e}_${l}${R.unq}`, A = `create unique index ${y} on ${e} (${l});
+      const v = `${e}_${l}${R.unq}`, A = `create unique index ${v} on ${e} (${l});
 `;
-      o.push(E(
+      o.push(P(
         "add_index",
         n,
-        c ? `create unique index if not exists ${y} on ${e} (${l});
+        c ? `create unique index if not exists ${v} on ${e} (${l});
 ` : this._wrapIndex(A)
       ));
     } else if (t.isOption("idx") || t.isOption("index")) {
-      const y = `${e}_${l}${R.idx}`, A = `create index ${y} on ${e} (${l});
+      const v = `${e}_${l}${R.idx}`, A = `create index ${v} on ${e} (${l});
 `;
-      o.push(E(
+      o.push(P(
         "add_index",
         n,
-        c ? `create index if not exists ${y} on ${e} (${l});
+        c ? `create index if not exists ${v} on ${e} (${l});
 ` : this._wrapIndex(A)
       ));
     }
@@ -14327,14 +14417,14 @@ alter table ${u} drop unused columns;
   _dropColumn(e, n, t) {
     const r = t.parseName();
     return [
-      E(
+      P(
         "set_unused",
         n,
         `alter table ${e} set unused column ${r};
 `,
         r
       ),
-      E(
+      P(
         "drop_unused_columns",
         n,
         `-- [MAINTENANCE] safe to defer to a maintenance window
@@ -14346,11 +14436,11 @@ alter table ${e} drop unused columns;
   }
   // ── Modify column ─────────────────────────────────────────────────────────
   _modifyColumn(e, n, t, r, o, d) {
-    const c = [], u = [], h = t._inferTypeFull(), l = r._inferTypeFull(), m = Y(d), p = se(h, o.semantics(), Y(o)), b = se(l, d.semantics(), m), y = this._isNotNull(t), A = this._isNotNull(r), C = r.parseName(), w = p !== b, N = y !== A;
+    const c = [], u = [], h = t._inferTypeFull(), l = r._inferTypeFull(), m = Y(d), p = se(h, o.semantics(), Y(o)), b = se(l, d.semantics(), m), v = this._isNotNull(t), A = this._isNotNull(r), C = r.parseName(), w = p !== b, N = v !== A;
     if (w || N)
       if (h.base !== l.base) {
-        const s = A ? " not null" : y ? " null" : "";
-        c.push(E(
+        const s = A ? " not null" : v ? " null" : "";
+        c.push(P(
           "modify_column",
           n,
           `alter table ${e} modify (${C} ${b}${s});
@@ -14366,8 +14456,8 @@ alter table ${e} drop unused columns;
         const s = [];
         w && s.push(b), N && s.push(A ? "not null" : "null");
         const f = s.join(" ");
-        if (!y && A)
-          c.push(E(
+        if (!v && A)
+          c.push(P(
             "modify_column",
             n,
             `-- \u26A0 MANUAL INTERVENTION REQUIRED
@@ -14383,27 +14473,27 @@ alter table ${e} drop unused columns;
             C,
             !0
           ));
-        else if (c.push(E(
+        else if (c.push(P(
           "modify_column",
           n,
           `alter table ${e} modify (${C} ${f});
 `,
           C
         )), w && h.base === "varchar") {
-          const v = h.varcharLen ?? 4e3, k = l.varcharLen ?? 4e3;
-          k < v && u.push(X(
+          const y = h.varcharLen ?? 4e3, k = l.varcharLen ?? 4e3;
+          k < y && u.push(X(
             "LOSSY",
             n,
-            `varchar size reduced on ${C}: ${v} \u2192 ${k}`,
+            `varchar size reduced on ${C}: ${y} \u2192 ${k}`,
             C
           ));
         }
       }
-    const B = t.getDefaultValue(), P = r.getDefaultValue();
-    if (B !== P)
+    const E = t.getDefaultValue(), B = r.getDefaultValue();
+    if (E !== B)
       if (r.isOption("default")) {
-        const s = P ?? "", f = ["sysdate", "current_date", "current_timestamp", "systimestamp", "localtimestamp"], v = b.startsWith("integer") || b.startsWith("number") || b.startsWith("date") || b.startsWith("timestamp") || f.includes(s.toLowerCase()) ? "" : "'", k = f.includes(s.toLowerCase()) ? `default on null ${s}` : `default on null ${v}${s}${v}`;
-        c.push(E(
+        const s = B ?? "", f = ["sysdate", "current_date", "current_timestamp", "systimestamp", "localtimestamp"], y = b.startsWith("integer") || b.startsWith("number") || b.startsWith("date") || b.startsWith("timestamp") || f.includes(s.toLowerCase()) ? "" : "'", k = f.includes(s.toLowerCase()) ? `default on null ${s}` : `default on null ${y}${s}${y}`;
+        c.push(P(
           "modify_column",
           n,
           `alter table ${e} modify (${C} ${k});
@@ -14411,7 +14501,7 @@ alter table ${e} drop unused columns;
           C
         ));
       } else
-        c.push(E(
+        c.push(P(
           "modify_column",
           n,
           `alter table ${e} modify (${C} default null);
@@ -14419,18 +14509,18 @@ alter table ${e} drop unused columns;
           C
         ));
     const G = t.isOption("hidden") || t.isOption("invincible"), ae = r.isOption("hidden") || r.isOption("invincible");
-    G !== ae && c.push(E(
+    G !== ae && c.push(P(
       "modify_column",
       n,
       `alter table ${e} modify (${C} ${ae ? "invisible" : "visible"});
 `,
       C
     ));
-    const L = t.isOption("check") || t.isOption("values"), z = r.isOption("check") || r.isOption("values"), Q = t.isOption("between"), U = r.isOption("between"), D = L ? JSON.stringify(t.parseValues()) : Q ? t.getBetweenClause() : null, a = z ? JSON.stringify(r.parseValues()) : U ? r.getBetweenClause() : null;
-    if (D !== a) {
-      if (D !== null) {
+    const L = t.isOption("check") || t.isOption("values"), z = r.isOption("check") || r.isOption("values"), Q = t.isOption("between"), U = r.isOption("between"), $ = L ? JSON.stringify(t.parseValues()) : Q ? t.getBetweenClause() : null, a = z ? JSON.stringify(r.parseValues()) : U ? r.getBetweenClause() : null;
+    if ($ !== a) {
+      if ($ !== null) {
         const s = Q ? H(`${n}_${C}`, R.bet) : H(o.objPrefix(), `${n}_${C}`, R.ck);
-        c.push(E(
+        c.push(P(
           "modify_column",
           n,
           `alter table ${e} drop constraint ${s};
@@ -14440,7 +14530,7 @@ alter table ${e} drop unused columns;
       }
       if (z) {
         const s = z && r.isOption("check") ? r.getValues("check") : r.getValues("values"), f = H(d.objPrefix(), `${n}_${C}`, R.ck);
-        c.push(E(
+        c.push(P(
           "modify_column",
           n,
           `alter table ${e} add constraint ${f} check (${C} in (${s}));
@@ -14449,7 +14539,7 @@ alter table ${e} drop unused columns;
         ));
       } else if (U) {
         const s = r.getBetweenClause() ?? "", f = H(`${n}_${C}`, R.bet);
-        c.push(E(
+        c.push(P(
           "modify_column",
           n,
           `alter table ${e} add constraint ${f} check (${C} between ${s});
@@ -14464,18 +14554,18 @@ alter table ${e} drop unused columns;
   _diffFKs(e, n, t, r) {
     const o = [], d = n.parseName(), c = t.objPrefix() + d, u = r.objPrefix() + d, h = Y(r), l = e.fks ?? {}, m = n.fks ?? {};
     for (const p in l)
-      p in m || (o.push(E(
+      p in m || (o.push(P(
         "drop_fk",
         d,
         `alter table ${c} drop constraint ${c}_${p}_fk;
 `
-      )), o.push(E(
+      )), o.push(P(
         "set_unused",
         d,
         `alter table ${c} set unused column ${p};
 `,
         p
-      )), o.push(E(
+      )), o.push(P(
         "drop_unused_columns",
         d,
         `-- [MAINTENANCE] safe to defer to a maintenance window
@@ -14485,17 +14575,17 @@ alter table ${c} drop unused columns;
       )));
     for (const p in m) {
       if (p in l) continue;
-      const b = m[p], y = r.find(b) != null ? r.objPrefix() : "", A = `${u}_${p}_fk`, C = this._fkColType(b, r) ?? "number", w = `alter table ${u} add constraint ${A}
+      const b = m[p], v = r.find(b) != null ? r.objPrefix() : "", A = `${u}_${p}_fk`, C = this._fkColType(b, r) ?? "number", w = `alter table ${u} add constraint ${A}
     foreign key (${p})
-    references ${y}${b};
+    references ${v}${b};
 `;
-      o.push(E(
+      o.push(P(
         "add_column",
         d,
         `alter table ${u} add (${p} ${C});
 `,
         p
-      )), o.push(E(
+      )), o.push(P(
         "add_fk",
         d,
         h ? w : this._wrapConstraint(w)
@@ -14515,37 +14605,37 @@ alter table ${c} drop unused columns;
   _diffIndexes(e, n, t, r) {
     const o = [], d = n.parseName(), c = r.objPrefix() + d, u = t.objPrefix() + d, h = Y(r), l = this._colMap(e), m = this._colMap(n);
     for (const [p, b] of m) {
-      const y = l.get(p);
-      if (y == null) continue;
-      const A = y.isOption("idx") || y.isOption("index"), C = b.isOption("idx") || b.isOption("index"), w = y.isOption("unique") || y.isOption("uk"), N = b.isOption("unique") || b.isOption("uk");
+      const v = l.get(p);
+      if (v == null) continue;
+      const A = v.isOption("idx") || v.isOption("index"), C = b.isOption("idx") || b.isOption("index"), w = v.isOption("unique") || v.isOption("uk"), N = b.isOption("unique") || b.isOption("uk");
       if (!A && C) {
-        const B = `${c}_${p}_i`, P = `create index ${B} on ${c} (${p});
+        const E = `${c}_${p}_i`, B = `create index ${E} on ${c} (${p});
 `;
-        o.push(E(
+        o.push(P(
           "add_index",
           d,
-          h ? `create index if not exists ${B} on ${c} (${p});
-` : this._wrapIndex(P)
+          h ? `create index if not exists ${E} on ${c} (${p});
+` : this._wrapIndex(B)
         ));
       }
       if (A && !C) {
-        const B = `${u}_${p}_i`;
-        o.push(E("drop_index", d, `drop index ${B};
+        const E = `${u}_${p}_i`;
+        o.push(P("drop_index", d, `drop index ${E};
 `));
       }
       if (!w && N) {
-        const B = `${c}_${p}_unq`, P = `create unique index ${B} on ${c} (${p});
+        const E = `${c}_${p}_unq`, B = `create unique index ${E} on ${c} (${p});
 `;
-        o.push(E(
+        o.push(P(
           "add_index",
           d,
-          h ? `create unique index if not exists ${B} on ${c} (${p});
-` : this._wrapIndex(P)
+          h ? `create unique index if not exists ${E} on ${c} (${p});
+` : this._wrapIndex(B)
         ));
       }
       if (w && !N) {
-        const B = `${u}_${p}_unq`;
-        o.push(E("drop_index", d, `drop index ${B};
+        const E = `${u}_${p}_unq`;
+        o.push(P("drop_index", d, `drop index ${E};
 `));
       }
     }
@@ -14557,7 +14647,7 @@ alter table ${c} drop unused columns;
     for (const [u] of e)
       if (!n.has(u)) {
         const h = t.objPrefix() + u;
-        r.push(E("drop_view", u, `drop view ${d}${h};
+        r.push(P("drop_view", u, `drop view ${d}${h};
 `));
       }
     const c = [];
@@ -14567,7 +14657,7 @@ alter table ${c} drop unused columns;
     }
     for (const u of this._topoSortViews(c, n)) {
       const l = new ke(t).generateView(u);
-      l && r.push(E("create_view", u.parseName(), l));
+      l && r.push(P("create_view", u.parseName(), l));
     }
     return r;
   }
@@ -14590,9 +14680,9 @@ alter table ${c} drop unused columns;
   _diffPackages(e, n, t, r, o) {
     const d = [], c = [], u = n.parseName(), l = Y(r) ? "if exists " : "", m = this._apiKind(e, t), p = this._apiKind(n, r);
     for (const C of this._droppedPkgs(e, n, t, r, m, p))
-      d.push(E("drop_package", u, `drop package ${l}${C};
+      d.push(P("drop_package", u, `drop package ${l}${C};
 `));
-    const b = e.isOption("auditlog") !== n.isOption("auditlog"), y = (e.isOption("apex") || e.isOption("apx")) !== (n.isOption("apex") || n.isOption("apx")), A = o || m !== p || b || y;
+    const b = e.isOption("auditlog") !== n.isOption("auditlog"), v = (e.isOption("apex") || e.isOption("apx")) !== (n.isOption("apex") || n.isOption("apx")), A = o || m !== p || b || v;
     if (p === "layered" && A) {
       const C = new oe(r, R);
       d.push(...this._splitPkgBlocks(C.generateLayeredTAPI(n), u));
@@ -14618,7 +14708,7 @@ alter table ${c} drop unused columns;
   _splitPkgBlocks(e, n) {
     const t = [], r = e.split(/\n\/\s*(?:\n|$)/);
     for (let o of r)
-      o = o.trim(), o && t.push(E("create_package", n, o + `
+      o = o.trim(), o && t.push(P("create_package", n, o + `
 /
 `));
     return t;
@@ -15050,7 +15140,7 @@ function Na(x) {
       n.push(new ne(ee.invalidDatatype, new W(d.line, h)));
       continue;
     }
-    n = n.concat(Da(e, d)), n = n.concat($a(e, d)), n = n.concat(La(e, d));
+    n = n.concat($a(e, d)), n = n.concat(Da(e, d)), n = n.concat(La(e, d));
   }
   return n;
 }
@@ -15074,7 +15164,7 @@ function La(x, e) {
   }
   return t;
 }
-function Da(x, e) {
+function $a(x, e) {
   const n = [];
   if (e.inferType() === "view") {
     const t = e.src;
@@ -15087,7 +15177,7 @@ function Da(x, e) {
   }
   return n;
 }
-function $a(x, e) {
+function Da(x, e) {
   const n = [];
   if (e.isOption("fk") || 0 < e.indexOf("reference", !0)) {
     let t = e.indexOf("fk");
