@@ -25,7 +25,7 @@ function fe(x) {
   const e = qe(x);
   return e == null ? null : e.charAt(0) === '"' ? e : e.replace(/ /g, "_");
 }
-function H(x, e, n) {
+function z(x, e, n) {
   const t = n ?? "";
   let r = !1, o = x, d = e, c = t;
   o.charAt(0) === '"' && (r = !0, o = o.slice(1, -1)), d.charAt(0) === '"' && (r = !0, d = d.slice(1, -1)), c.charAt(0) === '"' && (r = !0, c = c.slice(1, -1));
@@ -43,7 +43,7 @@ function be(x, e) {
   return r.length > 0 && t.push(r), t;
 }
 const Ye = -10, ye = -11;
-class q {
+class Y {
   constructor(e, n, t, r, o, d = 0) {
     this.type = r, this.value = e, this.begin = n, this.end = t, this.line = o, this.col = d, this.lowerValue = e.toLowerCase();
   }
@@ -102,7 +102,7 @@ function Ze(x, e, n, t) {
   for (const h of u) {
     c += h.length;
     const l = h.charAt(0) >= "0" && h.charAt(0) <= "9" ? "constant.numeric" : "identifier";
-    e.push(new q(h, c - h.length, c, l, t));
+    e.push(new Y(h, c - h.length, c, l, t));
   }
   return !0;
 }
@@ -154,38 +154,38 @@ function Xe(x, e, n) {
         p.value += m;
         continue;
       }
-      p.end = c - 1, t.push(new q(m, c - 1, c, "ws", u, h));
+      p.end = c - 1, t.push(new Y(m, c - 1, c, "ws", u, h));
       continue;
     }
     if (e && m === "'") {
       const b = p !== null && p.value.length <= 2 ? p.value.toLowerCase() : "";
-      b === "q" || b === "n" || b === "u" || b === "nq" ? (p.value += m, p.type = "quoted-string") : t.push(new q(m, c - 1, Ye, "quoted-string", u, h));
+      b === "q" || b === "n" || b === "u" || b === "nq" ? (p.value += m, p.type = "quoted-string") : t.push(new Y(m, c - 1, Ye, "quoted-string", u, h));
       continue;
     }
     if (e && m === '"') {
-      t.push(new q(m, c - 1, ye, "dquoted-string", u, h));
+      t.push(new Y(m, c - 1, ye, "dquoted-string", u, h));
       continue;
     }
     if (m === "`" && r.includes("`")) {
-      t.push(new q(m, c - 1, ye, "bquoted-string", u, h));
+      t.push(new Y(m, c - 1, ye, "bquoted-string", u, h));
       continue;
     }
     if (m.length === 1 && r.includes(m)) {
-      t.push(new q(m, c - 1, c, "operation", u, h));
+      t.push(new Y(m, c - 1, c, "operation", u, h));
       continue;
     }
     if (m.length === 1 && o.includes(m)) {
-      t.push(new q(m, c - 1, c, "ws", u, h));
+      t.push(new Y(m, c - 1, c, "ws", u, h));
       continue;
     }
     if (m.charAt(0) >= "0" && m.charAt(0) <= "9") {
       if (!Ze(m, t, c - m.length, u)) {
         const b = m.charAt(m.length - 1).toUpperCase();
-        "KMGTPE".includes(b) ? (t.push(new q(m.slice(0, -1), c - m.length, c - 1, "constant.numeric", u, h)), t.push(new q(m.slice(-1), c - 1, c, "constant.numeric", u, h))) : t.push(new q(m, c - m.length, c, "constant.numeric", u, h));
+        "KMGTPE".includes(b) ? (t.push(new Y(m.slice(0, -1), c - m.length, c - 1, "constant.numeric", u, h)), t.push(new Y(m.slice(-1), c - 1, c, "constant.numeric", u, h))) : t.push(new Y(m, c - m.length, c, "constant.numeric", u, h));
       }
       continue;
     }
-    t.push(new q(m, c - m.length, c, "identifier", u, h));
+    t.push(new Y(m, c - m.length, c, "identifier", u, h));
   }
   return t.length > 0 && (t[t.length - 1].end = x.length), t;
 }
@@ -508,8 +508,8 @@ class ve {
       const m = this.src[l].value, p = '"' + m + '"';
       if (this.src[l].type !== "constant.numeric" && m !== fe(p)) {
         r = this.content.substring(this.src[e].begin, this.src[n - 1].end);
-        const b = 0 < String(this._ctx.getOptionValue("prefix") ?? "").length, v = fe(r) ?? r, A = b ? v : _e(v);
-        return this.parsedName = t + A, this.parsedName;
+        const b = 0 < String(this._ctx.getOptionValue("prefix") ?? "").length, A = fe(r) ?? r, v = b ? A : _e(A);
+        return this.parsedName = t + v, this.parsedName;
       }
     }
     for (let l = e; l < n; l++)
@@ -560,12 +560,12 @@ class ve {
     let u;
     const h = this.vectorType("vector") || this.vectorType("vect");
     h !== null && (o = "vector", u = h.substring(6));
-    const l = this.parent, m = H(l.parseName(), "_", this.parseName());
+    const l = this.parent, m = z(l.parseName(), "_", this.parseName());
     let p = !1;
-    const b = n.endsWith("_yn") || n.startsWith("is_"), v = He.some((B) => 0 < this.indexOf(B));
-    (b || v) && (o = "varchar", t = 1, p = !0);
-    const A = this._ctx.getOptionValue("db");
-    p && (this._ctx.getOptionValue("boolean") === "native" || this._ctx.getOptionValue("boolean") !== "yn" && A && A.length > 0 && 23 <= (ie(A) ?? 0)) && (p = !1, o = "boolean");
+    const b = n.endsWith("_yn") || n.startsWith("is_"), A = He.some((B) => 0 < this.indexOf(B));
+    (b || A) && (o = "varchar", t = 1, p = !0);
+    const v = this._ctx.getOptionValue("db");
+    p && (this._ctx.getOptionValue("boolean") === "native" || this._ctx.getOptionValue("boolean") !== "yn" && v && v.length > 0 && 23 <= (ie(v) ?? 0)) && (p = !1, o = "boolean");
     const C = o === "boolean";
     this.indexOf("phone_number") === 0 && (o = "number");
     let w;
@@ -584,9 +584,9 @@ class ve {
       o = "geometry";
       break;
     }
-    this.isOption("domain") && A && A.length > 0 && 23 <= (ie(A) ?? 0) && (o = this.getOptionValue("domain") ?? o), this.occursBeforeOption("tswltz") && c !== 0 ? o = "tswltz" : this.occursBeforeOption("tswtz") || this.occursBeforeOption("tstz") ? o = "tswtz" : this.occursBeforeOption("ts") && (o = "timestamp");
-    const E = { base: o, colName: n, varcharLen: t, needsBoolCheck: p, isNativeBoolean: C, parent_child: m };
-    return w !== void 0 && (E.numericSpec = w), u !== void 0 && (E.vectorSpec = u), E;
+    this.isOption("domain") && v && v.length > 0 && 23 <= (ie(v) ?? 0) && (o = this.getOptionValue("domain") ?? o), this.occursBeforeOption("tswltz") && c !== 0 ? o = "tswltz" : this.occursBeforeOption("tswtz") || this.occursBeforeOption("tstz") ? o = "tswtz" : this.occursBeforeOption("ts") && (o = "timestamp");
+    const L = { base: o, colName: n, varcharLen: t, needsBoolCheck: p, isNativeBoolean: C, parent_child: m };
+    return w !== void 0 && (L.numericSpec = w), u !== void 0 && (L.vectorSpec = u), L;
   }
   inferType() {
     if (this.children !== null && 0 < this.children.length) return "table";
@@ -625,17 +625,17 @@ class ve {
     let n = "";
     if (this.isOption("check")) {
       let t = "";
-      this.parent !== null && (t = H(this.parent.parseName(), "_"));
-      const r = H(t, this.parseName());
+      this.parent !== null && (t = z(this.parent.parseName(), "_"));
+      const r = z(t, this.parseName());
       let o = i;
       this.parent !== null && (o = " ".repeat(this.parent.maxChildNameLen()));
       const d = this.getGeneralConstraint();
       if (d !== null)
-        return this.children !== null && 0 < this.children.length ? (n += i + "constraint " + H(this._ctx.objPrefix(), r, R.ck), n += "  check " + d + `,
-`) : (n += " constraint " + H(this._ctx.objPrefix(), r, R.ck) + `
+        return this.children !== null && 0 < this.children.length ? (n += i + "constraint " + z(this._ctx.objPrefix(), r, R.ck), n += "  check " + d + `,
+`) : (n += " constraint " + z(this._ctx.objPrefix(), r, R.ck) + `
 `, n += i + i + o + "check " + d), n;
       const c = this.getValues("check");
-      n += " constraint " + H(this._ctx.objPrefix(), r, R.ck) + `
+      n += " constraint " + z(this._ctx.objPrefix(), r, R.ck) + `
 `, n += i + i + o + "check (" + this.parseName() + " in (" + c + "))";
     }
     return n;
@@ -843,28 +843,28 @@ function Pe(x) {
         continue;
       }
       let p = new ve(u.line - 1, d, null, x), b = !1;
-      for (let v = 0; v < n.length; v++) {
-        const A = n[v];
-        if (p.apparentDepth() <= A.apparentDepth())
-          if (0 < v) {
-            const C = n[v - 1];
-            p = new ve(u.line - 1, d, C, x), n[v] = p, n = n.slice(0, v + 1), b = !0;
+      for (let A = 0; A < n.length; A++) {
+        const v = n[A];
+        if (p.apparentDepth() <= v.apparentDepth())
+          if (0 < A) {
+            const C = n[A - 1];
+            p = new ve(u.line - 1, d, C, x), n[A] = p, n = n.slice(0, A + 1), b = !0;
             break;
           } else
             n[0] = p, n = n.slice(0, 1), t.push(p), b = !0;
       }
       if (!b) {
         if (0 < n.length) {
-          const v = n[n.length - 1];
-          p = new ve(u.line - 1, d, v, x);
+          const A = n[n.length - 1];
+          p = new ve(u.line - 1, d, A, x);
         }
         n.push(p), p.apparentDepth() === 0 && t.push(p);
       }
       if (p.isMany2One()) {
-        const v = p.parent;
-        v.fks === null && (v.fks = {});
-        let A = p.refId();
-        A === null && (A = p.parseName()), v.fks[p.parseName() + "_id"] = A;
+        const A = p.parent;
+        A.fks === null && (A.fks = {});
+        let v = p.refId();
+        v === null && (v = p.parseName()), A.fks[p.parseName() + "_id"] = v;
       }
       d = "";
       continue;
@@ -890,9 +890,9 @@ function Pe(x) {
         }
         if (l !== null) {
           if (l += b.value, l === "=" || l.charAt(l.length - 1) !== "}") continue;
-          const v = l.substring(1);
+          const A = l.substring(1);
           try {
-            x.data = JSON.parse(v), o = null, d = "";
+            x.data = JSON.parse(A), o = null, d = "";
             continue e;
           } catch {
           }
@@ -1018,11 +1018,11 @@ function ua() {
         if (a)
           throw new RangeError(s);
       }
-      var v = function() {
+      var A = function() {
         throw new Error("No Base64 encoder available.");
       };
       (function() {
-        typeof btoa == "function" ? v = btoa : typeof Buffer == "function" && (v = function(s) {
+        typeof btoa == "function" ? A = btoa : typeof Buffer == "function" && (A = function(s) {
           return new Buffer(s).toString("base64");
         });
       })(), l.prototype.bool = function(a) {
@@ -1111,10 +1111,10 @@ function ua() {
         var s = a.length, f = this.n(this.character, s, a);
         return f.join("");
       };
-      function A(a) {
+      function v(a) {
         this.c = a;
       }
-      A.prototype = {
+      v.prototype = {
         substitute: function() {
           return this.c;
         }
@@ -1159,7 +1159,7 @@ function ua() {
               s.push(new C(y)), f = "identity";
               break;
             case "identity":
-              y === "{" ? f = "replace" : y === "\\" ? f = "escape" : s.push(new A(y));
+              y === "{" ? f = "replace" : y === "\\" ? f = "escape" : s.push(new v(y));
               break;
             case "replace":
               y === "}" ? f = "identity" : s.push(new w(y));
@@ -1192,8 +1192,8 @@ function ua() {
           typeof a != "function",
           "Chance: The first argument must be a function."
         );
-        var g = function(T, F) {
-          return T.indexOf(F) !== -1;
+        var g = function(T, H) {
+          return T.indexOf(H) !== -1;
         };
         f && (g = f.comparator || g);
         for (var y = [], k = 0, I, _ = s * 50, S = h.call(arguments, 2); y.length < s; ) {
@@ -1505,7 +1505,7 @@ function ua() {
       }, l.prototype.apple_token = function() {
         return this.string({ pool: "abcdef1234567890", length: 64 });
       }, l.prototype.wp8_anid2 = function() {
-        return v(this.hash({ length: 32 }));
+        return A(this.hash({ length: 32 }));
       }, l.prototype.wp7_anid = function() {
         return "A=" + this.guid().replace(/-/g, "").toUpperCase() + "&E=" + this.hash({ length: 3 }) + "&W=" + this.integer({ min: 0, max: 9 });
       }, l.prototype.bb_pin = function() {
@@ -1559,16 +1559,16 @@ function ua() {
         }
         return _ = m(a, _), _.email || (_.email = this.email()), _.protocol = g[_.protocol] ? _.protocol + ":" : "", _.size = parseInt(_.size, 0) ? _.size : "", _.rating = I[_.rating] ? _.rating : "", _.fallback = k[_.fallback] ? _.fallback : "", _.fileExtension = y[_.fileExtension] ? _.fileExtension : "", s = _.protocol + f + this.bimd5.md5(_.email) + (_.fileExtension ? "." + _.fileExtension : "") + (_.size || _.rating || _.fallback ? "?" : "") + (_.size ? "&s=" + _.size.toString() : "") + (_.rating ? "&r=" + _.rating : "") + (_.fallback ? "&d=" + _.fallback : ""), s;
       }, l.prototype.color = function(a) {
-        function s(K, de) {
-          return [K, K, K].join(de || "");
+        function s(J, de) {
+          return [J, J, J].join(de || "");
         }
-        function f(K) {
-          var de = K ? "rgba" : "rgb", ge = K ? "," + this.floating({ min: V, max: Z }) : "", Ce = y ? s(this.natural({ min: k, max: I }), ",") : this.natural({ min: M, max: T }) + "," + this.natural({ min: F, max: D }) + "," + this.natural({ max: 255 });
+        function f(J) {
+          var de = J ? "rgba" : "rgb", ge = J ? "," + this.floating({ min: W, max: X }) : "", Ce = y ? s(this.natural({ min: k, max: I }), ",") : this.natural({ min: M, max: T }) + "," + this.natural({ min: H, max: D }) + "," + this.natural({ max: 255 });
           return de + "(" + Ce + ge + ")";
         }
-        function g(K, de, ge) {
+        function g(J, de, ge) {
           var Ce = ge ? "#" : "", re = "";
-          return y ? (re = s(this.pad(this.hex({ min: k, max: I }), 2)), a.format === "shorthex" && (re = s(this.hex({ min: 0, max: 15 })))) : a.format === "shorthex" ? re = this.pad(this.hex({ min: Math.floor(_ / 16), max: Math.floor(S / 16) }), 1) + this.pad(this.hex({ min: Math.floor(M / 16), max: Math.floor(T / 16) }), 1) + this.pad(this.hex({ min: Math.floor(F / 16), max: Math.floor(D / 16) }), 1) : _ !== void 0 || S !== void 0 || M !== void 0 || T !== void 0 || F !== void 0 || D !== void 0 ? re = this.pad(this.hex({ min: _, max: S }), 2) + this.pad(this.hex({ min: M, max: T }), 2) + this.pad(this.hex({ min: F, max: D }), 2) : re = this.pad(this.hex({ min: k, max: I }), 2) + this.pad(this.hex({ min: k, max: I }), 2) + this.pad(this.hex({ min: k, max: I }), 2), Ce + re;
+          return y ? (re = s(this.pad(this.hex({ min: k, max: I }), 2)), a.format === "shorthex" && (re = s(this.hex({ min: 0, max: 15 })))) : a.format === "shorthex" ? re = this.pad(this.hex({ min: Math.floor(_ / 16), max: Math.floor(S / 16) }), 1) + this.pad(this.hex({ min: Math.floor(M / 16), max: Math.floor(T / 16) }), 1) + this.pad(this.hex({ min: Math.floor(H / 16), max: Math.floor(D / 16) }), 1) : _ !== void 0 || S !== void 0 || M !== void 0 || T !== void 0 || H !== void 0 || D !== void 0 ? re = this.pad(this.hex({ min: _, max: S }), 2) + this.pad(this.hex({ min: M, max: T }), 2) + this.pad(this.hex({ min: H, max: D }), 2) : re = this.pad(this.hex({ min: k, max: I }), 2) + this.pad(this.hex({ min: k, max: I }), 2) + this.pad(this.hex({ min: k, max: I }), 2), Ce + re;
         }
         a = m(a, {
           format: this.pick(["hex", "shorthex", "rgb", "rgba", "0x", "name"]),
@@ -1585,25 +1585,25 @@ function ua() {
           min_alpha: 0,
           max_alpha: 1
         });
-        var y = a.grayscale, k = a.min, I = a.max, _ = a.min_red, S = a.max_red, M = a.min_green, T = a.max_green, F = a.min_blue, D = a.max_blue, V = a.min_alpha, Z = a.max_alpha;
-        a.min_red === void 0 && (_ = k), a.max_red === void 0 && (S = I), a.min_green === void 0 && (M = k), a.max_green === void 0 && (T = I), a.min_blue === void 0 && (F = k), a.max_blue === void 0 && (D = I), a.min_alpha === void 0 && (V = 0), a.max_alpha === void 0 && (Z = 1), y && k === 0 && I === 255 && _ !== void 0 && S !== void 0 && (k = (_ + M + F) / 3, I = (S + T + D) / 3);
-        var J;
+        var y = a.grayscale, k = a.min, I = a.max, _ = a.min_red, S = a.max_red, M = a.min_green, T = a.max_green, H = a.min_blue, D = a.max_blue, W = a.min_alpha, X = a.max_alpha;
+        a.min_red === void 0 && (_ = k), a.max_red === void 0 && (S = I), a.min_green === void 0 && (M = k), a.max_green === void 0 && (T = I), a.min_blue === void 0 && (H = k), a.max_blue === void 0 && (D = I), a.min_alpha === void 0 && (W = 0), a.max_alpha === void 0 && (X = 1), y && k === 0 && I === 255 && _ !== void 0 && S !== void 0 && (k = (_ + M + H) / 3, I = (S + T + D) / 3);
+        var j;
         if (a.format === "hex")
-          J = g.call(this, 2, 6, !0);
+          j = g.call(this, 2, 6, !0);
         else if (a.format === "shorthex")
-          J = g.call(this, 1, 3, !0);
+          j = g.call(this, 1, 3, !0);
         else if (a.format === "rgb")
-          J = f.call(this, !1);
+          j = f.call(this, !1);
         else if (a.format === "rgba")
-          J = f.call(this, !0);
+          j = f.call(this, !0);
         else if (a.format === "0x")
-          J = "0x" + g.call(this, 2, 6);
+          j = "0x" + g.call(this, 2, 6);
         else {
           if (a.format === "name")
             return this.pick(this.get("colorNames"));
           throw new RangeError('Invalid format provided. Please provide one of "hex", "shorthex", "rgb", "rgba", "0x" or "name".');
         }
-        return a.casing === "upper" && (J = J.toUpperCase()), J;
+        return a.casing === "upper" && (j = j.toUpperCase()), j;
       }, l.prototype.domain = function(a) {
         return a = m(a), this.word() + "." + (a.tld || this.tld());
       }, l.prototype.email = function(a) {
@@ -1715,11 +1715,11 @@ function ua() {
             return this.floating({ min: a.min, max: a.max, fixed: a.fixed });
         }
       }, l.prototype.phone = function(a) {
-        var s = this, f, g = function(F) {
+        var s = this, f, g = function(H) {
           var D = [];
-          return F.sections.forEach(function(V) {
-            D.push(s.string({ pool: "0123456789", length: V }));
-          }), F.area + D.join(" ");
+          return H.sections.forEach(function(W) {
+            D.push(s.string({ pool: "0123456789", length: W }));
+          }), H.area + D.join(" ");
         };
         a = m(a, {
           formatted: !0,
@@ -1969,20 +1969,20 @@ function ua() {
         return a = this.pad(a, 7) + this.pad(this.pick(this.provinces({ country: "it" })).code, 3), a + this.luhn_calculate(a);
       }, l.prototype.cf = function(a) {
         a = a || {};
-        var s = a.gender ? a.gender : this.gender(), f = a.first ? a.first : this.first({ gender: s, nationality: "it" }), g = a.last ? a.last : this.last({ nationality: "it" }), y = a.birthday ? a.birthday : this.birthday(), k = a.city ? a.city : this.pickone(["A", "B", "C", "D", "E", "F", "G", "H", "I", "L", "M", "Z"]) + this.pad(this.natural({ max: 999 }), 3), I = [], _ = function(T, F) {
-          var D, V = [];
-          return T.length < 3 ? V = T.split("").concat("XXX".split("")).splice(0, 3) : (D = T.toUpperCase().split("").map(function(Z) {
-            return "BCDFGHJKLMNPRSTVWZ".indexOf(Z) !== -1 ? Z : void 0;
-          }).join(""), D.length > 3 && (F ? D = D.substr(0, 3) : D = D[0] + D.substr(2, 2)), D.length < 3 && (V = D, D = T.toUpperCase().split("").map(function(Z) {
-            return "AEIOU".indexOf(Z) !== -1 ? Z : void 0;
-          }).join("").substr(0, 3 - V.length)), V = V + D), V;
-        }, S = function(T, F, D) {
-          var V = ["A", "B", "C", "D", "E", "H", "L", "M", "P", "R", "S", "T"];
-          return T.getFullYear().toString().substr(2) + V[T.getMonth()] + D.pad(T.getDate() + (F.toLowerCase() === "female" ? 40 : 0), 2);
+        var s = a.gender ? a.gender : this.gender(), f = a.first ? a.first : this.first({ gender: s, nationality: "it" }), g = a.last ? a.last : this.last({ nationality: "it" }), y = a.birthday ? a.birthday : this.birthday(), k = a.city ? a.city : this.pickone(["A", "B", "C", "D", "E", "F", "G", "H", "I", "L", "M", "Z"]) + this.pad(this.natural({ max: 999 }), 3), I = [], _ = function(T, H) {
+          var D, W = [];
+          return T.length < 3 ? W = T.split("").concat("XXX".split("")).splice(0, 3) : (D = T.toUpperCase().split("").map(function(X) {
+            return "BCDFGHJKLMNPRSTVWZ".indexOf(X) !== -1 ? X : void 0;
+          }).join(""), D.length > 3 && (H ? D = D.substr(0, 3) : D = D[0] + D.substr(2, 2)), D.length < 3 && (W = D, D = T.toUpperCase().split("").map(function(X) {
+            return "AEIOU".indexOf(X) !== -1 ? X : void 0;
+          }).join("").substr(0, 3 - W.length)), W = W + D), W;
+        }, S = function(T, H, D) {
+          var W = ["A", "B", "C", "D", "E", "H", "L", "M", "P", "R", "S", "T"];
+          return T.getFullYear().toString().substr(2) + W[T.getMonth()] + D.pad(T.getDate() + (H.toLowerCase() === "female" ? 40 : 0), 2);
         }, M = function(T) {
-          for (var F = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", D = "ABCDEFGHIJABCDEFGHIJKLMNOPQRSTUVWXYZ", V = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", Z = "BAKPLCQDREVOSFTGUHMINJWZYX", J = 0, K = 0; K < 15; K++)
-            K % 2 !== 0 ? J += V.indexOf(D[F.indexOf(T[K])]) : J += Z.indexOf(D[F.indexOf(T[K])]);
-          return V[J % 26];
+          for (var H = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", D = "ABCDEFGHIJABCDEFGHIJKLMNOPQRSTUVWXYZ", W = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", X = "BAKPLCQDREVOSFTGUHMINJWZYX", j = 0, J = 0; J < 15; J++)
+            J % 2 !== 0 ? j += W.indexOf(D[H.indexOf(T[J])]) : j += X.indexOf(D[H.indexOf(T[J])]);
+          return W[j % 26];
         };
         return I = I.concat(_(g, !0), _(f), S(y, s, this), k.toUpperCase().split("")).join(""), I += M(I.toUpperCase()), I.toUpperCase();
       }, l.prototype.pl_pesel = function() {
@@ -2035,12 +2035,12 @@ function ua() {
       }, l.prototype.coin = function() {
         return this.bool() ? "heads" : "tails";
       };
-      function E(a) {
+      function L(a) {
         return function() {
           return this.natural(a);
         };
       }
-      l.prototype.d4 = E({ min: 1, max: 4 }), l.prototype.d6 = E({ min: 1, max: 6 }), l.prototype.d8 = E({ min: 1, max: 8 }), l.prototype.d10 = E({ min: 1, max: 10 }), l.prototype.d12 = E({ min: 1, max: 12 }), l.prototype.d20 = E({ min: 1, max: 20 }), l.prototype.d30 = E({ min: 1, max: 30 }), l.prototype.d100 = E({ min: 1, max: 100 }), l.prototype.rpg = function(a, s) {
+      l.prototype.d4 = L({ min: 1, max: 4 }), l.prototype.d6 = L({ min: 1, max: 6 }), l.prototype.d8 = L({ min: 1, max: 8 }), l.prototype.d10 = L({ min: 1, max: 10 }), l.prototype.d12 = L({ min: 1, max: 12 }), l.prototype.d20 = L({ min: 1, max: 20 }), l.prototype.d30 = L({ min: 1, max: 30 }), l.prototype.d100 = L({ min: 1, max: 100 }), l.prototype.rpg = function(a, s) {
         if (s = m(s), a) {
           var f = a.toLowerCase().split("d"), g = [];
           if (f.length !== 2 || !parseInt(f[0], 10) || !parseInt(f[1], 10))
@@ -11646,26 +11646,26 @@ function ua() {
             "0xe007f"
           ]
         }
-      }, G = Object.prototype.hasOwnProperty, ae = Object.keys || function(a) {
+      }, G = Object.prototype.hasOwnProperty, F = Object.keys || function(a) {
         var s = [];
         for (var f in a)
           G.call(a, f) && s.push(f);
         return s;
       };
-      function L(a, s) {
-        for (var f = ae(a), g, y = 0, k = f.length; y < k; y++)
+      function E(a, s) {
+        for (var f = F(a), g, y = 0, k = f.length; y < k; y++)
           g = f[y], s[g] = a[g] || s[g];
       }
-      function z(a, s) {
+      function V(a, s) {
         for (var f = 0, g = a.length; f < g; f++)
           s[f] = a[f];
       }
-      function Q(a, s) {
+      function Z(a, s) {
         var f = Array.isArray(a), g = s || (f ? new Array(a.length) : {});
-        return f ? z(a, g) : L(a, g), g;
+        return f ? V(a, g) : E(a, g), g;
       }
       l.prototype.get = function(a) {
-        return Q(B[a]);
+        return Z(B[a]);
       }, l.prototype.mac_address = function(a) {
         a = m(a), a.separator || (a.separator = a.networkVersion ? "." : ":");
         var s = "ABCDEF1234567890", f = "";
@@ -11714,7 +11714,7 @@ function ua() {
         }
         return s + this.character({ alpha: !0, casing: "upper" }) + this.character({ alpha: !0, casing: "upper" }) + this.character({ alpha: !0, casing: "upper" });
       }, l.prototype.set = function(a, s) {
-        typeof a == "string" ? B[a] = s : B = Q(a, B);
+        typeof a == "string" ? B[a] = s : B = Z(a, B);
       }, l.prototype.tv = function(a) {
         return this.radio(a);
       }, l.prototype.cnpj = function() {
@@ -11725,24 +11725,24 @@ function ua() {
       }, l.prototype.emotion = function() {
         return this.pick(this.get("emotions"));
       }, l.prototype.mersenne_twister = function(a) {
-        return new U(a);
+        return new K(a);
       }, l.prototype.blueimp_md5 = function() {
         return new $();
       };
-      var U = function(a) {
+      var K = function(a) {
         a === void 0 && (a = Math.floor(Math.random() * Math.pow(10, 13))), this.N = 624, this.M = 397, this.MATRIX_A = 2567483615, this.UPPER_MASK = 2147483648, this.LOWER_MASK = 2147483647, this.mt = new Array(this.N), this.mti = this.N + 1, this.init_genrand(a);
       };
-      U.prototype.init_genrand = function(a) {
+      K.prototype.init_genrand = function(a) {
         for (this.mt[0] = a >>> 0, this.mti = 1; this.mti < this.N; this.mti++)
           a = this.mt[this.mti - 1] ^ this.mt[this.mti - 1] >>> 30, this.mt[this.mti] = (((a & 4294901760) >>> 16) * 1812433253 << 16) + (a & 65535) * 1812433253 + this.mti, this.mt[this.mti] >>>= 0;
-      }, U.prototype.init_by_array = function(a, s) {
+      }, K.prototype.init_by_array = function(a, s) {
         var f = 1, g = 0, y, k;
         for (this.init_genrand(19650218), y = this.N > s ? this.N : s; y; y--)
           k = this.mt[f - 1] ^ this.mt[f - 1] >>> 30, this.mt[f] = (this.mt[f] ^ (((k & 4294901760) >>> 16) * 1664525 << 16) + (k & 65535) * 1664525) + a[g] + g, this.mt[f] >>>= 0, f++, g++, f >= this.N && (this.mt[0] = this.mt[this.N - 1], f = 1), g >= s && (g = 0);
         for (y = this.N - 1; y; y--)
           k = this.mt[f - 1] ^ this.mt[f - 1] >>> 30, this.mt[f] = (this.mt[f] ^ (((k & 4294901760) >>> 16) * 1566083941 << 16) + (k & 65535) * 1566083941) - f, this.mt[f] >>>= 0, f++, f >= this.N && (this.mt[0] = this.mt[this.N - 1], f = 1);
         this.mt[0] = 2147483648;
-      }, U.prototype.genrand_int32 = function() {
+      }, K.prototype.genrand_int32 = function() {
         var a, s = new Array(0, this.MATRIX_A);
         if (this.mti >= this.N) {
           var f;
@@ -11753,15 +11753,15 @@ function ua() {
           a = this.mt[this.N - 1] & this.UPPER_MASK | this.mt[0] & this.LOWER_MASK, this.mt[this.N - 1] = this.mt[this.M - 1] ^ a >>> 1 ^ s[a & 1], this.mti = 0;
         }
         return a = this.mt[this.mti++], a ^= a >>> 11, a ^= a << 7 & 2636928640, a ^= a << 15 & 4022730752, a ^= a >>> 18, a >>> 0;
-      }, U.prototype.genrand_int31 = function() {
+      }, K.prototype.genrand_int31 = function() {
         return this.genrand_int32() >>> 1;
-      }, U.prototype.genrand_real1 = function() {
+      }, K.prototype.genrand_real1 = function() {
         return this.genrand_int32() * (1 / 4294967295);
-      }, U.prototype.random = function() {
+      }, K.prototype.random = function() {
         return this.genrand_int32() * (1 / 4294967296);
-      }, U.prototype.genrand_real3 = function() {
+      }, K.prototype.genrand_real3 = function() {
         return (this.genrand_int32() + 0.5) * (1 / 4294967296);
-      }, U.prototype.genrand_res53 = function() {
+      }, K.prototype.genrand_res53 = function() {
         var a = this.genrand_int32() >>> 5, s = this.genrand_int32() >>> 6;
         return (a * 67108864 + s) * (1 / 9007199254740992);
       };
@@ -11941,18 +11941,18 @@ class pa {
       for (const h in r.fks ?? {}) {
         const l = r.fks[h];
         if (h.includes(",")) {
-          const A = this._ddl.find(l);
+          const v = this._ddl.find(l);
           for (const C of be(h, ", ")) {
             if (C === ",") continue;
-            const w = A?.findChild(C);
+            const w = v?.findChild(C);
             o.columns.push({ name: C, datatype: w ? this.colType(w._inferTypeFull()) : "number" });
           }
           continue;
         }
         const m = r.findChild(h);
         let p = m ? m.inferType() : "number", b = h;
-        const v = this._ddl.find(l);
-        v != null ? p = this._fkColType(v) ?? p : this._ddl.find(h)?.isMany2One?.() && !h.endsWith("_id") && (b = (O(h) ?? h) + "_id"), o.columns.push({ name: b, datatype: p });
+        const A = this._ddl.find(l);
+        A != null ? p = this._fkColType(A) ?? p : this._ddl.find(h)?.isMany2One?.() && !h.endsWith("_id") && (b = (O(h) ?? h) + "_id"), o.columns.push({ name: b, datatype: p });
       }
       const c = r.getExplicitPkName();
       for (const h of r.children)
@@ -12101,8 +12101,8 @@ commit;
       let l = h.parseValues();
       const m = h.parseName();
       if (t != null) {
-        const v = t[m];
-        v != null && (l = [v]);
+        const A = t[m];
+        A != null && (l = [A]);
       }
       const p = String(this._ddl.getOptionValue("Data Language") ?? "EN"), b = $e(r, m, this.colType(h._inferTypeFull()), l);
       o += i + String(Ne(p, b)) + `,
@@ -12122,17 +12122,17 @@ commit;
       else {
         const p = d + "_" + t, b = this._ddl.data?.[p];
         if (b != null)
-          for (const v in b) {
-            const A = b[v];
-            if (A[d + "_id"] === o) {
-              const C = A[n];
+          for (const A in b) {
+            const v = b[A];
+            if (v[d + "_id"] === o) {
+              const C = v[n];
               C != null && (typeof C == "string" && (h = "STRING"), u = [C]);
               break;
             }
           }
         else {
-          const v = c?.getPkName() ?? null, A = v != null ? l[v] : void 0;
-          A != null && (typeof A == "string" && (h = "STRING"), u = [A]);
+          const A = c?.getPkName() ?? null, v = A != null ? l[A] : void 0;
+          v != null && (typeof v == "string" && (h = "STRING"), u = [v]);
         }
       }
     }
@@ -12172,7 +12172,7 @@ function se(x, e, n) {
       return x.base;
   }
 }
-function Y(x) {
+function Q(x) {
   const e = x.getOptionValue("db");
   return e != null && e.length > 0 && 23 <= (ie(e) ?? 0);
 }
@@ -12256,16 +12256,16 @@ annotations (` + e.annotations + ")"), o += ` as
     for (let h = 2; h < n.length; h++) {
       const l = r[n[h].value];
       if (l === null) continue;
-      const m = n[h].value, p = t[m], b = d[m] ?? {}, v = " ".repeat(c - (p.length + 1 + 2));
-      u += i + p + ".id" + i + v + (O(m) ?? m) + `_id,
+      const m = n[h].value, p = t[m], b = d[m] ?? {}, A = " ".repeat(c - (p.length + 1 + 2));
+      u += i + p + ".id" + i + A + (O(m) ?? m) + `_id,
 `;
-      for (const A of l.children)
-        if (A.children.length === 0) {
-          const C = A.parseName();
+      for (const v of l.children)
+        if (v.children.length === 0) {
+          const C = v.parseName();
           let w = "";
           if (1 < (o[C] ?? 0) && (w = (O(m) ?? m) + "_"), b[C]) {
-            const E = `coalesce(${"t_" + m}.trans_${C}, ${p}.${C})`;
-            u += i + E + i + w + C + `,
+            const L = `coalesce(${"t_" + m}.trans_${C}, ${p}.${C})`;
+            u += i + L + i + w + C + `,
 `;
           } else {
             const N = " ".repeat(c - (p.length + 1 + C.length));
@@ -12274,18 +12274,18 @@ annotations (` + e.annotations + ")"), o += ` as
           }
         }
       if (l.hasRowVersion()) {
-        const A = i + " ".repeat(l.maxChildNameLen() - 11);
-        u += i + p + ".row_version" + A + (O(m) ?? m) + `_row_version,
+        const v = i + " ".repeat(l.maxChildNameLen() - 11);
+        u += i + p + ".row_version" + v + (O(m) ?? m) + `_row_version,
 `;
       }
       if (l.hasRowKey()) {
-        const A = i + " ".repeat(l.maxChildNameLen() - 7);
-        u += i + p + ".ROW_KEY" + A + (O(m) ?? m) + `_ROW_KEY,
+        const v = i + " ".repeat(l.maxChildNameLen() - 7);
+        u += i + p + ".ROW_KEY" + v + (O(m) ?? m) + `_ROW_KEY,
 `;
       }
       if (l.hasAuditCols())
-        for (const A of ["createdcol", "createdbycol", "updatedcol", "updatedbycol"]) {
-          const C = String(this.ctx.getOptionValue(A) ?? ""), w = i + " ".repeat(l.maxChildNameLen() - C.length);
+        for (const v of ["createdcol", "createdbycol", "updatedcol", "updatedbycol"]) {
+          const C = String(this.ctx.getOptionValue(v) ?? ""), w = i + " ".repeat(l.maxChildNameLen() - C.length);
           u += i + p + "." + C + w + (O(m) ?? m) + "_" + C + `,
 `;
         }
@@ -12338,19 +12338,19 @@ annotations (` + e.annotations + ")"), o += ` as
         const b = r[l];
         c += i + "left join " + p + `
 `;
-        for (let v = 0; v < b.length; v++) {
-          const A = t[b[v].parentTable], C = v === 0 ? "on " : "and ";
-          c += i + i + C + m + "." + b[v].fkCol + " = " + A + `.id
+        for (let A = 0; A < b.length; A++) {
+          const v = t[b[A].parentTable], C = A === 0 ? "on " : "and ";
+          c += i + i + C + m + "." + b[A].fkCol + " = " + v + `.id
 `;
         }
       } else
         c += i + "cross join " + p + `
 `;
       if (o[l]) {
-        const b = d[l], v = this.ctx.objPrefix() + l + "_trans", A = "t_" + l, C = (O(l) ?? l) + "_id", w = b.getGenIdColName() ?? b.getExplicitPkName() ?? "id";
-        c += i + "left join " + v + " " + A + `
-`, c += i + i + "on " + A + "." + C + " = " + m + "." + w + `
-`, c += i + i + "and " + A + ".language_code = " + u + `
+        const b = d[l], A = this.ctx.objPrefix() + l + "_trans", v = "t_" + l, C = (O(l) ?? l) + "_id", w = b.getGenIdColName() ?? b.getExplicitPkName() ?? "id";
+        c += i + "left join " + A + " " + v + `
+`, c += i + i + "on " + v + "." + C + " = " + m + "." + w + `
+`, c += i + i + "and " + v + ".language_code = " + u + `
 `;
       }
     }
@@ -12396,15 +12396,15 @@ annotations (` + e.annotations + ")"), o += ` as
       const p = n[m].value, b = this.ctx.find(p);
       if (b === null) continue;
       b.lateInitFks();
-      let v = !1;
+      let A = !1;
       if (b.fks !== null) {
         for (const B in b.fks)
           if (b.fks[B] === o.parseName()) {
-            v = !0;
+            A = !0;
             break;
           }
       }
-      const A = b.getGenIdColName() ?? b.getExplicitPkName() ?? "id";
+      const v = b.getGenIdColName() ?? b.getExplicitPkName() ?? "id";
       let C = 3;
       for (const B of b.children) {
         if (B.children.length > 0 || B.refId() !== null) continue;
@@ -12413,19 +12413,19 @@ annotations (` + e.annotations + ")"), o += ` as
       }
       const w = {};
       if (b.fks !== null) for (const B in b.fks) w[B] = !0;
-      const N = v ? `[{
+      const N = A ? `[{
 ` : `{
-`, E = v ? "}]" : "}";
+`, L = A ? "}]" : "}";
       c += i + p + " ".repeat(h - p.length) + " : " + this.ctx.objPrefix() + b.parseName() + " " + d + `
-`, c += i + N, c += i + i + "_id" + " ".repeat(C - 3) + " : " + A + `,
+`, c += i + N, c += i + i + "_id" + " ".repeat(C - 3) + " : " + v + `,
 `;
       for (const B of b.regularColumns()) {
         const G = B.parseName();
-        G === A || w[G] || (c += i + i + G + " ".repeat(C - G.length) + " : " + G + `,
+        G === v || w[G] || (c += i + i + G + " ".repeat(C - G.length) + " : " + G + `,
 `);
       }
       c = c.replace(/,\n$/, `
-`), c += i + E + `,
+`), c += i + L + `,
 `;
     }
     return c = c.replace(/,\n$/, `
@@ -12437,7 +12437,7 @@ annotations (` + e.annotations + ")"), o += ` as
     if (e.inferType() !== "table") return "";
     const n = e.getTransColumns();
     if (n.length === 0) return "";
-    const t = this.ctx.objPrefix() + e.parseName(), r = t + "_trans", o = this.ctx.semantics(), d = Y(this.ctx);
+    const t = this.ctx.objPrefix() + e.parseName(), r = t + "_trans", o = this.ctx.semantics(), d = Q(this.ctx);
     let c = 13;
     const u = (O(e.parseName()) ?? e.parseName()) + "_id";
     u.length > c && (c = u.length);
@@ -12456,8 +12456,8 @@ annotations (` + e.annotations + ")"), o += ` as
     for (const p of n) {
       const b = "trans_" + p.parseName();
       l = i + " ".repeat(c - b.length);
-      const v = se(p._inferTypeFull(), o, d);
-      h += i + b + l + v + `,
+      const A = se(p._inferTypeFull(), o, d);
+      h += i + b + l + A + `,
 `;
     }
     h += i + "constraint " + r + this.naming.uk + " unique (" + u + `, language_code)
@@ -12488,8 +12488,8 @@ select `;
     for (const p in e.fks ?? {}) {
       if (0 < p.indexOf(",")) continue;
       const b = this.ctx.find(e.fks[p]);
-      let v = "";
-      b !== null && b.isMany2One && b.isMany2One() && !p.endsWith("_id") && (v = "_id"), h.push("k." + p + v);
+      let A = "";
+      b !== null && b.isMany2One && b.isMany2One() && !p.endsWith("_id") && (A = "_id"), h.push("k." + p + A);
     }
     const m = {};
     for (const p of n) m[p.parseName()] = !0;
@@ -12814,7 +12814,7 @@ end;
 `, o;
   }
   _generateDalBody(e) {
-    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), t = n + "_dal", r = (e.getPkName() ?? "id").toLowerCase(), o = this._hasVersionCol(e), d = e.hasAuditCols(), c = this._svcCols(e), u = Object.keys(e.fks ?? {}), h = e.children.filter((A) => A.isOption("unique"));
+    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), t = n + "_dal", r = (e.getPkName() ?? "id").toLowerCase(), o = this._hasVersionCol(e), d = e.hasAuditCols(), c = this._svcCols(e), u = Object.keys(e.fks ?? {}), h = e.children.filter((v) => v.isOption("unique"));
     let l = `create or replace package body ${t} as
 
 `;
@@ -12844,8 +12844,8 @@ end;
 `, l += `${i}end lock_by_id;
 
 `;
-    for (const A of h) {
-      const C = A.parseName().toLowerCase();
+    for (const v of h) {
+      const C = v.parseName().toLowerCase();
       l += `${i}function get_by_${C} (p_${C} in ${n}.${C}%type) return ${n}%rowtype is
 `, l += `${i}${i}l_row ${n}%rowtype;
 `, l += `${i}begin
@@ -12865,12 +12865,12 @@ end;
 `;
     const m = this._hasSyntheticTenantId(e), p = [
       ...m ? ["tenant_id"] : [],
-      ...u.map((A) => A.toLowerCase()),
-      ...c.map((A) => A.parseName().toLowerCase())
+      ...u.map((v) => v.toLowerCase()),
+      ...c.map((v) => v.parseName().toLowerCase())
     ], b = [
       ...m ? ["p_row.tenant_id"] : [],
-      ...u.map((A) => `p_row.${A.toLowerCase()}`),
-      ...c.map((A) => `p_row.${A.parseName().toLowerCase()}`)
+      ...u.map((v) => `p_row.${v.toLowerCase()}`),
+      ...c.map((v) => `p_row.${v.parseName().toLowerCase()}`)
     ];
     if (l += `${i}procedure insert_row (p_row in out nocopy ${n}%rowtype) is
 `, l += `${i}begin
@@ -12881,8 +12881,8 @@ ${i}${i}${i}`) + `
 `, l += `${i}${i}${i}` + b.join(`,
 ${i}${i}${i}`) + `
 `, l += `${i}${i})`, o) {
-      const A = String(this.ctx.getOptionValue("createdcol") ?? "created"), C = String(this.ctx.getOptionValue("createdbycol") ?? "created_by"), w = [`${r}`, "row_version"], N = [`p_row.${r}`, "p_row.row_version"];
-      d && (w.push(A, C), N.push(`p_row.${A}`, `p_row.${C}`)), l += `
+      const v = String(this.ctx.getOptionValue("createdcol") ?? "created"), C = String(this.ctx.getOptionValue("createdbycol") ?? "created_by"), w = [`${r}`, "row_version"], N = [`p_row.${r}`, "p_row.row_version"];
+      d && (w.push(v, C), N.push(`p_row.${v}`, `p_row.${C}`)), l += `
 ${i}${i}returning ${w.join(", ")}
 `, l += `${i}${i}     into ${N.join(", ")}`;
     } else
@@ -12893,16 +12893,16 @@ ${i}${i}returning ${r}
 `, l += `${i}end insert_row;
 
 `;
-    const v = [
-      ...u.map((A) => `${A.toLowerCase()} = p_row.${A.toLowerCase()}`),
-      ...c.map((A) => `${A.parseName().toLowerCase()} = p_row.${A.parseName().toLowerCase()}`)
+    const A = [
+      ...u.map((v) => `${v.toLowerCase()} = p_row.${v.toLowerCase()}`),
+      ...c.map((v) => `${v.parseName().toLowerCase()} = p_row.${v.parseName().toLowerCase()}`)
     ];
     return l += `${i}procedure update_row (p_row in out nocopy ${n}%rowtype) is
 `, l += `${i}${i}l_id t_id;
 `, l += `${i}begin
 `, l += `${i}${i}l_id := p_row.${r};
 `, l += `${i}${i}update ${n} set
-`, l += `${i}${i}${i}` + v.join(`,
+`, l += `${i}${i}${i}` + A.join(`,
 ${i}${i}${i}`) + `
 `, l += `${i}${i}where ${r} = l_id`, o && (l += `
 ${i}${i}  and row_version = p_row.row_version`), l += `;
@@ -13096,9 +13096,9 @@ ${i}) is
 `;
     p += `${i}procedure get (
 `, p += `${i}${i}p_id          in  ${n}.${r}%type`;
-    for (const { name: A } of c)
+    for (const { name: v } of c)
       p += `,
-${i}${i}p_${A.padEnd(13)} out ${n}.${A}%type`;
+${i}${i}p_${v.padEnd(13)} out ${n}.${v}%type`;
     o && (p += `,
 ${i}${i}p_row_version  out ${n}.row_version%type`), d && (p += `,
 ${i}${i}p_${u.padEnd(13)} out ${n}.${u}%type`, p += `,
@@ -13110,19 +13110,19 @@ ${i});
 `, p += `${i}procedure ins (
 `;
     const b = [];
-    for (const { name: A, nullable: C } of c)
-      b.push(`${i}${i}p_${A.padEnd(13)} in  ${n}.${A}%type${C ? " default null" : ""}`);
+    for (const { name: v, nullable: C } of c)
+      b.push(`${i}${i}p_${v.padEnd(13)} in  ${n}.${v}%type${C ? " default null" : ""}`);
     b.push(`${i}${i}p_id           out ${n}.${r}%type`), p += b.join(`,
 `) + `
 ${i});
 
 `, p += `${i}procedure upd (
 `;
-    const v = [];
-    v.push(`${i}${i}p_id           in  ${n}.${r}%type`);
-    for (const { name: A, nullable: C } of c)
-      v.push(`${i}${i}p_${A.padEnd(13)} in  ${n}.${A}%type${C ? " default null" : ""}`);
-    return o && v.push(`${i}${i}p_row_version  in  ${n}.row_version%type`), p += v.join(`,
+    const A = [];
+    A.push(`${i}${i}p_id           in  ${n}.${r}%type`);
+    for (const { name: v, nullable: C } of c)
+      A.push(`${i}${i}p_${v.padEnd(13)} in  ${n}.${v}%type${C ? " default null" : ""}`);
+    return o && A.push(`${i}${i}p_row_version  in  ${n}.row_version%type`), p += A.join(`,
 `) + `
 ${i});
 
@@ -13166,10 +13166,10 @@ ${i}) is
 
 `, b += `${i}procedure ins (
 `;
-    const v = [];
+    const A = [];
     for (const { name: C, nullable: w } of u)
-      v.push(`${i}${i}p_${C.padEnd(13)} in  ${n}.${C}%type${w ? " default null" : ""}`);
-    v.push(`${i}${i}p_id           out ${n}.${o}%type`), b += v.join(`,
+      A.push(`${i}${i}p_${C.padEnd(13)} in  ${n}.${C}%type${w ? " default null" : ""}`);
+    A.push(`${i}${i}p_id           out ${n}.${o}%type`), b += A.join(`,
 `) + `
 ${i}) is
 `, b += `${i}${i}l_rec ${t}.t_rec;
@@ -13183,11 +13183,11 @@ ${i}) is
 
 `, b += `${i}procedure upd (
 `;
-    const A = [];
-    A.push(`${i}${i}p_id           in  ${n}.${o}%type`);
+    const v = [];
+    v.push(`${i}${i}p_id           in  ${n}.${o}%type`);
     for (const { name: C, nullable: w } of u)
-      A.push(`${i}${i}p_${C.padEnd(13)} in  ${n}.${C}%type${w ? " default null" : ""}`);
-    d && A.push(`${i}${i}p_row_version  in  ${n}.row_version%type`), b += A.join(`,
+      v.push(`${i}${i}p_${C.padEnd(13)} in  ${n}.${C}%type${w ? " default null" : ""}`);
+    d && v.push(`${i}${i}p_row_version  in  ${n}.row_version%type`), b += v.join(`,
 `) + `
 ${i}) is
 `, b += `${i}${i}l_rec ${t}.t_rec;
@@ -13228,13 +13228,13 @@ ${i}${i});
 `, r;
   }
   _generateAuditBody(e) {
-    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), t = n + "_dal", r = n + "_aud", o = (e.getPkName() ?? "id").toLowerCase(), d = String(e.getOptionValue("auditlog") || "").trim() || "app_audit_log", c = (this.ctx.objPrefix() + d).toLowerCase(), u = c + "_svc", h = this._hasVersionCol(e), l = Object.keys(e.fks ?? {}).map((w) => w.toLowerCase()), m = this._svcCols(e).map((w) => w.parseName().toLowerCase()), b = (this.ctx.find(d)?.children ?? []).some((w) => w.parseName().toLowerCase() === "old_values"), v = this._hasSyntheticTenantId(e), A = [o, ...v ? ["tenant_id"] : [], ...l, ...m];
-    h && A.push("row_version");
+    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), t = n + "_dal", r = n + "_aud", o = (e.getPkName() ?? "id").toLowerCase(), d = String(e.getOptionValue("auditlog") || "").trim() || "app_audit_log", c = (this.ctx.objPrefix() + d).toLowerCase(), u = c + "_svc", h = this._hasVersionCol(e), l = Object.keys(e.fks ?? {}).map((w) => w.toLowerCase()), m = this._svcCols(e).map((w) => w.parseName().toLowerCase()), b = (this.ctx.find(d)?.children ?? []).some((w) => w.parseName().toLowerCase() === "old_values"), A = this._hasSyntheticTenantId(e), v = [o, ...A ? ["tenant_id"] : [], ...l, ...m];
+    h && v.push("row_version");
     let C = `create or replace package body ${r} as
 
 `;
     if (b) {
-      const w = A.map((N) => `${i}${i}${i}'${N}' value p_row.${N}`);
+      const w = v.map((N) => `${i}${i}${i}'${N}' value p_row.${N}`);
       C += `${i}function f_to_json (p_row in ${n}%rowtype) return clob is
 `, C += `${i}${i}l_result clob;
 `, C += `${i}begin
@@ -13379,13 +13379,13 @@ class ke extends pa {
     return t !== null ? this._toOracleType(t._inferTypeFull()) : e.getPkType();
   }
   _toOracleType(e) {
-    return se(e, this._ddl.semantics(), Y(this._ddl));
+    return se(e, this._ddl.semantics(), Q(this._ddl));
   }
   _buildColumnConstraints(e, n, t) {
     if (e.isOption("unique") || e.isOption("uk")) {
       const o = e.parent !== null && e.parent.isOption("notenantid");
       (!this._ddl.optionEQvalue("tenantid", !0) || o) && (n += `
-`, n += this._cpad(e) + "constraint " + H(this._ddl.objPrefix(), t.parent_child, this._naming.unq) + " unique");
+`, n += this._cpad(e) + "constraint " + z(this._ddl.objPrefix(), t.parent_child, this._naming.unq) + " unique");
     }
     let r = "'";
     if ((n.startsWith("integer") || n.startsWith("number") || n.startsWith("date")) && (r = ""), e.isOption("default")) {
@@ -13396,15 +13396,15 @@ class ke extends pa {
       } else d.includes(o.toLowerCase()) ? n += " default on null " + o : n += " default on null " + r + o + r;
     }
     if ((e.isOption("nn") || e.indexOf("not") + 1 === e.indexOf("null")) && e.indexOf("pk") < 0 && (n += " not null"), (e.isOption("hidden") || e.isOption("invincible")) && (n += " invisible"), t.isNativeBoolean || (n += e.genConstraint(r)), t.needsBoolCheck && (n += `
-` + this._cpad(e) + "constraint " + H(this._ddl.objPrefix(), t.parent_child) + ` check (${e.parseName()} in ('Y','N'))`), e.isOption("between")) {
+` + this._cpad(e) + "constraint " + z(this._ddl.objPrefix(), t.parent_child) + ` check (${e.parseName()} in ('Y','N'))`), e.isOption("between")) {
       const o = e.getBetweenClause() ?? "";
-      n += " constraint " + H(t.parent_child, this._naming.bet) + `
+      n += " constraint " + z(t.parent_child, this._naming.bet) + `
 `, n += "           check (" + e.parseName() + " between " + o + ")";
     }
     if (e.isOption("pk")) {
       const o = n.startsWith("number") ? " " + this._pkTypeModifier(this._ddl.objPrefix() + e.parent.parseName()) : " not null";
       n += o + `
-`, n += this._cpad(e) + "constraint " + H(this._ddl.objPrefix(), t.parent_child, this._naming.pk) + " primary key";
+`, n += this._cpad(e) + "constraint " + z(this._ddl.objPrefix(), t.parent_child, this._naming.pk) + " primary key";
     }
     return e.annotations !== null && (0 <= n.indexOf(`
 `) ? n += `
@@ -13422,8 +13422,8 @@ class ke extends pa {
     if (r !== null && !e.isOption("pk")) {
       o += i + r + d + "number " + this._pkTypeModifier(n) + `
 `;
-      const c = H(this._ddl.objPrefix("no schema") + e.parseName(), "_", r);
-      o += i + i + " ".repeat(e.maxChildNameLen()) + "constraint " + H(c, this._naming.pk) + ` primary key,
+      const c = z(this._ddl.objPrefix("no schema") + e.parseName(), "_", r);
+      o += i + i + " ".repeat(e.maxChildNameLen()) + "constraint " + z(c, this._naming.pk) + ` primary key,
 `;
     } else {
       const c = e.getExplicitPkName();
@@ -13442,12 +13442,12 @@ class ke extends pa {
     for (let r in e.fks) {
       let o = e.fks[r];
       if (0 < r.indexOf(",")) {
-        const v = this._ddl.find(o), A = be(r, ", ");
-        for (let C = 0; C < A.length; C++) {
-          const w = A[C];
+        const A = this._ddl.find(o), v = be(r, ", ");
+        for (let C = 0; C < v.length; C++) {
+          const w = v[C];
           if (w === ",") continue;
-          const N = v?.findChild(w), E = i + " ".repeat(e.maxChildNameLen() - w.length);
-          t += i + w + E + (N ? this._toOracleType(N._inferTypeFull()) : "number") + `,
+          const N = A?.findChild(w), L = i + " ".repeat(e.maxChildNameLen() - w.length);
+          t += i + w + L + (N ? this._toOracleType(N._inferTypeFull()) : "number") + `,
 `;
         }
         continue;
@@ -13463,59 +13463,59 @@ class ke extends pa {
       if (this._ddl.optionEQvalue("tenantid", !0) && !e.isOption("notenantid") && u !== null && !u.isOption("notenantid") && p !== "tenant_id") {
         t += `,
 `;
-        const v = m + o, A = v + "_tid_id_uix", C = v + "_tid_id_uq", w = `create unique index ${A}
-    on ${v} (tenant_id, id);
-`, N = `alter table ${v}
+        const A = m + o, v = A + "_tid_id_uix", C = A + "_tid_id_uq", w = `create unique index ${v}
+    on ${A} (tenant_id, id);
+`, N = `alter table ${A}
     add constraint ${C}
-    unique (tenant_id, id) using index ${A};
+    unique (tenant_id, id) using index ${v};
 `;
         this._ddl.postponedAltersSet.has(w) || (this._ddl.postponedAlters.push(w), this._ddl.postponedAltersSet.add(w), this._ddl.postponedAlters.push(N), this._ddl.postponedAltersSet.add(N));
-        let E = "";
-        e.isOption("cascade") ? E = " on delete cascade" : e.isOption("setnull") && (E = " on delete set null");
-        for (const ae in e.children) {
-          const L = e.children[ae];
-          if (p === L.parseName()) {
-            L.isOption("cascade") ? E = " on delete cascade" : L.isOption("setnull") && (E = " on delete set null");
+        let L = "";
+        e.isOption("cascade") ? L = " on delete cascade" : e.isOption("setnull") && (L = " on delete set null");
+        for (const F in e.children) {
+          const E = e.children[F];
+          if (p === E.parseName()) {
+            E.isOption("cascade") ? L = " on delete cascade" : E.isOption("setnull") && (L = " on delete set null");
             break;
           }
         }
-        E || (E = this._globalOnDelete());
+        L || (L = this._globalOnDelete());
         const B = n + "_" + p + this._naming.fk, G = "alter table " + n + " add constraint " + B + `
     foreign key (tenant_id, ` + p + `)
-    references ` + m + o + " (tenant_id, id)" + E + `;
+    references ` + m + o + " (tenant_id, id)" + L + `;
 `;
         this._ddl.postponedAltersSet.has(G) || (this._ddl.postponedAlters.push(G), this._ddl.postponedAltersSet.add(G));
       } else if (u !== null && (u.line < e.line || u.isMany2One())) {
         t += i + i + " ".repeat(e.maxChildNameLen()) + "constraint " + n + "_" + r + this._naming.fk + `
 `;
-        let v = "";
-        e.isOption("cascade") ? v = " on delete cascade" : e.isOption("setnull") && (v = " on delete set null");
         let A = "";
+        e.isOption("cascade") ? A = " on delete cascade" : e.isOption("setnull") && (A = " on delete set null");
+        let v = "";
         for (const C in e.children) {
           const w = e.children[C];
           if (r === w.parseName()) {
-            (w.isOption("nn") || w.isOption("notnull")) && (A = ya), w.isOption("cascade") ? v = " on delete cascade" : w.isOption("setnull") && (v = " on delete set null");
+            (w.isOption("nn") || w.isOption("notnull")) && (v = ya), w.isOption("cascade") ? A = " on delete cascade" : w.isOption("setnull") && (A = " on delete set null");
             break;
           }
         }
-        v || (v = this._globalOnDelete()), t += i + i + " ".repeat(e.maxChildNameLen()) + "references " + m + o + v + A + `,
+        A || (A = this._globalOnDelete()), t += i + i + " ".repeat(e.maxChildNameLen()) + "references " + m + o + A + v + `,
 `;
       } else {
         t += `,
 `;
-        let v = "";
-        e.isOption("cascade") ? v = " on delete cascade" : e.isOption("setnull") && (v = " on delete set null");
+        let A = "";
+        e.isOption("cascade") ? A = " on delete cascade" : e.isOption("setnull") && (A = " on delete set null");
         for (const C in e.children) {
           const w = e.children[C];
           if (r === w.parseName()) {
-            w.isOption("cascade") ? v = " on delete cascade" : w.isOption("setnull") && (v = " on delete set null");
+            w.isOption("cascade") ? A = " on delete cascade" : w.isOption("setnull") && (A = " on delete set null");
             break;
           }
         }
-        v || (v = this._globalOnDelete());
-        const A = "alter table " + n + " add constraint " + n + "_" + r + "_fk foreign key (" + r + ") references " + m + o + v + `;
+        A || (A = this._globalOnDelete());
+        const v = "alter table " + n + " add constraint " + n + "_" + r + "_fk foreign key (" + r + ") references " + m + o + A + `;
 `;
-        this._ddl.postponedAltersSet.has(A) || (this._ddl.postponedAlters.push(A), this._ddl.postponedAltersSet.add(A));
+        this._ddl.postponedAltersSet.has(v) || (this._ddl.postponedAlters.push(v), this._ddl.postponedAltersSet.add(v));
       }
     }
     return t;
@@ -13639,8 +13639,8 @@ no delete until 16 days after insert` : "";
         const m = l ?? O(e.fks[l]) + "_id";
         o === 1 && (r += `-- table index
 `);
-        const p = this._ddl.find(e.fks[l]), b = p !== null && p.isOption("notenantid"), A = !d || c || m === "tenant_id" || b ? m : `tenant_id, ${m}`;
-        r += "create index " + n + this._naming.idx + o++ + " on " + n + " (" + A + `);
+        const p = this._ddl.find(e.fks[l]), b = p !== null && p.isOption("notenantid"), v = !d || c || m === "tenant_id" || b ? m : `tenant_id, ${m}`;
+        r += "create index " + n + this._naming.idx + o++ + " on " + n + " (" + v + `);
 
 `;
       }
@@ -13919,9 +13919,9 @@ modify ` + n + " generated always  as identity restart start with " + t + `;
     if (this._ddl.optionEQvalue("aienrichment", !0) && h != null && h.length >= 2 && (ie(h) ?? 0) >= 26) {
       const l = [], m = {}, p = this._ddl.objPrefix();
       for (const b of e) {
-        const v = b.inferType(), A = b.getAnnotationPairs(), C = (p + b.parseName()).toUpperCase();
-        if (v === "table") {
-          for (const w of A) {
+        const A = b.inferType(), v = b.getAnnotationPairs(), C = (p + b.parseName()).toUpperCase();
+        if (A === "table") {
+          for (const w of v) {
             if (w.label.toUpperCase() === "TGROUP") {
               w.value != null && (m[w.value] || (m[w.value] = []), m[w.value].push(C));
               continue;
@@ -13930,18 +13930,18 @@ modify ` + n + " generated always  as identity restart start with " + t + `;
           }
           for (const w of b.children) {
             if (w.children.length > 0) continue;
-            const N = w.getAnnotationPairs(), E = C + "." + w.parseName().toUpperCase();
+            const N = w.getAnnotationPairs(), L = C + "." + w.parseName().toUpperCase();
             for (const B of N)
-              B.value != null && l.push(`    metadata_annotations.set('${B.label}', '${B.value}', '${E}', 'TABLE COLUMN');`);
+              B.value != null && l.push(`    metadata_annotations.set('${B.label}', '${B.value}', '${L}', 'TABLE COLUMN');`);
           }
-        } else if (v === "view")
-          for (const w of A)
+        } else if (A === "view")
+          for (const w of v)
             w.value != null && l.push(`    metadata_annotations.set('${w.label}', '${w.value}', '${C}', 'VIEW');`);
       }
       for (const b of Object.keys(m)) {
         l.push(`    metadata_annotations.create_group('${b}');`);
-        for (const v of m[b])
-          l.push(`    metadata_annotations.add_to_group('${b}', '${v}', 'TABLE');`);
+        for (const A of m[b])
+          l.push(`    metadata_annotations.add_to_group('${b}', '${A}', 'TABLE');`);
       }
       l.length > 0 && (t += `-- AI enrichment
 begin
@@ -13991,31 +13991,31 @@ function P(x, e, n, t, r = !1) {
   const o = { kind: x, table: e, sql: n, requiresManualIntervention: r };
   return t !== void 0 && (o.column = t), o;
 }
-function X(x, e, n, t, r = !1) {
+function ee(x, e, n, t, r = !1) {
   const o = { level: x, table: e, message: n, requiresManualIntervention: r };
   return t !== void 0 && (o.column = t), o;
 }
 class _a {
   compute(e, n) {
     const t = [], r = [], o = this._tableMap(e), d = this._tableMap(n), c = this._viewMap(e), u = this._viewMap(n), h = [];
-    for (const [v, A] of o)
-      d.has(v) || h.push(A);
-    for (const v of this._reverseTopoSort(h, e))
-      t.push(...this._dropTable(v, e)), r.push(X("DESTRUCTIVE", v.parseName(), `table dropped: ${v.parseName()}`));
+    for (const [A, v] of o)
+      d.has(A) || h.push(v);
+    for (const A of this._reverseTopoSort(h, e))
+      t.push(...this._dropTable(A, e)), r.push(ee("DESTRUCTIVE", A.parseName(), `table dropped: ${A.parseName()}`));
     const l = [];
-    for (const [v, A] of d)
-      o.has(v) || l.push(A);
-    for (const v of this._topoSort(l, n))
-      t.push(...this._createTable(v, n));
-    for (const [v, A] of d) {
-      const C = o.get(v);
+    for (const [A, v] of d)
+      o.has(A) || l.push(v);
+    for (const A of this._topoSort(l, n))
+      t.push(...this._createTable(A, n));
+    for (const [A, v] of d) {
+      const C = o.get(A);
       if (C == null) continue;
-      const { stmts: w, warns: N } = this._diffTable(C, A, e, n);
+      const { stmts: w, warns: N } = this._diffTable(C, v, e, n);
       t.push(...w), r.push(...N);
     }
     t.push(...this._diffViews(c, u, n));
-    const m = this._order(t), p = this._buildPreamble(m, r), b = m.map((v) => v.sql.endsWith(`
-`) ? v.sql : v.sql + `
+    const m = this._order(t), p = this._buildPreamble(m, r), b = m.map((A) => A.sql.endsWith(`
+`) ? A.sql : A.sql + `
 `).join(`
 `);
     return {
@@ -14062,7 +14062,7 @@ class _a {
   }
   // ── Drop table ────────────────────────────────────────────────────────────
   _dropTable(e, n) {
-    const t = [], r = e.parseName(), o = n.objPrefix() + r, c = Y(n) ? "if exists " : "", u = e.trimmedContent().toLowerCase().includes("/api");
+    const t = [], r = e.parseName(), o = n.objPrefix() + r, c = Q(n) ? "if exists " : "", u = e.trimmedContent().toLowerCase().includes("/api");
     if (n.optionEQvalue("api", "layered") && u)
       for (const h of this._layeredPkgNames(e, n))
         t.push(P("drop_package", r, `drop package ${c}${h};
@@ -14111,37 +14111,37 @@ class _a {
     const o = [], d = [], c = n.parseName(), u = r.objPrefix() + c;
     e.lateInitFks(), n.lateInitFks();
     const h = this._colMap(e), l = this._colMap(n), m = [];
-    for (const [L, z] of h)
-      l.has(L) || m.push(z);
+    for (const [E, V] of h)
+      l.has(E) || m.push(V);
     const p = [];
-    for (const [L, z] of l)
-      h.has(L) || p.push(z);
-    const b = this._detectRenames(m, p), v = new Set([...b.keys()].map((L) => L.parseName())), A = new Set([...b.values()].map((L) => L.parseName()));
-    for (const [L, z] of b)
+    for (const [E, V] of l)
+      h.has(E) || p.push(V);
+    const b = this._detectRenames(m, p), A = new Set([...b.keys()].map((E) => E.parseName())), v = new Set([...b.values()].map((E) => E.parseName()));
+    for (const [E, V] of b)
       o.push(P(
         "rename_hint",
         c,
-        `-- alter table ${u} rename column ${L.parseName()} to ${z.parseName()};
+        `-- alter table ${u} rename column ${E.parseName()} to ${V.parseName()};
 `,
-        L.parseName()
-      )), d.push(X(
+        E.parseName()
+      )), d.push(ee(
         "INFO",
         c,
-        `suspected rename: ${L.parseName()} \u2192 ${z.parseName()} (verify before applying)`,
-        L.parseName()
+        `suspected rename: ${E.parseName()} \u2192 ${V.parseName()} (verify before applying)`,
+        E.parseName()
       ));
-    for (const L of m)
-      v.has(L.parseName()) || (o.push(...this._dropColumn(u, c, L)), d.push(X("DESTRUCTIVE", c, `column dropped: ${L.parseName()}`, L.parseName())));
-    for (const L of p) {
-      if (A.has(L.parseName())) continue;
-      const { stmts: z, warns: Q } = this._addColumn(u, c, L, r);
-      o.push(...z), d.push(...Q);
+    for (const E of m)
+      A.has(E.parseName()) || (o.push(...this._dropColumn(u, c, E)), d.push(ee("DESTRUCTIVE", c, `column dropped: ${E.parseName()}`, E.parseName())));
+    for (const E of p) {
+      if (v.has(E.parseName())) continue;
+      const { stmts: V, warns: Z } = this._addColumn(u, c, E, r);
+      o.push(...V), d.push(...Z);
     }
-    for (const [L, z] of l) {
-      const Q = h.get(L);
-      if (Q == null) continue;
-      const { stmts: U, warns: $ } = this._modifyColumn(u, c, Q, z, t, r);
-      o.push(...U), d.push(...$);
+    for (const [E, V] of l) {
+      const Z = h.get(E);
+      if (Z == null) continue;
+      const { stmts: K, warns: $ } = this._modifyColumn(u, c, Z, V, t, r);
+      o.push(...K), d.push(...$);
     }
     const C = e.hasRowVersion(), w = n.hasRowVersion();
     !C && w && (o.push(P(
@@ -14156,7 +14156,7 @@ class _a {
 `,
       "row_version",
       !0
-    )), d.push(X(
+    )), d.push(ee(
       "INFO",
       c,
       "rowversion added \u2014 requires manual column initialization",
@@ -14175,11 +14175,11 @@ class _a {
 alter table ${u} drop unused columns;
 `,
       "row_version"
-    )), d.push(X("DESTRUCTIVE", c, "row_version column dropped", "row_version")));
-    const { stmts: N, warns: E } = this._diffPk(e, n, t, r, h, l);
-    o.push(...N), d.push(...E), o.push(...this._diffFKs(e, n, t, r)), o.push(...this._diffIndexes(e, n, t, r)), o.push(...this._diffTriggers(e, n, t, r));
-    const B = m.some((L) => !v.has(L.parseName())) || p.some((L) => !A.has(L.parseName())) || o.some((L) => L.kind === "modify_column"), { stmts: G, warns: ae } = this._diffPackages(e, n, t, r, B);
-    return o.push(...G), d.push(...ae), { stmts: o, warns: d };
+    )), d.push(ee("DESTRUCTIVE", c, "row_version column dropped", "row_version")));
+    const { stmts: N, warns: L } = this._diffPk(e, n, t, r, h, l);
+    o.push(...N), d.push(...L), o.push(...this._diffFKs(e, n, t, r)), o.push(...this._diffIndexes(e, n, t, r)), o.push(...this._diffTriggers(e, n, t, r));
+    const B = m.some((E) => !A.has(E.parseName())) || p.some((E) => !v.has(E.parseName())) || o.some((E) => E.kind === "modify_column"), { stmts: G, warns: F } = this._diffPackages(e, n, t, r, B);
+    return o.push(...G), d.push(...F), { stmts: o, warns: d };
   }
   // ── PK descriptor ────────────────────────────────────────────────────────
   _pkDesc(e, n) {
@@ -14196,11 +14196,11 @@ alter table ${u} drop unused columns;
     const c = [], u = [], h = n.parseName(), l = t.objPrefix() + h, m = r.objPrefix() + h, p = this._pkDesc(e, t), b = this._pkDesc(n, r);
     if (p.type === b.type && p.columns.join(",") === b.columns.join(","))
       return { stmts: c, warns: u };
-    const v = p.type === "none" ? "none" : `${p.type}(${p.columns.join(", ")})`, A = b.type === "none" ? "none" : `${b.type}(${b.columns.join(", ")})`;
-    u.push(X(
+    const A = p.type === "none" ? "none" : `${p.type}(${p.columns.join(", ")})`, v = b.type === "none" ? "none" : `${b.type}(${b.columns.join(", ")})`;
+    u.push(ee(
       "DESTRUCTIVE",
       h,
-      `Primary key change on "${h}": ${v} \u2192 ${A}. All FKs referencing this table must be dropped and re-created. Data migration required.`,
+      `Primary key change on "${h}": ${A} \u2192 ${v}. All FKs referencing this table must be dropped and re-created. Data migration required.`,
       void 0,
       !0
     ));
@@ -14276,20 +14276,20 @@ alter table ${l} drop unused columns;
   }
   // ── Diff triggers ─────────────────────────────────────────────────────────
   _diffTriggers(e, n, t, r) {
-    const o = [], d = n.parseName(), c = (t.objPrefix() + d).toLowerCase(), u = (v) => JSON.stringify({
-      lower: v.children.filter((A) => A.isOption("lower")).map((A) => A.parseName()),
-      upper: v.children.filter((A) => A.isOption("upper") && !A.isOption("lower")).map((A) => A.parseName()),
-      rv: v.hasRowVersion(),
-      audit: v.hasAuditCols(),
-      rowkey: v.hasRowKey()
+    const o = [], d = n.parseName(), c = (t.objPrefix() + d).toLowerCase(), u = (A) => JSON.stringify({
+      lower: A.children.filter((v) => v.isOption("lower")).map((v) => v.parseName()),
+      upper: A.children.filter((v) => v.isOption("upper") && !v.isOption("lower")).map((v) => v.parseName()),
+      rv: A.hasRowVersion(),
+      audit: A.hasAuditCols(),
+      rowkey: A.hasRowKey()
     });
     if (u(e) === u(n)) return o;
-    const h = (v) => v.children.some((A) => A.isOption("lower") || A.isOption("upper")), l = h(e) || e.hasRowVersion() || e.hasAuditCols() || e.hasRowKey(), m = h(e) || e.hasRowVersion() || e.hasAuditCols(), p = h(n) || n.hasRowVersion() || n.hasAuditCols() || n.hasRowKey(), b = h(n) || n.hasRowVersion() || n.hasAuditCols();
+    const h = (A) => A.children.some((v) => v.isOption("lower") || v.isOption("upper")), l = h(e) || e.hasRowVersion() || e.hasAuditCols() || e.hasRowKey(), m = h(e) || e.hasRowVersion() || e.hasAuditCols(), p = h(n) || n.hasRowVersion() || n.hasAuditCols() || n.hasRowKey(), b = h(n) || n.hasRowVersion() || n.hasAuditCols();
     if (l && o.push(P("drop_trigger", d, `drop trigger ${c}${R.bi};
 `)), m && o.push(P("drop_trigger", d, `drop trigger ${c}${R.bu};
 `)), p || b) {
-      const A = new oe(r, R).generateTrigger(n);
-      A && o.push(P("create_trigger", d, A));
+      const v = new oe(r, R).generateTrigger(n);
+      v && o.push(P("create_trigger", d, v));
     }
     return o;
   }
@@ -14325,16 +14325,16 @@ alter table ${l} drop unused columns;
   }
   // ── Add column ────────────────────────────────────────────────────────────
   _addColumn(e, n, t, r) {
-    const o = [], d = [], c = Y(r), u = t._inferTypeFull(), h = se(u, r.semantics(), c), l = t.parseName(), m = this._isNotNull(t);
+    const o = [], d = [], c = Q(r), u = t._inferTypeFull(), h = se(u, r.semantics(), c), l = t.parseName(), m = this._isNotNull(t);
     let p = "";
     if (t.isOption("default")) {
-      const v = t.getDefaultValue() ?? "", A = ["sysdate", "current_date", "current_timestamp", "systimestamp", "localtimestamp"], w = h.startsWith("integer") || h.startsWith("number") || h.startsWith("date") || h.startsWith("timestamp") || A.includes(v.toLowerCase()) ? "" : "'";
-      p += A.includes(v.toLowerCase()) ? ` default on null ${v}` : ` default on null ${w}${v}${w}`;
+      const A = t.getDefaultValue() ?? "", v = ["sysdate", "current_date", "current_timestamp", "systimestamp", "localtimestamp"], w = h.startsWith("integer") || h.startsWith("number") || h.startsWith("date") || h.startsWith("timestamp") || v.includes(A.toLowerCase()) ? "" : "'";
+      p += v.includes(A.toLowerCase()) ? ` default on null ${A}` : ` default on null ${w}${A}${w}`;
     }
     (t.isOption("hidden") || t.isOption("invincible")) && (p += " invisible");
     const b = `${l} ${h}${p}`;
     if (m) {
-      const v = t.isOption("default") ? t.getDefaultValue() ?? "???" : "???", A = ["sysdate", "current_date", "current_timestamp", "systimestamp", "localtimestamp"], C = h.startsWith("integer") || h.startsWith("number") || h.startsWith("date") || h.startsWith("timestamp") || A.includes(v.toLowerCase()), w = !t.isOption("default") || C ? "" : "'", N = A.includes(v.toLowerCase()) ? v : `${w}${v}${w}`, E = t.isOption("default");
+      const A = t.isOption("default") ? t.getDefaultValue() ?? "???" : "???", v = ["sysdate", "current_date", "current_timestamp", "systimestamp", "localtimestamp"], C = h.startsWith("integer") || h.startsWith("number") || h.startsWith("date") || h.startsWith("timestamp") || v.includes(A.toLowerCase()), w = !t.isOption("default") || C ? "" : "'", N = v.includes(A.toLowerCase()) ? A : `${w}${A}${w}`, L = t.isOption("default");
       o.push(P(
         "add_column",
         n,
@@ -14345,7 +14345,7 @@ alter table ${l} drop unused columns;
         "add_column",
         n,
         `-- \u26A0 MANUAL INTERVENTION REQUIRED
-` + (E ? `-- Populate existing rows with the default value before step 3.
+` + (L ? `-- Populate existing rows with the default value before step 3.
 ` : `-- Populate existing rows before step 3. Replace ??? with the correct expression.
 `) + `-- update ${e} set ${l} = ${N} where ${l} is null;
 -- commit;
@@ -14358,7 +14358,7 @@ alter table ${l} drop unused columns;
         `alter table ${e} modify (${l} not null);
 `,
         l
-      )), d.push(X(
+      )), d.push(ee(
         "DESTRUCTIVE",
         n,
         `added NOT NULL column ${l} \u2014 requires manual data population`,
@@ -14374,41 +14374,41 @@ alter table ${l} drop unused columns;
         l
       ));
     if (t.isOption("check") || t.isOption("values")) {
-      const v = t.isOption("check") ? t.getValues("check") : t.getValues("values"), A = H(r.objPrefix(), `${n}_${l}`, R.ck);
+      const A = t.isOption("check") ? t.getValues("check") : t.getValues("values"), v = z(r.objPrefix(), `${n}_${l}`, R.ck);
       o.push(P(
         "add_column",
         n,
-        `alter table ${e} add constraint ${A} check (${l} in (${v}));
+        `alter table ${e} add constraint ${v} check (${l} in (${A}));
 `,
         l
       ));
     } else if (t.isOption("between")) {
-      const v = t.getBetweenClause() ?? "", A = H(`${n}_${l}`, R.bet);
+      const A = t.getBetweenClause() ?? "", v = z(`${n}_${l}`, R.bet);
       o.push(P(
         "add_column",
         n,
-        `alter table ${e} add constraint ${A} check (${l} between ${v});
+        `alter table ${e} add constraint ${v} check (${l} between ${A});
 `,
         l
       ));
     }
     if (t.isOption("unique") || t.isOption("uk")) {
-      const v = `${e}_${l}${R.unq}`, A = `create unique index ${v} on ${e} (${l});
+      const A = `${e}_${l}${R.unq}`, v = `create unique index ${A} on ${e} (${l});
 `;
       o.push(P(
         "add_index",
         n,
-        c ? `create unique index if not exists ${v} on ${e} (${l});
-` : this._wrapIndex(A)
+        c ? `create unique index if not exists ${A} on ${e} (${l});
+` : this._wrapIndex(v)
       ));
     } else if (t.isOption("idx") || t.isOption("index")) {
-      const v = `${e}_${l}${R.idx}`, A = `create index ${v} on ${e} (${l});
+      const A = `${e}_${l}${R.idx}`, v = `create index ${A} on ${e} (${l});
 `;
       o.push(P(
         "add_index",
         n,
-        c ? `create index if not exists ${v} on ${e} (${l});
-` : this._wrapIndex(A)
+        c ? `create index if not exists ${A} on ${e} (${l});
+` : this._wrapIndex(v)
       ));
     }
     return { stmts: o, warns: d };
@@ -14436,17 +14436,17 @@ alter table ${e} drop unused columns;
   }
   // ── Modify column ─────────────────────────────────────────────────────────
   _modifyColumn(e, n, t, r, o, d) {
-    const c = [], u = [], h = t._inferTypeFull(), l = r._inferTypeFull(), m = Y(d), p = se(h, o.semantics(), Y(o)), b = se(l, d.semantics(), m), v = this._isNotNull(t), A = this._isNotNull(r), C = r.parseName(), w = p !== b, N = v !== A;
+    const c = [], u = [], h = t._inferTypeFull(), l = r._inferTypeFull(), m = Q(d), p = se(h, o.semantics(), Q(o)), b = se(l, d.semantics(), m), A = this._isNotNull(t), v = this._isNotNull(r), C = r.parseName(), w = p !== b, N = A !== v;
     if (w || N)
       if (h.base !== l.base) {
-        const s = A ? " not null" : v ? " null" : "";
+        const s = v ? " not null" : A ? " null" : "";
         c.push(P(
           "modify_column",
           n,
           `alter table ${e} modify (${C} ${b}${s});
 `,
           C
-        )), u.push(X(
+        )), u.push(ee(
           "LOSSY",
           n,
           `base type changed on ${C}: ${h.base} \u2192 ${l.base}`,
@@ -14454,9 +14454,9 @@ alter table ${e} drop unused columns;
         ));
       } else {
         const s = [];
-        w && s.push(b), N && s.push(A ? "not null" : "null");
+        w && s.push(b), N && s.push(v ? "not null" : "null");
         const f = s.join(" ");
-        if (!v && A)
+        if (!A && v)
           c.push(P(
             "modify_column",
             n,
@@ -14466,7 +14466,7 @@ alter table ${e} drop unused columns;
 `,
             C,
             !0
-          )), u.push(X(
+          )), u.push(ee(
             "DESTRUCTIVE",
             n,
             `adding NOT NULL on ${C} \u2014 requires manual verification`,
@@ -14481,7 +14481,7 @@ alter table ${e} drop unused columns;
           C
         )), w && h.base === "varchar") {
           const y = h.varcharLen ?? 4e3, k = l.varcharLen ?? 4e3;
-          k < y && u.push(X(
+          k < y && u.push(ee(
             "LOSSY",
             n,
             `varchar size reduced on ${C}: ${y} \u2192 ${k}`,
@@ -14489,8 +14489,8 @@ alter table ${e} drop unused columns;
           ));
         }
       }
-    const E = t.getDefaultValue(), B = r.getDefaultValue();
-    if (E !== B)
+    const L = t.getDefaultValue(), B = r.getDefaultValue();
+    if (L !== B)
       if (r.isOption("default")) {
         const s = B ?? "", f = ["sysdate", "current_date", "current_timestamp", "systimestamp", "localtimestamp"], y = b.startsWith("integer") || b.startsWith("number") || b.startsWith("date") || b.startsWith("timestamp") || f.includes(s.toLowerCase()) ? "" : "'", k = f.includes(s.toLowerCase()) ? `default on null ${s}` : `default on null ${y}${s}${y}`;
         c.push(P(
@@ -14508,18 +14508,18 @@ alter table ${e} drop unused columns;
 `,
           C
         ));
-    const G = t.isOption("hidden") || t.isOption("invincible"), ae = r.isOption("hidden") || r.isOption("invincible");
-    G !== ae && c.push(P(
+    const G = t.isOption("hidden") || t.isOption("invincible"), F = r.isOption("hidden") || r.isOption("invincible");
+    G !== F && c.push(P(
       "modify_column",
       n,
-      `alter table ${e} modify (${C} ${ae ? "invisible" : "visible"});
+      `alter table ${e} modify (${C} ${F ? "invisible" : "visible"});
 `,
       C
     ));
-    const L = t.isOption("check") || t.isOption("values"), z = r.isOption("check") || r.isOption("values"), Q = t.isOption("between"), U = r.isOption("between"), $ = L ? JSON.stringify(t.parseValues()) : Q ? t.getBetweenClause() : null, a = z ? JSON.stringify(r.parseValues()) : U ? r.getBetweenClause() : null;
+    const E = t.isOption("check") || t.isOption("values"), V = r.isOption("check") || r.isOption("values"), Z = t.isOption("between"), K = r.isOption("between"), $ = E ? JSON.stringify(t.parseValues()) : Z ? t.getBetweenClause() : null, a = V ? JSON.stringify(r.parseValues()) : K ? r.getBetweenClause() : null;
     if ($ !== a) {
       if ($ !== null) {
-        const s = Q ? H(`${n}_${C}`, R.bet) : H(o.objPrefix(), `${n}_${C}`, R.ck);
+        const s = Z ? z(`${n}_${C}`, R.bet) : z(o.objPrefix(), `${n}_${C}`, R.ck);
         c.push(P(
           "modify_column",
           n,
@@ -14528,8 +14528,8 @@ alter table ${e} drop unused columns;
           C
         ));
       }
-      if (z) {
-        const s = z && r.isOption("check") ? r.getValues("check") : r.getValues("values"), f = H(d.objPrefix(), `${n}_${C}`, R.ck);
+      if (V) {
+        const s = V && r.isOption("check") ? r.getValues("check") : r.getValues("values"), f = z(d.objPrefix(), `${n}_${C}`, R.ck);
         c.push(P(
           "modify_column",
           n,
@@ -14537,8 +14537,8 @@ alter table ${e} drop unused columns;
 `,
           C
         ));
-      } else if (U) {
-        const s = r.getBetweenClause() ?? "", f = H(`${n}_${C}`, R.bet);
+      } else if (K) {
+        const s = r.getBetweenClause() ?? "", f = z(`${n}_${C}`, R.bet);
         c.push(P(
           "modify_column",
           n,
@@ -14552,7 +14552,7 @@ alter table ${e} drop unused columns;
   }
   // ── Diff FKs ──────────────────────────────────────────────────────────────
   _diffFKs(e, n, t, r) {
-    const o = [], d = n.parseName(), c = t.objPrefix() + d, u = r.objPrefix() + d, h = Y(r), l = e.fks ?? {}, m = n.fks ?? {};
+    const o = [], d = n.parseName(), c = t.objPrefix() + d, u = r.objPrefix() + d, h = Q(r), l = e.fks ?? {}, m = n.fks ?? {};
     for (const p in l)
       p in m || (o.push(P(
         "drop_fk",
@@ -14575,9 +14575,9 @@ alter table ${c} drop unused columns;
       )));
     for (const p in m) {
       if (p in l) continue;
-      const b = m[p], v = r.find(b) != null ? r.objPrefix() : "", A = `${u}_${p}_fk`, C = this._fkColType(b, r) ?? "number", w = `alter table ${u} add constraint ${A}
+      const b = m[p], A = r.find(b) != null ? r.objPrefix() : "", v = `${u}_${p}_fk`, C = this._fkColType(b, r) ?? "number", w = `alter table ${u} add constraint ${v}
     foreign key (${p})
-    references ${v}${b};
+    references ${A}${b};
 `;
       o.push(P(
         "add_column",
@@ -14599,51 +14599,69 @@ alter table ${c} drop unused columns;
     const r = t.getExplicitPkName();
     if (r == null || r.includes(",")) return null;
     const o = t.findChild(r);
-    return o != null ? se(o._inferTypeFull(), n.semantics(), Y(n)) : t.getPkType() || null;
+    return o != null ? se(o._inferTypeFull(), n.semantics(), Q(n)) : t.getPkType() || null;
   }
   // ── Diff indexes ──────────────────────────────────────────────────────────
   _diffIndexes(e, n, t, r) {
-    const o = [], d = n.parseName(), c = r.objPrefix() + d, u = t.objPrefix() + d, h = Y(r), l = this._colMap(e), m = this._colMap(n);
-    for (const [p, b] of m) {
-      const v = l.get(p);
-      if (v == null) continue;
-      const A = v.isOption("idx") || v.isOption("index"), C = b.isOption("idx") || b.isOption("index"), w = v.isOption("unique") || v.isOption("uk"), N = b.isOption("unique") || b.isOption("uk");
-      if (!A && C) {
-        const E = `${c}_${p}_i`, B = `create index ${E} on ${c} (${p});
+    const o = [], d = n.parseName(), c = r.objPrefix() + d, u = t.objPrefix() + d, h = Q(r), l = this._colMap(e), m = this._colMap(n);
+    for (const [v, C] of m) {
+      const w = l.get(v);
+      if (w == null) continue;
+      const N = w.isOption("idx") || w.isOption("index"), L = C.isOption("idx") || C.isOption("index"), B = w.isOption("unique") || w.isOption("uk"), G = C.isOption("unique") || C.isOption("uk");
+      if (!N && L) {
+        const F = `${c}_${v}_i`, E = `create index ${F} on ${c} (${v});
 `;
         o.push(P(
           "add_index",
           d,
-          h ? `create index if not exists ${E} on ${c} (${p});
-` : this._wrapIndex(B)
+          h ? `create index if not exists ${F} on ${c} (${v});
+` : this._wrapIndex(E)
         ));
       }
-      if (A && !C) {
-        const E = `${u}_${p}_i`;
-        o.push(P("drop_index", d, `drop index ${E};
+      if (N && !L) {
+        const F = `${u}_${v}_i`;
+        o.push(P("drop_index", d, `drop index ${F};
 `));
       }
-      if (!w && N) {
-        const E = `${c}_${p}_unq`, B = `create unique index ${E} on ${c} (${p});
+      if (!B && G) {
+        const F = `${c}_${v}_unq`, E = `create unique index ${F} on ${c} (${v});
 `;
         o.push(P(
           "add_index",
           d,
-          h ? `create unique index if not exists ${E} on ${c} (${p});
-` : this._wrapIndex(B)
+          h ? `create unique index if not exists ${F} on ${c} (${v});
+` : this._wrapIndex(E)
         ));
       }
-      if (w && !N) {
-        const E = `${u}_${p}_unq`;
-        o.push(P("drop_index", d, `drop index ${E};
+      if (B && !G) {
+        const F = `${u}_${v}_unq`;
+        o.push(P("drop_index", d, `drop index ${F};
 `));
       }
+    }
+    const p = (v) => {
+      const C = v.isOption("unique") ? v.getOptionValue("unique") : v.isOption("uk") ? v.getOptionValue("uk") : null;
+      return !C || typeof C != "string" ? null : C.split(",").map((w) => w.trim()).join(",");
+    }, b = p(e), A = p(n);
+    if (b !== A && (b != null && o.push(P(
+      "drop_index",
+      d,
+      `alter table ${u} drop constraint ${u}${R.uk};
+`
+    )), A != null)) {
+      const v = A.split(",").join(", "), C = `${c}${R.uk}`, w = `alter table ${c} add constraint ${C} unique (${v});
+`;
+      o.push(P(
+        "add_index",
+        d,
+        h ? w : this._wrapConstraint(w)
+      ));
     }
     return o;
   }
   // ── Diff views ────────────────────────────────────────────────────────────
   _diffViews(e, n, t) {
-    const r = [], d = Y(t) ? "if exists " : "";
+    const r = [], d = Q(t) ? "if exists " : "";
     for (const [u] of e)
       if (!n.has(u)) {
         const h = t.objPrefix() + u;
@@ -14678,15 +14696,15 @@ alter table ${c} drop unused columns;
   }
   // ── Diff packages ─────────────────────────────────────────────────────────
   _diffPackages(e, n, t, r, o) {
-    const d = [], c = [], u = n.parseName(), l = Y(r) ? "if exists " : "", m = this._apiKind(e, t), p = this._apiKind(n, r);
+    const d = [], c = [], u = n.parseName(), l = Q(r) ? "if exists " : "", m = this._apiKind(e, t), p = this._apiKind(n, r);
     for (const C of this._droppedPkgs(e, n, t, r, m, p))
       d.push(P("drop_package", u, `drop package ${l}${C};
 `));
-    const b = e.isOption("auditlog") !== n.isOption("auditlog"), v = (e.isOption("apex") || e.isOption("apx")) !== (n.isOption("apex") || n.isOption("apx")), A = o || m !== p || b || v;
-    if (p === "layered" && A) {
+    const b = e.isOption("auditlog") !== n.isOption("auditlog"), A = (e.isOption("apex") || e.isOption("apx")) !== (n.isOption("apex") || n.isOption("apx")), v = o || m !== p || b || A;
+    if (p === "layered" && v) {
       const C = new oe(r, R);
       d.push(...this._splitPkgBlocks(C.generateLayeredTAPI(n), u));
-    } else if (p === "simple" && A) {
+    } else if (p === "simple" && v) {
       const C = new oe(r, R);
       d.push(...this._splitPkgBlocks(C.generateTAPI(n), u));
     }
@@ -15049,10 +15067,10 @@ function Pa(x, e) {
 }
 class ne {
   constructor(e, n, t, r) {
-    this.from = n, this.to = t ?? new W(n.line, n.depth + 1), this.message = e, this.severity = r ?? "error";
+    this.from = n, this.to = t ?? new U(n.line, n.depth + 1), this.message = e, this.severity = r ?? "error";
   }
 }
-class W {
+class U {
   // 0-based
   constructor(e, n) {
     this.line = e, this.depth = n;
@@ -15106,7 +15124,7 @@ const Ba = [
   "trans",
   "translation",
   "translations"
-], ee = {
+], ae = {
   duplicateId: "Explicit ID column conflicts with genpk",
   invalidDatatype: "Invalid Datatype",
   undefinedObject: "Undefined Object: ",
@@ -15125,19 +15143,19 @@ function Na(x) {
     const d = r[o];
     if (e.optionEQvalue("genpk", !0) && r[o].parseName() === "id") {
       const h = d.content.toLowerCase().indexOf("id");
-      n.push(new ne(ee.duplicateId, new W(d.line, h), new W(d.line, h + 2)));
+      n.push(new ne(ae.duplicateId, new U(d.line, h), new U(d.line, h + 2)));
       continue;
     }
     const c = d.src[2];
     if (2 < d.src.length && c.value === "-") {
       const h = c.begin;
-      n.push(new ne(ee.invalidDatatype, new W(d.line, h), new W(d.line, h + 2)));
+      n.push(new ne(ae.invalidDatatype, new U(d.line, h), new U(d.line, h + 2)));
       continue;
     }
     const u = d.src[1];
     if (1 < d.src.length && u.value === "vc0") {
       const h = u.begin;
-      n.push(new ne(ee.invalidDatatype, new W(d.line, h)));
+      n.push(new ne(ae.invalidDatatype, new U(d.line, h)));
       continue;
     }
     n = n.concat($a(e, d)), n = n.concat(Da(e, d)), n = n.concat(La(e, d));
@@ -15153,13 +15171,13 @@ function La(x, e) {
       continue;
     }
     o && (o = !1, n && Ba.indexOf(r[d].value.toLowerCase()) < 0 && t.push(new ne(
-      ee.tableDirectiveTypo,
-      new W(e.line, r[d].begin),
-      new W(e.line, r[d].begin + r[d].value.length)
+      ae.tableDirectiveTypo,
+      new U(e.line, r[d].begin),
+      new U(e.line, r[d].begin + r[d].value.length)
     )), !n && Ea.indexOf(r[d].value.toLowerCase()) < 0 && t.push(new ne(
-      ee.columnDirectiveTypo,
-      new W(e.line, r[d].begin),
-      new W(e.line, r[d].begin + r[d].value.length)
+      ae.columnDirectiveTypo,
+      new U(e.line, r[d].begin),
+      new U(e.line, r[d].begin + r[d].value.length)
     )));
   }
   return t;
@@ -15170,9 +15188,9 @@ function $a(x, e) {
     const t = e.src;
     for (let r = 2; r < t.length; r++)
       x.find(t[r].value) == null && n.push(new ne(
-        ee.undefinedObject + t[r].value,
-        new W(e.line, t[r].begin),
-        new W(e.line, t[r].begin + t[r].value.length)
+        ae.undefinedObject + t[r].value,
+        new U(e.line, t[r].begin),
+        new U(e.line, t[r].begin + t[r].value.length)
       ));
   }
   return n;
@@ -15184,9 +15202,9 @@ function Da(x, e) {
     if (t < 0 && (t = e.indexOf("reference")), t++, e.src.length - 1 < t || e.src[t].value === "/")
       return n;
     x.find(e.src[t].value) == null && n.push(new ne(
-      ee.undefinedObject + e.src[t].value,
-      new W(e.line, e.src[t].begin),
-      new W(e.line, e.src[t].begin + e.src[t].value.length)
+      ae.undefinedObject + e.src[t].value,
+      new U(e.line, e.src[t].begin),
+      new U(e.line, e.src[t].begin + e.src[t].value.length)
     ));
   }
   return n;
@@ -15196,8 +15214,8 @@ function Ra(x) {
   for (let t = 1; t < x.length; t++) {
     const r = x[t], o = We(r);
     n !== null && o % n !== 0 && e.push(new ne(
-      ee.misalignedAttribute + n,
-      new W(r.line, o)
+      ae.misalignedAttribute + n,
+      new U(r.line, o)
     ));
   }
   return e;
@@ -15230,7 +15248,7 @@ function Oa(x, e) {
       return n;
   return null;
 }
-const Fa = Na, Ha = { findErrors: Fa, messages: ee }, Ue = "identityDataType", we = "guid", Ke = "Timestamp with time zone", Je = "Timestamp with local time zone";
+const Fa = Na, Ha = { findErrors: Fa, messages: ae }, Ue = "identityDataType", we = "guid", Ke = "Timestamp with time zone", Je = "Timestamp with local time zone";
 function Fe(x) {
   if (x == null) return null;
   const e = typeof x == "string" ? x.toLowerCase() : x;
@@ -15274,7 +15292,7 @@ const pe = {
   tenantref: { label: "Tenant Reference Table", value: "" },
   verbose: { label: "Verbose Output", value: "no", check: ["yes", "no"] }
 };
-class j {
+class q {
   constructor(e, n) {
     this._ddl = null, this._erd = null, this._errors = null, this.postponedAlters = [], this.postponedAltersSet = /* @__PURE__ */ new Set(), this._labelToKey = {}, this.name2node = null, this.options = JSON.parse(JSON.stringify(pe)), this.input = e;
     for (const r in this.options) {
@@ -15404,35 +15422,35 @@ function za(x, e) {
   return Pa(x, e);
 }
 function Va(x, e) {
-  return new j(x, e).getERD();
+  return new q(x, e).getERD();
 }
 function Wa(x, e) {
-  return new j(x, e).getDDL();
+  return new q(x, e).getDDL();
 }
 function Ua(x, e) {
-  return new j(x, e).getErrors();
+  return new q(x, e).getErrors();
 }
 function Ka(x, e, n) {
-  const t = new j(e, n), r = new j(x, n);
+  const t = new q(e, n), r = new q(x, n);
   return Sa(t).compute(r, t);
 }
 function je() {
   return "2.0.0";
 }
-j.toDDL = Wa;
-j.toERD = Va;
-j.toErrors = Ua;
-j.toDiff = Ka;
-j.fromJSON = za;
-j.version = je;
-j.lexer = le;
+q.toDDL = Wa;
+q.toERD = Va;
+q.toErrors = Ua;
+q.toDiff = Ka;
+q.fromJSON = za;
+q.version = je;
+q.lexer = le;
 export {
   pa as BaseGenerator,
   Sa as createDiffGenerator,
-  j as default,
+  q as default,
   za as fromJSON,
   je as qsql_version,
-  j as quicksql,
+  q as quicksql,
   ja as registerDiffGenerator,
   Ja as registerGenerator,
   Wa as toDDL,
