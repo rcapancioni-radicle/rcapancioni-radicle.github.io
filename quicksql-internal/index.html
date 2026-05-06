@@ -342,6 +342,7 @@ emp_v = departments employees
         <div class="panel-tabs">
             <button class="tab-btn active" data-tab="ddl">DDL Oracle SQL</button>
             <button class="tab-btn"        data-tab="erd">ER Diagram</button>
+            <button class="tab-btn"        data-tab="diff">⇄ Diff / Migrate</button>
         </div>
         <div class="tab-pane active" data-tab="ddl">
             <div class="ddl-toolbar">
@@ -360,6 +361,27 @@ emp_v = departments employees
                 <button id="btn-erd-reset" class="tool-btn">↺ Reset layout</button>
             </div>
             <div id="erd-container"></div>
+        </div>
+        <div class="tab-pane" data-tab="diff">
+            <div class="diff-editors">
+                <div class="diff-editor-col">
+                    <div class="diff-editor-label">Old Schema <span class="diff-editor-hint">(v1)</span></div>
+                    <textarea id="diff-old" class="diff-textarea" spellcheck="false" placeholder="Paste the old QSQL schema here…"></textarea>
+                </div>
+                <div class="diff-vsep"></div>
+                <div class="diff-editor-col">
+                    <div class="diff-editor-label">New Schema <span class="diff-editor-hint">(v2)</span></div>
+                    <textarea id="diff-new" class="diff-textarea" spellcheck="false" placeholder="Paste the new QSQL schema here…"></textarea>
+                </div>
+            </div>
+            <div class="diff-output-wrap">
+                <div class="diff-toolbar">
+                    <span id="diff-status" class="diff-status"></span>
+                    <button id="btn-diff-copy" class="tool-btn">Copy SQL</button>
+                </div>
+                <div id="diff-warnings"></div>
+                <pre id="diff-output"></pre>
+            </div>
         </div>
     </div>
 
@@ -564,10 +586,18 @@ employees   [main workforce table]
             </div>
         </details>
 
-        <details class="hdw-sec">
+        <details class="hdw-sec" open>
             <summary>Quick Examples</summary>
             <div class="hdw-content">
-                <p class="hdw-note">Schema with automatic parent-child hierarchy:</p>
+                <p class="hdw-note"><strong>Migration diff</strong> — <code>toDiff(oldQsql, newQsql)</code> computes incremental ALTER TABLE DDL between two schema versions:</p>
+                <code class="hdw-eg">const v1 = `employees\n  name vc100 /nn\n  email vc200`;
+const v2 = `employees\n  name vc100 /nn\n  email vc200 /nn\n  phone vc50\n\ndepartments\n  dept_name vc100 /nn`;
+const { sql, statements, warnings, summary } = toDiff(v1, v2);
+// sql        → runnable migration script (ALTER TABLE, CREATE TABLE …)
+// statements → [{kind, table, column, sql, requiresManualIntervention}, …]
+// warnings   → [{level: 'DESTRUCTIVE'|'LOSSY'|'INFO', table, message}, …]
+// summary    → {tablesAdded, tablesDropped, tablesModified, …}</code>
+                <p class="hdw-note" style="margin-top:10px">Schema with automatic parent-child hierarchy:</p>
                 <code class="hdw-eg">departments /insert 2
    name /nn
    employees /insert 5
@@ -598,26 +628,6 @@ doctors /api /auditlog app_audit_log
    email     vc200 /nn /unique
 
 # settings = {"prefix": "a01_", "auditcols": "yes", "rowversion": "yes", "api": "layered", "apex": "yes"}</code>
-                <p class="hdw-note" style="margin-top:10px">Migration script — <code>toDiff(oldQsql, newQsql)</code> generates incremental ALTER TABLE DDL between two schema versions; the result includes executable SQL, per-statement metadata, warnings (DESTRUCTIVE / LOSSY / INFO), and a summary:</p>
-                <code class="hdw-eg">// v1 — original schema
-const v1 = `employees
-  name vc100 /nn
-  email vc200`;
-
-// v2 — added phone, email became NOT NULL, new table
-const v2 = `employees
-  name vc100 /nn
-  email vc200 /nn
-  phone vc50
-
-departments
-  dept_name vc100 /nn`;
-
-const result = toDiff(v1, v2);
-// result.sql        → runnable migration script
-// result.statements → [{kind, table, sql, requiresManualIntervention}, ...]
-// result.warnings   → [{level: 'DESTRUCTIVE'|'LOSSY'|'INFO', ...}, ...]
-// result.summary    → {tablesAdded, tablesDropped, tablesModified, ...}</code>
                 <p class="hdw-note" style="margin-top:10px"><a href="doc/user/examples.md" target="_blank">→ 15 annotated scenarios with DDL output</a></p>
             </div>
         </details>
