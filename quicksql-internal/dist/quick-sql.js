@@ -1,51 +1,51 @@
-function D(p) {
-  if (p == null) return p;
-  const a = p.toUpperCase();
-  return a.endsWith("IES") ? p.substring(0, p.length - 3) + "y" : a.endsWith("ES") || a.endsWith("S") ? p.substring(0, p.length - 1) : p;
+function $(x) {
+  if (x == null) return x;
+  const e = x.toUpperCase();
+  return e.endsWith("IES") ? x.substring(0, x.length - 3) + "y" : e.endsWith("ES") || e.endsWith("S") ? x.substring(0, x.length - 1) : x;
 }
-function We(p) {
-  if (p == null) return null;
+function qe(x) {
+  if (x == null) return null;
   const n = "$#_ ";
-  let s = !1;
-  if (!p.startsWith('"')) {
-    if (p.length > 0 && p[0] >= "0" && p[0] <= "9")
-      s = !0;
+  let r = !1;
+  if (!x.startsWith('"')) {
+    if (x.length > 0 && x[0] >= "0" && x[0] <= "9")
+      r = !0;
     else
-      for (const r of p)
-        if (!(r >= "a" && r <= "z" || r >= "A" && r <= "Z" || r >= "0" && r <= "9") && !n.includes(r)) {
-          s = !0;
+      for (const t of x)
+        if (!(t >= "a" && t <= "z" || t >= "A" && t <= "Z" || t >= "0" && t <= "9") && !n.includes(t)) {
+          r = !0;
           break;
         }
   }
-  return (p.startsWith("_") || p.startsWith("$") || p.startsWith("#")) && (s = !0), s ? '"' + p + '"' : p;
+  return (x.startsWith("_") || x.startsWith("$") || x.startsWith("#")) && (r = !0), r ? '"' + x + '"' : x;
 }
-function ae(p) {
-  if (p == null) return null;
-  if (p.charAt(0) === '"') return p;
-  const a = We(p);
-  return a == null ? null : a.charAt(0) === '"' ? a : a.replace(/ /g, "_");
+function le(x) {
+  if (x == null) return null;
+  if (x.charAt(0) === '"') return x;
+  const e = qe(x);
+  return e == null ? null : e.charAt(0) === '"' ? e : e.replace(/ /g, "_");
 }
-function z(p, a, n) {
-  const s = n ?? "";
-  let r = !1, l = p, d = a, f = s;
-  l.charAt(0) === '"' && (r = !0, l = l.slice(1, -1)), d.charAt(0) === '"' && (r = !0, d = d.slice(1, -1)), f.charAt(0) === '"' && (r = !0, f = f.slice(1, -1));
-  const m = l + d + f;
-  return r ? '"' + m + '"' : m.toLowerCase();
+function U(x, e, n) {
+  const r = n ?? "";
+  let t = !1, o = x, d = e, c = r;
+  o.charAt(0) === '"' && (t = !0, o = o.slice(1, -1)), d.charAt(0) === '"' && (t = !0, d = d.slice(1, -1)), c.charAt(0) === '"' && (t = !0, c = c.slice(1, -1));
+  const u = o + d + c;
+  return t ? '"' + u + '"' : u.toLowerCase();
 }
-function Y(p) {
-  return p.length < 2 ? null : parseInt(p.substring(0, 2));
+function ae(x) {
+  return x.length < 2 ? null : parseInt(x.substring(0, 2));
 }
-function ce(p, a) {
-  const n = new Set(a), s = [];
-  let r = "";
-  for (const l of p)
-    n.has(l) ? (r.length > 0 && (s.push(r), r = ""), s.push(l)) : r += l;
-  return r.length > 0 && s.push(r), s;
+function xe(x, e) {
+  const n = new Set(e), r = [];
+  let t = "";
+  for (const o of x)
+    n.has(o) ? (t.length > 0 && (r.push(t), t = ""), r.push(o)) : t += o;
+  return t.length > 0 && r.push(t), r;
 }
-const Ue = -10, me = -11;
-class V {
-  constructor(a, n, s, r, l, d = 0) {
-    this.type = r, this.value = a, this.begin = n, this.end = s, this.line = l, this.col = d, this.lowerValue = a.toLowerCase();
+const Ye = -10, ve = -11;
+class J {
+  constructor(e, n, r, t, o, d = 0) {
+    this.type = t, this.value = e, this.begin = n, this.end = r, this.line = o, this.col = d, this.lowerValue = e.toLowerCase();
   }
   toString() {
     return `{type:${this.type},value:${this.value}}`;
@@ -62,10 +62,10 @@ class V {
   /** True when the token is a standard SQL string literal: 'text' or N'text'. */
   isStandardLiteral() {
     if (this.value.length < 2) return !1;
-    const a = this.value.charAt(0);
-    if (a !== "'" && a !== "n" && a !== "N") return !1;
+    const e = this.value.charAt(0);
+    if (e !== "'" && e !== "n" && e !== "N") return !1;
     let n = this.value;
-    if (a === "n" || a === "N") {
+    if (e === "n" || e === "N") {
       if (n.length < 3) return !1;
       n = n.substring(1);
     }
@@ -74,12 +74,12 @@ class V {
   /** True when the token is an Oracle alt-quote literal: q'[...]', nq'[...]', etc. */
   isAltLiteral() {
     if (this.value.length < 5) return !1;
-    const a = this.value.charAt(0);
-    if (a !== "q" && a !== "Q" && a !== "n" && a !== "N") return !1;
+    const e = this.value.charAt(0);
+    if (e !== "q" && e !== "Q" && e !== "n" && e !== "N") return !1;
     let n = this.value;
-    if (a === "q" || a === "Q")
+    if (e === "q" || e === "Q")
       n = n.substring(1);
-    else if ((a === "n" || a === "N") && (this.value.charAt(1) === "q" || this.value.charAt(1) === "Q")) {
+    else if ((e === "n" || e === "N") && (this.value.charAt(1) === "q" || this.value.charAt(1) === "Q")) {
       if (n.length < 6) return !1;
       n = n.substring(2);
     } else
@@ -88,134 +88,134 @@ class V {
       n = n.substring(1, n.length - 1);
     else
       return !1;
-    return Ke(n.charAt(0)) === n.charAt(n.length - 1);
+    return Qe(n.charAt(0)) === n.charAt(n.length - 1);
   }
 }
-function Ke(p) {
-  return p === "<" ? ">" : p === "[" ? "]" : p === "{" ? "}" : p === "(" ? ")" : p;
+function Qe(x) {
+  return x === "<" ? ">" : x === "[" ? "]" : x === "{" ? "}" : x === "(" ? ")" : x;
 }
-function Je(p, a, n, s) {
-  const r = p.indexOf("e"), l = p.indexOf("f"), d = p.indexOf("d");
-  if (r < 0 && l < 0 && d < 0) return !1;
-  let f = n;
-  const m = ce(p, "efd");
-  for (const h of m) {
-    f += h.length;
-    const o = h.charAt(0) >= "0" && h.charAt(0) <= "9" ? "constant.numeric" : "identifier";
-    a.push(new V(h, f - h.length, f, o, s));
+function Ze(x, e, n, r) {
+  const t = x.indexOf("e"), o = x.indexOf("f"), d = x.indexOf("d");
+  if (t < 0 && o < 0 && d < 0) return !1;
+  let c = n;
+  const u = xe(x, "efd");
+  for (const h of u) {
+    c += h.length;
+    const l = h.charAt(0) >= "0" && h.charAt(0) <= "9" ? "constant.numeric" : "identifier";
+    e.push(new J(h, c - h.length, c, l, r));
   }
   return !0;
 }
-function je(p, a, n) {
-  const s = [], r = `(){}[]^-|!*+.><='",;:%@?/\\#~` + n, l = ` 
-\r	`, d = ce(p, r + l);
-  let f = 0, m = 0, h = 0;
-  for (let o = 0; o < d.length; o++) {
-    const u = d[o], x = s.length > 0 ? s[s.length - 1] : null;
-    if (u === `
-` ? (m++, h = 0) : h = o > 0 && d[o - 1] !== `
-` ? h + d[o - 1].length : 0, f += u.length, x?.type === "comment" && (x.value.lastIndexOf("*/") !== x.value.length - 2 || x.value === "/*/")) {
-      x.value = u === "*" || u === "/" ? x.value + u : "/* ... ", x.end = f, x.type === "comment" && x.value.lastIndexOf("*/") === x.value.length - 2 && x.value !== "/*/" && (x.value = p.substring(x.begin, x.end));
+function Xe(x, e, n) {
+  const r = [], t = `(){}[]^-|!*+.><='",;:%@?/\\#~` + n, o = ` 
+\r	`, d = xe(x, t + o);
+  let c = 0, u = 0, h = 0;
+  for (let l = 0; l < d.length; l++) {
+    const m = d[l], p = r.length > 0 ? r[r.length - 1] : null;
+    if (m === `
+` ? (u++, h = 0) : h = l > 0 && d[l - 1] !== `
+` ? h + d[l - 1].length : 0, c += m.length, p?.type === "comment" && (p.value.lastIndexOf("*/") !== p.value.length - 2 || p.value === "/*/")) {
+      p.value = m === "*" || m === "/" ? p.value + m : "/* ... ", p.end = c, p.type === "comment" && p.value.lastIndexOf("*/") === p.value.length - 2 && p.value !== "/*/" && (p.value = x.substring(p.begin, p.end));
       continue;
     }
-    if (x !== null && (x.type === "line-comment" || x.type === "dbtools-command")) {
-      if (u !== `
+    if (p !== null && (p.type === "line-comment" || p.type === "dbtools-command")) {
+      if (m !== `
 `) {
-        x.value += u;
+        p.value += m;
         continue;
       }
-      x.end = x.begin + x.value.length;
+      p.end = p.begin + p.value.length;
     }
-    if (x?.type === "quoted-string" && !(x.isStandardLiteral() || x.isAltLiteral())) {
-      x.value += u, x.end = x.begin + x.value.length;
+    if (p?.type === "quoted-string" && !(p.isStandardLiteral() || p.isAltLiteral())) {
+      p.value += m, p.end = p.begin + p.value.length;
       continue;
     }
-    if (x?.type === "dquoted-string" && !(x.value.endsWith('"') && x.value.length > 1)) {
-      if (u !== '"') continue;
-      x.end = f, x.value = p.substring(x.begin, x.end);
+    if (p?.type === "dquoted-string" && !(p.value.endsWith('"') && p.value.length > 1)) {
+      if (m !== '"') continue;
+      p.end = c, p.value = x.substring(p.begin, p.end);
       continue;
     }
-    if (x?.type === "bquoted-string" && !(x.value.endsWith("`") && x.value.length > 1)) {
-      if (u !== "`") continue;
-      x.end = f, x.value = p.substring(x.begin, x.end);
+    if (p?.type === "bquoted-string" && !(p.value.endsWith("`") && p.value.length > 1)) {
+      if (m !== "`") continue;
+      p.end = c, p.value = x.substring(p.begin, p.end);
       continue;
     }
-    if (u === "*" && x?.value === "/") {
-      x.value += u, x.end = x.begin + x.value.length, x.type = "comment";
+    if (m === "*" && p?.value === "/") {
+      p.value += m, p.end = p.begin + p.value.length, p.type = "comment";
       continue;
     }
-    if (u === "-" && x?.value === "-") {
-      x.value += u, x.type = "line-comment";
+    if (m === "-" && p?.value === "-") {
+      p.value += m, p.type = "line-comment";
       continue;
     }
-    if (x?.type === "identifier" && x.end === me && x.value.startsWith("@")) {
-      if (u !== `
-` && u !== "\r") {
-        x.value += u;
+    if (p?.type === "identifier" && p.end === ve && p.value.startsWith("@")) {
+      if (m !== `
+` && m !== "\r") {
+        p.value += m;
         continue;
       }
-      x.end = f - 1, s.push(new V(u, f - 1, f, "ws", m, h));
+      p.end = c - 1, r.push(new J(m, c - 1, c, "ws", u, h));
       continue;
     }
-    if (a && u === "'") {
-      const g = x !== null && x.value.length <= 2 ? x.value.toLowerCase() : "";
-      g === "q" || g === "n" || g === "u" || g === "nq" ? (x.value += u, x.type = "quoted-string") : s.push(new V(u, f - 1, Ue, "quoted-string", m, h));
+    if (e && m === "'") {
+      const g = p !== null && p.value.length <= 2 ? p.value.toLowerCase() : "";
+      g === "q" || g === "n" || g === "u" || g === "nq" ? (p.value += m, p.type = "quoted-string") : r.push(new J(m, c - 1, Ye, "quoted-string", u, h));
       continue;
     }
-    if (a && u === '"') {
-      s.push(new V(u, f - 1, me, "dquoted-string", m, h));
+    if (e && m === '"') {
+      r.push(new J(m, c - 1, ve, "dquoted-string", u, h));
       continue;
     }
-    if (u === "`" && r.includes("`")) {
-      s.push(new V(u, f - 1, me, "bquoted-string", m, h));
+    if (m === "`" && t.includes("`")) {
+      r.push(new J(m, c - 1, ve, "bquoted-string", u, h));
       continue;
     }
-    if (u.length === 1 && r.includes(u)) {
-      s.push(new V(u, f - 1, f, "operation", m, h));
+    if (m.length === 1 && t.includes(m)) {
+      r.push(new J(m, c - 1, c, "operation", u, h));
       continue;
     }
-    if (u.length === 1 && l.includes(u)) {
-      s.push(new V(u, f - 1, f, "ws", m, h));
+    if (m.length === 1 && o.includes(m)) {
+      r.push(new J(m, c - 1, c, "ws", u, h));
       continue;
     }
-    if (u.charAt(0) >= "0" && u.charAt(0) <= "9") {
-      if (!Je(u, s, f - u.length, m)) {
-        const g = u.charAt(u.length - 1).toUpperCase();
-        "KMGTPE".includes(g) ? (s.push(new V(u.slice(0, -1), f - u.length, f - 1, "constant.numeric", m, h)), s.push(new V(u.slice(-1), f - 1, f, "constant.numeric", m, h))) : s.push(new V(u, f - u.length, f, "constant.numeric", m, h));
+    if (m.charAt(0) >= "0" && m.charAt(0) <= "9") {
+      if (!Ze(m, r, c - m.length, u)) {
+        const g = m.charAt(m.length - 1).toUpperCase();
+        "KMGTPE".includes(g) ? (r.push(new J(m.slice(0, -1), c - m.length, c - 1, "constant.numeric", u, h)), r.push(new J(m.slice(-1), c - 1, c, "constant.numeric", u, h))) : r.push(new J(m, c - m.length, c, "constant.numeric", u, h));
       }
       continue;
     }
-    s.push(new V(u, f - u.length, f, "identifier", m, h));
+    r.push(new J(m, c - m.length, c, "identifier", u, h));
   }
-  return s.length > 0 && (s[s.length - 1].end = p.length), s;
+  return r.length > 0 && (r[r.length - 1].end = x.length), r;
 }
-function Q(p, a, n, s) {
-  const r = [], l = je(p, n, s);
+function re(x, e, n, r) {
+  const t = [], o = Xe(x, n, r);
   let d = null;
-  for (const f of l) {
-    if (f.type === "quoted-string") {
+  for (const c of o) {
+    if (c.type === "quoted-string") {
       if (d?.type === "quoted-string") {
-        d.value += f.value, d.end = f.end;
+        d.value += c.value, d.end = c.end;
         continue;
       }
-      if (d?.type === "identifier" && d.value.toUpperCase() === "N" && d.end === f.begin) {
-        d.begin = f.begin, d.end = f.end, d.type = f.type, d.value = f.value;
+      if (d?.type === "identifier" && d.value.toUpperCase() === "N" && d.end === c.begin) {
+        d.begin = c.begin, d.end = c.end, d.type = c.type, d.value = c.value;
         continue;
       }
     }
-    if (f.value.startsWith("@") && (f.end = f.begin + f.value.length), f.value === "#" && d?.type === "identifier") {
+    if (c.value.startsWith("@") && (c.end = c.begin + c.value.length), c.value === "#" && d?.type === "identifier") {
       d.end += 1, d.value += "#";
       continue;
     }
-    if ((f.type === "identifier" || f.type === "constant.numeric") && d !== null && d.value.endsWith("#") && d.type === "identifier") {
-      d.end += f.value.length, d.value += f.value;
+    if ((c.type === "identifier" || c.type === "constant.numeric") && d !== null && d.value.endsWith("#") && d.type === "identifier") {
+      d.end += c.value.length, d.value += c.value;
       continue;
     }
-    f.value.startsWith("$$") && (f.value = "$$VAR"), (a || f.type !== "ws" && f.type !== "comment" && f.type !== "line-comment") && r.push(f), d = f;
+    c.value.startsWith("$$") && (c.value = "$$VAR"), (e || c.type !== "ws" && c.type !== "comment" && c.type !== "line-comment") && t.push(c), d = c;
   }
-  return r;
+  return t;
 }
-const Ye = {
+const ea = {
   ACCESS: "N",
   ADD: "N",
   ALL: "Y",
@@ -326,10 +326,10 @@ const Ye = {
   WHERE: "Y",
   WITH: "Y"
 };
-function pe(p) {
-  return Ye[p.toUpperCase()] !== void 0 ? "the_" + p : p;
+function Se(x) {
+  return ea[x.toUpperCase()] !== void 0 ? "the_" + x : x;
 }
-const qe = "timestamp with local time zone", Ze = "timestamp with time zone", Qe = "timestamp", se = {
+const aa = "timestamp with local time zone", na = "timestamp with time zone", ia = "timestamp", Y = {
   pk: "_pk",
   fk: "_fk",
   unq: "_unq",
@@ -342,8 +342,8 @@ const qe = "timestamp with local time zone", Ze = "timestamp with time zone", Qe
   idx: "_i",
   immutable_prefix: "trg_",
   immutable_suffix: "_insertonly"
-}, i = "    ", Xe = ["string", "varchar2", "varchar", "vc", "char"], Ne = ["yn", "boolean", "bool"], ea = ["vect", "vector"], be = ["geometry", "sdo_geometry"];
-let ne = [
+}, i = "    ", ta = ["string", "varchar2", "varchar", "vc", "char"], He = ["yn", "boolean", "bool"], ra = ["vect", "vector"], _e = ["geometry", "sdo_geometry"];
+let ce = [
   "integer",
   "number",
   "num",
@@ -359,99 +359,99 @@ let ne = [
   "tswltz",
   "ts"
 ];
-ne = ne.concat(Xe).concat(Ne).concat(ea).concat(be);
-const le = {
+ce = ce.concat(ta).concat(He).concat(ra).concat(_e);
+const pe = {
   file: [
-    { suffix: "_filename", type: (p) => `varchar2(255${p.semantics()})` },
-    { suffix: "_mimetype", type: (p) => `varchar2(255${p.semantics()})` },
-    { suffix: "_charset", type: (p) => `varchar2(255${p.semantics()})` },
-    { suffix: "_lastupd", type: (p) => String(p.getOptionValue("Date Data Type") ?? "").toLowerCase() }
+    { suffix: "_filename", type: (x) => `varchar2(255${x.semantics()})` },
+    { suffix: "_mimetype", type: (x) => `varchar2(255${x.semantics()})` },
+    { suffix: "_charset", type: (x) => `varchar2(255${x.semantics()})` },
+    { suffix: "_lastupd", type: (x) => String(x.getOptionValue("Date Data Type") ?? "").toLowerCase() }
   ]
 };
-function aa(p, a, n) {
-  return p[a].value.endsWith("k") ? n < 32 ? n * 1024 : n * 1024 - 1 : n;
+function oa(x, e, n) {
+  return x[e].value.endsWith("k") ? n < 32 ? n * 1024 : n * 1024 - 1 : n;
 }
-function na(p, a, n, s, r, l) {
-  return !!(p.endsWith("_id") && n < 0 && s < 0 || a[1] && a[1].value === "id" || p === "quantity" || p.endsWith("_number") || p.endsWith("id") && n < 0 && r + 1 === l);
+function sa(x, e, n, r, t, o) {
+  return !!(x.endsWith("_id") && n < 0 && r < 0 || e[1] && e[1].value === "id" || x === "quantity" || x.endsWith("_number") || x.endsWith("id") && n < 0 && t + 1 === o);
 }
-function ia(p, a, n) {
-  return !!(0 <= n || p === "hiredate" || p.endsWith("_date") || p.startsWith("date_of_") || p.startsWith("created") || p.startsWith("updated") || 1 < a.length && a[1].value === "d");
+function la(x, e, n) {
+  return !!(0 <= n || x === "hiredate" || x.endsWith("_date") || x.startsWith("date_of_") || x.startsWith("created") || x.startsWith("updated") || 1 < e.length && e[1].value === "d");
 }
-class he {
-  constructor(a, n, s, r) {
-    this.one2many2oneUnsupoorted = void 0, this.line = a, this.parent = s, this.children = [], s !== null && s.children.push(this), this.fks = null, this._ctx = r, this.comment = null;
-    function l(m) {
-      let h = m;
+class ye {
+  constructor(e, n, r, t) {
+    this.one2many2oneUnsupoorted = void 0, this.line = e, this.parent = r, this.children = [], r !== null && r.children.push(this), this.fks = null, this._ctx = t, this.comment = null;
+    function o(u) {
+      let h = u;
       return h = h.replace(/ timestamp with local time zone/gi, " tswltz"), h = h.replace(/ timestamp with time zone/gi, " tswtz"), h = h.replace(/ timestamp/gi, " ts"), h;
     }
-    this.content = l(n), this.annotations = null;
+    this.content = o(n), this.annotations = null;
     const d = this.content.indexOf("{");
     if (d > 0 && (this.content.charAt(d - 1) === " " || this.content.charAt(d - 1) === "	")) {
-      const m = this.content.indexOf("}", d);
-      m > d && (this.annotations = this.content.substring(d + 1, m).trim(), this.content = this.content.substring(0, d) + this.content.substring(m + 1));
+      const u = this.content.indexOf("}", d);
+      u > d && (this.annotations = this.content.substring(d + 1, u).trim(), this.content = this.content.substring(0, d) + this.content.substring(u + 1));
     }
-    this.src = Q(this.content, !1, !0, "`");
-    const f = this.getOptionValue("colprefix");
-    f !== null && (this.colprefix = f), this.parsedName = null, this._maxChildNameLen = -1;
+    this.src = re(this.content, !1, !0, "`");
+    const c = this.getOptionValue("colprefix");
+    c !== null && (this.colprefix = c), this.parsedName = null, this._maxChildNameLen = -1;
   }
-  findChild(a) {
+  findChild(e) {
     for (let n = 0; n < this.children.length; n++)
-      if (this.children[n].parseName() === a) return this.children[n];
+      if (this.children[n].parseName() === e) return this.children[n];
     return null;
   }
   descendants() {
-    const a = [this];
+    const e = [this];
     for (let n = 0; n < this.children.length; n++)
-      a.push(...this.children[n].descendants());
-    return a;
+      e.push(...this.children[n].descendants());
+    return e;
   }
   maxChildNameLen() {
     if (this._maxChildNameLen >= 0) return this._maxChildNameLen;
-    let a = 2;
-    if (this.hasRowKey() && (a = 7), this.hasRowVersion() && (a = Math.max(a, 11)), this.hasAuditCols())
-      for (const s of ["createdcol", "createdbycol", "updatedcol", "updatedbycol"]) {
-        const r = String(this._ctx.getOptionValue(s) ?? "").length;
-        a < r && (a = r);
+    let e = 2;
+    if (this.hasRowKey() && (e = 7), this.hasRowVersion() && (e = Math.max(e, 11)), this.hasAuditCols())
+      for (const r of ["createdcol", "createdbycol", "updatedcol", "updatedbycol"]) {
+        const t = String(this._ctx.getOptionValue(r) ?? "").length;
+        e < t && (e = t);
       }
-    if (this._ctx.optionEQvalue("tenantid", !0) && this.findChild("tenant_id") === null && !this.isOption("notenantid") && (a = Math.max(a, 9)), this.fks !== null)
-      for (const s in this.fks) {
-        let r = s.length;
-        const l = this._ctx.find(s);
-        l !== null && l.isMany2One() && (r += 3), a < r && (a = r);
+    if (this._ctx.optionEQvalue("tenantid", !0) && this.findChild("tenant_id") === null && !this.isOption("notenantid") && (e = Math.max(e, 9)), this.fks !== null)
+      for (const r in this.fks) {
+        let t = r.length;
+        const o = this._ctx.find(r);
+        o !== null && o.isMany2One() && (t += 3), e < t && (e = t);
       }
-    for (let s = 0; s < this.children.length; s++) {
-      const r = this.children[s];
-      if (0 < r.children.length) continue;
-      let l = r.parseName().length;
-      for (const d in le)
-        if (0 < r.indexOf(d)) {
-          let f = 0;
-          for (const m of le[d])
-            m.suffix.length > f && (f = m.suffix.length);
-          l += f;
+    for (let r = 0; r < this.children.length; r++) {
+      const t = this.children[r];
+      if (0 < t.children.length) continue;
+      let o = t.parseName().length;
+      for (const d in pe)
+        if (0 < t.indexOf(d)) {
+          let c = 0;
+          for (const u of pe[d])
+            u.suffix.length > c && (c = u.suffix.length);
+          o += c;
           break;
         }
-      a < l && (a = l);
+      e < o && (e = o);
     }
     const n = this._ctx.additionalColumns();
-    for (const s in n) {
-      const r = s.length;
-      a < r && (a = r);
+    for (const r in n) {
+      const t = r.length;
+      e < t && (e = t);
     }
-    return this._maxChildNameLen = a, a;
+    return this._maxChildNameLen = e, e;
   }
-  getAnnotationValue(a) {
+  getAnnotationValue(e) {
     if (this.annotations === null) return null;
-    const n = new RegExp(a + `:?\\s+['"]([^'"]*)['"]`, "i"), s = this.annotations.match(n);
-    return s ? s[1] : null;
+    const n = new RegExp(e + `:?\\s+['"]([^'"]*)['"]`, "i"), r = this.annotations.match(n);
+    return r ? r[1] : null;
   }
   getAnnotationPairs() {
     if (this.annotations === null) return [];
-    const a = [], n = /(\w+)(?:\s+['"]([^'"]*)['"'])?/g;
-    let s;
-    for (; (s = n.exec(this.annotations)) !== null; )
-      a.push({ label: s[1], value: s[2] !== void 0 ? s[2] : null });
-    return a;
+    const e = [], n = /(\w+)(?:\s+['"]([^'"]*)['"'])?/g;
+    let r;
+    for (; (r = n.exec(this.annotations)) !== null; )
+      e.push({ label: r[1], value: r[2] !== void 0 ? r[2] : null });
+    return e;
   }
   hasAuditCols() {
     return this._ctx.optionEQvalue("Audit Columns", "yes") || this.isOption("auditcols") || this.isOption("audit", "col") || this.isOption("audit", "cols") || this.isOption("audit", "columns");
@@ -463,7 +463,7 @@ class he {
     return this._ctx.optionEQvalue("rowkey", !0) || this.isOption("rowkey");
   }
   regularColumns() {
-    return this.children.filter((a) => a.children.length === 0 && a.refId() === null);
+    return this.children.filter((e) => e.children.length === 0 && e.refId() === null);
   }
   apexUser() {
     return this._ctx.optionEQvalue("apex", "yes") ? "coalesce(sys_context('APEX$SESSION','APP_USER'),user)" : "user";
@@ -471,172 +471,172 @@ class he {
   auditSysDateFn() {
     return String(this._ctx.getOptionValue("auditdate") || this._ctx.getOptionValue("Date Data Type") || "").toLowerCase().indexOf("timestamp") >= 0 ? "systimestamp" : "sysdate";
   }
-  indexOf(a, n) {
-    const s = a.toLowerCase();
-    for (let r = 0; r < this.src.length; r++) {
-      const l = this.src[r].lowerValue;
-      if (n && l.indexOf(s) === 0) return r;
-      if (s === l) return r;
+  indexOf(e, n) {
+    const r = e.toLowerCase();
+    for (let t = 0; t < this.src.length; t++) {
+      const o = this.src[t].lowerValue;
+      if (n && o.indexOf(r) === 0) return t;
+      if (r === o) return t;
     }
     return -1;
   }
-  occursBeforeOption(a, n) {
-    const s = this.indexOf(a, n);
-    return s <= 0 ? !1 : (this._slashPos === void 0 && (this._slashPos = this.indexOf("/")), this._slashPos < 0 || s < this._slashPos);
+  occursBeforeOption(e, n) {
+    const r = this.indexOf(e, n);
+    return r <= 0 ? !1 : (this._slashPos === void 0 && (this._slashPos = this.indexOf("/")), this._slashPos < 0 || r < this._slashPos);
   }
-  isOption(a, n) {
-    for (let s = 2; s < this.src.length; s++)
-      if (a === this.src[s].lowerValue && (n == null || s < this.src.length - 1 && n === this.src[s + 1].lowerValue))
-        return this.src[s - 1].value === "/";
+  isOption(e, n) {
+    for (let r = 2; r < this.src.length; r++)
+      if (e === this.src[r].lowerValue && (n == null || r < this.src.length - 1 && n === this.src[r + 1].lowerValue))
+        return this.src[r - 1].value === "/";
     return !1;
   }
-  getOptionValue(a) {
+  getOptionValue(e) {
     if (this.src.length < 3) return null;
-    const n = this.indexOf(a);
+    const n = this.indexOf(e);
     if (n < 2 || this.src[n - 1].value !== "/") return null;
-    let s = "";
-    for (let r = n + 1; r < this.src.length && this.src[r].value !== "/" && this.src[r].value !== "["; r++)
-      s += this.src[r].value;
-    return s;
-  }
-  sugarcoatName(a, n) {
-    let s = "";
-    this.children.length === 0 && this.parent !== void 0 && this.parent !== null && this.parent.colprefix !== void 0 && (s = this.parent.colprefix + "_");
     let r = "";
-    const l = "_";
-    for (let o = a; o < n; o++) {
-      const u = this.src[o].value, x = '"' + u + '"';
-      if (this.src[o].type !== "constant.numeric" && u !== ae(x)) {
-        r = this.content.substring(this.src[a].begin, this.src[n - 1].end);
-        const g = 0 < String(this._ctx.getOptionValue("prefix") ?? "").length, T = ae(r) ?? r, k = g ? T : pe(T);
-        return this.parsedName = s + k, this.parsedName;
+    for (let t = n + 1; t < this.src.length && this.src[t].value !== "/" && this.src[t].value !== "["; t++)
+      r += this.src[t].value;
+    return r;
+  }
+  sugarcoatName(e, n) {
+    let r = "";
+    this.children.length === 0 && this.parent !== void 0 && this.parent !== null && this.parent.colprefix !== void 0 && (r = this.parent.colprefix + "_");
+    let t = "";
+    const o = "_";
+    for (let l = e; l < n; l++) {
+      const m = this.src[l].value, p = '"' + m + '"';
+      if (this.src[l].type !== "constant.numeric" && m !== le(p)) {
+        t = this.content.substring(this.src[e].begin, this.src[n - 1].end);
+        const g = 0 < String(this._ctx.getOptionValue("prefix") ?? "").length, A = le(t) ?? t, S = g ? A : Se(A);
+        return this.parsedName = r + S, this.parsedName;
       }
     }
-    for (let o = a; o < n; o++)
-      a < o && (r += l), r += this.src[o].value;
-    const d = r.charAt(0);
-    d >= "0" && d <= "9" && (r = "x" + r);
-    const f = 0 < String(this._ctx.getOptionValue("prefix") ?? "").length, m = ae(r) ?? r, h = f ? m : pe(m);
-    return this.parsedName = s + h, this.parsedName;
+    for (let l = e; l < n; l++)
+      e < l && (t += o), t += this.src[l].value;
+    const d = t.charAt(0);
+    d >= "0" && d <= "9" && (t = "x" + t);
+    const c = 0 < String(this._ctx.getOptionValue("prefix") ?? "").length, u = le(t) ?? t, h = c ? u : Se(u);
+    return this.parsedName = r + h, this.parsedName;
   }
   parseName() {
     if (this.parsedName !== null) return this.parsedName;
-    let a = 0, n = this.src[0].value;
-    (n === ">" || n === "<") && (n = this.src[1].value, a = 1);
-    const s = n.indexOf('"'), r = n.indexOf('"', s + 1);
-    if (0 <= s && s < r)
-      return n.substring(s, r + 1);
+    let e = 0, n = this.src[0].value;
+    (n === ">" || n === "<") && (n = this.src[1].value, e = 1);
+    const r = n.indexOf('"'), t = n.indexOf('"', r + 1);
+    if (0 <= r && r < t)
+      return n.substring(r, t + 1);
     if (this.src[0].value === "view") return this.src[1].value;
     if (1 < this.src.length && this.src[1].value === "=") return this.src[0].value;
-    let l = this.src.length, d = this.indexOf("/");
-    0 < d && (l = d), d = this.indexOf("["), 0 < d && d < l && (l = d), d = this.indexOf("="), 0 < d && d < l && (l = d);
-    for (let f = 0; f < ne.length; f++) {
-      let m = this.indexOf(ne[f]);
-      if (m < 0 && (m = this.indexOf(ne[f], !0)), 0 < m && m < l)
-        return l = m, this.sugarcoatName(a, l);
+    let o = this.src.length, d = this.indexOf("/");
+    0 < d && (o = d), d = this.indexOf("["), 0 < d && d < o && (o = d), d = this.indexOf("="), 0 < d && d < o && (o = d);
+    for (let c = 0; c < ce.length; c++) {
+      let u = this.indexOf(ce[c]);
+      if (u < 0 && (u = this.indexOf(ce[c], !0)), 0 < u && u < o)
+        return o = u, this.sugarcoatName(e, o);
     }
-    for (let f = a; f < l; f++) {
-      const m = this.src[f].lowerValue;
-      if (m.charAt(0) === "v" && m.charAt(1) === "c") {
-        if (m.charAt(2) === "(") return this.sugarcoatName(a, f);
-        if (m.charAt(2) >= "0" && m.charAt(2) <= "9") return this.sugarcoatName(a, f);
+    for (let c = e; c < o; c++) {
+      const u = this.src[c].lowerValue;
+      if (u.charAt(0) === "v" && u.charAt(1) === "c") {
+        if (u.charAt(2) === "(") return this.sugarcoatName(e, c);
+        if (u.charAt(2) >= "0" && u.charAt(2) <= "9") return this.sugarcoatName(e, c);
       }
     }
-    return this.sugarcoatName(a, l);
+    return this.sugarcoatName(e, o);
   }
   _inferTypeFull() {
-    const a = this.src, n = a[0].value;
-    let s = n.endsWith("_name") || n.startsWith("name") || n.startsWith("email") ? this._ctx.getOptionValue("namelen") || 255 : 4e3;
-    const r = this.indexOf("vc", !0);
-    if (0 < r) {
-      let I = a[r].value.substring(2);
-      I === "" && this.indexOf("(") === r + 1 && (I = a[r + 2].value), s = aa(a, r, I !== "" ? parseInt(I) : s);
+    const e = this.src, n = e[0].value;
+    let r = n.endsWith("_name") || n.startsWith("name") || n.startsWith("email") ? this._ctx.getOptionValue("namelen") || 255 : 4e3;
+    const t = this.indexOf("vc", !0);
+    if (0 < t) {
+      let P = e[t].value.substring(2);
+      P === "" && this.indexOf("(") === t + 1 && (P = e[t + 2].value), r = oa(e, t, P !== "" ? parseInt(P) : r);
     }
-    let l = "varchar";
+    let o = "varchar";
     const d = this.indexOf("date");
     this._slashPos === void 0 && (this._slashPos = this.indexOf("/"));
-    const f = this._slashPos;
-    na(n, a, r, d, f, this.indexOf("pk")) && (l = "number"), this.occursBeforeOption("int", !0) && (l = "integer"), 0 < r && (l = "varchar");
-    let m;
+    const c = this._slashPos;
+    sa(n, e, t, d, c, this.indexOf("pk")) && (o = "number"), this.occursBeforeOption("int", !0) && (o = "integer"), 0 < t && (o = "varchar");
+    let u;
     const h = this.vectorType("vector") || this.vectorType("vect");
-    h !== null && (l = "vector", m = h.substring(6));
-    const o = this.parent, u = z(o.parseName(), "_", this.parseName());
-    let x = !1;
-    const g = n.endsWith("_yn") || n.startsWith("is_"), T = Ne.some((I) => 0 < this.indexOf(I));
-    (g || T) && (l = "varchar", s = 1, x = !0);
-    const k = this._ctx.getOptionValue("db");
-    x && (this._ctx.getOptionValue("boolean") === "native" || this._ctx.getOptionValue("boolean") !== "yn" && k && k.length > 0 && 23 <= (Y(k) ?? 0)) && (x = !1, l = "boolean");
-    const y = l === "boolean";
-    this.indexOf("phone_number") === 0 && (l = "number");
-    let B;
-    const N = this.indexOf("num", !0);
-    if (0 < N) {
-      l = "number";
-      const I = this.indexOf(")");
-      0 < I && (B = this.content.substring(a[N + 1].begin, a[I].end).toLowerCase());
+    h !== null && (o = "vector", u = h.substring(6));
+    const l = this.parent, m = U(l.parseName(), "_", this.parseName());
+    let p = !1;
+    const g = n.endsWith("_yn") || n.startsWith("is_"), A = He.some((P) => 0 < this.indexOf(P));
+    (g || A) && (o = "varchar", r = 1, p = !0);
+    const S = this._ctx.getOptionValue("db");
+    p && (this._ctx.getOptionValue("boolean") === "native" || this._ctx.getOptionValue("boolean") !== "yn" && S && S.length > 0 && 23 <= (ae(S) ?? 0)) && (p = !1, o = "boolean");
+    const v = o === "boolean";
+    this.indexOf("phone_number") === 0 && (o = "number");
+    let w;
+    const E = this.indexOf("num", !0);
+    if (0 < E) {
+      o = "number";
+      const P = this.indexOf(")");
+      0 < P && (w = this.content.substring(e[E + 1].begin, e[P].end).toLowerCase());
     }
-    if (ia(n, a, d)) {
-      const I = String(this._ctx.getOptionValue("Date Data Type") ?? "").toLowerCase();
-      I === Qe ? l = "timestamp" : I === Ze ? l = "tswtz" : I === qe ? l = "tswltz" : l = "date";
+    if (la(n, e, d)) {
+      const P = String(this._ctx.getOptionValue("Date Data Type") ?? "").toLowerCase();
+      P === ia ? o = "timestamp" : P === na ? o = "tswtz" : P === aa ? o = "tswltz" : o = "date";
     }
-    r < 0 && (this.occursBeforeOption("clob") && (l = "clob"), (this.occursBeforeOption("blob") || this.occursBeforeOption("file")) && (l = "blob"), this.occursBeforeOption("json") && (l = "json"));
-    for (const I in be) if (this.occursBeforeOption(be[I])) {
-      l = "geometry";
+    t < 0 && (this.occursBeforeOption("clob") && (o = "clob"), (this.occursBeforeOption("blob") || this.occursBeforeOption("file")) && (o = "blob"), this.occursBeforeOption("json") && (o = "json"));
+    for (const P in _e) if (this.occursBeforeOption(_e[P])) {
+      o = "geometry";
       break;
     }
-    this.isOption("domain") && k && k.length > 0 && 23 <= (Y(k) ?? 0) && (l = this.getOptionValue("domain") ?? l), this.occursBeforeOption("tswltz") && f !== 0 ? l = "tswltz" : this.occursBeforeOption("tswtz") || this.occursBeforeOption("tstz") ? l = "tswtz" : this.occursBeforeOption("ts") && (l = "timestamp");
-    const P = { base: l, colName: n, varcharLen: s, needsBoolCheck: x, isNativeBoolean: y, parent_child: u };
-    return B !== void 0 && (P.numericSpec = B), m !== void 0 && (P.vectorSpec = m), P;
+    this.isOption("domain") && S && S.length > 0 && 23 <= (ae(S) ?? 0) && (o = this.getOptionValue("domain") ?? o), this.occursBeforeOption("tswltz") && c !== 0 ? o = "tswltz" : this.occursBeforeOption("tswtz") || this.occursBeforeOption("tstz") ? o = "tswtz" : this.occursBeforeOption("ts") && (o = "timestamp");
+    const B = { base: o, colName: n, varcharLen: r, needsBoolCheck: p, isNativeBoolean: v, parent_child: m };
+    return w !== void 0 && (B.numericSpec = w), u !== void 0 && (B.vectorSpec = u), B;
   }
   inferType() {
     if (this.children !== null && 0 < this.children.length) return "table";
-    const a = this.src;
-    if (a[0].value === "view" || 1 < a.length && a[1].value === "=") return "view";
-    if (a[0].value === "dv") return "dv";
+    const e = this.src;
+    if (e[0].value === "view" || 1 < e.length && e[1].value === "=") return "view";
+    if (e[0].value === "dv") return "dv";
     if (this.parent === null) return "table";
     const n = this._inferTypeFull();
     if (this.isOption("fk") || 0 < this.indexOf("reference", !0)) {
-      let s = "number";
-      n.base === "integer" && (s = "integer");
-      const r = this.refId(), l = this._ctx.find(r);
-      return l !== null && l.getExplicitPkName() !== null && (s = l.getPkType()), s;
+      let r = "number";
+      n.base === "integer" && (r = "integer");
+      const t = this.refId(), o = this._ctx.find(t);
+      return o !== null && o.getExplicitPkName() !== null && (r = o.getPkType()), r;
     }
     return n.base;
   }
   getPlsqlType() {
-    const a = this.inferType();
-    return a === "varchar" ? "varchar2" : a;
+    const e = this.inferType();
+    return e === "varchar" ? "varchar2" : e;
   }
-  vectorType(a) {
-    const n = this.indexOf(a, !0), s = this.src;
+  vectorType(e) {
+    const n = this.indexOf(e, !0), r = this.src;
     if (0 < n) {
-      let r = s[n].value.substring(a.length);
-      r === "" && this.indexOf("(") === n + 1 && (r = s[n + 2].value);
-      let l = "*";
-      if (r !== "") {
+      let t = r[n].value.substring(e.length);
+      t === "" && this.indexOf("(") === n + 1 && (t = r[n + 2].value);
+      let o = "*";
+      if (t !== "") {
         let d = 1;
-        r.endsWith("k") && (d = 1024), r = r.substring(0, r.length - 1), l = parseInt(r) * d;
+        t.endsWith("k") && (d = 1024), t = t.substring(0, t.length - 1), o = parseInt(t) * d;
       }
-      return `vector(${l},*,*)`;
+      return `vector(${o},*,*)`;
     }
     return null;
   }
-  genConstraint(a) {
+  genConstraint(e) {
     let n = "";
     if (this.isOption("check")) {
-      let s = "";
-      this.parent !== null && (s = z(this.parent.parseName(), "_"));
-      const r = z(s, this.parseName());
-      let l = i;
-      this.parent !== null && (l = " ".repeat(this.parent.maxChildNameLen()));
+      let r = "";
+      this.parent !== null && (r = U(this.parent.parseName(), "_"));
+      const t = U(r, this.parseName());
+      let o = i;
+      this.parent !== null && (o = " ".repeat(this.parent.maxChildNameLen()));
       const d = this.getGeneralConstraint();
       if (d !== null)
-        return this.children !== null && 0 < this.children.length ? (n += i + "constraint " + z(this._ctx.objPrefix(), r, se.ck), n += "  check " + d + `,
-`) : (n += " constraint " + z(this._ctx.objPrefix(), r, se.ck) + `
-`, n += i + i + l + "check " + d), n;
-      const f = this.getValues("check");
-      n += " constraint " + z(this._ctx.objPrefix(), r, se.ck) + `
-`, n += i + i + l + "check (" + this.parseName() + " in (" + f + "))";
+        return this.children !== null && 0 < this.children.length ? (n += i + "constraint " + U(this._ctx.objPrefix(), t, Y.ck), n += "  check " + d + `,
+`) : (n += " constraint " + U(this._ctx.objPrefix(), t, Y.ck) + `
+`, n += i + i + o + "check " + d), n;
+      const c = this.getValues("check");
+      n += " constraint " + U(this._ctx.objPrefix(), t, Y.ck) + `
+`, n += i + i + o + "check (" + this.parseName() + " in (" + c + "))";
     }
     return n;
   }
@@ -646,111 +646,111 @@ class he {
   getExplicitPkName() {
     if (this.isOption("pk"))
       return this.inferType() === "table" ? this.getOptionValue("pk") : this.parseName();
-    for (let a = 0; a < this.children.length; a++)
-      if (this.children[a].isOption("pk")) return this.children[a].parseName();
+    for (let e = 0; e < this.children.length; e++)
+      if (this.children[e].isOption("pk")) return this.children[e].parseName();
     return null;
   }
   trimmedContent() {
-    let a = this.content.trim();
-    const n = a.indexOf("["), s = a.indexOf("]");
-    this.comment === null && 0 < n && (this.comment = a.substr(n + 1, s - n - 1)), 0 < n && (a = a.substr(0, n) + a.substr(s + 2));
-    const r = a.indexOf("--");
-    return this.comment === null && 0 < r && (this.comment = a.substr(r + 2)), 0 < r && (a = a.substr(0, r)), a.trim();
+    let e = this.content.trim();
+    const n = e.indexOf("["), r = e.indexOf("]");
+    this.comment === null && 0 < n && (this.comment = e.substr(n + 1, r - n - 1)), 0 < n && (e = e.substr(0, n) + e.substr(r + 2));
+    const t = e.indexOf("--");
+    return this.comment === null && 0 < t && (this.comment = e.substr(t + 2)), 0 < t && (e = e.substr(0, t)), e.trim();
   }
   refId() {
-    let a = this.trimmedContent();
-    a = a.replace(/\/cascade/g, "");
-    let n = a.indexOf(" id ");
-    if (n < 0 && n === a.length - 3 && (n = a.indexOf(" id")), n < 0 && (n = a.indexOf(" id"), n !== a.length - 3 && (n = -1)), n < 0 && (n = a.indexOf("_id "), n !== a.length - 4 && (n = -1)), n < 0 && (n = a.indexOf("_id"), n !== a.length - 3 && (n = -1)), n < 0 && (n = a.indexOf("Id "), n !== a.length - 3 && (n = -1)), 0 < n) {
-      let s = a.substr(0, n) + "s";
-      if (this._ctx.find(s) !== null || (s = a.substr(0, n), this._ctx.find(s) !== null)) return s;
+    let e = this.trimmedContent();
+    e = e.replace(/\/cascade/g, "");
+    let n = e.indexOf(" id ");
+    if (n < 0 && n === e.length - 3 && (n = e.indexOf(" id")), n < 0 && (n = e.indexOf(" id"), n !== e.length - 3 && (n = -1)), n < 0 && (n = e.indexOf("_id "), n !== e.length - 4 && (n = -1)), n < 0 && (n = e.indexOf("_id"), n !== e.length - 3 && (n = -1)), n < 0 && (n = e.indexOf("Id "), n !== e.length - 3 && (n = -1)), 0 < n) {
+      let r = e.substr(0, n) + "s";
+      if (this._ctx.find(r) !== null || (r = e.substr(0, n), this._ctx.find(r) !== null)) return r;
     }
-    return n = a.indexOf("/fk"), 0 < n ? (a = a.substr(n + 3).trim(), n = a.indexOf("/"), 0 < n && (a = a.substring(0, n).trim()), n = a.indexOf("["), 0 < n && (a = a.substring(0, n).trim()), a.replace(" ", "_")) : (n = a.indexOf("/reference"), 0 < n ? (a = a.substr(n + 10).trim(), a.indexOf("s") === 0 && (a = a.substring(1).trim()), n = a.indexOf("/"), 0 < n && (a = a.substring(0, n).trim()), n = a.indexOf("["), 0 < n && (a = a.substring(0, n).trim()), a.replace(" ", "_")) : null);
+    return n = e.indexOf("/fk"), 0 < n ? (e = e.substr(n + 3).trim(), n = e.indexOf("/"), 0 < n && (e = e.substring(0, n).trim()), n = e.indexOf("["), 0 < n && (e = e.substring(0, n).trim()), e.replace(" ", "_")) : (n = e.indexOf("/reference"), 0 < n ? (e = e.substr(n + 10).trim(), e.indexOf("s") === 0 && (e = e.substring(1).trim()), n = e.indexOf("/"), 0 < n && (e = e.substring(0, n).trim()), n = e.indexOf("["), 0 < n && (e = e.substring(0, n).trim()), e.replace(" ", "_")) : null);
   }
   getGeneralConstraint() {
-    const a = this.indexOf("check");
-    if (0 < a && this.src[a - 1].value === "/" && (this.src[a + 1].value === "(" || this.src[a + 1].lowerValue === "not")) {
-      let n = a + 2;
+    const e = this.indexOf("check");
+    if (0 < e && this.src[e - 1].value === "/" && (this.src[e + 1].value === "(" || this.src[e + 1].lowerValue === "not")) {
+      let n = e + 2;
       for (; n < this.src.length && this.src[n].value !== "/" && this.src[n].value !== "["; )
         n++;
-      let s = this.content.substring(this.src[a + 1].begin, this.src[n - 1].end);
-      return s.charAt(0) !== "(" && (s = "(" + s + ")"), s;
+      let r = this.content.substring(this.src[e + 1].begin, this.src[n - 1].end);
+      return r.charAt(0) !== "(" && (r = "(" + r + ")"), r;
     }
     return null;
   }
-  listValues(a) {
-    const n = [], s = this.indexOf(a);
-    let r = " ";
-    for (let f = s + 1; f < this.src.length && this.src[f].value !== "/" && this.src[f].value !== "["; f++)
-      if (this.src[f].value === ",") {
-        r = ",";
+  listValues(e) {
+    const n = [], r = this.indexOf(e);
+    let t = " ";
+    for (let c = r + 1; c < this.src.length && this.src[c].value !== "/" && this.src[c].value !== "["; c++)
+      if (this.src[c].value === ",") {
+        t = ",";
         break;
-      } else if (this.src[f].lowerValue === "and") {
-        r = this.src[f].value;
+      } else if (this.src[c].lowerValue === "and") {
+        t = this.src[c].value;
         break;
       }
-    if (r === " ") {
-      for (let f = s + 1; f < this.src.length && this.src[f].value !== "/" && this.src[f].value !== "["; f++) {
-        let m = this.src[f].value;
-        this.src[f].type === "identifier" && m !== "null" && (m = "'" + m + "'"), m.charAt(0) === "`" && (m = m.substring(1, m.length - 1)), n.push(m);
+    if (t === " ") {
+      for (let c = r + 1; c < this.src.length && this.src[c].value !== "/" && this.src[c].value !== "["; c++) {
+        let u = this.src[c].value;
+        this.src[c].type === "identifier" && u !== "null" && (u = "'" + u + "'"), u.charAt(0) === "`" && (u = u.substring(1, u.length - 1)), n.push(u);
       }
       return n;
     }
-    let l = null, d = null;
-    for (let f = s + 1; f < this.src.length && this.src[f].value !== "/" && this.src[f].value !== "["; f++) {
-      let m = this.src[f].value;
-      const h = this.content.substring(this.src[f - 1].end, this.src[f].begin);
-      if (m === r) {
-        d === "identifier" && l !== "null" && (l = "'" + l + "'"), n.push(l), l = null, d = null;
+    let o = null, d = null;
+    for (let c = r + 1; c < this.src.length && this.src[c].value !== "/" && this.src[c].value !== "["; c++) {
+      let u = this.src[c].value;
+      const h = this.content.substring(this.src[c - 1].end, this.src[c].begin);
+      if (u === t) {
+        d === "identifier" && o !== "null" && (o = "'" + o + "'"), n.push(o), o = null, d = null;
         continue;
       }
-      m === "(" || m === ")" || (m.charAt(0) === "`" ? m = m.substring(1, m.length - 1) : this.src[f].type === "identifier" && (d = "identifier"), l = l === null ? m : l + h + m);
+      u === "(" || u === ")" || (u.charAt(0) === "`" ? u = u.substring(1, u.length - 1) : this.src[c].type === "identifier" && (d = "identifier"), o = o === null ? u : o + h + u);
     }
-    return d === "identifier" && (l = "'" + l + "'"), n.push(l), n;
+    return d === "identifier" && (o = "'" + o + "'"), n.push(o), n;
   }
-  getValues(a) {
+  getValues(e) {
     let n = "";
-    const s = this.listValues(a);
-    for (let r = 0; r < s.length; r++)
-      0 < r && (n += ","), n += s[r];
+    const r = this.listValues(e);
+    for (let t = 0; t < r.length; t++)
+      0 < t && (n += ","), n += r[t];
     return n;
   }
   getDefaultValue() {
     if (!this.isOption("default")) return null;
-    let a = "";
+    let e = "";
     for (let n = this.indexOf("default") + 1; n < this.src.length; n++) {
-      const s = this.src[n].getValue();
-      if (s === "/" || s === "-" || s === "[") break;
-      a += s;
+      const r = this.src[n].getValue();
+      if (r === "/" || r === "-" || r === "[") break;
+      e += r;
     }
-    return a;
+    return e;
   }
   getBetweenClause() {
     if (!this.isOption("between")) return null;
-    const a = this.indexOf("between");
-    return this.src[a + 1].getValue() + " and " + this.src[a + 3].getValue();
+    const e = this.indexOf("between");
+    return this.src[e + 1].getValue() + " and " + this.src[e + 3].getValue();
   }
   parseValues() {
     if (this.isOption("check")) return this.listValues("check");
     if (this.isOption("values")) return this.listValues("values");
     if (this.isOption("between")) {
-      const a = this.listValues("between"), n = [];
-      for (let s = parseInt(String(a[0])); s <= parseInt(String(a[1])); s++)
-        n.push(s);
+      const e = this.listValues("between"), n = [];
+      for (let r = parseInt(String(e[0])); r <= parseInt(String(e[1])); r++)
+        n.push(r);
       return n;
     }
     return null;
   }
   apparentDepth() {
-    const a = this.content.split(/ |\t/);
+    const e = this.content.split(/ |\t/);
     let n = 0;
-    for (let s = 0; s < a.length; s++) {
-      const r = a[s];
-      if (r === "	") {
+    for (let r = 0; r < e.length; r++) {
+      const t = e[r];
+      if (t === "	") {
         n += i.length;
         continue;
       }
-      if (r === "") {
+      if (t === "") {
         n++;
         continue;
       }
@@ -762,19 +762,19 @@ class he {
     return this.parent === null ? 0 : this.parent.depth() + 1;
   }
   isLeaf() {
-    return this.children.every((a) => a.children.length === 0);
+    return this.children.every((e) => e.children.length === 0);
   }
   getGenIdColName() {
     if (this.inferType() !== "table" || this.getExplicitPkName() !== null) return null;
     if (this._ctx.optionEQvalue("Auto Primary Key", "yes")) {
-      let a = "";
-      return this.colprefix !== void 0 && (a = this.colprefix + "_"), this._ctx.optionEQvalue("prefixPKwithTname", "yes") && (a = (D(this.parseName()) ?? this.parseName()) + "_"), a + "id";
+      let e = "";
+      return this.colprefix !== void 0 && (e = this.colprefix + "_"), this._ctx.optionEQvalue("prefixPKwithTname", "yes") && (e = ($(this.parseName()) ?? this.parseName()) + "_"), e + "id";
     }
     return null;
   }
   getPkName() {
-    const a = this.getGenIdColName();
-    return a === null ? this.getExplicitPkName() : a;
+    const e = this.getGenIdColName();
+    return e === null ? this.getExplicitPkName() : e;
   }
   getPkType() {
     if (this.getGenIdColName() === null) {
@@ -785,143 +785,143 @@ class he {
   }
   lateInitFks() {
     if (this.fks === null && (this.fks = {}), !this.isMany2One()) {
-      this.parent !== null && this.inferType() === "table" && ((this.parent.getPkName() ?? "").indexOf(",") < 0 ? this.fks[(D(this.parent.parseName()) ?? this.parent.parseName()) + "_id"] = this.parent.parseName() : this.fks[D(this.parent.getPkName() ?? "") ?? this.parent.parseName()] = this.parent.parseName());
-      for (let a = 0; a < this.children.length; a++) {
-        const n = this.children[a].refId();
-        n !== null && (this.fks[this.children[a].parseName()] = n);
+      this.parent !== null && this.inferType() === "table" && ((this.parent.getPkName() ?? "").indexOf(",") < 0 ? this.fks[($(this.parent.parseName()) ?? this.parent.parseName()) + "_id"] = this.parent.parseName() : this.fks[$(this.parent.getPkName() ?? "") ?? this.parent.parseName()] = this.parent.parseName());
+      for (let e = 0; e < this.children.length; e++) {
+        const n = this.children[e].refId();
+        n !== null && (this.fks[this.children[e].parseName()] = n);
       }
     }
   }
   cardinality() {
     if (this.isOption("insert")) {
       const n = this.indexOf("insert");
-      let s = parseInt(this.src[n + 1].value);
-      const r = this._ctx.getOptionValue("datalimit");
-      return r < s && (s = r), s;
+      let r = parseInt(this.src[n + 1].value);
+      const t = this._ctx.getOptionValue("datalimit");
+      return t < r && (r = t), r;
     }
     return 0;
   }
   isArray() {
     return !this.isMany2One() && this.parent !== null;
   }
-  hasNonArrayChildId(a) {
-    if (!a.endsWith("_id")) return !1;
-    const n = a.slice(0, -3);
-    return this.children.some((s) => s.children.length > 0 && s.parseName() === n && !s.isArray());
+  hasNonArrayChildId(e) {
+    if (!e.endsWith("_id")) return !1;
+    const n = e.slice(0, -3);
+    return this.children.some((r) => r.children.length > 0 && r.parseName() === n && !r.isArray());
   }
   getTransColumns() {
-    const a = [];
+    const e = [];
     for (let n = 0; n < this.children.length; n++) {
-      const s = this.children[n];
-      (s.isOption("trans") || s.isOption("translation") || s.isOption("translations")) && a.push(s);
+      const r = this.children[n];
+      (r.isOption("trans") || r.isOption("translation") || r.isOption("translations")) && e.push(r);
     }
-    return a;
+    return e;
   }
   getBaseType() {
-    let a = this.inferType(), n = a.indexOf(" not null");
-    return n > 0 && (a = a.substring(0, n)), n = a.indexOf(`
-`), n > 0 && (a = a.substring(0, n)), a;
+    let e = this.inferType(), n = e.indexOf(" not null");
+    return n > 0 && (e = e.substring(0, n)), n = e.indexOf(`
+`), n > 0 && (e = e.substring(0, n)), e;
   }
 }
-function Ae(p) {
-  const a = p.input;
+function Pe(x) {
+  const e = x.input;
   let n = [];
-  const s = [], r = Q(a + `
+  const r = [], t = re(e + `
 `, !0, !0, "`");
-  p.data = null;
-  let l = null, d = "";
-  e: for (let f = 0; f < r.length; f++) {
-    const m = r[f];
-    if (m.value === `
-` && l === null) {
+  x.data = null;
+  let o = null, d = "";
+  e: for (let c = 0; c < t.length; c++) {
+    const u = t[c];
+    if (u.value === `
+` && o === null) {
       d = d.replace(/\r/g, "");
-      const h = (d.match(/\{/g) ?? []).length, o = (d.match(/\}/g) ?? []).length;
-      if (h > o)
+      const h = (d.match(/\{/g) ?? []).length, l = (d.match(/\}/g) ?? []).length;
+      if (h > l)
         continue;
       if (d.replace(/\r/g, "").replace(/ /g, "") === "") {
         d = "";
         continue;
       }
-      let x = new he(m.line - 1, d, null, p), g = !1;
-      for (let T = 0; T < n.length; T++) {
-        const k = n[T];
-        if (x.apparentDepth() <= k.apparentDepth())
-          if (0 < T) {
-            const y = n[T - 1];
-            x = new he(m.line - 1, d, y, p), n[T] = x, n = n.slice(0, T + 1), g = !0;
+      let p = new ye(u.line - 1, d, null, x), g = !1;
+      for (let A = 0; A < n.length; A++) {
+        const S = n[A];
+        if (p.apparentDepth() <= S.apparentDepth())
+          if (0 < A) {
+            const v = n[A - 1];
+            p = new ye(u.line - 1, d, v, x), n[A] = p, n = n.slice(0, A + 1), g = !0;
             break;
           } else
-            n[0] = x, n = n.slice(0, 1), s.push(x), g = !0;
+            n[0] = p, n = n.slice(0, 1), r.push(p), g = !0;
       }
       if (!g) {
         if (0 < n.length) {
-          const T = n[n.length - 1];
-          x = new he(m.line - 1, d, T, p);
+          const A = n[n.length - 1];
+          p = new ye(u.line - 1, d, A, x);
         }
-        n.push(x), x.apparentDepth() === 0 && s.push(x);
+        n.push(p), p.apparentDepth() === 0 && r.push(p);
       }
-      if (x.isMany2One()) {
-        const T = x.parent;
-        T.fks === null && (T.fks = {});
-        let k = x.refId();
-        k === null && (k = x.parseName()), T.fks[x.parseName() + "_id"] = k;
+      if (p.isMany2One()) {
+        const A = p.parent;
+        A.fks === null && (A.fks = {});
+        let S = p.refId();
+        S === null && (S = p.parseName()), A.fks[p.parseName() + "_id"] = S;
       }
       d = "";
       continue;
     }
-    if (l === null && m.value === "#") {
-      l = "";
+    if (o === null && u.value === "#") {
+      o = "";
       continue;
     }
-    if (l !== null) {
-      if (l += m.value, m.value !== `
-` && m.value !== "}") continue;
-      const h = Q(l, !1, !0, "");
+    if (o !== null) {
+      if (o += u.value, u.value !== `
+` && u.value !== "}") continue;
+      const h = re(o, !1, !0, "");
       if (h.length % 4 === 3 && h[1].value === ":") {
-        p.setOptions(l), l = null, d = "";
+        x.setOptions(o), o = null, d = "";
         continue;
       }
-      let o = null, u = null;
-      for (const x in h) {
-        const g = h[x];
-        if (o === null && g.value === "flattened") {
-          o = "";
+      let l = null, m = null;
+      for (const p in h) {
+        const g = h[p];
+        if (l === null && g.value === "flattened") {
+          l = "";
           continue;
         }
-        if (o !== null) {
-          if (o += g.value, o === "=" || o.charAt(o.length - 1) !== "}") continue;
-          const T = o.substring(1);
+        if (l !== null) {
+          if (l += g.value, l === "=" || l.charAt(l.length - 1) !== "}") continue;
+          const A = l.substring(1);
           try {
-            p.data = JSON.parse(T), l = null, d = "";
+            x.data = JSON.parse(A), o = null, d = "";
             continue e;
           } catch {
           }
         }
-        if (u === null && g.value === "settings") {
-          u = "";
+        if (m === null && g.value === "settings") {
+          m = "";
           continue;
         }
-        if (u !== null) {
-          u += g.value;
+        if (m !== null) {
+          m += g.value;
           try {
-            p.setOptions(u), l = null, d = "";
+            x.setOptions(m), o = null, d = "";
             continue e;
           } catch {
           }
         }
       }
     }
-    if (m.type !== "comment") {
-      if (m.type === "line-comment") {
-        0 < d.trim().length && (d += m.value);
+    if (u.type !== "comment") {
+      if (u.type === "line-comment") {
+        0 < d.trim().length && (d += u.value);
         continue;
       }
-      d += m.value;
+      d += u.value;
     }
   }
-  return s;
+  return r;
 }
-const ta = [
+const ca = [
   "Sales",
   "Finance",
   "Delivery",
@@ -934,7 +934,7 @@ const ta = [
   "Specialist",
   "Evangelist",
   "Salesman"
-], Se = [
+], Be = [
   "\u300C\u8CA9\u58F2\u300D",
   "\u300C\u8CA1\u52D9\u300D",
   "\u300C\u914D\u9001\u300D",
@@ -946,7 +946,7 @@ const ta = [
   "\u300C\u30A2\u30CA\u30EA\u30B9\u30C8\u300D",
   "\u300C\u30B9\u30DA\u30B7\u30E3\u30EA\u30B9\u30C8\u300D",
   "\u300C\u30A8\u30D0\u30F3\u30B8\u30A7\u30EA\u30B9\u30C8\u300D"
-], _e = [
+], Ne = [
   "\uC601\uC5C5",
   "\uAE08\uC735",
   "\uBC30\uC1A1",
@@ -960,468 +960,468 @@ const ta = [
   "\uC804\uB3C4\uC790",
   "\uD310\uB9E4\uC6D0"
 ];
-function Me(p, a) {
-  if (typeof a != "string") return a;
-  const n = p.substring(0, 2).toLowerCase();
-  if (n === "en") return a;
-  const s = a.startsWith("'") ? a.slice(1, -1) : a, r = ta.indexOf(s);
-  return r < 0 ? a : n === "jp" && r < Se.length ? "'" + Se[r] + "'" : n === "kr" && r < _e.length ? "'" + _e[r] + "'" : a;
+function Ee(x, e) {
+  if (typeof e != "string") return e;
+  const n = x.substring(0, 2).toLowerCase();
+  if (n === "en") return e;
+  const r = e.startsWith("'") ? e.slice(1, -1) : e, t = ca.indexOf(r);
+  return t < 0 ? e : n === "jp" && t < Be.length ? "'" + Be[t] + "'" : n === "kr" && t < Ne.length ? "'" + Ne[t] + "'" : e;
 }
-function ra(p) {
-  return p && p.__esModule && Object.prototype.hasOwnProperty.call(p, "default") ? p.default : p;
+function fa(x) {
+  return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, "default") ? x.default : x;
 }
-var te = { exports: {} }, ke;
-function oa() {
-  return ke || (ke = 1, (function(p, a) {
+var de = { exports: {} }, Le;
+function ua() {
+  return Le || (Le = 1, (function(x, e) {
     (function() {
-      var n = 9007199254740992, s = -n, r = "0123456789", l = "abcdefghijklmnopqrstuvwxyz", d = l.toUpperCase(), f = r + "abcdef";
-      function m(e) {
-        this.name = "UnsupportedError", this.message = e || "This feature is not supported on this platform";
+      var n = 9007199254740992, r = -n, t = "0123456789", o = "abcdefghijklmnopqrstuvwxyz", d = o.toUpperCase(), c = t + "abcdef";
+      function u(a) {
+        this.name = "UnsupportedError", this.message = a || "This feature is not supported on this platform";
       }
-      m.prototype = new Error(), m.prototype.constructor = m;
+      u.prototype = new Error(), u.prototype.constructor = u;
       var h = Array.prototype.slice;
-      function o(e) {
-        if (!(this instanceof o))
-          return e || (e = null), e === null ? new o() : new o(e);
-        if (typeof e == "function")
-          return this.random = e, this;
+      function l(a) {
+        if (!(this instanceof l))
+          return a || (a = null), a === null ? new l() : new l(a);
+        if (typeof a == "function")
+          return this.random = a, this;
         arguments.length && (this.seed = 0);
-        for (var t = 0; t < arguments.length; t++) {
-          var c = 0;
-          if (Object.prototype.toString.call(arguments[t]) === "[object String]")
-            for (var b = 0; b < arguments[t].length; b++) {
-              for (var C = 0, M = 0; M < arguments[t].length; M++)
-                C = arguments[t].charCodeAt(M) + (C << 6) + (C << 16) - C;
-              c += C;
+        for (var s = 0; s < arguments.length; s++) {
+          var f = 0;
+          if (Object.prototype.toString.call(arguments[s]) === "[object String]")
+            for (var b = 0; b < arguments[s].length; b++) {
+              for (var C = 0, T = 0; T < arguments[s].length; T++)
+                C = arguments[s].charCodeAt(T) + (C << 6) + (C << 16) - C;
+              f += C;
             }
           else
-            c = arguments[t];
-          this.seed += (arguments.length - t) * c;
+            f = arguments[s];
+          this.seed += (arguments.length - s) * f;
         }
         return this.mt = this.mersenne_twister(this.seed), this.bimd5 = this.blueimp_md5(), this.random = function() {
           return this.mt.random(this.seed);
         }, this;
       }
-      o.prototype.VERSION = "1.1.13";
-      function u(e, t) {
-        if (e = e || {}, t)
-          for (var c in t)
-            typeof e[c] > "u" && (e[c] = t[c]);
-        return e;
+      l.prototype.VERSION = "1.1.13";
+      function m(a, s) {
+        if (a = a || {}, s)
+          for (var f in s)
+            typeof a[f] > "u" && (a[f] = s[f]);
+        return a;
       }
-      function x(e) {
-        return Array.apply(null, Array(e)).map(function(t, c) {
-          return c;
+      function p(a) {
+        return Array.apply(null, Array(a)).map(function(s, f) {
+          return f;
         });
       }
-      function g(e, t) {
-        if (e)
-          throw new RangeError(t);
+      function g(a, s) {
+        if (a)
+          throw new RangeError(s);
       }
-      var T = function() {
+      var A = function() {
         throw new Error("No Base64 encoder available.");
       };
       (function() {
-        typeof btoa == "function" ? T = btoa : typeof Buffer == "function" && (T = function(t) {
-          return new Buffer(t).toString("base64");
+        typeof btoa == "function" ? A = btoa : typeof Buffer == "function" && (A = function(s) {
+          return new Buffer(s).toString("base64");
         });
-      })(), o.prototype.bool = function(e) {
-        return e = u(e, { likelihood: 50 }), g(
-          e.likelihood < 0 || e.likelihood > 100,
+      })(), l.prototype.bool = function(a) {
+        return a = m(a, { likelihood: 50 }), g(
+          a.likelihood < 0 || a.likelihood > 100,
           "Chance: Likelihood accepts values from 0 to 100."
-        ), this.random() * 100 < e.likelihood;
-      }, o.prototype.falsy = function(e) {
-        e = u(e, { pool: [!1, null, 0, NaN, "", void 0] });
-        var t = e.pool, c = this.integer({ min: 0, max: t.length - 1 }), b = t[c];
+        ), this.random() * 100 < a.likelihood;
+      }, l.prototype.falsy = function(a) {
+        a = m(a, { pool: [!1, null, 0, NaN, "", void 0] });
+        var s = a.pool, f = this.integer({ min: 0, max: s.length - 1 }), b = s[f];
         return b;
-      }, o.prototype.animal = function(e) {
-        if (e = u(e), typeof e.type < "u")
+      }, l.prototype.animal = function(a) {
+        if (a = m(a), typeof a.type < "u")
           return g(
-            !this.get("animals")[e.type.toLowerCase()],
+            !this.get("animals")[a.type.toLowerCase()],
             "Please pick from desert, ocean, grassland, forest, zoo, pets, farm."
-          ), this.pick(this.get("animals")[e.type.toLowerCase()]);
-        var t = ["desert", "forest", "ocean", "zoo", "farm", "pet", "grassland"];
-        return this.pick(this.get("animals")[this.pick(t)]);
-      }, o.prototype.character = function(e) {
-        e = u(e);
-        var t = "!@#$%^&*()[]", c, b;
-        return e.casing === "lower" ? c = l : e.casing === "upper" ? c = d : c = l + d, e.pool ? b = e.pool : (b = "", e.alpha && (b += c), e.numeric && (b += r), e.symbols && (b += t), b || (b = c + r + t)), b.charAt(this.natural({ max: b.length - 1 }));
-      }, o.prototype.floating = function(e) {
-        e = u(e, { fixed: 4 }), g(
-          e.fixed && e.precision,
+          ), this.pick(this.get("animals")[a.type.toLowerCase()]);
+        var s = ["desert", "forest", "ocean", "zoo", "farm", "pet", "grassland"];
+        return this.pick(this.get("animals")[this.pick(s)]);
+      }, l.prototype.character = function(a) {
+        a = m(a);
+        var s = "!@#$%^&*()[]", f, b;
+        return a.casing === "lower" ? f = o : a.casing === "upper" ? f = d : f = o + d, a.pool ? b = a.pool : (b = "", a.alpha && (b += f), a.numeric && (b += t), a.symbols && (b += s), b || (b = f + t + s)), b.charAt(this.natural({ max: b.length - 1 }));
+      }, l.prototype.floating = function(a) {
+        a = m(a, { fixed: 4 }), g(
+          a.fixed && a.precision,
           "Chance: Cannot specify both fixed and precision."
         );
-        var t, c = Math.pow(10, e.fixed), b = n / c, C = -b;
+        var s, f = Math.pow(10, a.fixed), b = n / f, C = -b;
         g(
-          e.min && e.fixed && e.min < C,
+          a.min && a.fixed && a.min < C,
           "Chance: Min specified is out of range with fixed. Min should be, at least, " + C
         ), g(
-          e.max && e.fixed && e.max > b,
+          a.max && a.fixed && a.max > b,
           "Chance: Max specified is out of range with fixed. Max should be, at most, " + b
-        ), e = u(e, { min: C, max: b }), t = this.integer({ min: e.min * c, max: e.max * c });
-        var M = (t / c).toFixed(e.fixed);
-        return parseFloat(M);
-      }, o.prototype.integer = function(e) {
-        return e = u(e, { min: s, max: n }), g(e.min > e.max, "Chance: Min cannot be greater than Max."), Math.floor(this.random() * (e.max - e.min + 1) + e.min);
-      }, o.prototype.natural = function(e) {
-        if (e = u(e, { min: 0, max: n }), typeof e.numerals == "number" && (g(e.numerals < 1, "Chance: Numerals cannot be less than one."), e.min = Math.pow(10, e.numerals - 1), e.max = Math.pow(10, e.numerals) - 1), g(e.min < 0, "Chance: Min cannot be less than zero."), e.exclude) {
-          g(!Array.isArray(e.exclude), "Chance: exclude must be an array.");
-          for (var t in e.exclude)
-            g(!Number.isInteger(e.exclude[t]), "Chance: exclude must be numbers.");
-          var c = e.min + this.natural({ max: e.max - e.min - e.exclude.length }), b = e.exclude.sort((M, w) => M - w);
+        ), a = m(a, { min: C, max: b }), s = this.integer({ min: a.min * f, max: a.max * f });
+        var T = (s / f).toFixed(a.fixed);
+        return parseFloat(T);
+      }, l.prototype.integer = function(a) {
+        return a = m(a, { min: r, max: n }), g(a.min > a.max, "Chance: Min cannot be greater than Max."), Math.floor(this.random() * (a.max - a.min + 1) + a.min);
+      }, l.prototype.natural = function(a) {
+        if (a = m(a, { min: 0, max: n }), typeof a.numerals == "number" && (g(a.numerals < 1, "Chance: Numerals cannot be less than one."), a.min = Math.pow(10, a.numerals - 1), a.max = Math.pow(10, a.numerals) - 1), g(a.min < 0, "Chance: Min cannot be less than zero."), a.exclude) {
+          g(!Array.isArray(a.exclude), "Chance: exclude must be an array.");
+          for (var s in a.exclude)
+            g(!Number.isInteger(a.exclude[s]), "Chance: exclude must be numbers.");
+          var f = a.min + this.natural({ max: a.max - a.min - a.exclude.length }), b = a.exclude.sort((T, I) => T - I);
           for (var C in b) {
-            if (c < b[C])
+            if (f < b[C])
               break;
-            c++;
+            f++;
           }
-          return c;
+          return f;
         }
-        return this.integer(e);
-      }, o.prototype.prime = function(e) {
-        e = u(e, { min: 0, max: 1e4 }), g(e.min < 0, "Chance: Min cannot be less than zero."), g(e.min > e.max, "Chance: Min cannot be greater than Max.");
-        var t = I.primes[I.primes.length - 1];
-        if (e.max > t)
-          for (var c = t + 2; c <= e.max; ++c)
-            this.is_prime(c) && I.primes.push(c);
-        var b = I.primes.filter(function(C) {
-          return C >= e.min && C <= e.max;
+        return this.integer(a);
+      }, l.prototype.prime = function(a) {
+        a = m(a, { min: 0, max: 1e4 }), g(a.min < 0, "Chance: Min cannot be less than zero."), g(a.min > a.max, "Chance: Min cannot be greater than Max.");
+        var s = P.primes[P.primes.length - 1];
+        if (a.max > s)
+          for (var f = s + 2; f <= a.max; ++f)
+            this.is_prime(f) && P.primes.push(f);
+        var b = P.primes.filter(function(C) {
+          return C >= a.min && C <= a.max;
         });
         return this.pick(b);
-      }, o.prototype.is_prime = function(e) {
-        if (e % 1 || e < 2)
+      }, l.prototype.is_prime = function(a) {
+        if (a % 1 || a < 2)
           return !1;
-        if (e % 2 === 0)
-          return e === 2;
-        if (e % 3 === 0)
-          return e === 3;
-        for (var t = Math.sqrt(e), c = 5; c <= t; c += 6)
-          if (e % c === 0 || e % (c + 2) === 0)
+        if (a % 2 === 0)
+          return a === 2;
+        if (a % 3 === 0)
+          return a === 3;
+        for (var s = Math.sqrt(a), f = 5; f <= s; f += 6)
+          if (a % f === 0 || a % (f + 2) === 0)
             return !1;
         return !0;
-      }, o.prototype.hex = function(e) {
-        e = u(e, { min: 0, max: n, casing: "lower" }), g(e.min < 0, "Chance: Min cannot be less than zero.");
-        var t = this.natural({ min: e.min, max: e.max });
-        return e.casing === "upper" ? t.toString(16).toUpperCase() : t.toString(16);
-      }, o.prototype.letter = function(e) {
-        e = u(e, { casing: "lower" });
-        var t = "abcdefghijklmnopqrstuvwxyz", c = this.character({ pool: t });
-        return e.casing === "upper" && (c = c.toUpperCase()), c;
-      }, o.prototype.string = function(e) {
-        e = u(e, { min: 5, max: 20 }), e.length !== 0 && !e.length && (e.length = this.natural({ min: e.min, max: e.max })), g(e.length < 0, "Chance: Length cannot be less than zero.");
-        var t = e.length, c = this.n(this.character, t, e);
-        return c.join("");
+      }, l.prototype.hex = function(a) {
+        a = m(a, { min: 0, max: n, casing: "lower" }), g(a.min < 0, "Chance: Min cannot be less than zero.");
+        var s = this.natural({ min: a.min, max: a.max });
+        return a.casing === "upper" ? s.toString(16).toUpperCase() : s.toString(16);
+      }, l.prototype.letter = function(a) {
+        a = m(a, { casing: "lower" });
+        var s = "abcdefghijklmnopqrstuvwxyz", f = this.character({ pool: s });
+        return a.casing === "upper" && (f = f.toUpperCase()), f;
+      }, l.prototype.string = function(a) {
+        a = m(a, { min: 5, max: 20 }), a.length !== 0 && !a.length && (a.length = this.natural({ min: a.min, max: a.max })), g(a.length < 0, "Chance: Length cannot be less than zero.");
+        var s = a.length, f = this.n(this.character, s, a);
+        return f.join("");
       };
-      function k(e) {
-        this.c = e;
+      function S(a) {
+        this.c = a;
       }
-      k.prototype = {
+      S.prototype = {
         substitute: function() {
           return this.c;
         }
       };
-      function y(e) {
-        this.c = e;
+      function v(a) {
+        this.c = a;
       }
-      y.prototype = {
+      v.prototype = {
         substitute: function() {
           if (!/[{}\\]/.test(this.c))
             throw new Error('Invalid escape sequence: "\\' + this.c + '".');
           return this.c;
         }
       };
-      function B(e) {
-        this.c = e;
+      function w(a) {
+        this.c = a;
       }
-      B.prototype = {
+      w.prototype = {
         replacers: {
-          "#": function(e) {
-            return e.character({ pool: r });
+          "#": function(a) {
+            return a.character({ pool: t });
           },
-          A: function(e) {
-            return e.character({ pool: d });
+          A: function(a) {
+            return a.character({ pool: d });
           },
-          a: function(e) {
-            return e.character({ pool: l });
+          a: function(a) {
+            return a.character({ pool: o });
           }
         },
-        substitute: function(e) {
-          var t = this.replacers[this.c];
-          if (!t)
+        substitute: function(a) {
+          var s = this.replacers[this.c];
+          if (!s)
             throw new Error('Invalid replacement character: "' + this.c + '".');
-          return t(e);
+          return s(a);
         }
       };
-      function N(e) {
-        for (var t = [], c = "identity", b = 0; b < e.length; b++) {
-          var C = e[b];
-          switch (c) {
+      function E(a) {
+        for (var s = [], f = "identity", b = 0; b < a.length; b++) {
+          var C = a[b];
+          switch (f) {
             case "escape":
-              t.push(new y(C)), c = "identity";
+              s.push(new v(C)), f = "identity";
               break;
             case "identity":
-              C === "{" ? c = "replace" : C === "\\" ? c = "escape" : t.push(new k(C));
+              C === "{" ? f = "replace" : C === "\\" ? f = "escape" : s.push(new S(C));
               break;
             case "replace":
-              C === "}" ? c = "identity" : t.push(new B(C));
+              C === "}" ? f = "identity" : s.push(new w(C));
               break;
           }
         }
-        return t;
+        return s;
       }
-      o.prototype.template = function(e) {
-        if (!e)
+      l.prototype.template = function(a) {
+        if (!a)
           throw new Error("Template string is required");
-        var t = this;
-        return N(e).map(function(c) {
-          return c.substitute(t);
+        var s = this;
+        return E(a).map(function(f) {
+          return f.substitute(s);
         }).join("");
-      }, o.prototype.buffer = function(e) {
+      }, l.prototype.buffer = function(a) {
         if (typeof Buffer > "u")
-          throw new m("Sorry, the buffer() function is not supported on your platform");
-        e = u(e, { length: this.natural({ min: 5, max: 20 }) }), g(e.length < 0, "Chance: Length cannot be less than zero.");
-        var t = e.length, c = this.n(this.character, t, e);
-        return Buffer.from(c);
-      }, o.prototype.capitalize = function(e) {
-        return e.charAt(0).toUpperCase() + e.substr(1);
-      }, o.prototype.mixin = function(e) {
-        for (var t in e)
-          this[t] = e[t];
+          throw new u("Sorry, the buffer() function is not supported on your platform");
+        a = m(a, { length: this.natural({ min: 5, max: 20 }) }), g(a.length < 0, "Chance: Length cannot be less than zero.");
+        var s = a.length, f = this.n(this.character, s, a);
+        return Buffer.from(f);
+      }, l.prototype.capitalize = function(a) {
+        return a.charAt(0).toUpperCase() + a.substr(1);
+      }, l.prototype.mixin = function(a) {
+        for (var s in a)
+          this[s] = a[s];
         return this;
-      }, o.prototype.unique = function(e, t, c) {
+      }, l.prototype.unique = function(a, s, f) {
         g(
-          typeof e != "function",
+          typeof a != "function",
           "Chance: The first argument must be a function."
         );
-        var b = function(_, R) {
-          return _.indexOf(R) !== -1;
+        var b = function(M, G) {
+          return M.indexOf(G) !== -1;
         };
-        c && (b = c.comparator || b);
-        for (var C = [], M = 0, w, v = t * 50, A = h.call(arguments, 2); C.length < t; ) {
-          var S = JSON.parse(JSON.stringify(A));
-          if (w = e.apply(this, S), b(C, w) || (C.push(w), M = 0), ++M > v)
+        f && (b = f.comparator || b);
+        for (var C = [], T = 0, I, y = s * 50, _ = h.call(arguments, 2); C.length < s; ) {
+          var k = JSON.parse(JSON.stringify(_));
+          if (I = a.apply(this, k), b(C, I) || (C.push(I), T = 0), ++T > y)
             throw new RangeError("Chance: num is likely too large for sample set");
         }
         return C;
-      }, o.prototype.n = function(e, t) {
+      }, l.prototype.n = function(a, s) {
         g(
-          typeof e != "function",
+          typeof a != "function",
           "Chance: The first argument must be a function."
-        ), typeof t > "u" && (t = 1);
-        var c = t, b = [], C = h.call(arguments, 2);
-        for (c = Math.max(0, c), null; c--; null)
-          b.push(e.apply(this, C));
+        ), typeof s > "u" && (s = 1);
+        var f = s, b = [], C = h.call(arguments, 2);
+        for (f = Math.max(0, f), null; f--; null)
+          b.push(a.apply(this, C));
         return b;
-      }, o.prototype.pad = function(e, t, c) {
-        return c = c || "0", e = e + "", e.length >= t ? e : new Array(t - e.length + 1).join(c) + e;
-      }, o.prototype.pick = function(e, t) {
-        if (e.length === 0)
+      }, l.prototype.pad = function(a, s, f) {
+        return f = f || "0", a = a + "", a.length >= s ? a : new Array(s - a.length + 1).join(f) + a;
+      }, l.prototype.pick = function(a, s) {
+        if (a.length === 0)
           throw new RangeError("Chance: Cannot pick() from an empty array");
-        return !t || t === 1 ? e[this.natural({ max: e.length - 1 })] : this.shuffle(e).slice(0, t);
-      }, o.prototype.pickone = function(e) {
-        if (e.length === 0)
+        return !s || s === 1 ? a[this.natural({ max: a.length - 1 })] : this.shuffle(a).slice(0, s);
+      }, l.prototype.pickone = function(a) {
+        if (a.length === 0)
           throw new RangeError("Chance: Cannot pickone() from an empty array");
-        return e[this.natural({ max: e.length - 1 })];
-      }, o.prototype.pickset = function(e, t) {
-        if (t === 0)
+        return a[this.natural({ max: a.length - 1 })];
+      }, l.prototype.pickset = function(a, s) {
+        if (s === 0)
           return [];
-        if (e.length === 0)
+        if (a.length === 0)
           throw new RangeError("Chance: Cannot pickset() from an empty array");
-        if (t < 0)
+        if (s < 0)
           throw new RangeError("Chance: Count must be a positive number");
-        if (!t || t === 1)
-          return [this.pickone(e)];
-        var c = e.slice(0), b = c.length;
+        if (!s || s === 1)
+          return [this.pickone(a)];
+        var f = a.slice(0), b = f.length;
         return this.n(function() {
-          var C = this.natural({ max: --b }), M = c[C];
-          return c[C] = c[b], M;
-        }, Math.min(b, t));
-      }, o.prototype.shuffle = function(e) {
-        for (var t = [], c = 0, b = Number(e.length), C = x(b), M = b - 1, w, v = 0; v < b; v++)
-          w = this.natural({ max: M }), c = C[w], t[v] = e[c], C[w] = C[M], M -= 1;
-        return t;
-      }, o.prototype.weighted = function(e, t, c) {
-        if (e.length !== t.length)
+          var C = this.natural({ max: --b }), T = f[C];
+          return f[C] = f[b], T;
+        }, Math.min(b, s));
+      }, l.prototype.shuffle = function(a) {
+        for (var s = [], f = 0, b = Number(a.length), C = p(b), T = b - 1, I, y = 0; y < b; y++)
+          I = this.natural({ max: T }), f = C[I], s[y] = a[f], C[I] = C[T], T -= 1;
+        return s;
+      }, l.prototype.weighted = function(a, s, f) {
+        if (a.length !== s.length)
           throw new RangeError("Chance: Length of array and weights must match");
-        for (var b = 0, C, M = 0; M < t.length; ++M) {
-          if (C = t[M], isNaN(C))
+        for (var b = 0, C, T = 0; T < s.length; ++T) {
+          if (C = s[T], isNaN(C))
             throw new RangeError("Chance: All weights must be numbers");
           C > 0 && (b += C);
         }
         if (b === 0)
           throw new RangeError("Chance: No valid entries in array weights");
-        var w = this.random() * b, v = 0, A = -1, S;
-        for (M = 0; M < t.length; ++M) {
-          if (C = t[M], v += C, C > 0) {
-            if (w <= v) {
-              S = M;
+        var I = this.random() * b, y = 0, _ = -1, k;
+        for (T = 0; T < s.length; ++T) {
+          if (C = s[T], y += C, C > 0) {
+            if (I <= y) {
+              k = T;
               break;
             }
-            A = M;
+            _ = T;
           }
-          M === t.length - 1 && (S = A);
+          T === s.length - 1 && (k = _);
         }
-        var _ = e[S];
-        return c = typeof c > "u" ? !1 : c, c && (e.splice(S, 1), t.splice(S, 1)), _;
-      }, o.prototype.paragraph = function(e) {
-        e = u(e);
-        var t = e.sentences || this.natural({ min: 3, max: 7 }), c = this.n(this.sentence, t), b = e.linebreak === !0 ? `
+        var M = a[k];
+        return f = typeof f > "u" ? !1 : f, f && (a.splice(k, 1), s.splice(k, 1)), M;
+      }, l.prototype.paragraph = function(a) {
+        a = m(a);
+        var s = a.sentences || this.natural({ min: 3, max: 7 }), f = this.n(this.sentence, s), b = a.linebreak === !0 ? `
 ` : " ";
-        return c.join(b);
-      }, o.prototype.sentence = function(e) {
-        e = u(e);
-        var t = e.words || this.natural({ min: 12, max: 18 }), c = e.punctuation, b, C = this.n(this.word, t);
-        return b = C.join(" "), b = this.capitalize(b), c !== !1 && !/^[.?;!:]$/.test(c) && (c = "."), c && (b += c), b;
-      }, o.prototype.syllable = function(e) {
-        e = u(e);
-        for (var t = e.length || this.natural({ min: 2, max: 3 }), c = "bcdfghjklmnprstvwz", b = "aeiou", C = c + b, M = "", w, v = 0; v < t; v++)
-          v === 0 ? w = this.character({ pool: C }) : c.indexOf(w) === -1 ? w = this.character({ pool: c }) : w = this.character({ pool: b }), M += w;
-        return e.capitalize && (M = this.capitalize(M)), M;
-      }, o.prototype.word = function(e) {
-        e = u(e), g(
-          e.syllables && e.length,
+        return f.join(b);
+      }, l.prototype.sentence = function(a) {
+        a = m(a);
+        var s = a.words || this.natural({ min: 12, max: 18 }), f = a.punctuation, b, C = this.n(this.word, s);
+        return b = C.join(" "), b = this.capitalize(b), f !== !1 && !/^[.?;!:]$/.test(f) && (f = "."), f && (b += f), b;
+      }, l.prototype.syllable = function(a) {
+        a = m(a);
+        for (var s = a.length || this.natural({ min: 2, max: 3 }), f = "bcdfghjklmnprstvwz", b = "aeiou", C = f + b, T = "", I, y = 0; y < s; y++)
+          y === 0 ? I = this.character({ pool: C }) : f.indexOf(I) === -1 ? I = this.character({ pool: f }) : I = this.character({ pool: b }), T += I;
+        return a.capitalize && (T = this.capitalize(T)), T;
+      }, l.prototype.word = function(a) {
+        a = m(a), g(
+          a.syllables && a.length,
           "Chance: Cannot specify both syllables AND length."
         );
-        var t = e.syllables || this.natural({ min: 1, max: 3 }), c = "";
-        if (e.length) {
+        var s = a.syllables || this.natural({ min: 1, max: 3 }), f = "";
+        if (a.length) {
           do
-            c += this.syllable();
-          while (c.length < e.length);
-          c = c.substring(0, e.length);
+            f += this.syllable();
+          while (f.length < a.length);
+          f = f.substring(0, a.length);
         } else
-          for (var b = 0; b < t; b++)
-            c += this.syllable();
-        return e.capitalize && (c = this.capitalize(c)), c;
-      }, o.prototype.emoji = function(e) {
-        e = u(e, { category: "all", length: 1 }), g(
-          e.length < 1 || BigInt(e.length) > BigInt(n),
+          for (var b = 0; b < s; b++)
+            f += this.syllable();
+        return a.capitalize && (f = this.capitalize(f)), f;
+      }, l.prototype.emoji = function(a) {
+        a = m(a, { category: "all", length: 1 }), g(
+          a.length < 1 || BigInt(a.length) > BigInt(n),
           "Chance: length must be between 1 and " + String(n)
         );
-        var t = this.get("emojis");
-        e.category === "all" && (e.category = this.pickone(Object.keys(t)));
-        var c = t[e.category];
+        var s = this.get("emojis");
+        a.category === "all" && (a.category = this.pickone(Object.keys(s)));
+        var f = s[a.category];
         return g(
-          c === void 0,
-          "Chance: Unrecognised emoji category: [" + e.category + "]."
-        ), this.pickset(c, e.length).map(function(b) {
+          f === void 0,
+          "Chance: Unrecognised emoji category: [" + a.category + "]."
+        ), this.pickset(f, a.length).map(function(b) {
           return String.fromCodePoint(b);
         }).join("");
-      }, o.prototype.age = function(e) {
-        e = u(e);
-        var t;
-        switch (e.type) {
+      }, l.prototype.age = function(a) {
+        a = m(a);
+        var s;
+        switch (a.type) {
           case "child":
-            t = { min: 0, max: 12 };
+            s = { min: 0, max: 12 };
             break;
           case "teen":
-            t = { min: 13, max: 19 };
+            s = { min: 13, max: 19 };
             break;
           case "adult":
-            t = { min: 18, max: 65 };
+            s = { min: 18, max: 65 };
             break;
           case "senior":
-            t = { min: 65, max: 100 };
+            s = { min: 65, max: 100 };
             break;
           case "all":
-            t = { min: 0, max: 100 };
+            s = { min: 0, max: 100 };
             break;
           default:
-            t = { min: 18, max: 65 };
+            s = { min: 18, max: 65 };
             break;
         }
-        return this.natural(t);
-      }, o.prototype.birthday = function(e) {
-        var t = this.age(e), c = /* @__PURE__ */ new Date(), b = c.getFullYear();
-        if (e && e.type) {
-          var C = /* @__PURE__ */ new Date(), M = /* @__PURE__ */ new Date();
-          C.setFullYear(b - t - 1), M.setFullYear(b - t), e = u(e, {
+        return this.natural(s);
+      }, l.prototype.birthday = function(a) {
+        var s = this.age(a), f = /* @__PURE__ */ new Date(), b = f.getFullYear();
+        if (a && a.type) {
+          var C = /* @__PURE__ */ new Date(), T = /* @__PURE__ */ new Date();
+          C.setFullYear(b - s - 1), T.setFullYear(b - s), a = m(a, {
             min: C,
-            max: M
+            max: T
           });
-        } else if (e && (e.minAge !== void 0 || e.maxAge !== void 0)) {
-          g(e.minAge < 0, "Chance: MinAge cannot be less than zero."), g(e.minAge > e.maxAge, "Chance: MinAge cannot be greater than MaxAge.");
-          var w = e.minAge !== void 0 ? e.minAge : 0, v = e.maxAge !== void 0 ? e.maxAge : 100, A = new Date(b - v - 1, c.getMonth(), c.getDate()), S = new Date(b - w, c.getMonth(), c.getDate());
-          A.setDate(A.getDate() + 1), S.setDate(S.getDate() + 1), S.setMilliseconds(S.getMilliseconds() - 1), e = u(e, {
-            min: A,
-            max: S
+        } else if (a && (a.minAge !== void 0 || a.maxAge !== void 0)) {
+          g(a.minAge < 0, "Chance: MinAge cannot be less than zero."), g(a.minAge > a.maxAge, "Chance: MinAge cannot be greater than MaxAge.");
+          var I = a.minAge !== void 0 ? a.minAge : 0, y = a.maxAge !== void 0 ? a.maxAge : 100, _ = new Date(b - y - 1, f.getMonth(), f.getDate()), k = new Date(b - I, f.getMonth(), f.getDate());
+          _.setDate(_.getDate() + 1), k.setDate(k.getDate() + 1), k.setMilliseconds(k.getMilliseconds() - 1), a = m(a, {
+            min: _,
+            max: k
           });
         } else
-          e = u(e, {
-            year: b - t
+          a = m(a, {
+            year: b - s
           });
-        return this.date(e);
-      }, o.prototype.cpf = function(e) {
-        e = u(e, {
+        return this.date(a);
+      }, l.prototype.cpf = function(a) {
+        a = m(a, {
           formatted: !0
         });
-        var t = this.n(this.natural, 9, { max: 9 }), c = t[8] * 2 + t[7] * 3 + t[6] * 4 + t[5] * 5 + t[4] * 6 + t[3] * 7 + t[2] * 8 + t[1] * 9 + t[0] * 10;
-        c = 11 - c % 11, c >= 10 && (c = 0);
-        var b = c * 2 + t[8] * 3 + t[7] * 4 + t[6] * 5 + t[5] * 6 + t[4] * 7 + t[3] * 8 + t[2] * 9 + t[1] * 10 + t[0] * 11;
+        var s = this.n(this.natural, 9, { max: 9 }), f = s[8] * 2 + s[7] * 3 + s[6] * 4 + s[5] * 5 + s[4] * 6 + s[3] * 7 + s[2] * 8 + s[1] * 9 + s[0] * 10;
+        f = 11 - f % 11, f >= 10 && (f = 0);
+        var b = f * 2 + s[8] * 3 + s[7] * 4 + s[6] * 5 + s[5] * 6 + s[4] * 7 + s[3] * 8 + s[2] * 9 + s[1] * 10 + s[0] * 11;
         b = 11 - b % 11, b >= 10 && (b = 0);
-        var C = "" + t[0] + t[1] + t[2] + "." + t[3] + t[4] + t[5] + "." + t[6] + t[7] + t[8] + "-" + c + b;
-        return e.formatted ? C : C.replace(/\D/g, "");
-      }, o.prototype.cnpj = function(e) {
-        e = u(e, {
+        var C = "" + s[0] + s[1] + s[2] + "." + s[3] + s[4] + s[5] + "." + s[6] + s[7] + s[8] + "-" + f + b;
+        return a.formatted ? C : C.replace(/\D/g, "");
+      }, l.prototype.cnpj = function(a) {
+        a = m(a, {
           formatted: !0
         });
-        var t = this.n(this.natural, 12, { max: 12 }), c = t[11] * 2 + t[10] * 3 + t[9] * 4 + t[8] * 5 + t[7] * 6 + t[6] * 7 + t[5] * 8 + t[4] * 9 + t[3] * 2 + t[2] * 3 + t[1] * 4 + t[0] * 5;
-        c = 11 - c % 11, c < 2 && (c = 0);
-        var b = c * 2 + t[11] * 3 + t[10] * 4 + t[9] * 5 + t[8] * 6 + t[7] * 7 + t[6] * 8 + t[5] * 9 + t[4] * 2 + t[3] * 3 + t[2] * 4 + t[1] * 5 + t[0] * 6;
+        var s = this.n(this.natural, 12, { max: 12 }), f = s[11] * 2 + s[10] * 3 + s[9] * 4 + s[8] * 5 + s[7] * 6 + s[6] * 7 + s[5] * 8 + s[4] * 9 + s[3] * 2 + s[2] * 3 + s[1] * 4 + s[0] * 5;
+        f = 11 - f % 11, f < 2 && (f = 0);
+        var b = f * 2 + s[11] * 3 + s[10] * 4 + s[9] * 5 + s[8] * 6 + s[7] * 7 + s[6] * 8 + s[5] * 9 + s[4] * 2 + s[3] * 3 + s[2] * 4 + s[1] * 5 + s[0] * 6;
         b = 11 - b % 11, b < 2 && (b = 0);
-        var C = "" + t[0] + t[1] + "." + t[2] + t[3] + t[4] + "." + t[5] + t[6] + t[7] + "/" + t[8] + t[9] + t[10] + t[11] + "-" + c + b;
-        return e.formatted ? C : C.replace(/\D/g, "");
-      }, o.prototype.first = function(e) {
-        return e = u(e, { gender: this.gender(), nationality: "en" }), this.pick(this.get("firstNames")[e.gender.toLowerCase()][e.nationality.toLowerCase()]);
-      }, o.prototype.profession = function(e) {
-        return e = u(e), e.rank ? this.pick(["Apprentice ", "Junior ", "Senior ", "Lead "]) + this.pick(this.get("profession")) : this.pick(this.get("profession"));
-      }, o.prototype.company = function() {
+        var C = "" + s[0] + s[1] + "." + s[2] + s[3] + s[4] + "." + s[5] + s[6] + s[7] + "/" + s[8] + s[9] + s[10] + s[11] + "-" + f + b;
+        return a.formatted ? C : C.replace(/\D/g, "");
+      }, l.prototype.first = function(a) {
+        return a = m(a, { gender: this.gender(), nationality: "en" }), this.pick(this.get("firstNames")[a.gender.toLowerCase()][a.nationality.toLowerCase()]);
+      }, l.prototype.profession = function(a) {
+        return a = m(a), a.rank ? this.pick(["Apprentice ", "Junior ", "Senior ", "Lead "]) + this.pick(this.get("profession")) : this.pick(this.get("profession"));
+      }, l.prototype.company = function() {
         return this.pick(this.get("company"));
-      }, o.prototype.gender = function(e) {
-        return e = u(e, { extraGenders: [] }), this.pick(["Male", "Female"].concat(e.extraGenders));
-      }, o.prototype.last = function(e) {
-        if (e = u(e, { nationality: "*" }), e.nationality === "*") {
-          var t = [], c = this.get("lastNames");
-          return Object.keys(c).forEach(function(b) {
-            t = t.concat(c[b]);
-          }), this.pick(t);
+      }, l.prototype.gender = function(a) {
+        return a = m(a, { extraGenders: [] }), this.pick(["Male", "Female"].concat(a.extraGenders));
+      }, l.prototype.last = function(a) {
+        if (a = m(a, { nationality: "*" }), a.nationality === "*") {
+          var s = [], f = this.get("lastNames");
+          return Object.keys(f).forEach(function(b) {
+            s = s.concat(f[b]);
+          }), this.pick(s);
         } else
-          return this.pick(this.get("lastNames")[e.nationality.toLowerCase()]);
-      }, o.prototype.israelId = function() {
-        for (var e = this.string({ pool: "0123456789", length: 8 }), t = 0, c = 0; c < e.length; c++) {
-          var b = e[c] * (c / 2 === parseInt(c / 2) ? 1 : 2);
-          b = this.pad(b, 2).toString(), b = parseInt(b[0]) + parseInt(b[1]), t = t + b;
+          return this.pick(this.get("lastNames")[a.nationality.toLowerCase()]);
+      }, l.prototype.israelId = function() {
+        for (var a = this.string({ pool: "0123456789", length: 8 }), s = 0, f = 0; f < a.length; f++) {
+          var b = a[f] * (f / 2 === parseInt(f / 2) ? 1 : 2);
+          b = this.pad(b, 2).toString(), b = parseInt(b[0]) + parseInt(b[1]), s = s + b;
         }
-        return e = e + (10 - parseInt(t.toString().slice(-1))).toString().slice(-1), e;
-      }, o.prototype.mrz = function(e) {
-        var t = function(C) {
-          var M = "<ABCDEFGHIJKLMNOPQRSTUVWXYXZ".split(""), w = [7, 3, 1], v = 0;
-          return typeof C != "string" && (C = C.toString()), C.split("").forEach(function(A, S) {
-            var _ = M.indexOf(A);
-            _ !== -1 ? A = _ === 0 ? 0 : _ + 9 : A = parseInt(A, 10), A *= w[S % w.length], v += A;
-          }), v % 10;
-        }, c = function(C) {
-          var M = function(v) {
-            return new Array(v + 1).join("<");
-          }, w = [
+        return a = a + (10 - parseInt(s.toString().slice(-1))).toString().slice(-1), a;
+      }, l.prototype.mrz = function(a) {
+        var s = function(C) {
+          var T = "<ABCDEFGHIJKLMNOPQRSTUVWXYXZ".split(""), I = [7, 3, 1], y = 0;
+          return typeof C != "string" && (C = C.toString()), C.split("").forEach(function(_, k) {
+            var M = T.indexOf(_);
+            M !== -1 ? _ = M === 0 ? 0 : M + 9 : _ = parseInt(_, 10), _ *= I[k % I.length], y += _;
+          }), y % 10;
+        }, f = function(C) {
+          var T = function(y) {
+            return new Array(y + 1).join("<");
+          }, I = [
             "P<",
             C.issuer,
             C.last.toUpperCase(),
             "<<",
             C.first.toUpperCase(),
-            M(39 - (C.last.length + C.first.length + 2)),
+            T(39 - (C.last.length + C.first.length + 2)),
             C.passportNumber,
-            t(C.passportNumber),
+            s(C.passportNumber),
             C.nationality,
             C.dob,
-            t(C.dob),
+            s(C.dob),
             C.gender,
             C.expiry,
-            t(C.expiry),
-            M(14),
-            t(M(14))
+            s(C.expiry),
+            T(14),
+            s(T(14))
           ].join("");
-          return w + t(w.substr(44, 10) + w.substr(57, 7) + w.substr(65, 7));
+          return I + s(I.substr(44, 10) + I.substr(57, 7) + I.substr(65, 7));
         }, b = this;
-        return e = u(e, {
+        return a = m(a, {
           first: this.first(),
           last: this.last(),
           passportNumber: this.integer({ min: 1e8, max: 999999999 }),
@@ -1444,34 +1444,34 @@ function oa() {
           gender: this.gender() === "Female" ? "F" : "M",
           issuer: "GBR",
           nationality: "GBR"
-        }), c(e);
-      }, o.prototype.name = function(e) {
-        e = u(e);
-        var t = this.first(e), c = this.last(e), b;
-        return e.middle ? b = t + " " + this.first(e) + " " + c : e.middle_initial ? b = t + " " + this.character({ alpha: !0, casing: "upper" }) + ". " + c : b = t + " " + c, e.prefix && (b = this.prefix(e) + " " + b), e.suffix && (b = b + " " + this.suffix(e)), b;
-      }, o.prototype.name_prefixes = function(e) {
-        e = e || "all", e = e.toLowerCase();
-        var t = [
+        }), f(a);
+      }, l.prototype.name = function(a) {
+        a = m(a);
+        var s = this.first(a), f = this.last(a), b;
+        return a.middle ? b = s + " " + this.first(a) + " " + f : a.middle_initial ? b = s + " " + this.character({ alpha: !0, casing: "upper" }) + ". " + f : b = s + " " + f, a.prefix && (b = this.prefix(a) + " " + b), a.suffix && (b = b + " " + this.suffix(a)), b;
+      }, l.prototype.name_prefixes = function(a) {
+        a = a || "all", a = a.toLowerCase();
+        var s = [
           { name: "Doctor", abbreviation: "Dr." }
         ];
-        return (e === "male" || e === "all") && t.push({ name: "Mister", abbreviation: "Mr." }), (e === "female" || e === "all") && (t.push({ name: "Miss", abbreviation: "Miss" }), t.push({ name: "Misses", abbreviation: "Mrs." })), t;
-      }, o.prototype.prefix = function(e) {
-        return this.name_prefix(e);
-      }, o.prototype.name_prefix = function(e) {
-        return e = u(e, { gender: "all" }), e.full ? this.pick(this.name_prefixes(e.gender)).name : this.pick(this.name_prefixes(e.gender)).abbreviation;
-      }, o.prototype.HIDN = function() {
-        var e = "0123456789", t = "ABCDEFGHIJKLMNOPQRSTUVWXYXZ", c = "";
-        return c += this.string({ pool: e, length: 6 }), c += this.string({ pool: t, length: 2 }), c;
-      }, o.prototype.ssn = function(e) {
-        e = u(e, { ssnFour: !1, dashes: !0 });
-        var t = "1234567890", c, b = e.dashes ? "-" : "";
-        return e.ssnFour ? c = this.string({ pool: t, length: 4 }) : c = this.string({ pool: t, length: 3 }) + b + this.string({ pool: t, length: 2 }) + b + this.string({ pool: t, length: 4 }), c;
-      }, o.prototype.aadhar = function(e) {
-        e = u(e, { onlyLastFour: !1, separatedByWhiteSpace: !0 });
-        var t = "1234567890", c, b = e.separatedByWhiteSpace ? " " : "";
-        return e.onlyLastFour ? c = this.string({ pool: t, length: 4 }) : c = this.string({ pool: t, length: 4 }) + b + this.string({ pool: t, length: 4 }) + b + this.string({ pool: t, length: 4 }), c;
-      }, o.prototype.name_suffixes = function() {
-        var e = [
+        return (a === "male" || a === "all") && s.push({ name: "Mister", abbreviation: "Mr." }), (a === "female" || a === "all") && (s.push({ name: "Miss", abbreviation: "Miss" }), s.push({ name: "Misses", abbreviation: "Mrs." })), s;
+      }, l.prototype.prefix = function(a) {
+        return this.name_prefix(a);
+      }, l.prototype.name_prefix = function(a) {
+        return a = m(a, { gender: "all" }), a.full ? this.pick(this.name_prefixes(a.gender)).name : this.pick(this.name_prefixes(a.gender)).abbreviation;
+      }, l.prototype.HIDN = function() {
+        var a = "0123456789", s = "ABCDEFGHIJKLMNOPQRSTUVWXYXZ", f = "";
+        return f += this.string({ pool: a, length: 6 }), f += this.string({ pool: s, length: 2 }), f;
+      }, l.prototype.ssn = function(a) {
+        a = m(a, { ssnFour: !1, dashes: !0 });
+        var s = "1234567890", f, b = a.dashes ? "-" : "";
+        return a.ssnFour ? f = this.string({ pool: s, length: 4 }) : f = this.string({ pool: s, length: 3 }) + b + this.string({ pool: s, length: 2 }) + b + this.string({ pool: s, length: 4 }), f;
+      }, l.prototype.aadhar = function(a) {
+        a = m(a, { onlyLastFour: !1, separatedByWhiteSpace: !0 });
+        var s = "1234567890", f, b = a.separatedByWhiteSpace ? " " : "";
+        return a.onlyLastFour ? f = this.string({ pool: s, length: 4 }) : f = this.string({ pool: s, length: 4 }) + b + this.string({ pool: s, length: 4 }) + b + this.string({ pool: s, length: 4 }), f;
+      }, l.prototype.name_suffixes = function() {
+        var a = [
           { name: "Doctor of Osteopathic Medicine", abbreviation: "D.O." },
           { name: "Doctor of Philosophy", abbreviation: "Ph.D." },
           { name: "Esquire", abbreviation: "Esq." },
@@ -1487,31 +1487,31 @@ function oa() {
           { name: "Bachelor of Engineering", abbreviation: "B.E" },
           { name: "Bachelor of Technology", abbreviation: "B.TECH" }
         ];
-        return e;
-      }, o.prototype.suffix = function(e) {
-        return this.name_suffix(e);
-      }, o.prototype.name_suffix = function(e) {
-        return e = u(e), e.full ? this.pick(this.name_suffixes()).name : this.pick(this.name_suffixes()).abbreviation;
-      }, o.prototype.nationalities = function() {
+        return a;
+      }, l.prototype.suffix = function(a) {
+        return this.name_suffix(a);
+      }, l.prototype.name_suffix = function(a) {
+        return a = m(a), a.full ? this.pick(this.name_suffixes()).name : this.pick(this.name_suffixes()).abbreviation;
+      }, l.prototype.nationalities = function() {
         return this.get("nationalities");
-      }, o.prototype.nationality = function() {
-        var e = this.pick(this.nationalities());
-        return e.name;
-      }, o.prototype.zodiac = function() {
-        const e = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
-        return this.pickone(e);
-      }, o.prototype.android_id = function() {
+      }, l.prototype.nationality = function() {
+        var a = this.pick(this.nationalities());
+        return a.name;
+      }, l.prototype.zodiac = function() {
+        const a = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"];
+        return this.pickone(a);
+      }, l.prototype.android_id = function() {
         return "APA91" + this.string({ pool: "0123456789abcefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-_", length: 178 });
-      }, o.prototype.apple_token = function() {
+      }, l.prototype.apple_token = function() {
         return this.string({ pool: "abcdef1234567890", length: 64 });
-      }, o.prototype.wp8_anid2 = function() {
-        return T(this.hash({ length: 32 }));
-      }, o.prototype.wp7_anid = function() {
+      }, l.prototype.wp8_anid2 = function() {
+        return A(this.hash({ length: 32 }));
+      }, l.prototype.wp7_anid = function() {
         return "A=" + this.guid().replace(/-/g, "").toUpperCase() + "&E=" + this.hash({ length: 3 }) + "&W=" + this.integer({ min: 0, max: 9 });
-      }, o.prototype.bb_pin = function() {
+      }, l.prototype.bb_pin = function() {
         return this.hash({ length: 8 });
-      }, o.prototype.avatar = function(e) {
-        var t = null, c = "//www.gravatar.com/avatar/", b = {
+      }, l.prototype.avatar = function(a) {
+        var s = null, f = "//www.gravatar.com/avatar/", b = {
           http: "http",
           https: "https"
         }, C = {
@@ -1519,7 +1519,7 @@ function oa() {
           gif: "gif",
           jpg: "jpg",
           png: "png"
-        }, M = {
+        }, T = {
           404: "404",
           // Return 404 if not found
           mm: "mm",
@@ -1534,12 +1534,12 @@ function oa() {
           // 8-bit icon
           blank: "blank"
           // A transparent png
-        }, w = {
+        }, I = {
           g: "g",
           pg: "pg",
           r: "r",
           x: "x"
-        }, v = {
+        }, y = {
           protocol: null,
           email: null,
           fileExtension: null,
@@ -1547,30 +1547,30 @@ function oa() {
           fallback: null,
           rating: null
         };
-        if (!e)
-          v.email = this.email(), e = {};
-        else if (typeof e == "string")
-          v.email = e, e = {};
+        if (!a)
+          y.email = this.email(), a = {};
+        else if (typeof a == "string")
+          y.email = a, a = {};
         else {
-          if (typeof e != "object")
+          if (typeof a != "object")
             return null;
-          if (e.constructor === "Array")
+          if (a.constructor === "Array")
             return null;
         }
-        return v = u(e, v), v.email || (v.email = this.email()), v.protocol = b[v.protocol] ? v.protocol + ":" : "", v.size = parseInt(v.size, 0) ? v.size : "", v.rating = w[v.rating] ? v.rating : "", v.fallback = M[v.fallback] ? v.fallback : "", v.fileExtension = C[v.fileExtension] ? v.fileExtension : "", t = v.protocol + c + this.bimd5.md5(v.email) + (v.fileExtension ? "." + v.fileExtension : "") + (v.size || v.rating || v.fallback ? "?" : "") + (v.size ? "&s=" + v.size.toString() : "") + (v.rating ? "&r=" + v.rating : "") + (v.fallback ? "&d=" + v.fallback : ""), t;
-      }, o.prototype.color = function(e) {
-        function t(F, ie) {
-          return [F, F, F].join(ie || "");
+        return y = m(a, y), y.email || (y.email = this.email()), y.protocol = b[y.protocol] ? y.protocol + ":" : "", y.size = parseInt(y.size, 0) ? y.size : "", y.rating = I[y.rating] ? y.rating : "", y.fallback = T[y.fallback] ? y.fallback : "", y.fileExtension = C[y.fileExtension] ? y.fileExtension : "", s = y.protocol + f + this.bimd5.md5(y.email) + (y.fileExtension ? "." + y.fileExtension : "") + (y.size || y.rating || y.fallback ? "?" : "") + (y.size ? "&s=" + y.size.toString() : "") + (y.rating ? "&r=" + y.rating : "") + (y.fallback ? "&d=" + y.fallback : ""), s;
+      }, l.prototype.color = function(a) {
+        function s(V, ue) {
+          return [V, V, V].join(ue || "");
         }
-        function c(F) {
-          var ie = F ? "rgba" : "rgb", ue = F ? "," + this.floating({ min: G, max: W }) : "", de = C ? t(this.natural({ min: M, max: w }), ",") : this.natural({ min: S, max: _ }) + "," + this.natural({ min: R, max: E }) + "," + this.natural({ max: 255 });
-          return ie + "(" + de + ue + ")";
+        function f(V) {
+          var ue = V ? "rgba" : "rgb", ge = V ? "," + this.floating({ min: F, max: q }) : "", Ce = C ? s(this.natural({ min: T, max: I }), ",") : this.natural({ min: k, max: M }) + "," + this.natural({ min: G, max: D }) + "," + this.natural({ max: 255 });
+          return ue + "(" + Ce + ge + ")";
         }
-        function b(F, ie, ue) {
-          var de = ue ? "#" : "", Z = "";
-          return C ? (Z = t(this.pad(this.hex({ min: M, max: w }), 2)), e.format === "shorthex" && (Z = t(this.hex({ min: 0, max: 15 })))) : e.format === "shorthex" ? Z = this.pad(this.hex({ min: Math.floor(v / 16), max: Math.floor(A / 16) }), 1) + this.pad(this.hex({ min: Math.floor(S / 16), max: Math.floor(_ / 16) }), 1) + this.pad(this.hex({ min: Math.floor(R / 16), max: Math.floor(E / 16) }), 1) : v !== void 0 || A !== void 0 || S !== void 0 || _ !== void 0 || R !== void 0 || E !== void 0 ? Z = this.pad(this.hex({ min: v, max: A }), 2) + this.pad(this.hex({ min: S, max: _ }), 2) + this.pad(this.hex({ min: R, max: E }), 2) : Z = this.pad(this.hex({ min: M, max: w }), 2) + this.pad(this.hex({ min: M, max: w }), 2) + this.pad(this.hex({ min: M, max: w }), 2), de + Z;
+        function b(V, ue, ge) {
+          var Ce = ge ? "#" : "", ie = "";
+          return C ? (ie = s(this.pad(this.hex({ min: T, max: I }), 2)), a.format === "shorthex" && (ie = s(this.hex({ min: 0, max: 15 })))) : a.format === "shorthex" ? ie = this.pad(this.hex({ min: Math.floor(y / 16), max: Math.floor(_ / 16) }), 1) + this.pad(this.hex({ min: Math.floor(k / 16), max: Math.floor(M / 16) }), 1) + this.pad(this.hex({ min: Math.floor(G / 16), max: Math.floor(D / 16) }), 1) : y !== void 0 || _ !== void 0 || k !== void 0 || M !== void 0 || G !== void 0 || D !== void 0 ? ie = this.pad(this.hex({ min: y, max: _ }), 2) + this.pad(this.hex({ min: k, max: M }), 2) + this.pad(this.hex({ min: G, max: D }), 2) : ie = this.pad(this.hex({ min: T, max: I }), 2) + this.pad(this.hex({ min: T, max: I }), 2) + this.pad(this.hex({ min: T, max: I }), 2), Ce + ie;
         }
-        e = u(e, {
+        a = m(a, {
           format: this.pick(["hex", "shorthex", "rgb", "rgba", "0x", "name"]),
           grayscale: !1,
           casing: "lower",
@@ -1585,166 +1585,166 @@ function oa() {
           min_alpha: 0,
           max_alpha: 1
         });
-        var C = e.grayscale, M = e.min, w = e.max, v = e.min_red, A = e.max_red, S = e.min_green, _ = e.max_green, R = e.min_blue, E = e.max_blue, G = e.min_alpha, W = e.max_alpha;
-        e.min_red === void 0 && (v = M), e.max_red === void 0 && (A = w), e.min_green === void 0 && (S = M), e.max_green === void 0 && (_ = w), e.min_blue === void 0 && (R = M), e.max_blue === void 0 && (E = w), e.min_alpha === void 0 && (G = 0), e.max_alpha === void 0 && (W = 1), C && M === 0 && w === 255 && v !== void 0 && A !== void 0 && (M = (v + S + R) / 3, w = (A + _ + E) / 3);
-        var H;
-        if (e.format === "hex")
-          H = b.call(this, 2, 6, !0);
-        else if (e.format === "shorthex")
-          H = b.call(this, 1, 3, !0);
-        else if (e.format === "rgb")
-          H = c.call(this, !1);
-        else if (e.format === "rgba")
-          H = c.call(this, !0);
-        else if (e.format === "0x")
-          H = "0x" + b.call(this, 2, 6);
+        var C = a.grayscale, T = a.min, I = a.max, y = a.min_red, _ = a.max_red, k = a.min_green, M = a.max_green, G = a.min_blue, D = a.max_blue, F = a.min_alpha, q = a.max_alpha;
+        a.min_red === void 0 && (y = T), a.max_red === void 0 && (_ = I), a.min_green === void 0 && (k = T), a.max_green === void 0 && (M = I), a.min_blue === void 0 && (G = T), a.max_blue === void 0 && (D = I), a.min_alpha === void 0 && (F = 0), a.max_alpha === void 0 && (q = 1), C && T === 0 && I === 255 && y !== void 0 && _ !== void 0 && (T = (y + k + G) / 3, I = (_ + M + D) / 3);
+        var W;
+        if (a.format === "hex")
+          W = b.call(this, 2, 6, !0);
+        else if (a.format === "shorthex")
+          W = b.call(this, 1, 3, !0);
+        else if (a.format === "rgb")
+          W = f.call(this, !1);
+        else if (a.format === "rgba")
+          W = f.call(this, !0);
+        else if (a.format === "0x")
+          W = "0x" + b.call(this, 2, 6);
         else {
-          if (e.format === "name")
+          if (a.format === "name")
             return this.pick(this.get("colorNames"));
           throw new RangeError('Invalid format provided. Please provide one of "hex", "shorthex", "rgb", "rgba", "0x" or "name".');
         }
-        return e.casing === "upper" && (H = H.toUpperCase()), H;
-      }, o.prototype.domain = function(e) {
-        return e = u(e), this.word() + "." + (e.tld || this.tld());
-      }, o.prototype.email = function(e) {
-        return e = u(e), this.word({ length: e.length }) + "@" + (e.domain || this.domain());
-      }, o.prototype.fbid = function() {
+        return a.casing === "upper" && (W = W.toUpperCase()), W;
+      }, l.prototype.domain = function(a) {
+        return a = m(a), this.word() + "." + (a.tld || this.tld());
+      }, l.prototype.email = function(a) {
+        return a = m(a), this.word({ length: a.length }) + "@" + (a.domain || this.domain());
+      }, l.prototype.fbid = function() {
         return "10000" + this.string({ pool: "1234567890", length: 11 });
-      }, o.prototype.google_analytics = function() {
-        var e = this.pad(this.natural({ max: 999999 }), 6), t = this.pad(this.natural({ max: 99 }), 2);
-        return "UA-" + e + "-" + t;
-      }, o.prototype.hashtag = function() {
+      }, l.prototype.google_analytics = function() {
+        var a = this.pad(this.natural({ max: 999999 }), 6), s = this.pad(this.natural({ max: 99 }), 2);
+        return "UA-" + a + "-" + s;
+      }, l.prototype.hashtag = function() {
         return "#" + this.word();
-      }, o.prototype.ip = function() {
+      }, l.prototype.ip = function() {
         return this.natural({ min: 1, max: 254 }) + "." + this.natural({ max: 255 }) + "." + this.natural({ max: 255 }) + "." + this.natural({ min: 1, max: 254 });
-      }, o.prototype.ipv6 = function() {
-        var e = this.n(this.hash, 8, { length: 4 });
-        return e.join(":");
-      }, o.prototype.klout = function() {
+      }, l.prototype.ipv6 = function() {
+        var a = this.n(this.hash, 8, { length: 4 });
+        return a.join(":");
+      }, l.prototype.klout = function() {
         return this.natural({ min: 1, max: 99 });
-      }, o.prototype.mac = function(e) {
-        return e = u(e, { delimiter: ":" }), this.pad(this.natural({ max: 255 }).toString(16), 2) + e.delimiter + this.pad(this.natural({ max: 255 }).toString(16), 2) + e.delimiter + this.pad(this.natural({ max: 255 }).toString(16), 2) + e.delimiter + this.pad(this.natural({ max: 255 }).toString(16), 2) + e.delimiter + this.pad(this.natural({ max: 255 }).toString(16), 2) + e.delimiter + this.pad(this.natural({ max: 255 }).toString(16), 2);
-      }, o.prototype.semver = function(e) {
-        e = u(e, { include_prerelease: !0 });
-        var t = this.pickone(["^", "~", "<", ">", "<=", ">=", "="]);
-        e.range && (t = e.range);
-        var c = "";
-        return e.include_prerelease && (c = this.weighted(["", "-dev", "-beta", "-alpha"], [50, 10, 5, 1])), t + this.rpg("3d10").join(".") + c;
-      }, o.prototype.tlds = function() {
+      }, l.prototype.mac = function(a) {
+        return a = m(a, { delimiter: ":" }), this.pad(this.natural({ max: 255 }).toString(16), 2) + a.delimiter + this.pad(this.natural({ max: 255 }).toString(16), 2) + a.delimiter + this.pad(this.natural({ max: 255 }).toString(16), 2) + a.delimiter + this.pad(this.natural({ max: 255 }).toString(16), 2) + a.delimiter + this.pad(this.natural({ max: 255 }).toString(16), 2) + a.delimiter + this.pad(this.natural({ max: 255 }).toString(16), 2);
+      }, l.prototype.semver = function(a) {
+        a = m(a, { include_prerelease: !0 });
+        var s = this.pickone(["^", "~", "<", ">", "<=", ">=", "="]);
+        a.range && (s = a.range);
+        var f = "";
+        return a.include_prerelease && (f = this.weighted(["", "-dev", "-beta", "-alpha"], [50, 10, 5, 1])), s + this.rpg("3d10").join(".") + f;
+      }, l.prototype.tlds = function() {
         return ["com", "org", "edu", "gov", "co.uk", "net", "io", "ac", "ad", "ae", "af", "ag", "ai", "al", "am", "ao", "aq", "ar", "as", "at", "au", "aw", "ax", "az", "ba", "bb", "bd", "be", "bf", "bg", "bh", "bi", "bj", "bm", "bn", "bo", "br", "bs", "bt", "bv", "bw", "by", "bz", "ca", "cc", "cd", "cf", "cg", "ch", "ci", "ck", "cl", "cm", "cn", "co", "cr", "cu", "cv", "cw", "cx", "cy", "cz", "de", "dj", "dk", "dm", "do", "dz", "ec", "ee", "eg", "eh", "er", "es", "et", "eu", "fi", "fj", "fk", "fm", "fo", "fr", "ga", "gb", "gd", "ge", "gf", "gg", "gh", "gi", "gl", "gm", "gn", "gp", "gq", "gr", "gs", "gt", "gu", "gw", "gy", "hk", "hm", "hn", "hr", "ht", "hu", "id", "ie", "il", "im", "in", "io", "iq", "ir", "is", "it", "je", "jm", "jo", "jp", "ke", "kg", "kh", "ki", "km", "kn", "kp", "kr", "kw", "ky", "kz", "la", "lb", "lc", "li", "lk", "lr", "ls", "lt", "lu", "lv", "ly", "ma", "mc", "md", "me", "mg", "mh", "mk", "ml", "mm", "mn", "mo", "mp", "mq", "mr", "ms", "mt", "mu", "mv", "mw", "mx", "my", "mz", "na", "nc", "ne", "nf", "ng", "ni", "nl", "no", "np", "nr", "nu", "nz", "om", "pa", "pe", "pf", "pg", "ph", "pk", "pl", "pm", "pn", "pr", "ps", "pt", "pw", "py", "qa", "re", "ro", "rs", "ru", "rw", "sa", "sb", "sc", "sd", "se", "sg", "sh", "si", "sj", "sk", "sl", "sm", "sn", "so", "sr", "ss", "st", "su", "sv", "sx", "sy", "sz", "tc", "td", "tf", "tg", "th", "tj", "tk", "tl", "tm", "tn", "to", "tr", "tt", "tv", "tw", "tz", "ua", "ug", "uk", "us", "uy", "uz", "va", "vc", "ve", "vg", "vi", "vn", "vu", "wf", "ws", "ye", "yt", "za", "zm", "zw"];
-      }, o.prototype.tld = function() {
+      }, l.prototype.tld = function() {
         return this.pick(this.tlds());
-      }, o.prototype.twitter = function() {
+      }, l.prototype.twitter = function() {
         return "@" + this.word();
-      }, o.prototype.url = function(e) {
-        e = u(e, { protocol: "http", domain: this.domain(e), domain_prefix: "", path: this.word(), extensions: [] });
-        var t = e.extensions.length > 0 ? "." + this.pick(e.extensions) : "", c = e.domain_prefix ? e.domain_prefix + "." + e.domain : e.domain;
-        return e.protocol + "://" + c + "/" + e.path + t;
-      }, o.prototype.port = function() {
+      }, l.prototype.url = function(a) {
+        a = m(a, { protocol: "http", domain: this.domain(a), domain_prefix: "", path: this.word(), extensions: [] });
+        var s = a.extensions.length > 0 ? "." + this.pick(a.extensions) : "", f = a.domain_prefix ? a.domain_prefix + "." + a.domain : a.domain;
+        return a.protocol + "://" + f + "/" + a.path + s;
+      }, l.prototype.port = function() {
         return this.integer({ min: 0, max: 65535 });
-      }, o.prototype.locale = function(e) {
-        return e = u(e), e.region ? this.pick(this.get("locale_regions")) : this.pick(this.get("locale_languages"));
-      }, o.prototype.locales = function(e) {
-        return e = u(e), e.region ? this.get("locale_regions") : this.get("locale_languages");
-      }, o.prototype.loremPicsum = function(e) {
-        e = u(e, { width: 500, height: 500, greyscale: !1, blurred: !1 });
-        var t = e.greyscale ? "g/" : "", c = e.blurred ? "/?blur" : "/?random";
-        return "https://picsum.photos/" + t + e.width + "/" + e.height + c;
-      }, o.prototype.address = function(e) {
-        return e = u(e), this.natural({ min: 5, max: 2e3 }) + " " + this.street(e);
-      }, o.prototype.altitude = function(e) {
-        return e = u(e, { fixed: 5, min: 0, max: 8848 }), this.floating({
-          min: e.min,
-          max: e.max,
-          fixed: e.fixed
+      }, l.prototype.locale = function(a) {
+        return a = m(a), a.region ? this.pick(this.get("locale_regions")) : this.pick(this.get("locale_languages"));
+      }, l.prototype.locales = function(a) {
+        return a = m(a), a.region ? this.get("locale_regions") : this.get("locale_languages");
+      }, l.prototype.loremPicsum = function(a) {
+        a = m(a, { width: 500, height: 500, greyscale: !1, blurred: !1 });
+        var s = a.greyscale ? "g/" : "", f = a.blurred ? "/?blur" : "/?random";
+        return "https://picsum.photos/" + s + a.width + "/" + a.height + f;
+      }, l.prototype.address = function(a) {
+        return a = m(a), this.natural({ min: 5, max: 2e3 }) + " " + this.street(a);
+      }, l.prototype.altitude = function(a) {
+        return a = m(a, { fixed: 5, min: 0, max: 8848 }), this.floating({
+          min: a.min,
+          max: a.max,
+          fixed: a.fixed
         });
-      }, o.prototype.areacode = function(e) {
-        e = u(e, { parens: !0 });
-        var t = e.exampleNumber ? "555" : this.natural({ min: 2, max: 9 }).toString() + this.natural({ min: 0, max: 8 }).toString() + this.natural({ min: 0, max: 9 }).toString();
-        return e.parens ? "(" + t + ")" : t;
-      }, o.prototype.city = function() {
+      }, l.prototype.areacode = function(a) {
+        a = m(a, { parens: !0 });
+        var s = a.exampleNumber ? "555" : this.natural({ min: 2, max: 9 }).toString() + this.natural({ min: 0, max: 8 }).toString() + this.natural({ min: 0, max: 9 }).toString();
+        return a.parens ? "(" + s + ")" : s;
+      }, l.prototype.city = function() {
         return this.capitalize(this.word({ syllables: 3 }));
-      }, o.prototype.coordinates = function(e) {
-        return this.latitude(e) + ", " + this.longitude(e);
-      }, o.prototype.countries = function() {
+      }, l.prototype.coordinates = function(a) {
+        return this.latitude(a) + ", " + this.longitude(a);
+      }, l.prototype.countries = function() {
         return this.get("countries");
-      }, o.prototype.country = function(e) {
-        e = u(e);
-        var t = this.pick(this.countries());
-        return e.raw ? t : e.full ? t.name : t.abbreviation;
-      }, o.prototype.depth = function(e) {
-        return e = u(e, { fixed: 5, min: -10994, max: 0 }), this.floating({
-          min: e.min,
-          max: e.max,
-          fixed: e.fixed
+      }, l.prototype.country = function(a) {
+        a = m(a);
+        var s = this.pick(this.countries());
+        return a.raw ? s : a.full ? s.name : s.abbreviation;
+      }, l.prototype.depth = function(a) {
+        return a = m(a, { fixed: 5, min: -10994, max: 0 }), this.floating({
+          min: a.min,
+          max: a.max,
+          fixed: a.fixed
         });
-      }, o.prototype.geohash = function(e) {
-        return e = u(e, { length: 7 }), this.string({ length: e.length, pool: "0123456789bcdefghjkmnpqrstuvwxyz" });
-      }, o.prototype.geojson = function(e) {
-        return this.latitude(e) + ", " + this.longitude(e) + ", " + this.altitude(e);
-      }, o.prototype.latitude = function(e) {
-        var [t, c, b] = ["ddm", "dms", "dd"];
-        e = u(
-          e,
-          e && e.format && [t, c].includes(e.format.toLowerCase()) ? { min: 0, max: 89, fixed: 4 } : { fixed: 5, min: -90, max: 90, format: b }
+      }, l.prototype.geohash = function(a) {
+        return a = m(a, { length: 7 }), this.string({ length: a.length, pool: "0123456789bcdefghjkmnpqrstuvwxyz" });
+      }, l.prototype.geojson = function(a) {
+        return this.latitude(a) + ", " + this.longitude(a) + ", " + this.altitude(a);
+      }, l.prototype.latitude = function(a) {
+        var [s, f, b] = ["ddm", "dms", "dd"];
+        a = m(
+          a,
+          a && a.format && [s, f].includes(a.format.toLowerCase()) ? { min: 0, max: 89, fixed: 4 } : { fixed: 5, min: -90, max: 90, format: b }
         );
-        var C = e.format.toLowerCase();
-        switch ((C === t || C === c) && (g(e.min < 0 || e.min > 89, "Chance: Min specified is out of range. Should be between 0 - 89"), g(e.max < 0 || e.max > 89, "Chance: Max specified is out of range. Should be between 0 - 89"), g(e.fixed > 4, "Chance: Fixed specified should be below or equal to 4")), C) {
-          case t:
-            return this.integer({ min: e.min, max: e.max }) + "\xB0" + this.floating({ min: 0, max: 59, fixed: e.fixed });
-          case c:
-            return this.integer({ min: e.min, max: e.max }) + "\xB0" + this.integer({ min: 0, max: 59 }) + "\u2019" + this.floating({ min: 0, max: 59, fixed: e.fixed }) + "\u201D";
+        var C = a.format.toLowerCase();
+        switch ((C === s || C === f) && (g(a.min < 0 || a.min > 89, "Chance: Min specified is out of range. Should be between 0 - 89"), g(a.max < 0 || a.max > 89, "Chance: Max specified is out of range. Should be between 0 - 89"), g(a.fixed > 4, "Chance: Fixed specified should be below or equal to 4")), C) {
+          case s:
+            return this.integer({ min: a.min, max: a.max }) + "\xB0" + this.floating({ min: 0, max: 59, fixed: a.fixed });
+          case f:
+            return this.integer({ min: a.min, max: a.max }) + "\xB0" + this.integer({ min: 0, max: 59 }) + "\u2019" + this.floating({ min: 0, max: 59, fixed: a.fixed }) + "\u201D";
           case b:
           default:
-            return this.floating({ min: e.min, max: e.max, fixed: e.fixed });
+            return this.floating({ min: a.min, max: a.max, fixed: a.fixed });
         }
-      }, o.prototype.longitude = function(e) {
-        var [t, c, b] = ["ddm", "dms", "dd"];
-        e = u(
-          e,
-          e && e.format && [t, c].includes(e.format.toLowerCase()) ? { min: 0, max: 179, fixed: 4 } : { fixed: 5, min: -180, max: 180, format: b }
+      }, l.prototype.longitude = function(a) {
+        var [s, f, b] = ["ddm", "dms", "dd"];
+        a = m(
+          a,
+          a && a.format && [s, f].includes(a.format.toLowerCase()) ? { min: 0, max: 179, fixed: 4 } : { fixed: 5, min: -180, max: 180, format: b }
         );
-        var C = e.format.toLowerCase();
-        switch ((C === t || C === c) && (g(e.min < 0 || e.min > 179, "Chance: Min specified is out of range. Should be between 0 - 179"), g(e.max < 0 || e.max > 179, "Chance: Max specified is out of range. Should be between 0 - 179"), g(e.fixed > 4, "Chance: Fixed specified should be below or equal to 4")), C) {
-          case t:
-            return this.integer({ min: e.min, max: e.max }) + "\xB0" + this.floating({ min: 0, max: 59.9999, fixed: e.fixed });
-          case c:
-            return this.integer({ min: e.min, max: e.max }) + "\xB0" + this.integer({ min: 0, max: 59 }) + "\u2019" + this.floating({ min: 0, max: 59.9999, fixed: e.fixed }) + "\u201D";
+        var C = a.format.toLowerCase();
+        switch ((C === s || C === f) && (g(a.min < 0 || a.min > 179, "Chance: Min specified is out of range. Should be between 0 - 179"), g(a.max < 0 || a.max > 179, "Chance: Max specified is out of range. Should be between 0 - 179"), g(a.fixed > 4, "Chance: Fixed specified should be below or equal to 4")), C) {
+          case s:
+            return this.integer({ min: a.min, max: a.max }) + "\xB0" + this.floating({ min: 0, max: 59.9999, fixed: a.fixed });
+          case f:
+            return this.integer({ min: a.min, max: a.max }) + "\xB0" + this.integer({ min: 0, max: 59 }) + "\u2019" + this.floating({ min: 0, max: 59.9999, fixed: a.fixed }) + "\u201D";
           case b:
           default:
-            return this.floating({ min: e.min, max: e.max, fixed: e.fixed });
+            return this.floating({ min: a.min, max: a.max, fixed: a.fixed });
         }
-      }, o.prototype.phone = function(e) {
-        var t = this, c, b = function(R) {
-          var E = [];
-          return R.sections.forEach(function(G) {
-            E.push(t.string({ pool: "0123456789", length: G }));
-          }), R.area + E.join(" ");
+      }, l.prototype.phone = function(a) {
+        var s = this, f, b = function(G) {
+          var D = [];
+          return G.sections.forEach(function(F) {
+            D.push(s.string({ pool: "0123456789", length: F }));
+          }), G.area + D.join(" ");
         };
-        e = u(e, {
+        a = m(a, {
           formatted: !0,
           country: "us",
           mobile: !1,
           exampleNumber: !1
-        }), e.formatted || (e.parens = !1);
+        }), a.formatted || (a.parens = !1);
         var C;
-        switch (e.country) {
+        switch (a.country) {
           case "fr":
-            e.mobile ? (c = this.pick(["06", "07"]) + t.string({ pool: "0123456789", length: 8 }), C = e.formatted ? c.match(/../g).join(" ") : c) : (c = this.pick([
+            a.mobile ? (f = this.pick(["06", "07"]) + s.string({ pool: "0123456789", length: 8 }), C = a.formatted ? f.match(/../g).join(" ") : f) : (f = this.pick([
               // Valid zone and département codes.
-              "01" + this.pick(["30", "34", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "53", "55", "56", "58", "60", "64", "69", "70", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83"]) + t.string({ pool: "0123456789", length: 6 }),
-              "02" + this.pick(["14", "18", "22", "23", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "40", "41", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "56", "57", "61", "62", "69", "72", "76", "77", "78", "85", "90", "96", "97", "98", "99"]) + t.string({ pool: "0123456789", length: 6 }),
-              "03" + this.pick(["10", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "39", "44", "45", "51", "52", "54", "55", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90"]) + t.string({ pool: "0123456789", length: 6 }),
-              "04" + this.pick(["11", "13", "15", "20", "22", "26", "27", "30", "32", "34", "37", "42", "43", "44", "50", "56", "57", "63", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "88", "89", "90", "91", "92", "93", "94", "95", "97", "98"]) + t.string({ pool: "0123456789", length: 6 }),
-              "05" + this.pick(["08", "16", "17", "19", "24", "31", "32", "33", "34", "35", "40", "45", "46", "47", "49", "53", "55", "56", "57", "58", "59", "61", "62", "63", "64", "65", "67", "79", "81", "82", "86", "87", "90", "94"]) + t.string({ pool: "0123456789", length: 6 }),
-              "09" + t.string({ pool: "0123456789", length: 8 })
-            ]), C = e.formatted ? c.match(/../g).join(" ") : c);
+              "01" + this.pick(["30", "34", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "53", "55", "56", "58", "60", "64", "69", "70", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83"]) + s.string({ pool: "0123456789", length: 6 }),
+              "02" + this.pick(["14", "18", "22", "23", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "40", "41", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "56", "57", "61", "62", "69", "72", "76", "77", "78", "85", "90", "96", "97", "98", "99"]) + s.string({ pool: "0123456789", length: 6 }),
+              "03" + this.pick(["10", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "39", "44", "45", "51", "52", "54", "55", "57", "58", "59", "60", "61", "62", "63", "64", "65", "66", "67", "68", "69", "70", "71", "72", "73", "80", "81", "82", "83", "84", "85", "86", "87", "88", "89", "90"]) + s.string({ pool: "0123456789", length: 6 }),
+              "04" + this.pick(["11", "13", "15", "20", "22", "26", "27", "30", "32", "34", "37", "42", "43", "44", "50", "56", "57", "63", "66", "67", "68", "69", "70", "71", "72", "73", "74", "75", "76", "77", "78", "79", "80", "81", "82", "83", "84", "85", "86", "88", "89", "90", "91", "92", "93", "94", "95", "97", "98"]) + s.string({ pool: "0123456789", length: 6 }),
+              "05" + this.pick(["08", "16", "17", "19", "24", "31", "32", "33", "34", "35", "40", "45", "46", "47", "49", "53", "55", "56", "57", "58", "59", "61", "62", "63", "64", "65", "67", "79", "81", "82", "86", "87", "90", "94"]) + s.string({ pool: "0123456789", length: 6 }),
+              "09" + s.string({ pool: "0123456789", length: 8 })
+            ]), C = a.formatted ? f.match(/../g).join(" ") : f);
             break;
           case "uk":
-            e.mobile ? (c = this.pick([
+            a.mobile ? (f = this.pick([
               { area: "07" + this.pick(["4", "5", "7", "8", "9"]), sections: [2, 6] },
               { area: "07624 ", sections: [6] }
-            ]), C = e.formatted ? b(c) : b(c).replace(" ", "")) : (c = this.pick([
+            ]), C = a.formatted ? b(f) : b(f).replace(" ", "")) : (f = this.pick([
               //valid area codes of major cities/counties followed by random numbers in required format.
               { area: "01" + this.character({ pool: "234569" }) + "1 ", sections: [3, 4] },
               { area: "020 " + this.character({ pool: "378" }), sections: [3, 4] },
@@ -1759,362 +1759,362 @@ function oa() {
               { area: "017" + this.pick(["26", "44", "50", "68"]) + " ", sections: [6] },
               { area: "018" + this.pick(["27", "37", "84", "97"]) + " ", sections: [6] },
               { area: "019" + this.pick(["00", "05", "35", "46", "49", "63", "95"]) + " ", sections: [6] }
-            ]), C = e.formatted ? b(c) : b(c).replace(" ", "", "g"));
+            ]), C = a.formatted ? b(f) : b(f).replace(" ", "", "g"));
             break;
           case "za":
-            e.mobile ? (c = this.pick([
-              "060" + this.pick(["3", "4", "5", "6", "7", "8", "9"]) + t.string({ pool: "0123456789", length: 6 }),
-              "061" + this.pick(["0", "1", "2", "3", "4", "5", "8"]) + t.string({ pool: "0123456789", length: 6 }),
-              "06" + t.string({ pool: "0123456789", length: 7 }),
-              "071" + this.pick(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]) + t.string({ pool: "0123456789", length: 6 }),
-              "07" + this.pick(["2", "3", "4", "6", "7", "8", "9"]) + t.string({ pool: "0123456789", length: 7 }),
-              "08" + this.pick(["0", "1", "2", "3", "4", "5"]) + t.string({ pool: "0123456789", length: 7 })
-            ]), C = e.formatted || c) : (c = this.pick([
-              "01" + this.pick(["0", "1", "2", "3", "4", "5", "6", "7", "8"]) + t.string({ pool: "0123456789", length: 7 }),
-              "02" + this.pick(["1", "2", "3", "4", "7", "8"]) + t.string({ pool: "0123456789", length: 7 }),
-              "03" + this.pick(["1", "2", "3", "5", "6", "9"]) + t.string({ pool: "0123456789", length: 7 }),
-              "04" + this.pick(["1", "2", "3", "4", "5", "6", "7", "8", "9"]) + t.string({ pool: "0123456789", length: 7 }),
-              "05" + this.pick(["1", "3", "4", "6", "7", "8"]) + t.string({ pool: "0123456789", length: 7 })
-            ]), C = e.formatted || c);
+            a.mobile ? (f = this.pick([
+              "060" + this.pick(["3", "4", "5", "6", "7", "8", "9"]) + s.string({ pool: "0123456789", length: 6 }),
+              "061" + this.pick(["0", "1", "2", "3", "4", "5", "8"]) + s.string({ pool: "0123456789", length: 6 }),
+              "06" + s.string({ pool: "0123456789", length: 7 }),
+              "071" + this.pick(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]) + s.string({ pool: "0123456789", length: 6 }),
+              "07" + this.pick(["2", "3", "4", "6", "7", "8", "9"]) + s.string({ pool: "0123456789", length: 7 }),
+              "08" + this.pick(["0", "1", "2", "3", "4", "5"]) + s.string({ pool: "0123456789", length: 7 })
+            ]), C = a.formatted || f) : (f = this.pick([
+              "01" + this.pick(["0", "1", "2", "3", "4", "5", "6", "7", "8"]) + s.string({ pool: "0123456789", length: 7 }),
+              "02" + this.pick(["1", "2", "3", "4", "7", "8"]) + s.string({ pool: "0123456789", length: 7 }),
+              "03" + this.pick(["1", "2", "3", "5", "6", "9"]) + s.string({ pool: "0123456789", length: 7 }),
+              "04" + this.pick(["1", "2", "3", "4", "5", "6", "7", "8", "9"]) + s.string({ pool: "0123456789", length: 7 }),
+              "05" + this.pick(["1", "3", "4", "6", "7", "8"]) + s.string({ pool: "0123456789", length: 7 })
+            ]), C = a.formatted || f);
             break;
           case "us":
-            var M = this.areacode(e).toString(), w = this.natural({ min: 2, max: 9 }).toString() + this.natural({ min: 0, max: 9 }).toString() + this.natural({ min: 0, max: 9 }).toString(), v = this.natural({ min: 1e3, max: 9999 }).toString();
-            C = e.formatted ? M + " " + w + "-" + v : M + w + v;
+            var T = this.areacode(a).toString(), I = this.natural({ min: 2, max: 9 }).toString() + this.natural({ min: 0, max: 9 }).toString() + this.natural({ min: 0, max: 9 }).toString(), y = this.natural({ min: 1e3, max: 9999 }).toString();
+            C = a.formatted ? T + " " + I + "-" + y : T + I + y;
             break;
           case "br":
-            var A = this.pick(["11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "24", "27", "28", "31", "32", "33", "34", "35", "37", "38", "41", "42", "43", "44", "45", "46", "47", "48", "49", "51", "53", "54", "55", "61", "62", "63", "64", "65", "66", "67", "68", "69", "71", "73", "74", "75", "77", "79", "81", "82", "83", "84", "85", "86", "87", "88", "89", "91", "92", "93", "94", "95", "96", "97", "98", "99"]), S;
-            e.mobile ? S = "9" + t.string({ pool: "0123456789", length: 4 }) : S = this.natural({ min: 2e3, max: 5999 }).toString();
-            var _ = t.string({ pool: "0123456789", length: 4 });
-            C = e.formatted ? "(" + A + ") " + S + "-" + _ : A + S + _;
+            var _ = this.pick(["11", "12", "13", "14", "15", "16", "17", "18", "19", "21", "22", "24", "27", "28", "31", "32", "33", "34", "35", "37", "38", "41", "42", "43", "44", "45", "46", "47", "48", "49", "51", "53", "54", "55", "61", "62", "63", "64", "65", "66", "67", "68", "69", "71", "73", "74", "75", "77", "79", "81", "82", "83", "84", "85", "86", "87", "88", "89", "91", "92", "93", "94", "95", "96", "97", "98", "99"]), k;
+            a.mobile ? k = "9" + s.string({ pool: "0123456789", length: 4 }) : k = this.natural({ min: 2e3, max: 5999 }).toString();
+            var M = s.string({ pool: "0123456789", length: 4 });
+            C = a.formatted ? "(" + _ + ") " + k + "-" + M : _ + k + M;
             break;
         }
         return C;
-      }, o.prototype.postal = function() {
-        var e = this.character({ pool: "XVTSRPNKLMHJGECBA" }), t = e + this.natural({ max: 9 }) + this.character({ alpha: !0, casing: "upper" }), c = this.natural({ max: 9 }) + this.character({ alpha: !0, casing: "upper" }) + this.natural({ max: 9 });
-        return t + " " + c;
-      }, o.prototype.postcode = function() {
-        var e = this.pick(this.get("postcodeAreas")).code, t = this.natural({ max: 9 }), c = this.bool() ? this.character({ alpha: !0, casing: "upper" }) : "", b = e + t + c, C = this.natural({ max: 9 }), M = this.character({ alpha: !0, casing: "upper" }) + this.character({ alpha: !0, casing: "upper" }), w = C + M;
-        return b + " " + w;
-      }, o.prototype.counties = function(e) {
-        return e = u(e, { country: "uk" }), this.get("counties")[e.country.toLowerCase()];
-      }, o.prototype.county = function(e) {
-        return this.pick(this.counties(e)).name;
-      }, o.prototype.provinces = function(e) {
-        return e = u(e, { country: "ca" }), this.get("provinces")[e.country.toLowerCase()];
-      }, o.prototype.province = function(e) {
-        return e && e.full ? this.pick(this.provinces(e)).name : this.pick(this.provinces(e)).abbreviation;
-      }, o.prototype.state = function(e) {
-        return e && e.full ? this.pick(this.states(e)).name : this.pick(this.states(e)).abbreviation;
-      }, o.prototype.states = function(e) {
-        e = u(e, { country: "us", us_states_and_dc: !0 });
-        var t;
-        switch (e.country.toLowerCase()) {
+      }, l.prototype.postal = function() {
+        var a = this.character({ pool: "XVTSRPNKLMHJGECBA" }), s = a + this.natural({ max: 9 }) + this.character({ alpha: !0, casing: "upper" }), f = this.natural({ max: 9 }) + this.character({ alpha: !0, casing: "upper" }) + this.natural({ max: 9 });
+        return s + " " + f;
+      }, l.prototype.postcode = function() {
+        var a = this.pick(this.get("postcodeAreas")).code, s = this.natural({ max: 9 }), f = this.bool() ? this.character({ alpha: !0, casing: "upper" }) : "", b = a + s + f, C = this.natural({ max: 9 }), T = this.character({ alpha: !0, casing: "upper" }) + this.character({ alpha: !0, casing: "upper" }), I = C + T;
+        return b + " " + I;
+      }, l.prototype.counties = function(a) {
+        return a = m(a, { country: "uk" }), this.get("counties")[a.country.toLowerCase()];
+      }, l.prototype.county = function(a) {
+        return this.pick(this.counties(a)).name;
+      }, l.prototype.provinces = function(a) {
+        return a = m(a, { country: "ca" }), this.get("provinces")[a.country.toLowerCase()];
+      }, l.prototype.province = function(a) {
+        return a && a.full ? this.pick(this.provinces(a)).name : this.pick(this.provinces(a)).abbreviation;
+      }, l.prototype.state = function(a) {
+        return a && a.full ? this.pick(this.states(a)).name : this.pick(this.states(a)).abbreviation;
+      }, l.prototype.states = function(a) {
+        a = m(a, { country: "us", us_states_and_dc: !0 });
+        var s;
+        switch (a.country.toLowerCase()) {
           case "us":
-            var c = this.get("us_states_and_dc"), b = this.get("territories"), C = this.get("armed_forces");
-            t = [], e.us_states_and_dc && (t = t.concat(c)), e.territories && (t = t.concat(b)), e.armed_forces && (t = t.concat(C));
+            var f = this.get("us_states_and_dc"), b = this.get("territories"), C = this.get("armed_forces");
+            s = [], a.us_states_and_dc && (s = s.concat(f)), a.territories && (s = s.concat(b)), a.armed_forces && (s = s.concat(C));
             break;
           case "it":
           case "mx":
-            t = this.get("country_regions")[e.country.toLowerCase()];
+            s = this.get("country_regions")[a.country.toLowerCase()];
             break;
           case "uk":
-            t = this.get("counties")[e.country.toLowerCase()];
+            s = this.get("counties")[a.country.toLowerCase()];
             break;
         }
-        return t;
-      }, o.prototype.street = function(e) {
-        e = u(e, { country: "us", syllables: 2 });
-        var t;
-        switch (e.country.toLowerCase()) {
+        return s;
+      }, l.prototype.street = function(a) {
+        a = m(a, { country: "us", syllables: 2 });
+        var s;
+        switch (a.country.toLowerCase()) {
           case "us":
-            t = this.word({ syllables: e.syllables }), t = this.capitalize(t), t += " ", t += e.short_suffix ? this.street_suffix(e).abbreviation : this.street_suffix(e).name;
+            s = this.word({ syllables: a.syllables }), s = this.capitalize(s), s += " ", s += a.short_suffix ? this.street_suffix(a).abbreviation : this.street_suffix(a).name;
             break;
           case "it":
-            t = this.word({ syllables: e.syllables }), t = this.capitalize(t), t = (e.short_suffix ? this.street_suffix(e).abbreviation : this.street_suffix(e).name) + " " + t;
+            s = this.word({ syllables: a.syllables }), s = this.capitalize(s), s = (a.short_suffix ? this.street_suffix(a).abbreviation : this.street_suffix(a).name) + " " + s;
             break;
         }
-        return t;
-      }, o.prototype.street_suffix = function(e) {
-        return e = u(e, { country: "us" }), this.pick(this.street_suffixes(e));
-      }, o.prototype.street_suffixes = function(e) {
-        return e = u(e, { country: "us" }), this.get("street_suffixes")[e.country.toLowerCase()];
-      }, o.prototype.zip = function(e) {
-        var t = this.n(this.natural, 5, { max: 9 });
-        return e && e.plusfour === !0 && (t.push("-"), t = t.concat(this.n(this.natural, 4, { max: 9 }))), t.join("");
-      }, o.prototype.ampm = function() {
+        return s;
+      }, l.prototype.street_suffix = function(a) {
+        return a = m(a, { country: "us" }), this.pick(this.street_suffixes(a));
+      }, l.prototype.street_suffixes = function(a) {
+        return a = m(a, { country: "us" }), this.get("street_suffixes")[a.country.toLowerCase()];
+      }, l.prototype.zip = function(a) {
+        var s = this.n(this.natural, 5, { max: 9 });
+        return a && a.plusfour === !0 && (s.push("-"), s = s.concat(this.n(this.natural, 4, { max: 9 }))), s.join("");
+      }, l.prototype.ampm = function() {
         return this.bool() ? "am" : "pm";
-      }, o.prototype.date = function(e) {
-        var t, c;
-        if (e && (e.min || e.max)) {
-          e = u(e, {
+      }, l.prototype.date = function(a) {
+        var s, f;
+        if (a && (a.min || a.max)) {
+          a = m(a, {
             american: !0,
             string: !1
           });
-          var b = typeof e.min < "u" ? e.min.getTime() : 1, C = typeof e.max < "u" ? e.max.getTime() : 864e13;
-          c = new Date(this.integer({ min: b, max: C }));
+          var b = typeof a.min < "u" ? a.min.getTime() : 1, C = typeof a.max < "u" ? a.max.getTime() : 864e13;
+          f = new Date(this.integer({ min: b, max: C }));
         } else {
-          var M = this.month({ raw: !0 }), w = M.days;
-          e && e.month && (w = this.get("months")[(e.month % 12 + 12) % 12].days), e = u(e, {
+          var T = this.month({ raw: !0 }), I = T.days;
+          a && a.month && (I = this.get("months")[(a.month % 12 + 12) % 12].days), a = m(a, {
             year: parseInt(this.year(), 10),
             // Necessary to subtract 1 because Date() 0-indexes month but not day or year
             // for some reason.
-            month: M.numeric - 1,
-            day: this.natural({ min: 1, max: w }),
+            month: T.numeric - 1,
+            day: this.natural({ min: 1, max: I }),
             hour: this.hour({ twentyfour: !0 }),
             minute: this.minute(),
             second: this.second(),
             millisecond: this.millisecond(),
             american: !0,
             string: !1
-          }), c = new Date(e.year, e.month, e.day, e.hour, e.minute, e.second, e.millisecond);
+          }), f = new Date(a.year, a.month, a.day, a.hour, a.minute, a.second, a.millisecond);
         }
-        return e.american ? t = c.getMonth() + 1 + "/" + c.getDate() + "/" + c.getFullYear() : t = c.getDate() + "/" + (c.getMonth() + 1) + "/" + c.getFullYear(), e.string ? t : c;
-      }, o.prototype.hammertime = function(e) {
-        return this.date(e).getTime();
-      }, o.prototype.hour = function(e) {
-        return e = u(e, {
-          min: e && e.twentyfour ? 0 : 1,
-          max: e && e.twentyfour ? 23 : 12
-        }), g(e.min < 0, "Chance: Min cannot be less than 0."), g(e.twentyfour && e.max > 23, "Chance: Max cannot be greater than 23 for twentyfour option."), g(!e.twentyfour && e.max > 12, "Chance: Max cannot be greater than 12."), g(e.min > e.max, "Chance: Min cannot be greater than Max."), this.natural({ min: e.min, max: e.max });
-      }, o.prototype.millisecond = function() {
+        return a.american ? s = f.getMonth() + 1 + "/" + f.getDate() + "/" + f.getFullYear() : s = f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear(), a.string ? s : f;
+      }, l.prototype.hammertime = function(a) {
+        return this.date(a).getTime();
+      }, l.prototype.hour = function(a) {
+        return a = m(a, {
+          min: a && a.twentyfour ? 0 : 1,
+          max: a && a.twentyfour ? 23 : 12
+        }), g(a.min < 0, "Chance: Min cannot be less than 0."), g(a.twentyfour && a.max > 23, "Chance: Max cannot be greater than 23 for twentyfour option."), g(!a.twentyfour && a.max > 12, "Chance: Max cannot be greater than 12."), g(a.min > a.max, "Chance: Min cannot be greater than Max."), this.natural({ min: a.min, max: a.max });
+      }, l.prototype.millisecond = function() {
         return this.natural({ max: 999 });
-      }, o.prototype.minute = o.prototype.second = function(e) {
-        return e = u(e, { min: 0, max: 59 }), g(e.min < 0, "Chance: Min cannot be less than 0."), g(e.max > 59, "Chance: Max cannot be greater than 59."), g(e.min > e.max, "Chance: Min cannot be greater than Max."), this.natural({ min: e.min, max: e.max });
-      }, o.prototype.month = function(e) {
-        e = u(e, { min: 1, max: 12 }), g(e.min < 1, "Chance: Min cannot be less than 1."), g(e.max > 12, "Chance: Max cannot be greater than 12."), g(e.min > e.max, "Chance: Min cannot be greater than Max.");
-        var t = this.pick(this.months().slice(e.min - 1, e.max));
-        return e.raw ? t : t.name;
-      }, o.prototype.months = function() {
+      }, l.prototype.minute = l.prototype.second = function(a) {
+        return a = m(a, { min: 0, max: 59 }), g(a.min < 0, "Chance: Min cannot be less than 0."), g(a.max > 59, "Chance: Max cannot be greater than 59."), g(a.min > a.max, "Chance: Min cannot be greater than Max."), this.natural({ min: a.min, max: a.max });
+      }, l.prototype.month = function(a) {
+        a = m(a, { min: 1, max: 12 }), g(a.min < 1, "Chance: Min cannot be less than 1."), g(a.max > 12, "Chance: Max cannot be greater than 12."), g(a.min > a.max, "Chance: Min cannot be greater than Max.");
+        var s = this.pick(this.months().slice(a.min - 1, a.max));
+        return a.raw ? s : s.name;
+      }, l.prototype.months = function() {
         return this.get("months");
-      }, o.prototype.second = function() {
+      }, l.prototype.second = function() {
         return this.natural({ max: 59 });
-      }, o.prototype.timestamp = function() {
+      }, l.prototype.timestamp = function() {
         return this.natural({ min: 1, max: parseInt((/* @__PURE__ */ new Date()).getTime() / 1e3, 10) });
-      }, o.prototype.weekday = function(e) {
-        e = u(e, { weekday_only: !1 });
-        var t = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-        return e.weekday_only || (t.push("Saturday"), t.push("Sunday")), this.pickone(t);
-      }, o.prototype.year = function(e) {
-        return e = u(e, { min: (/* @__PURE__ */ new Date()).getFullYear() }), e.max = typeof e.max < "u" ? e.max : e.min + 100, this.natural(e).toString();
-      }, o.prototype.cc = function(e) {
-        e = u(e);
-        var t, c, b;
-        return t = e.type ? this.cc_type({ name: e.type, raw: !0 }) : this.cc_type({ raw: !0 }), c = t.prefix.split(""), b = t.length - t.prefix.length - 1, c = c.concat(this.n(this.integer, b, { min: 0, max: 9 })), c.push(this.luhn_calculate(c.join(""))), c.join("");
-      }, o.prototype.cc_types = function() {
+      }, l.prototype.weekday = function(a) {
+        a = m(a, { weekday_only: !1 });
+        var s = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+        return a.weekday_only || (s.push("Saturday"), s.push("Sunday")), this.pickone(s);
+      }, l.prototype.year = function(a) {
+        return a = m(a, { min: (/* @__PURE__ */ new Date()).getFullYear() }), a.max = typeof a.max < "u" ? a.max : a.min + 100, this.natural(a).toString();
+      }, l.prototype.cc = function(a) {
+        a = m(a);
+        var s, f, b;
+        return s = a.type ? this.cc_type({ name: a.type, raw: !0 }) : this.cc_type({ raw: !0 }), f = s.prefix.split(""), b = s.length - s.prefix.length - 1, f = f.concat(this.n(this.integer, b, { min: 0, max: 9 })), f.push(this.luhn_calculate(f.join(""))), f.join("");
+      }, l.prototype.cc_types = function() {
         return this.get("cc_types");
-      }, o.prototype.cc_type = function(e) {
-        e = u(e);
-        var t = this.cc_types(), c = null;
-        if (e.name) {
-          for (var b = 0; b < t.length; b++)
-            if (t[b].name === e.name || t[b].short_name === e.name) {
-              c = t[b];
+      }, l.prototype.cc_type = function(a) {
+        a = m(a);
+        var s = this.cc_types(), f = null;
+        if (a.name) {
+          for (var b = 0; b < s.length; b++)
+            if (s[b].name === a.name || s[b].short_name === a.name) {
+              f = s[b];
               break;
             }
-          if (c === null)
-            throw new RangeError("Chance: Credit card type '" + e.name + "' is not supported");
+          if (f === null)
+            throw new RangeError("Chance: Credit card type '" + a.name + "' is not supported");
         } else
-          c = this.pick(t);
-        return e.raw ? c : c.name;
-      }, o.prototype.currency_types = function() {
+          f = this.pick(s);
+        return a.raw ? f : f.name;
+      }, l.prototype.currency_types = function() {
         return this.get("currency_types");
-      }, o.prototype.currency = function() {
+      }, l.prototype.currency = function() {
         return this.pick(this.currency_types());
-      }, o.prototype.timezones = function() {
+      }, l.prototype.timezones = function() {
         return this.get("timezones");
-      }, o.prototype.timezone = function() {
+      }, l.prototype.timezone = function() {
         return this.pick(this.timezones());
-      }, o.prototype.currency_pair = function(e) {
-        var t = this.unique(this.currency, 2, {
-          comparator: function(c, b) {
-            return c.reduce(function(C, M) {
-              return C || M.code === b.code;
+      }, l.prototype.currency_pair = function(a) {
+        var s = this.unique(this.currency, 2, {
+          comparator: function(f, b) {
+            return f.reduce(function(C, T) {
+              return C || T.code === b.code;
             }, !1);
           }
         });
-        return e ? t[0].code + "/" + t[1].code : t;
-      }, o.prototype.dollar = function(e) {
-        e = u(e, { max: 1e4, min: 0 });
-        var t = this.floating({ min: e.min, max: e.max, fixed: 2 }).toString(), c = t.split(".")[1];
-        return c === void 0 ? t += ".00" : c.length < 2 && (t = t + "0"), t < 0 ? "-$" + t.replace("-", "") : "$" + t;
-      }, o.prototype.euro = function(e) {
-        return Number(this.dollar(e).replace("$", "")).toLocaleString() + "\u20AC";
-      }, o.prototype.exp = function(e) {
-        e = u(e);
-        var t = {};
-        return t.year = this.exp_year(), t.year === (/* @__PURE__ */ new Date()).getFullYear().toString() ? t.month = this.exp_month({ future: !0 }) : t.month = this.exp_month(), e.raw ? t : t.month + "/" + t.year;
-      }, o.prototype.exp_month = function(e) {
-        e = u(e);
-        var t, c, b = (/* @__PURE__ */ new Date()).getMonth() + 1;
-        if (e.future && b !== 12)
+        return a ? s[0].code + "/" + s[1].code : s;
+      }, l.prototype.dollar = function(a) {
+        a = m(a, { max: 1e4, min: 0 });
+        var s = this.floating({ min: a.min, max: a.max, fixed: 2 }).toString(), f = s.split(".")[1];
+        return f === void 0 ? s += ".00" : f.length < 2 && (s = s + "0"), s < 0 ? "-$" + s.replace("-", "") : "$" + s;
+      }, l.prototype.euro = function(a) {
+        return Number(this.dollar(a).replace("$", "")).toLocaleString() + "\u20AC";
+      }, l.prototype.exp = function(a) {
+        a = m(a);
+        var s = {};
+        return s.year = this.exp_year(), s.year === (/* @__PURE__ */ new Date()).getFullYear().toString() ? s.month = this.exp_month({ future: !0 }) : s.month = this.exp_month(), a.raw ? s : s.month + "/" + s.year;
+      }, l.prototype.exp_month = function(a) {
+        a = m(a);
+        var s, f, b = (/* @__PURE__ */ new Date()).getMonth() + 1;
+        if (a.future && b !== 12)
           do
-            t = this.month({ raw: !0 }).numeric, c = parseInt(t, 10);
-          while (c <= b);
+            s = this.month({ raw: !0 }).numeric, f = parseInt(s, 10);
+          while (f <= b);
         else
-          t = this.month({ raw: !0 }).numeric;
-        return t;
-      }, o.prototype.exp_year = function() {
-        var e = (/* @__PURE__ */ new Date()).getMonth() + 1, t = (/* @__PURE__ */ new Date()).getFullYear();
-        return this.year({ min: e === 12 ? t + 1 : t, max: t + 10 });
-      }, o.prototype.vat = function(e) {
-        switch (e = u(e, { country: "it" }), e.country.toLowerCase()) {
+          s = this.month({ raw: !0 }).numeric;
+        return s;
+      }, l.prototype.exp_year = function() {
+        var a = (/* @__PURE__ */ new Date()).getMonth() + 1, s = (/* @__PURE__ */ new Date()).getFullYear();
+        return this.year({ min: a === 12 ? s + 1 : s, max: s + 10 });
+      }, l.prototype.vat = function(a) {
+        switch (a = m(a, { country: "it" }), a.country.toLowerCase()) {
           case "it":
             return this.it_vat();
         }
-      }, o.prototype.iban = function() {
-        var e = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", t = e + "0123456789", c = this.string({ length: 2, pool: e }) + this.pad(this.integer({ min: 0, max: 99 }), 2) + this.string({ length: 4, pool: t }) + this.pad(this.natural(), this.natural({ min: 6, max: 26 }));
-        return c;
-      }, o.prototype.it_vat = function() {
-        var e = this.natural({ min: 1, max: 18e5 });
-        return e = this.pad(e, 7) + this.pad(this.pick(this.provinces({ country: "it" })).code, 3), e + this.luhn_calculate(e);
-      }, o.prototype.cf = function(e) {
-        e = e || {};
-        var t = e.gender ? e.gender : this.gender(), c = e.first ? e.first : this.first({ gender: t, nationality: "it" }), b = e.last ? e.last : this.last({ nationality: "it" }), C = e.birthday ? e.birthday : this.birthday(), M = e.city ? e.city : this.pickone(["A", "B", "C", "D", "E", "F", "G", "H", "I", "L", "M", "Z"]) + this.pad(this.natural({ max: 999 }), 3), w = [], v = function(_, R) {
-          var E, G = [];
-          return _.length < 3 ? G = _.split("").concat("XXX".split("")).splice(0, 3) : (E = _.toUpperCase().split("").map(function(W) {
-            return "BCDFGHJKLMNPRSTVWZ".indexOf(W) !== -1 ? W : void 0;
-          }).join(""), E.length > 3 && (R ? E = E.substr(0, 3) : E = E[0] + E.substr(2, 2)), E.length < 3 && (G = E, E = _.toUpperCase().split("").map(function(W) {
-            return "AEIOU".indexOf(W) !== -1 ? W : void 0;
-          }).join("").substr(0, 3 - G.length)), G = G + E), G;
-        }, A = function(_, R, E) {
-          var G = ["A", "B", "C", "D", "E", "H", "L", "M", "P", "R", "S", "T"];
-          return _.getFullYear().toString().substr(2) + G[_.getMonth()] + E.pad(_.getDate() + (R.toLowerCase() === "female" ? 40 : 0), 2);
-        }, S = function(_) {
-          for (var R = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", E = "ABCDEFGHIJABCDEFGHIJKLMNOPQRSTUVWXYZ", G = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", W = "BAKPLCQDREVOSFTGUHMINJWZYX", H = 0, F = 0; F < 15; F++)
-            F % 2 !== 0 ? H += G.indexOf(E[R.indexOf(_[F])]) : H += W.indexOf(E[R.indexOf(_[F])]);
-          return G[H % 26];
+      }, l.prototype.iban = function() {
+        var a = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", s = a + "0123456789", f = this.string({ length: 2, pool: a }) + this.pad(this.integer({ min: 0, max: 99 }), 2) + this.string({ length: 4, pool: s }) + this.pad(this.natural(), this.natural({ min: 6, max: 26 }));
+        return f;
+      }, l.prototype.it_vat = function() {
+        var a = this.natural({ min: 1, max: 18e5 });
+        return a = this.pad(a, 7) + this.pad(this.pick(this.provinces({ country: "it" })).code, 3), a + this.luhn_calculate(a);
+      }, l.prototype.cf = function(a) {
+        a = a || {};
+        var s = a.gender ? a.gender : this.gender(), f = a.first ? a.first : this.first({ gender: s, nationality: "it" }), b = a.last ? a.last : this.last({ nationality: "it" }), C = a.birthday ? a.birthday : this.birthday(), T = a.city ? a.city : this.pickone(["A", "B", "C", "D", "E", "F", "G", "H", "I", "L", "M", "Z"]) + this.pad(this.natural({ max: 999 }), 3), I = [], y = function(M, G) {
+          var D, F = [];
+          return M.length < 3 ? F = M.split("").concat("XXX".split("")).splice(0, 3) : (D = M.toUpperCase().split("").map(function(q) {
+            return "BCDFGHJKLMNPRSTVWZ".indexOf(q) !== -1 ? q : void 0;
+          }).join(""), D.length > 3 && (G ? D = D.substr(0, 3) : D = D[0] + D.substr(2, 2)), D.length < 3 && (F = D, D = M.toUpperCase().split("").map(function(q) {
+            return "AEIOU".indexOf(q) !== -1 ? q : void 0;
+          }).join("").substr(0, 3 - F.length)), F = F + D), F;
+        }, _ = function(M, G, D) {
+          var F = ["A", "B", "C", "D", "E", "H", "L", "M", "P", "R", "S", "T"];
+          return M.getFullYear().toString().substr(2) + F[M.getMonth()] + D.pad(M.getDate() + (G.toLowerCase() === "female" ? 40 : 0), 2);
+        }, k = function(M) {
+          for (var G = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ", D = "ABCDEFGHIJABCDEFGHIJKLMNOPQRSTUVWXYZ", F = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", q = "BAKPLCQDREVOSFTGUHMINJWZYX", W = 0, V = 0; V < 15; V++)
+            V % 2 !== 0 ? W += F.indexOf(D[G.indexOf(M[V])]) : W += q.indexOf(D[G.indexOf(M[V])]);
+          return F[W % 26];
         };
-        return w = w.concat(v(b, !0), v(c), A(C, t, this), M.toUpperCase().split("")).join(""), w += S(w.toUpperCase()), w.toUpperCase();
-      }, o.prototype.pl_pesel = function() {
-        for (var e = this.natural({ min: 1, max: 9999999999 }), t = this.pad(e, 10).split(""), c = 0; c < t.length; c++)
-          t[c] = parseInt(t[c]);
-        var b = (1 * t[0] + 3 * t[1] + 7 * t[2] + 9 * t[3] + 1 * t[4] + 3 * t[5] + 7 * t[6] + 9 * t[7] + 1 * t[8] + 3 * t[9]) % 10;
-        return b !== 0 && (b = 10 - b), t.join("") + b;
-      }, o.prototype.pl_nip = function() {
-        for (var e = this.natural({ min: 1, max: 999999999 }), t = this.pad(e, 9).split(""), c = 0; c < t.length; c++)
-          t[c] = parseInt(t[c]);
-        var b = (6 * t[0] + 5 * t[1] + 7 * t[2] + 2 * t[3] + 3 * t[4] + 4 * t[5] + 5 * t[6] + 6 * t[7] + 7 * t[8]) % 11;
-        return b === 10 ? this.pl_nip() : t.join("") + b;
-      }, o.prototype.pl_regon = function() {
-        for (var e = this.natural({ min: 1, max: 99999999 }), t = this.pad(e, 8).split(""), c = 0; c < t.length; c++)
-          t[c] = parseInt(t[c]);
-        var b = (8 * t[0] + 9 * t[1] + 2 * t[2] + 3 * t[3] + 4 * t[4] + 5 * t[5] + 6 * t[6] + 7 * t[7]) % 11;
-        return b === 10 && (b = 0), t.join("") + b;
-      }, o.prototype.music_genre = function(e = "general") {
-        if (!(e.toLowerCase() in I.music_genres))
-          throw new Error(`Unsupported genre: ${e}`);
-        const t = I.music_genres[e.toLowerCase()], c = this.integer({ min: 0, max: t.length - 1 });
-        return t[c];
-      }, o.prototype.note = function(e) {
-        e = u(e, { notes: "flatKey" });
-        var t = {
+        return I = I.concat(y(b, !0), y(f), _(C, s, this), T.toUpperCase().split("")).join(""), I += k(I.toUpperCase()), I.toUpperCase();
+      }, l.prototype.pl_pesel = function() {
+        for (var a = this.natural({ min: 1, max: 9999999999 }), s = this.pad(a, 10).split(""), f = 0; f < s.length; f++)
+          s[f] = parseInt(s[f]);
+        var b = (1 * s[0] + 3 * s[1] + 7 * s[2] + 9 * s[3] + 1 * s[4] + 3 * s[5] + 7 * s[6] + 9 * s[7] + 1 * s[8] + 3 * s[9]) % 10;
+        return b !== 0 && (b = 10 - b), s.join("") + b;
+      }, l.prototype.pl_nip = function() {
+        for (var a = this.natural({ min: 1, max: 999999999 }), s = this.pad(a, 9).split(""), f = 0; f < s.length; f++)
+          s[f] = parseInt(s[f]);
+        var b = (6 * s[0] + 5 * s[1] + 7 * s[2] + 2 * s[3] + 3 * s[4] + 4 * s[5] + 5 * s[6] + 6 * s[7] + 7 * s[8]) % 11;
+        return b === 10 ? this.pl_nip() : s.join("") + b;
+      }, l.prototype.pl_regon = function() {
+        for (var a = this.natural({ min: 1, max: 99999999 }), s = this.pad(a, 8).split(""), f = 0; f < s.length; f++)
+          s[f] = parseInt(s[f]);
+        var b = (8 * s[0] + 9 * s[1] + 2 * s[2] + 3 * s[3] + 4 * s[4] + 5 * s[5] + 6 * s[6] + 7 * s[7]) % 11;
+        return b === 10 && (b = 0), s.join("") + b;
+      }, l.prototype.music_genre = function(a = "general") {
+        if (!(a.toLowerCase() in P.music_genres))
+          throw new Error(`Unsupported genre: ${a}`);
+        const s = P.music_genres[a.toLowerCase()], f = this.integer({ min: 0, max: s.length - 1 });
+        return s[f];
+      }, l.prototype.note = function(a) {
+        a = m(a, { notes: "flatKey" });
+        var s = {
           naturals: ["C", "D", "E", "F", "G", "A", "B"],
           flats: ["D\u266D", "E\u266D", "G\u266D", "A\u266D", "B\u266D"],
           sharps: ["C\u266F", "D\u266F", "F\u266F", "G\u266F", "A\u266F"]
         };
-        return t.all = t.naturals.concat(t.flats.concat(t.sharps)), t.flatKey = t.naturals.concat(t.flats), t.sharpKey = t.naturals.concat(t.sharps), this.pickone(t[e.notes]);
-      }, o.prototype.midi_note = function(e) {
-        var t = 0, c = 127;
-        return e = u(e, { min: t, max: c }), this.integer({ min: e.min, max: e.max });
-      }, o.prototype.chord_quality = function(e) {
-        e = u(e, { jazz: !0 });
-        var t = ["maj", "min", "aug", "dim"];
-        return e.jazz && (t = [
+        return s.all = s.naturals.concat(s.flats.concat(s.sharps)), s.flatKey = s.naturals.concat(s.flats), s.sharpKey = s.naturals.concat(s.sharps), this.pickone(s[a.notes]);
+      }, l.prototype.midi_note = function(a) {
+        var s = 0, f = 127;
+        return a = m(a, { min: s, max: f }), this.integer({ min: a.min, max: a.max });
+      }, l.prototype.chord_quality = function(a) {
+        a = m(a, { jazz: !0 });
+        var s = ["maj", "min", "aug", "dim"];
+        return a.jazz && (s = [
           "maj7",
           "min7",
           "7",
           "sus",
           "dim",
           "\xF8"
-        ]), this.pickone(t);
-      }, o.prototype.chord = function(e) {
-        return e = u(e), this.note(e) + this.chord_quality(e);
-      }, o.prototype.tempo = function(e) {
-        var t = 40, c = 320;
-        return e = u(e, { min: t, max: c }), this.integer({ min: e.min, max: e.max });
-      }, o.prototype.coin = function() {
+        ]), this.pickone(s);
+      }, l.prototype.chord = function(a) {
+        return a = m(a), this.note(a) + this.chord_quality(a);
+      }, l.prototype.tempo = function(a) {
+        var s = 40, f = 320;
+        return a = m(a, { min: s, max: f }), this.integer({ min: a.min, max: a.max });
+      }, l.prototype.coin = function() {
         return this.bool() ? "heads" : "tails";
       };
-      function P(e) {
+      function B(a) {
         return function() {
-          return this.natural(e);
+          return this.natural(a);
         };
       }
-      o.prototype.d4 = P({ min: 1, max: 4 }), o.prototype.d6 = P({ min: 1, max: 6 }), o.prototype.d8 = P({ min: 1, max: 8 }), o.prototype.d10 = P({ min: 1, max: 10 }), o.prototype.d12 = P({ min: 1, max: 12 }), o.prototype.d20 = P({ min: 1, max: 20 }), o.prototype.d30 = P({ min: 1, max: 30 }), o.prototype.d100 = P({ min: 1, max: 100 }), o.prototype.rpg = function(e, t) {
-        if (t = u(t), e) {
-          var c = e.toLowerCase().split("d"), b = [];
-          if (c.length !== 2 || !parseInt(c[0], 10) || !parseInt(c[1], 10))
+      l.prototype.d4 = B({ min: 1, max: 4 }), l.prototype.d6 = B({ min: 1, max: 6 }), l.prototype.d8 = B({ min: 1, max: 8 }), l.prototype.d10 = B({ min: 1, max: 10 }), l.prototype.d12 = B({ min: 1, max: 12 }), l.prototype.d20 = B({ min: 1, max: 20 }), l.prototype.d30 = B({ min: 1, max: 30 }), l.prototype.d100 = B({ min: 1, max: 100 }), l.prototype.rpg = function(a, s) {
+        if (s = m(s), a) {
+          var f = a.toLowerCase().split("d"), b = [];
+          if (f.length !== 2 || !parseInt(f[0], 10) || !parseInt(f[1], 10))
             throw new Error("Chance: Invalid format provided. Please provide #d# where the first # is the number of dice to roll, the second # is the max of each die");
-          for (var C = c[0]; C > 0; C--)
-            b[C - 1] = this.natural({ min: 1, max: c[1] });
-          return typeof t.sum < "u" && t.sum ? b.reduce(function(M, w) {
-            return M + w;
+          for (var C = f[0]; C > 0; C--)
+            b[C - 1] = this.natural({ min: 1, max: f[1] });
+          return typeof s.sum < "u" && s.sum ? b.reduce(function(T, I) {
+            return T + I;
           }) : b;
         } else
           throw new RangeError("Chance: A type of die roll must be included");
-      }, o.prototype.guid = function(e) {
-        e = u(e, { version: 5 });
-        var t = "abcdef1234567890", c = "ab89", b = this.string({ pool: t, length: 8 }) + "-" + this.string({ pool: t, length: 4 }) + "-" + // The Version
-        e.version + this.string({ pool: t, length: 3 }) + "-" + // The Variant
-        this.string({ pool: c, length: 1 }) + this.string({ pool: t, length: 3 }) + "-" + this.string({ pool: t, length: 12 });
+      }, l.prototype.guid = function(a) {
+        a = m(a, { version: 5 });
+        var s = "abcdef1234567890", f = "ab89", b = this.string({ pool: s, length: 8 }) + "-" + this.string({ pool: s, length: 4 }) + "-" + // The Version
+        a.version + this.string({ pool: s, length: 3 }) + "-" + // The Variant
+        this.string({ pool: f, length: 1 }) + this.string({ pool: s, length: 3 }) + "-" + this.string({ pool: s, length: 12 });
         return b;
-      }, o.prototype.hash = function(e) {
-        e = u(e, { length: 40, casing: "lower" });
-        var t = e.casing === "upper" ? f.toUpperCase() : f;
-        return this.string({ pool: t, length: e.length });
-      }, o.prototype.luhn_check = function(e) {
-        var t = e.toString(), c = +t.substring(t.length - 1);
-        return c === this.luhn_calculate(+t.substring(0, t.length - 1));
-      }, o.prototype.luhn_calculate = function(e) {
-        for (var t = e.toString().split("").reverse(), c = 0, b, C = 0, M = t.length; M > C; ++C)
-          b = +t[C], C % 2 === 0 && (b *= 2, b > 9 && (b -= 9)), c += b;
-        return c * 9 % 10;
-      }, o.prototype.md5 = function(e) {
-        var t = { str: "", key: null, raw: !1 };
-        if (!e)
-          t.str = this.string(), e = {};
-        else if (typeof e == "string")
-          t.str = e, e = {};
+      }, l.prototype.hash = function(a) {
+        a = m(a, { length: 40, casing: "lower" });
+        var s = a.casing === "upper" ? c.toUpperCase() : c;
+        return this.string({ pool: s, length: a.length });
+      }, l.prototype.luhn_check = function(a) {
+        var s = a.toString(), f = +s.substring(s.length - 1);
+        return f === this.luhn_calculate(+s.substring(0, s.length - 1));
+      }, l.prototype.luhn_calculate = function(a) {
+        for (var s = a.toString().split("").reverse(), f = 0, b, C = 0, T = s.length; T > C; ++C)
+          b = +s[C], C % 2 === 0 && (b *= 2, b > 9 && (b -= 9)), f += b;
+        return f * 9 % 10;
+      }, l.prototype.md5 = function(a) {
+        var s = { str: "", key: null, raw: !1 };
+        if (!a)
+          s.str = this.string(), a = {};
+        else if (typeof a == "string")
+          s.str = a, a = {};
         else {
-          if (typeof e != "object")
+          if (typeof a != "object")
             return null;
-          if (e.constructor === "Array")
+          if (a.constructor === "Array")
             return null;
         }
-        if (t = u(e, t), !t.str)
+        if (s = m(a, s), !s.str)
           throw new Error("A parameter is required to return an md5 hash.");
-        return this.bimd5.md5(t.str, t.key, t.raw);
-      }, o.prototype.file = function(e) {
-        var t = e || {}, c = "fileExtension", b = Object.keys(this.get("fileExtension")), C, M;
-        if (C = this.word({ length: t.length }), t.extension)
-          return M = t.extension, C + "." + M;
-        if (t.extensions) {
-          if (Array.isArray(t.extensions))
-            return M = this.pickone(t.extensions), C + "." + M;
-          if (t.extensions.constructor === Object) {
-            var w = t.extensions, v = Object.keys(w);
-            return M = this.pickone(w[this.pickone(v)]), C + "." + M;
+        return this.bimd5.md5(s.str, s.key, s.raw);
+      }, l.prototype.file = function(a) {
+        var s = a || {}, f = "fileExtension", b = Object.keys(this.get("fileExtension")), C, T;
+        if (C = this.word({ length: s.length }), s.extension)
+          return T = s.extension, C + "." + T;
+        if (s.extensions) {
+          if (Array.isArray(s.extensions))
+            return T = this.pickone(s.extensions), C + "." + T;
+          if (s.extensions.constructor === Object) {
+            var I = s.extensions, y = Object.keys(I);
+            return T = this.pickone(I[this.pickone(y)]), C + "." + T;
           }
           throw new Error("Chance: Extensions must be an Array or Object");
         }
-        if (t.fileType) {
-          var A = t.fileType;
-          if (b.indexOf(A) !== -1)
-            return M = this.pickone(this.get(c)[A]), C + "." + M;
+        if (s.fileType) {
+          var _ = s.fileType;
+          if (b.indexOf(_) !== -1)
+            return T = this.pickone(this.get(f)[_]), C + "." + T;
           throw new RangeError("Chance: Expect file type value to be 'raster', 'vector', '3d' or 'document'");
         }
-        return M = this.pickone(this.get(c)[this.pickone(b)]), C + "." + M;
-      }, o.prototype.fileWithContent = function(e) {
-        var t = e || {}, c = "fileName" in t ? t.fileName : this.file().split(".")[0];
-        if (c += "." + ("fileExtension" in t ? t.fileExtension : this.file().split(".")[1]), typeof t.fileSize != "number")
+        return T = this.pickone(this.get(f)[this.pickone(b)]), C + "." + T;
+      }, l.prototype.fileWithContent = function(a) {
+        var s = a || {}, f = "fileName" in s ? s.fileName : this.file().split(".")[0];
+        if (f += "." + ("fileExtension" in s ? s.fileExtension : this.file().split(".")[1]), typeof s.fileSize != "number")
           throw new Error("File size must be an integer");
         var b = {
-          fileData: this.buffer({ length: t.fileSize }),
-          fileName: c
+          fileData: this.buffer({ length: s.fileSize }),
+          fileName: f
         };
         return b;
       };
-      var I = {
+      var P = {
         firstNames: {
           male: {
             en: ["James", "John", "Robert", "Michael", "William", "David", "Richard", "Joseph", "Charles", "Thomas", "Christopher", "Daniel", "Matthew", "George", "Donald", "Anthony", "Paul", "Mark", "Edward", "Steven", "Kenneth", "Andrew", "Brian", "Joshua", "Kevin", "Ronald", "Timothy", "Jason", "Jeffrey", "Frank", "Gary", "Ryan", "Nicholas", "Eric", "Stephen", "Jacob", "Larry", "Jonathan", "Scott", "Raymond", "Justin", "Brandon", "Gregory", "Samuel", "Benjamin", "Patrick", "Jack", "Henry", "Walter", "Dennis", "Jerry", "Alexander", "Peter", "Tyler", "Douglas", "Harold", "Aaron", "Jose", "Adam", "Arthur", "Zachary", "Carl", "Nathan", "Albert", "Kyle", "Lawrence", "Joe", "Willie", "Gerald", "Roger", "Keith", "Jeremy", "Terry", "Harry", "Ralph", "Sean", "Jesse", "Roy", "Louis", "Billy", "Austin", "Bruce", "Eugene", "Christian", "Bryan", "Wayne", "Russell", "Howard", "Fred", "Ethan", "Jordan", "Philip", "Alan", "Juan", "Randy", "Vincent", "Bobby", "Dylan", "Johnny", "Phillip", "Victor", "Clarence", "Ernest", "Martin", "Craig", "Stanley", "Shawn", "Travis", "Bradley", "Leonard", "Earl", "Gabriel", "Jimmy", "Francis", "Todd", "Noah", "Danny", "Dale", "Cody", "Carlos", "Allen", "Frederick", "Logan", "Curtis", "Alex", "Joel", "Luis", "Norman", "Marvin", "Glenn", "Tony", "Nathaniel", "Rodney", "Melvin", "Alfred", "Steve", "Cameron", "Chad", "Edwin", "Caleb", "Evan", "Antonio", "Lee", "Herbert", "Jeffery", "Isaac", "Derek", "Ricky", "Marcus", "Theodore", "Elijah", "Luke", "Jesus", "Eddie", "Troy", "Mike", "Dustin", "Ray", "Adrian", "Bernard", "Leroy", "Angel", "Randall", "Wesley", "Ian", "Jared", "Mason", "Hunter", "Calvin", "Oscar", "Clifford", "Jay", "Shane", "Ronnie", "Barry", "Lucas", "Corey", "Manuel", "Leo", "Tommy", "Warren", "Jackson", "Isaiah", "Connor", "Don", "Dean", "Jon", "Julian", "Miguel", "Bill", "Lloyd", "Charlie", "Mitchell", "Leon", "Jerome", "Darrell", "Jeremiah", "Alvin", "Brett", "Seth", "Floyd", "Jim", "Blake", "Micheal", "Gordon", "Trevor", "Lewis", "Erik", "Edgar", "Vernon", "Devin", "Gavin", "Jayden", "Chris", "Clyde", "Tom", "Derrick", "Mario", "Brent", "Marc", "Herman", "Chase", "Dominic", "Ricardo", "Franklin", "Maurice", "Max", "Aiden", "Owen", "Lester", "Gilbert", "Elmer", "Gene", "Francisco", "Glen", "Cory", "Garrett", "Clayton", "Sam", "Jorge", "Chester", "Alejandro", "Jeff", "Harvey", "Milton", "Cole", "Ivan", "Andre", "Duane", "Landon"],
@@ -11646,263 +11646,263 @@ function oa() {
             "0xe007f"
           ]
         }
-      }, $ = Object.prototype.hasOwnProperty, fe = Object.keys || function(e) {
-        var t = [];
-        for (var c in e)
-          $.call(e, c) && t.push(c);
-        return t;
+      }, N = Object.prototype.hasOwnProperty, O = Object.keys || function(a) {
+        var s = [];
+        for (var f in a)
+          N.call(a, f) && s.push(f);
+        return s;
       };
-      function X(e, t) {
-        for (var c = fe(e), b, C = 0, M = c.length; C < M; C++)
-          b = c[C], t[b] = e[b] || t[b];
+      function z(a, s) {
+        for (var f = O(a), b, C = 0, T = f.length; C < T; C++)
+          b = f[C], s[b] = a[b] || s[b];
       }
-      function Ve(e, t) {
-        for (var c = 0, b = e.length; c < b; c++)
-          t[c] = e[c];
+      function be(a, s) {
+        for (var f = 0, b = a.length; f < b; f++)
+          s[f] = a[f];
       }
-      function ye(e, t) {
-        var c = Array.isArray(e), b = t || (c ? new Array(e.length) : {});
-        return c ? Ve(e, b) : X(e, b), b;
+      function fe(a, s) {
+        var f = Array.isArray(a), b = s || (f ? new Array(a.length) : {});
+        return f ? be(a, b) : z(a, b), b;
       }
-      o.prototype.get = function(e) {
-        return ye(I[e]);
-      }, o.prototype.mac_address = function(e) {
-        e = u(e), e.separator || (e.separator = e.networkVersion ? "." : ":");
-        var t = "ABCDEF1234567890", c = "";
-        return e.networkVersion ? c = this.n(this.string, 3, { pool: t, length: 4 }).join(e.separator) : c = this.n(this.string, 6, { pool: t, length: 2 }).join(e.separator), c;
-      }, o.prototype.normal = function(e) {
-        if (e = u(e, { mean: 0, dev: 1, pool: [] }), g(
-          e.pool.constructor !== Array,
+      l.prototype.get = function(a) {
+        return fe(P[a]);
+      }, l.prototype.mac_address = function(a) {
+        a = m(a), a.separator || (a.separator = a.networkVersion ? "." : ":");
+        var s = "ABCDEF1234567890", f = "";
+        return a.networkVersion ? f = this.n(this.string, 3, { pool: s, length: 4 }).join(a.separator) : f = this.n(this.string, 6, { pool: s, length: 2 }).join(a.separator), f;
+      }, l.prototype.normal = function(a) {
+        if (a = m(a, { mean: 0, dev: 1, pool: [] }), g(
+          a.pool.constructor !== Array,
           "Chance: The pool option must be a valid array."
         ), g(
-          typeof e.mean != "number",
+          typeof a.mean != "number",
           "Chance: Mean (mean) must be a number"
         ), g(
-          typeof e.dev != "number",
+          typeof a.dev != "number",
           "Chance: Standard deviation (dev) must be a number"
-        ), e.pool.length > 0)
-          return this.normal_pool(e);
-        var t, c, b, C, M = e.mean, w = e.dev;
+        ), a.pool.length > 0)
+          return this.normal_pool(a);
+        var s, f, b, C, T = a.mean, I = a.dev;
         do
-          c = this.random() * 2 - 1, b = this.random() * 2 - 1, t = c * c + b * b;
-        while (t >= 1);
-        return C = c * Math.sqrt(-2 * Math.log(t) / t), w * C + M;
-      }, o.prototype.normal_pool = function(e) {
-        var t = 0;
+          f = this.random() * 2 - 1, b = this.random() * 2 - 1, s = f * f + b * b;
+        while (s >= 1);
+        return C = f * Math.sqrt(-2 * Math.log(s) / s), I * C + T;
+      }, l.prototype.normal_pool = function(a) {
+        var s = 0;
         do {
-          var c = Math.round(this.normal({ mean: e.mean, dev: e.dev }));
-          if (c < e.pool.length && c >= 0)
-            return e.pool[c];
-          t++;
-        } while (t < 100);
+          var f = Math.round(this.normal({ mean: a.mean, dev: a.dev }));
+          if (f < a.pool.length && f >= 0)
+            return a.pool[f];
+          s++;
+        } while (s < 100);
         throw new RangeError("Chance: Your pool is too small for the given mean and standard deviation. Please adjust.");
-      }, o.prototype.radio = function(e) {
-        e = u(e, { side: "?" });
-        var t = "";
-        switch (e.side.toLowerCase()) {
+      }, l.prototype.radio = function(a) {
+        a = m(a, { side: "?" });
+        var s = "";
+        switch (a.side.toLowerCase()) {
           case "east":
           case "e":
-            t = "W";
+            s = "W";
             break;
           case "west":
           case "w":
-            t = "K";
+            s = "K";
             break;
           default:
-            t = this.character({ pool: "KW" });
+            s = this.character({ pool: "KW" });
             break;
         }
-        return t + this.character({ alpha: !0, casing: "upper" }) + this.character({ alpha: !0, casing: "upper" }) + this.character({ alpha: !0, casing: "upper" });
-      }, o.prototype.set = function(e, t) {
-        typeof e == "string" ? I[e] = t : I = ye(e, I);
-      }, o.prototype.tv = function(e) {
-        return this.radio(e);
-      }, o.prototype.cnpj = function() {
-        var e = this.n(this.natural, 8, { max: 9 }), t = 2 + e[7] * 6 + e[6] * 7 + e[5] * 8 + e[4] * 9 + e[3] * 2 + e[2] * 3 + e[1] * 4 + e[0] * 5;
-        t = 11 - t % 11, t >= 10 && (t = 0);
-        var c = t * 2 + 3 + e[7] * 7 + e[6] * 8 + e[5] * 9 + e[4] * 2 + e[3] * 3 + e[2] * 4 + e[1] * 5 + e[0] * 6;
-        return c = 11 - c % 11, c >= 10 && (c = 0), "" + e[0] + e[1] + "." + e[2] + e[3] + e[4] + "." + e[5] + e[6] + e[7] + "/0001-" + t + c;
-      }, o.prototype.emotion = function() {
+        return s + this.character({ alpha: !0, casing: "upper" }) + this.character({ alpha: !0, casing: "upper" }) + this.character({ alpha: !0, casing: "upper" });
+      }, l.prototype.set = function(a, s) {
+        typeof a == "string" ? P[a] = s : P = fe(a, P);
+      }, l.prototype.tv = function(a) {
+        return this.radio(a);
+      }, l.prototype.cnpj = function() {
+        var a = this.n(this.natural, 8, { max: 9 }), s = 2 + a[7] * 6 + a[6] * 7 + a[5] * 8 + a[4] * 9 + a[3] * 2 + a[2] * 3 + a[1] * 4 + a[0] * 5;
+        s = 11 - s % 11, s >= 10 && (s = 0);
+        var f = s * 2 + 3 + a[7] * 7 + a[6] * 8 + a[5] * 9 + a[4] * 2 + a[3] * 3 + a[2] * 4 + a[1] * 5 + a[0] * 6;
+        return f = 11 - f % 11, f >= 10 && (f = 0), "" + a[0] + a[1] + "." + a[2] + a[3] + a[4] + "." + a[5] + a[6] + a[7] + "/0001-" + s + f;
+      }, l.prototype.emotion = function() {
         return this.pick(this.get("emotions"));
-      }, o.prototype.mersenne_twister = function(e) {
-        return new U(e);
-      }, o.prototype.blueimp_md5 = function() {
-        return new L();
+      }, l.prototype.mersenne_twister = function(a) {
+        return new Q(a);
+      }, l.prototype.blueimp_md5 = function() {
+        return new R();
       };
-      var U = function(e) {
-        e === void 0 && (e = Math.floor(Math.random() * Math.pow(10, 13))), this.N = 624, this.M = 397, this.MATRIX_A = 2567483615, this.UPPER_MASK = 2147483648, this.LOWER_MASK = 2147483647, this.mt = new Array(this.N), this.mti = this.N + 1, this.init_genrand(e);
+      var Q = function(a) {
+        a === void 0 && (a = Math.floor(Math.random() * Math.pow(10, 13))), this.N = 624, this.M = 397, this.MATRIX_A = 2567483615, this.UPPER_MASK = 2147483648, this.LOWER_MASK = 2147483647, this.mt = new Array(this.N), this.mti = this.N + 1, this.init_genrand(a);
       };
-      U.prototype.init_genrand = function(e) {
-        for (this.mt[0] = e >>> 0, this.mti = 1; this.mti < this.N; this.mti++)
-          e = this.mt[this.mti - 1] ^ this.mt[this.mti - 1] >>> 30, this.mt[this.mti] = (((e & 4294901760) >>> 16) * 1812433253 << 16) + (e & 65535) * 1812433253 + this.mti, this.mt[this.mti] >>>= 0;
-      }, U.prototype.init_by_array = function(e, t) {
-        var c = 1, b = 0, C, M;
-        for (this.init_genrand(19650218), C = this.N > t ? this.N : t; C; C--)
-          M = this.mt[c - 1] ^ this.mt[c - 1] >>> 30, this.mt[c] = (this.mt[c] ^ (((M & 4294901760) >>> 16) * 1664525 << 16) + (M & 65535) * 1664525) + e[b] + b, this.mt[c] >>>= 0, c++, b++, c >= this.N && (this.mt[0] = this.mt[this.N - 1], c = 1), b >= t && (b = 0);
+      Q.prototype.init_genrand = function(a) {
+        for (this.mt[0] = a >>> 0, this.mti = 1; this.mti < this.N; this.mti++)
+          a = this.mt[this.mti - 1] ^ this.mt[this.mti - 1] >>> 30, this.mt[this.mti] = (((a & 4294901760) >>> 16) * 1812433253 << 16) + (a & 65535) * 1812433253 + this.mti, this.mt[this.mti] >>>= 0;
+      }, Q.prototype.init_by_array = function(a, s) {
+        var f = 1, b = 0, C, T;
+        for (this.init_genrand(19650218), C = this.N > s ? this.N : s; C; C--)
+          T = this.mt[f - 1] ^ this.mt[f - 1] >>> 30, this.mt[f] = (this.mt[f] ^ (((T & 4294901760) >>> 16) * 1664525 << 16) + (T & 65535) * 1664525) + a[b] + b, this.mt[f] >>>= 0, f++, b++, f >= this.N && (this.mt[0] = this.mt[this.N - 1], f = 1), b >= s && (b = 0);
         for (C = this.N - 1; C; C--)
-          M = this.mt[c - 1] ^ this.mt[c - 1] >>> 30, this.mt[c] = (this.mt[c] ^ (((M & 4294901760) >>> 16) * 1566083941 << 16) + (M & 65535) * 1566083941) - c, this.mt[c] >>>= 0, c++, c >= this.N && (this.mt[0] = this.mt[this.N - 1], c = 1);
+          T = this.mt[f - 1] ^ this.mt[f - 1] >>> 30, this.mt[f] = (this.mt[f] ^ (((T & 4294901760) >>> 16) * 1566083941 << 16) + (T & 65535) * 1566083941) - f, this.mt[f] >>>= 0, f++, f >= this.N && (this.mt[0] = this.mt[this.N - 1], f = 1);
         this.mt[0] = 2147483648;
-      }, U.prototype.genrand_int32 = function() {
-        var e, t = new Array(0, this.MATRIX_A);
+      }, Q.prototype.genrand_int32 = function() {
+        var a, s = new Array(0, this.MATRIX_A);
         if (this.mti >= this.N) {
-          var c;
-          for (this.mti === this.N + 1 && this.init_genrand(5489), c = 0; c < this.N - this.M; c++)
-            e = this.mt[c] & this.UPPER_MASK | this.mt[c + 1] & this.LOWER_MASK, this.mt[c] = this.mt[c + this.M] ^ e >>> 1 ^ t[e & 1];
-          for (; c < this.N - 1; c++)
-            e = this.mt[c] & this.UPPER_MASK | this.mt[c + 1] & this.LOWER_MASK, this.mt[c] = this.mt[c + (this.M - this.N)] ^ e >>> 1 ^ t[e & 1];
-          e = this.mt[this.N - 1] & this.UPPER_MASK | this.mt[0] & this.LOWER_MASK, this.mt[this.N - 1] = this.mt[this.M - 1] ^ e >>> 1 ^ t[e & 1], this.mti = 0;
+          var f;
+          for (this.mti === this.N + 1 && this.init_genrand(5489), f = 0; f < this.N - this.M; f++)
+            a = this.mt[f] & this.UPPER_MASK | this.mt[f + 1] & this.LOWER_MASK, this.mt[f] = this.mt[f + this.M] ^ a >>> 1 ^ s[a & 1];
+          for (; f < this.N - 1; f++)
+            a = this.mt[f] & this.UPPER_MASK | this.mt[f + 1] & this.LOWER_MASK, this.mt[f] = this.mt[f + (this.M - this.N)] ^ a >>> 1 ^ s[a & 1];
+          a = this.mt[this.N - 1] & this.UPPER_MASK | this.mt[0] & this.LOWER_MASK, this.mt[this.N - 1] = this.mt[this.M - 1] ^ a >>> 1 ^ s[a & 1], this.mti = 0;
         }
-        return e = this.mt[this.mti++], e ^= e >>> 11, e ^= e << 7 & 2636928640, e ^= e << 15 & 4022730752, e ^= e >>> 18, e >>> 0;
-      }, U.prototype.genrand_int31 = function() {
+        return a = this.mt[this.mti++], a ^= a >>> 11, a ^= a << 7 & 2636928640, a ^= a << 15 & 4022730752, a ^= a >>> 18, a >>> 0;
+      }, Q.prototype.genrand_int31 = function() {
         return this.genrand_int32() >>> 1;
-      }, U.prototype.genrand_real1 = function() {
+      }, Q.prototype.genrand_real1 = function() {
         return this.genrand_int32() * (1 / 4294967295);
-      }, U.prototype.random = function() {
+      }, Q.prototype.random = function() {
         return this.genrand_int32() * (1 / 4294967296);
-      }, U.prototype.genrand_real3 = function() {
+      }, Q.prototype.genrand_real3 = function() {
         return (this.genrand_int32() + 0.5) * (1 / 4294967296);
-      }, U.prototype.genrand_res53 = function() {
-        var e = this.genrand_int32() >>> 5, t = this.genrand_int32() >>> 6;
-        return (e * 67108864 + t) * (1 / 9007199254740992);
+      }, Q.prototype.genrand_res53 = function() {
+        var a = this.genrand_int32() >>> 5, s = this.genrand_int32() >>> 6;
+        return (a * 67108864 + s) * (1 / 9007199254740992);
       };
-      var L = function() {
+      var R = function() {
       };
-      L.prototype.VERSION = "1.0.1", L.prototype.safe_add = function(t, c) {
-        var b = (t & 65535) + (c & 65535), C = (t >> 16) + (c >> 16) + (b >> 16);
+      R.prototype.VERSION = "1.0.1", R.prototype.safe_add = function(s, f) {
+        var b = (s & 65535) + (f & 65535), C = (s >> 16) + (f >> 16) + (b >> 16);
         return C << 16 | b & 65535;
-      }, L.prototype.bit_roll = function(e, t) {
-        return e << t | e >>> 32 - t;
-      }, L.prototype.md5_cmn = function(e, t, c, b, C, M) {
-        return this.safe_add(this.bit_roll(this.safe_add(this.safe_add(t, e), this.safe_add(b, M)), C), c);
-      }, L.prototype.md5_ff = function(e, t, c, b, C, M, w) {
-        return this.md5_cmn(t & c | ~t & b, e, t, C, M, w);
-      }, L.prototype.md5_gg = function(e, t, c, b, C, M, w) {
-        return this.md5_cmn(t & b | c & ~b, e, t, C, M, w);
-      }, L.prototype.md5_hh = function(e, t, c, b, C, M, w) {
-        return this.md5_cmn(t ^ c ^ b, e, t, C, M, w);
-      }, L.prototype.md5_ii = function(e, t, c, b, C, M, w) {
-        return this.md5_cmn(c ^ (t | ~b), e, t, C, M, w);
-      }, L.prototype.binl_md5 = function(e, t) {
-        e[t >> 5] |= 128 << t % 32, e[(t + 64 >>> 9 << 4) + 14] = t;
-        var c, b, C, M, w, v = 1732584193, A = -271733879, S = -1732584194, _ = 271733878;
-        for (c = 0; c < e.length; c += 16)
-          b = v, C = A, M = S, w = _, v = this.md5_ff(v, A, S, _, e[c], 7, -680876936), _ = this.md5_ff(_, v, A, S, e[c + 1], 12, -389564586), S = this.md5_ff(S, _, v, A, e[c + 2], 17, 606105819), A = this.md5_ff(A, S, _, v, e[c + 3], 22, -1044525330), v = this.md5_ff(v, A, S, _, e[c + 4], 7, -176418897), _ = this.md5_ff(_, v, A, S, e[c + 5], 12, 1200080426), S = this.md5_ff(S, _, v, A, e[c + 6], 17, -1473231341), A = this.md5_ff(A, S, _, v, e[c + 7], 22, -45705983), v = this.md5_ff(v, A, S, _, e[c + 8], 7, 1770035416), _ = this.md5_ff(_, v, A, S, e[c + 9], 12, -1958414417), S = this.md5_ff(S, _, v, A, e[c + 10], 17, -42063), A = this.md5_ff(A, S, _, v, e[c + 11], 22, -1990404162), v = this.md5_ff(v, A, S, _, e[c + 12], 7, 1804603682), _ = this.md5_ff(_, v, A, S, e[c + 13], 12, -40341101), S = this.md5_ff(S, _, v, A, e[c + 14], 17, -1502002290), A = this.md5_ff(A, S, _, v, e[c + 15], 22, 1236535329), v = this.md5_gg(v, A, S, _, e[c + 1], 5, -165796510), _ = this.md5_gg(_, v, A, S, e[c + 6], 9, -1069501632), S = this.md5_gg(S, _, v, A, e[c + 11], 14, 643717713), A = this.md5_gg(A, S, _, v, e[c], 20, -373897302), v = this.md5_gg(v, A, S, _, e[c + 5], 5, -701558691), _ = this.md5_gg(_, v, A, S, e[c + 10], 9, 38016083), S = this.md5_gg(S, _, v, A, e[c + 15], 14, -660478335), A = this.md5_gg(A, S, _, v, e[c + 4], 20, -405537848), v = this.md5_gg(v, A, S, _, e[c + 9], 5, 568446438), _ = this.md5_gg(_, v, A, S, e[c + 14], 9, -1019803690), S = this.md5_gg(S, _, v, A, e[c + 3], 14, -187363961), A = this.md5_gg(A, S, _, v, e[c + 8], 20, 1163531501), v = this.md5_gg(v, A, S, _, e[c + 13], 5, -1444681467), _ = this.md5_gg(_, v, A, S, e[c + 2], 9, -51403784), S = this.md5_gg(S, _, v, A, e[c + 7], 14, 1735328473), A = this.md5_gg(A, S, _, v, e[c + 12], 20, -1926607734), v = this.md5_hh(v, A, S, _, e[c + 5], 4, -378558), _ = this.md5_hh(_, v, A, S, e[c + 8], 11, -2022574463), S = this.md5_hh(S, _, v, A, e[c + 11], 16, 1839030562), A = this.md5_hh(A, S, _, v, e[c + 14], 23, -35309556), v = this.md5_hh(v, A, S, _, e[c + 1], 4, -1530992060), _ = this.md5_hh(_, v, A, S, e[c + 4], 11, 1272893353), S = this.md5_hh(S, _, v, A, e[c + 7], 16, -155497632), A = this.md5_hh(A, S, _, v, e[c + 10], 23, -1094730640), v = this.md5_hh(v, A, S, _, e[c + 13], 4, 681279174), _ = this.md5_hh(_, v, A, S, e[c], 11, -358537222), S = this.md5_hh(S, _, v, A, e[c + 3], 16, -722521979), A = this.md5_hh(A, S, _, v, e[c + 6], 23, 76029189), v = this.md5_hh(v, A, S, _, e[c + 9], 4, -640364487), _ = this.md5_hh(_, v, A, S, e[c + 12], 11, -421815835), S = this.md5_hh(S, _, v, A, e[c + 15], 16, 530742520), A = this.md5_hh(A, S, _, v, e[c + 2], 23, -995338651), v = this.md5_ii(v, A, S, _, e[c], 6, -198630844), _ = this.md5_ii(_, v, A, S, e[c + 7], 10, 1126891415), S = this.md5_ii(S, _, v, A, e[c + 14], 15, -1416354905), A = this.md5_ii(A, S, _, v, e[c + 5], 21, -57434055), v = this.md5_ii(v, A, S, _, e[c + 12], 6, 1700485571), _ = this.md5_ii(_, v, A, S, e[c + 3], 10, -1894986606), S = this.md5_ii(S, _, v, A, e[c + 10], 15, -1051523), A = this.md5_ii(A, S, _, v, e[c + 1], 21, -2054922799), v = this.md5_ii(v, A, S, _, e[c + 8], 6, 1873313359), _ = this.md5_ii(_, v, A, S, e[c + 15], 10, -30611744), S = this.md5_ii(S, _, v, A, e[c + 6], 15, -1560198380), A = this.md5_ii(A, S, _, v, e[c + 13], 21, 1309151649), v = this.md5_ii(v, A, S, _, e[c + 4], 6, -145523070), _ = this.md5_ii(_, v, A, S, e[c + 11], 10, -1120210379), S = this.md5_ii(S, _, v, A, e[c + 2], 15, 718787259), A = this.md5_ii(A, S, _, v, e[c + 9], 21, -343485551), v = this.safe_add(v, b), A = this.safe_add(A, C), S = this.safe_add(S, M), _ = this.safe_add(_, w);
-        return [v, A, S, _];
-      }, L.prototype.binl2rstr = function(e) {
-        var t, c = "";
-        for (t = 0; t < e.length * 32; t += 8)
-          c += String.fromCharCode(e[t >> 5] >>> t % 32 & 255);
-        return c;
-      }, L.prototype.rstr2binl = function(e) {
-        var t, c = [];
-        for (c[(e.length >> 2) - 1] = void 0, t = 0; t < c.length; t += 1)
-          c[t] = 0;
-        for (t = 0; t < e.length * 8; t += 8)
-          c[t >> 5] |= (e.charCodeAt(t / 8) & 255) << t % 32;
-        return c;
-      }, L.prototype.rstr_md5 = function(e) {
-        return this.binl2rstr(this.binl_md5(this.rstr2binl(e), e.length * 8));
-      }, L.prototype.rstr_hmac_md5 = function(e, t) {
-        var c, b = this.rstr2binl(e), C = [], M = [], w;
-        for (C[15] = M[15] = void 0, b.length > 16 && (b = this.binl_md5(b, e.length * 8)), c = 0; c < 16; c += 1)
-          C[c] = b[c] ^ 909522486, M[c] = b[c] ^ 1549556828;
-        return w = this.binl_md5(C.concat(this.rstr2binl(t)), 512 + t.length * 8), this.binl2rstr(this.binl_md5(M.concat(w), 640));
-      }, L.prototype.rstr2hex = function(e) {
-        var t = "0123456789abcdef", c = "", b, C;
-        for (C = 0; C < e.length; C += 1)
-          b = e.charCodeAt(C), c += t.charAt(b >>> 4 & 15) + t.charAt(b & 15);
-        return c;
-      }, L.prototype.str2rstr_utf8 = function(e) {
-        return unescape(encodeURIComponent(e));
-      }, L.prototype.raw_md5 = function(e) {
-        return this.rstr_md5(this.str2rstr_utf8(e));
-      }, L.prototype.hex_md5 = function(e) {
-        return this.rstr2hex(this.raw_md5(e));
-      }, L.prototype.raw_hmac_md5 = function(e, t) {
-        return this.rstr_hmac_md5(this.str2rstr_utf8(e), this.str2rstr_utf8(t));
-      }, L.prototype.hex_hmac_md5 = function(e, t) {
-        return this.rstr2hex(this.raw_hmac_md5(e, t));
-      }, L.prototype.md5 = function(e, t, c) {
-        return t ? c ? this.raw_hmac_md5(t, e) : this.hex_hmac_md5(t, e) : c ? this.raw_md5(e) : this.hex_md5(e);
-      }, p.exports && (a = p.exports = o), a.Chance = o, typeof importScripts < "u" && (chance = new o(), self.Chance = o), typeof window == "object" && typeof window.document == "object" && (window.Chance = o, window.chance = new o());
+      }, R.prototype.bit_roll = function(a, s) {
+        return a << s | a >>> 32 - s;
+      }, R.prototype.md5_cmn = function(a, s, f, b, C, T) {
+        return this.safe_add(this.bit_roll(this.safe_add(this.safe_add(s, a), this.safe_add(b, T)), C), f);
+      }, R.prototype.md5_ff = function(a, s, f, b, C, T, I) {
+        return this.md5_cmn(s & f | ~s & b, a, s, C, T, I);
+      }, R.prototype.md5_gg = function(a, s, f, b, C, T, I) {
+        return this.md5_cmn(s & b | f & ~b, a, s, C, T, I);
+      }, R.prototype.md5_hh = function(a, s, f, b, C, T, I) {
+        return this.md5_cmn(s ^ f ^ b, a, s, C, T, I);
+      }, R.prototype.md5_ii = function(a, s, f, b, C, T, I) {
+        return this.md5_cmn(f ^ (s | ~b), a, s, C, T, I);
+      }, R.prototype.binl_md5 = function(a, s) {
+        a[s >> 5] |= 128 << s % 32, a[(s + 64 >>> 9 << 4) + 14] = s;
+        var f, b, C, T, I, y = 1732584193, _ = -271733879, k = -1732584194, M = 271733878;
+        for (f = 0; f < a.length; f += 16)
+          b = y, C = _, T = k, I = M, y = this.md5_ff(y, _, k, M, a[f], 7, -680876936), M = this.md5_ff(M, y, _, k, a[f + 1], 12, -389564586), k = this.md5_ff(k, M, y, _, a[f + 2], 17, 606105819), _ = this.md5_ff(_, k, M, y, a[f + 3], 22, -1044525330), y = this.md5_ff(y, _, k, M, a[f + 4], 7, -176418897), M = this.md5_ff(M, y, _, k, a[f + 5], 12, 1200080426), k = this.md5_ff(k, M, y, _, a[f + 6], 17, -1473231341), _ = this.md5_ff(_, k, M, y, a[f + 7], 22, -45705983), y = this.md5_ff(y, _, k, M, a[f + 8], 7, 1770035416), M = this.md5_ff(M, y, _, k, a[f + 9], 12, -1958414417), k = this.md5_ff(k, M, y, _, a[f + 10], 17, -42063), _ = this.md5_ff(_, k, M, y, a[f + 11], 22, -1990404162), y = this.md5_ff(y, _, k, M, a[f + 12], 7, 1804603682), M = this.md5_ff(M, y, _, k, a[f + 13], 12, -40341101), k = this.md5_ff(k, M, y, _, a[f + 14], 17, -1502002290), _ = this.md5_ff(_, k, M, y, a[f + 15], 22, 1236535329), y = this.md5_gg(y, _, k, M, a[f + 1], 5, -165796510), M = this.md5_gg(M, y, _, k, a[f + 6], 9, -1069501632), k = this.md5_gg(k, M, y, _, a[f + 11], 14, 643717713), _ = this.md5_gg(_, k, M, y, a[f], 20, -373897302), y = this.md5_gg(y, _, k, M, a[f + 5], 5, -701558691), M = this.md5_gg(M, y, _, k, a[f + 10], 9, 38016083), k = this.md5_gg(k, M, y, _, a[f + 15], 14, -660478335), _ = this.md5_gg(_, k, M, y, a[f + 4], 20, -405537848), y = this.md5_gg(y, _, k, M, a[f + 9], 5, 568446438), M = this.md5_gg(M, y, _, k, a[f + 14], 9, -1019803690), k = this.md5_gg(k, M, y, _, a[f + 3], 14, -187363961), _ = this.md5_gg(_, k, M, y, a[f + 8], 20, 1163531501), y = this.md5_gg(y, _, k, M, a[f + 13], 5, -1444681467), M = this.md5_gg(M, y, _, k, a[f + 2], 9, -51403784), k = this.md5_gg(k, M, y, _, a[f + 7], 14, 1735328473), _ = this.md5_gg(_, k, M, y, a[f + 12], 20, -1926607734), y = this.md5_hh(y, _, k, M, a[f + 5], 4, -378558), M = this.md5_hh(M, y, _, k, a[f + 8], 11, -2022574463), k = this.md5_hh(k, M, y, _, a[f + 11], 16, 1839030562), _ = this.md5_hh(_, k, M, y, a[f + 14], 23, -35309556), y = this.md5_hh(y, _, k, M, a[f + 1], 4, -1530992060), M = this.md5_hh(M, y, _, k, a[f + 4], 11, 1272893353), k = this.md5_hh(k, M, y, _, a[f + 7], 16, -155497632), _ = this.md5_hh(_, k, M, y, a[f + 10], 23, -1094730640), y = this.md5_hh(y, _, k, M, a[f + 13], 4, 681279174), M = this.md5_hh(M, y, _, k, a[f], 11, -358537222), k = this.md5_hh(k, M, y, _, a[f + 3], 16, -722521979), _ = this.md5_hh(_, k, M, y, a[f + 6], 23, 76029189), y = this.md5_hh(y, _, k, M, a[f + 9], 4, -640364487), M = this.md5_hh(M, y, _, k, a[f + 12], 11, -421815835), k = this.md5_hh(k, M, y, _, a[f + 15], 16, 530742520), _ = this.md5_hh(_, k, M, y, a[f + 2], 23, -995338651), y = this.md5_ii(y, _, k, M, a[f], 6, -198630844), M = this.md5_ii(M, y, _, k, a[f + 7], 10, 1126891415), k = this.md5_ii(k, M, y, _, a[f + 14], 15, -1416354905), _ = this.md5_ii(_, k, M, y, a[f + 5], 21, -57434055), y = this.md5_ii(y, _, k, M, a[f + 12], 6, 1700485571), M = this.md5_ii(M, y, _, k, a[f + 3], 10, -1894986606), k = this.md5_ii(k, M, y, _, a[f + 10], 15, -1051523), _ = this.md5_ii(_, k, M, y, a[f + 1], 21, -2054922799), y = this.md5_ii(y, _, k, M, a[f + 8], 6, 1873313359), M = this.md5_ii(M, y, _, k, a[f + 15], 10, -30611744), k = this.md5_ii(k, M, y, _, a[f + 6], 15, -1560198380), _ = this.md5_ii(_, k, M, y, a[f + 13], 21, 1309151649), y = this.md5_ii(y, _, k, M, a[f + 4], 6, -145523070), M = this.md5_ii(M, y, _, k, a[f + 11], 10, -1120210379), k = this.md5_ii(k, M, y, _, a[f + 2], 15, 718787259), _ = this.md5_ii(_, k, M, y, a[f + 9], 21, -343485551), y = this.safe_add(y, b), _ = this.safe_add(_, C), k = this.safe_add(k, T), M = this.safe_add(M, I);
+        return [y, _, k, M];
+      }, R.prototype.binl2rstr = function(a) {
+        var s, f = "";
+        for (s = 0; s < a.length * 32; s += 8)
+          f += String.fromCharCode(a[s >> 5] >>> s % 32 & 255);
+        return f;
+      }, R.prototype.rstr2binl = function(a) {
+        var s, f = [];
+        for (f[(a.length >> 2) - 1] = void 0, s = 0; s < f.length; s += 1)
+          f[s] = 0;
+        for (s = 0; s < a.length * 8; s += 8)
+          f[s >> 5] |= (a.charCodeAt(s / 8) & 255) << s % 32;
+        return f;
+      }, R.prototype.rstr_md5 = function(a) {
+        return this.binl2rstr(this.binl_md5(this.rstr2binl(a), a.length * 8));
+      }, R.prototype.rstr_hmac_md5 = function(a, s) {
+        var f, b = this.rstr2binl(a), C = [], T = [], I;
+        for (C[15] = T[15] = void 0, b.length > 16 && (b = this.binl_md5(b, a.length * 8)), f = 0; f < 16; f += 1)
+          C[f] = b[f] ^ 909522486, T[f] = b[f] ^ 1549556828;
+        return I = this.binl_md5(C.concat(this.rstr2binl(s)), 512 + s.length * 8), this.binl2rstr(this.binl_md5(T.concat(I), 640));
+      }, R.prototype.rstr2hex = function(a) {
+        var s = "0123456789abcdef", f = "", b, C;
+        for (C = 0; C < a.length; C += 1)
+          b = a.charCodeAt(C), f += s.charAt(b >>> 4 & 15) + s.charAt(b & 15);
+        return f;
+      }, R.prototype.str2rstr_utf8 = function(a) {
+        return unescape(encodeURIComponent(a));
+      }, R.prototype.raw_md5 = function(a) {
+        return this.rstr_md5(this.str2rstr_utf8(a));
+      }, R.prototype.hex_md5 = function(a) {
+        return this.rstr2hex(this.raw_md5(a));
+      }, R.prototype.raw_hmac_md5 = function(a, s) {
+        return this.rstr_hmac_md5(this.str2rstr_utf8(a), this.str2rstr_utf8(s));
+      }, R.prototype.hex_hmac_md5 = function(a, s) {
+        return this.rstr2hex(this.raw_hmac_md5(a, s));
+      }, R.prototype.md5 = function(a, s, f) {
+        return s ? f ? this.raw_hmac_md5(s, a) : this.hex_hmac_md5(s, a) : f ? this.raw_md5(a) : this.hex_md5(a);
+      }, x.exports && (e = x.exports = l), e.Chance = l, typeof importScripts < "u" && (chance = new l(), self.Chance = l), typeof window == "object" && typeof window.document == "object" && (window.Chance = l, window.chance = new l());
     })();
-  })(te, te.exports)), te.exports;
+  })(de, de.exports)), de.exports;
 }
-var sa = oa();
-const la = /* @__PURE__ */ ra(sa);
-function Te(p, a, n, s) {
-  const r = new la(ve++), l = n.toUpperCase(), d = p.toUpperCase(), f = a.toUpperCase();
-  if (s != null && 0 < s.length) {
-    const h = s.length;
-    let o = s[Math.floor(ee() * (h - 0)) + 0];
-    return !l.startsWith("INTEGER") && !l.startsWith("NUMBER") && !l.startsWith("DATE") && (!o.toLowerCase || o.toLowerCase() !== "null") && (!o.charAt || o.charAt(0) !== "q" && o.charAt(1) !== "'") && (o.charAt && o.charAt(0) === "'" && (o = o.substring(1, o.length - 1)), o = o.split("'").join("''"), o = "'" + o + "'"), o;
+var da = ua();
+const ma = /* @__PURE__ */ fa(da);
+function De(x, e, n, r) {
+  const t = new ma(Ie++), o = n.toUpperCase(), d = x.toUpperCase(), c = e.toUpperCase();
+  if (r != null && 0 < r.length) {
+    const h = r.length;
+    let l = r[Math.floor(oe() * (h - 0)) + 0];
+    return !o.startsWith("INTEGER") && !o.startsWith("NUMBER") && !o.startsWith("DATE") && (!l.toLowerCase || l.toLowerCase() !== "null") && (!l.charAt || l.charAt(0) !== "q" && l.charAt(1) !== "'") && (l.charAt && l.charAt(0) === "'" && (l = l.substring(1, l.length - 1)), l = l.split("'").join("''"), l = "'" + l + "'"), l;
   }
-  if (f === "NAME" && 0 <= d.indexOf("DEPARTMENT")) {
-    const m = ["Sales", "Finance", "Delivery", "Manufacturing"];
-    return "'" + m[Math.floor(ee() * m.length)] + "'";
+  if (c === "NAME" && 0 <= d.indexOf("DEPARTMENT")) {
+    const u = ["Sales", "Finance", "Delivery", "Manufacturing"];
+    return "'" + u[Math.floor(oe() * u.length)] + "'";
   }
-  if (r[f.toLowerCase()] !== void 0 && f.indexOf("NAME") < 0)
-    return "'" + r[f.toLowerCase()]() + "'";
-  if (f === "FIRST_NAME")
-    return "'" + r.first() + "'";
-  if (f === "LAST_NAME")
-    return "'" + r.last() + "'";
-  if (0 <= f.indexOf("NAME"))
-    return "'" + r.name() + "'";
-  if (0 < f.indexOf("ADDRESS"))
-    return "'" + r.address() + "'";
-  if (f === "LOCATION")
-    return "'" + r.city() + "'";
-  if (f === "DESCRIPTION") {
-    let m = r.paragraph({ sentences: 2 });
-    const h = Q(n, !1, !0, "");
-    let o = 400, u = -1;
-    for (let x = 0; x < h.length; x++) {
-      const g = h[x].value;
+  if (t[c.toLowerCase()] !== void 0 && c.indexOf("NAME") < 0)
+    return "'" + t[c.toLowerCase()]() + "'";
+  if (c === "FIRST_NAME")
+    return "'" + t.first() + "'";
+  if (c === "LAST_NAME")
+    return "'" + t.last() + "'";
+  if (0 <= c.indexOf("NAME"))
+    return "'" + t.name() + "'";
+  if (0 < c.indexOf("ADDRESS"))
+    return "'" + t.address() + "'";
+  if (c === "LOCATION")
+    return "'" + t.city() + "'";
+  if (c === "DESCRIPTION") {
+    let u = t.paragraph({ sentences: 2 });
+    const h = re(n, !1, !0, "");
+    let l = 400, m = -1;
+    for (let p = 0; p < h.length; p++) {
+      const g = h[p].value;
       if (g === "(") {
-        u = x + 1;
+        m = p + 1;
         continue;
       }
-      if (0 < u && g === ")") {
-        o = parseInt(h[u].value);
+      if (0 < m && g === ")") {
+        l = parseInt(h[m].value);
         break;
       }
     }
-    return o < m.length && (m = m.substring(0, o)), "'" + m + "'";
+    return l < u.length && (u = u.substring(0, l)), "'" + u + "'";
   }
-  if (f === "JOB") {
-    const m = ["Engineer", "Consultant", "Architect", "Manager", "Analyst", "Specialist", "Evangelist", "Salesman"];
-    return "'" + m[Math.floor(ee() * m.length)] + "'";
+  if (c === "JOB") {
+    const u = ["Engineer", "Consultant", "Architect", "Manager", "Analyst", "Specialist", "Evangelist", "Salesman"];
+    return "'" + u[Math.floor(oe() * u.length)] + "'";
   }
-  return l.startsWith("INTEGER") || l.startsWith("NUMBER") ? Math.floor(ee() * 100) : l.startsWith("DATE") || l.startsWith("TIMESTAMP") ? "sysdate-" + Math.floor(ee() * 100) : l === "BLOB" || l === "LONG" ? "null" : "'N/A'";
+  return o.startsWith("INTEGER") || o.startsWith("NUMBER") ? Math.floor(oe() * 100) : o.startsWith("DATE") || o.startsWith("TIMESTAMP") ? "sysdate-" + Math.floor(oe() * 100) : o === "BLOB" || o === "LONG" ? "null" : "'N/A'";
 }
-let ve = 1;
-function ca() {
-  ve = 1;
+let Ie = 1;
+function ha() {
+  Ie = 1;
 }
-function ee() {
-  const p = Math.sin(ve++) * 1e4;
-  return p - Math.floor(p);
+function oe() {
+  const x = Math.sin(Ie++) * 1e4;
+  return x - Math.floor(x);
 }
-function we(p) {
-  return p.lastIndexOf(`,
-`) === p.length - 2 && (p = p.substring(0, p.length - 2) + `
-`), p;
+function Re(x) {
+  return x.lastIndexOf(`,
+`) === x.length - 2 && (x = x.substring(0, x.length - 2) + `
+`), x;
 }
-function Le(p, a, n, s) {
-  let r = [];
-  if (p == null || typeof p != "object") return null;
-  const l = p[n];
-  l != null && a === s && r.push(l);
-  for (const d in p) {
-    const f = p[d], m = Le(f, d, n, s);
-    m !== null && (r = r.concat(m));
+function ze(x, e, n, r) {
+  let t = [];
+  if (x == null || typeof x != "object") return null;
+  const o = x[n];
+  o != null && e === r && t.push(o);
+  for (const d in x) {
+    const c = x[d], u = ze(c, d, n, r);
+    u !== null && (t = t.concat(u));
   }
-  return r;
+  return t;
 }
-class fa {
-  constructor(a) {
-    this._ddl = a;
+class pa {
+  constructor(e) {
+    this._ddl = e;
   }
   // ── Shared helpers ────────────────────────────────────────────────────────
   /**
@@ -11910,242 +11910,242 @@ class fa {
    * referenced table's explicit PK. Returns null for auto-generated PKs
    * so the caller can fall back to the FK column's own convention type.
    */
-  _fkColType(a) {
-    const n = a.getExplicitPkName();
+  _fkColType(e) {
+    const n = e.getExplicitPkName();
     if (n == null || n.includes(",")) return null;
-    const s = a.findChild(n);
-    return s != null ? this.colType(s._inferTypeFull()) : a.getPkType();
+    const r = e.findChild(n);
+    return r != null ? this.colType(r._inferTypeFull()) : e.getPkType();
   }
   // ── Shared: ERD generation ────────────────────────────────────────────────
   generateERD() {
-    const a = this._ddl.descendants(), n = { items: [], links: [] };
-    for (const r of a) {
-      if (r.inferType() !== "table") continue;
-      const l = {
-        name: this._ddl.objPrefix("no schema") + r.parseName(),
+    const e = this._ddl.descendants(), n = { items: [], links: [] };
+    for (const t of e) {
+      if (t.inferType() !== "table") continue;
+      const o = {
+        name: this._ddl.objPrefix("no schema") + t.parseName(),
         schema: this._ddl.getOptionValue("schema") || null,
         columns: []
       };
-      n.items.push(l);
-      const d = r.getGenIdColName();
-      if (d != null && !r.isOption("pk"))
-        l.columns.push({ name: d, datatype: "number" });
+      n.items.push(o);
+      const d = t.getGenIdColName();
+      if (d != null && !t.isOption("pk"))
+        o.columns.push({ name: d, datatype: "number" });
       else {
-        const h = r.getExplicitPkName();
+        const h = t.getExplicitPkName();
         if (h != null && !h.includes(",")) {
-          const o = r.findChild(h);
-          l.columns.push({ name: h, datatype: o ? this.colType(o._inferTypeFull()) : "number" });
+          const l = t.findChild(h);
+          o.columns.push({ name: h, datatype: l ? this.colType(l._inferTypeFull()) : "number" });
         }
       }
-      r.lateInitFks();
-      for (const h in r.fks ?? {}) {
-        const o = r.fks[h];
+      t.lateInitFks();
+      for (const h in t.fks ?? {}) {
+        const l = t.fks[h];
         if (h.includes(",")) {
-          const k = this._ddl.find(o);
-          for (const y of ce(h, ", ")) {
-            if (y === ",") continue;
-            const B = k?.findChild(y);
-            l.columns.push({ name: y, datatype: B ? this.colType(B._inferTypeFull()) : "number" });
+          const S = this._ddl.find(l);
+          for (const v of xe(h, ", ")) {
+            if (v === ",") continue;
+            const w = S?.findChild(v);
+            o.columns.push({ name: v, datatype: w ? this.colType(w._inferTypeFull()) : "number" });
           }
           continue;
         }
-        const u = r.findChild(h);
-        let x = u ? u.inferType() : "number", g = h;
-        const T = this._ddl.find(o);
-        T != null ? x = this._fkColType(T) ?? x : this._ddl.find(h)?.isMany2One?.() && !h.endsWith("_id") && (g = (D(h) ?? h) + "_id"), l.columns.push({ name: g, datatype: x });
+        const m = t.findChild(h);
+        let p = m ? m.inferType() : "number", g = h;
+        const A = this._ddl.find(l);
+        A != null ? p = this._fkColType(A) ?? p : this._ddl.find(h)?.isMany2One?.() && !h.endsWith("_id") && (g = ($(h) ?? h) + "_id"), o.columns.push({ name: g, datatype: p });
       }
-      const f = r.getExplicitPkName();
-      for (const h of r.children)
-        if (h.inferType() !== "table" && h.refId() == null && h.parseName() !== f && (l.columns.push({ name: h.parseName(), datatype: this.colType(h._inferTypeFull()) }), h.indexOf("file") > 0)) {
-          const o = h.parseName(), u = { base: "varchar", varcharLen: 255, colName: o, needsBoolCheck: !1, isNativeBoolean: !1, parent_child: "" }, x = { base: "date", colName: o, needsBoolCheck: !1, isNativeBoolean: !1, parent_child: "" };
-          l.columns.push({ name: o + "_filename", datatype: this.colType(u) }), l.columns.push({ name: o + "_mimetype", datatype: this.colType(u) }), l.columns.push({ name: o + "_charset", datatype: this.colType(u) }), l.columns.push({ name: o + "_lastupd", datatype: this.colType(x) });
+      const c = t.getExplicitPkName();
+      for (const h of t.children)
+        if (h.inferType() !== "table" && h.refId() == null && h.parseName() !== c && (o.columns.push({ name: h.parseName(), datatype: this.colType(h._inferTypeFull()) }), h.indexOf("file") > 0)) {
+          const l = h.parseName(), m = { base: "varchar", varcharLen: 255, colName: l, needsBoolCheck: !1, isNativeBoolean: !1, parent_child: "" }, p = { base: "date", colName: l, needsBoolCheck: !1, isNativeBoolean: !1, parent_child: "" };
+          o.columns.push({ name: l + "_filename", datatype: this.colType(m) }), o.columns.push({ name: l + "_mimetype", datatype: this.colType(m) }), o.columns.push({ name: l + "_charset", datatype: this.colType(m) }), o.columns.push({ name: l + "_lastupd", datatype: this.colType(p) });
         }
-      const m = r.trimmedContent().toUpperCase();
-      if (this._ddl.optionEQvalue("rowkey", !0) || m.includes("/ROWKEY")) {
+      const u = t.trimmedContent().toUpperCase();
+      if (this._ddl.optionEQvalue("rowkey", !0) || u.includes("/ROWKEY")) {
         const h = { base: "varchar", varcharLen: 30, colName: "row_key", needsBoolCheck: !1, isNativeBoolean: !1, parent_child: "" };
-        l.columns.push({ name: "row_key", datatype: this.colType(h) });
+        o.columns.push({ name: "row_key", datatype: this.colType(h) });
       }
-      if ((this._ddl.optionEQvalue("rowVersion", "yes") || m.includes("/ROWVERSION")) && l.columns.push({ name: "row_version", datatype: "integer" }), this._ddl.optionEQvalue("Audit Columns", "yes") || m.includes("/AUDITCOLS")) {
+      if ((this._ddl.optionEQvalue("rowVersion", "yes") || u.includes("/ROWVERSION")) && o.columns.push({ name: "row_version", datatype: "integer" }), this._ddl.optionEQvalue("Audit Columns", "yes") || u.includes("/AUDITCOLS")) {
         let h = this._ddl.getOptionValue("auditdate") || "";
         h || (h = this._ddl.getOptionValue("Date Data Type") ?? "date");
-        const o = { base: h.toLowerCase(), colName: "", needsBoolCheck: !1, isNativeBoolean: !1, parent_child: "" }, u = { base: "varchar", varcharLen: 255, colName: "", needsBoolCheck: !1, isNativeBoolean: !1, parent_child: "" };
-        l.columns.push({ name: this._ddl.getOptionValue("createdcol"), datatype: this.colType(o) }), l.columns.push({ name: this._ddl.getOptionValue("createdbycol"), datatype: this.colType(u) }), l.columns.push({ name: this._ddl.getOptionValue("updatedcol"), datatype: this.colType(o) }), l.columns.push({ name: this._ddl.getOptionValue("updatedbycol"), datatype: this.colType(u) });
+        const l = { base: h.toLowerCase(), colName: "", needsBoolCheck: !1, isNativeBoolean: !1, parent_child: "" }, m = { base: "varchar", varcharLen: 255, colName: "", needsBoolCheck: !1, isNativeBoolean: !1, parent_child: "" };
+        o.columns.push({ name: this._ddl.getOptionValue("createdcol"), datatype: this.colType(l) }), o.columns.push({ name: this._ddl.getOptionValue("createdbycol"), datatype: this.colType(m) }), o.columns.push({ name: this._ddl.getOptionValue("updatedcol"), datatype: this.colType(l) }), o.columns.push({ name: this._ddl.getOptionValue("updatedbycol"), datatype: this.colType(m) });
       }
-      if (this._ddl.optionEQvalue("tenantid", !0) && !r.isOption("notenantid") && r.findChild("tenant_id") === null) {
+      if (this._ddl.optionEQvalue("tenantid", !0) && !t.isOption("notenantid") && t.findChild("tenant_id") === null) {
         const h = { base: "number", colName: "tenant_id", needsBoolCheck: !1, isNativeBoolean: !1, parent_child: "" };
-        l.columns.push({ name: "tenant_id", datatype: this.colType(h) });
+        o.columns.push({ name: "tenant_id", datatype: this.colType(h) });
       }
     }
-    for (const r of a)
-      if (r.inferType() === "table") {
-        this.generateDDL(r);
-        for (const l in r.fks ?? {}) {
-          const d = r.fks[l], f = this._ddl.find(d);
-          if (f == null) continue;
-          const m = f.getExplicitPkName() ?? "id", h = r.findChild(l), o = h == null || h.isOption("nn") || h.isOption("notnull"), u = {
+    for (const t of e)
+      if (t.inferType() === "table") {
+        this.generateDDL(t);
+        for (const o in t.fks ?? {}) {
+          const d = t.fks[o], c = this._ddl.find(d);
+          if (c == null) continue;
+          const u = c.getExplicitPkName() ?? "id", h = t.findChild(o), l = h == null || h.isOption("nn") || h.isOption("notnull"), m = {
             source: this._ddl.objPrefix("no schema") + d,
-            source_id: m,
-            target: this._ddl.objPrefix("no schema") + r.parseName(),
-            target_id: l
+            source_id: u,
+            target: this._ddl.objPrefix("no schema") + t.parseName(),
+            target_id: o
           };
-          o && (u.mandatory = o), n.links.push(u);
+          l && (m.mandatory = l), n.links.push(m);
         }
       }
     if (this._ddl.optionEQvalue("tenantid", !0)) {
-      const r = String(this._ddl.getOptionValue("tenantref") || "tenants"), l = this._ddl.find(r);
-      if (l != null) {
-        const d = l.getExplicitPkName() ?? "id", f = this._ddl.objPrefix("no schema") + r;
-        for (const m of a)
-          m.inferType() === "table" && (m.isOption("notenantid") || m.findChild("tenant_id") === null && n.links.push({
-            source: f,
+      const t = String(this._ddl.getOptionValue("tenantref") || "tenants"), o = this._ddl.find(t);
+      if (o != null) {
+        const d = o.getExplicitPkName() ?? "id", c = this._ddl.objPrefix("no schema") + t;
+        for (const u of e)
+          u.inferType() === "table" && (u.isOption("notenantid") || u.findChild("tenant_id") === null && n.links.push({
+            source: c,
             source_id: d,
-            target: this._ddl.objPrefix("no schema") + m.parseName(),
+            target: this._ddl.objPrefix("no schema") + u.parseName(),
             target_id: "tenant_id",
             mandatory: !0
           }));
       }
     }
-    const s = {};
-    for (const r of a) {
-      if (r.inferType() !== "table") continue;
-      const l = r.getAnnotationValue("TGROUP");
-      l != null && (s[l] || (s[l] = []), s[l].push(this._ddl.objPrefix("no schema") + r.parseName()));
+    const r = {};
+    for (const t of e) {
+      if (t.inferType() !== "table") continue;
+      const o = t.getAnnotationValue("TGROUP");
+      o != null && (r[o] || (r[o] = []), r[o].push(this._ddl.objPrefix("no schema") + t.parseName()));
     }
-    return Object.keys(s).length > 0 && (n.groups = s), n;
+    return Object.keys(r).length > 0 && (n.groups = r), n;
   }
   // ── Shared: INSERT data generation ────────────────────────────────────────
   /**
    * Dialect hook: SQL to reset an IDENTITY/sequence column after bulk inserts.
    * Return empty string if the dialect needs no reset statement.
    */
-  identityRestartSql(a, n, s) {
+  identityRestartSql(e, n, r) {
     return "";
   }
-  _isContainedIn(a, n) {
-    for (const s of n)
-      if (s.parseName() === a.parseName()) return !0;
+  _isContainedIn(e, n) {
+    for (const r of n)
+      if (r.parseName() === e.parseName()) return !0;
     return !1;
   }
-  _orderedTableNodes(a) {
-    const n = [a];
-    for (const s of a.descendants().slice(1))
-      s.children.length !== 0 && (s.isMany2One() ? this._isContainedIn(s, n) || n.unshift(s) : this._isContainedIn(s, n) || n.push(s));
+  _orderedTableNodes(e) {
+    const n = [e];
+    for (const r of e.descendants().slice(1))
+      r.children.length !== 0 && (r.isMany2One() ? this._isContainedIn(r, n) || n.unshift(r) : this._isContainedIn(r, n) || n.push(r));
     return n;
   }
-  generateData(a, n) {
-    if (ca(), this._ddl.optionEQvalue("inserts", !1)) return "";
-    const s = this.inserts4tbl(a, n), r = this._orderedTableNodes(a);
-    let l = "";
-    for (const d of r) {
-      const f = this._ddl.objPrefix() + d.parseName(), m = s[f];
-      m != null && (l += m);
+  generateData(e, n) {
+    if (ha(), this._ddl.optionEQvalue("inserts", !1)) return "";
+    const r = this.inserts4tbl(e, n), t = this._orderedTableNodes(e);
+    let o = "";
+    for (const d of t) {
+      const c = this._ddl.objPrefix() + d.parseName(), u = r[c];
+      u != null && (o += u);
     }
-    return l;
+    return o;
   }
-  inserts4tbl(a, n) {
-    let s = {};
+  inserts4tbl(e, n) {
+    let r = {};
     if (this._ddl.optionEQvalue("inserts", !1)) return {};
-    const r = this._ddl.objPrefix() + a.parseName();
-    let l = "";
-    for (let f = 0; f < a.cardinality(); f++) {
-      let m = null;
+    const t = this._ddl.objPrefix() + e.parseName();
+    let o = "";
+    for (let c = 0; c < e.cardinality(); c++) {
+      let u = null;
       if (n != null) {
-        const h = n[r];
-        h != null && Array.isArray(h) && (m = h[f]);
+        const h = n[t];
+        h != null && Array.isArray(h) && (u = h[c]);
       }
-      l += this._buildInsertStatement(a, f, m, r);
+      o += this._buildInsertStatement(e, c, u, t);
     }
-    l !== "" && (l += `
+    o !== "" && (o += `
 commit;
 
 `);
-    const d = a.getGenIdColName();
-    d != null && 1 < a.cardinality() && !this._ddl.optionEQvalue("pk", "guid") && (l += this.identityRestartSql(r, d, a.cardinality() + 1)), s[r] = l;
-    for (const f of a.children)
-      f.children.length > 0 && (s = { ...s, ...this.inserts4tbl(f, n) });
-    return s;
+    const d = e.getGenIdColName();
+    d != null && 1 < e.cardinality() && !this._ddl.optionEQvalue("pk", "guid") && (o += this.identityRestartSql(t, d, e.cardinality() + 1)), r[t] = o;
+    for (const c of e.children)
+      c.children.length > 0 && (r = { ...r, ...this.inserts4tbl(c, n) });
+    return r;
   }
-  _buildInsertStatement(a, n, s, r) {
-    let l = "insert into " + r + ` (
+  _buildInsertStatement(e, n, r, t) {
+    let o = "insert into " + t + ` (
 `;
-    const d = a.getGenIdColName();
-    let f = null, m = null;
-    d != null ? (f = d, l += i + f + `,
-`) : (f = a.getExplicitPkName(), f != null && (l += i + f + `,
+    const d = e.getGenIdColName();
+    let c = null, u = null;
+    d != null ? (c = d, o += i + c + `,
+`) : (c = e.getExplicitPkName(), c != null && (o += i + c + `,
 `));
-    for (let h in a.fks ?? {}) {
-      let o = a.fks[h], u = "", x = this._ddl.find(o);
-      x == null && (x = this._ddl.find(h), x?.isMany2One?.() && !h.endsWith("_id") && (o = h, h = D(h) ?? h, u = "_id")), l += i + h + u + `,
+    for (let h in e.fks ?? {}) {
+      let l = e.fks[h], m = "", p = this._ddl.find(l);
+      p == null && (p = this._ddl.find(h), p?.isMany2One?.() && !h.endsWith("_id") && (l = h, h = $(h) ?? h, m = "_id")), o += i + h + m + `,
 `;
     }
-    for (const h of a.regularColumns())
-      d != null && h.parseName() === "id" || h.isOption("pk") || (l += i + h.parseName() + `,
+    for (const h of e.regularColumns())
+      d != null && h.parseName() === "id" || h.isOption("pk") || (o += i + h.parseName() + `,
 `);
-    if (l = we(l), l += `) values (
+    if (o = Re(o), o += `) values (
 `, d != null)
-      m = n + 1, l += i + m + `,
+      u = n + 1, o += i + u + `,
 `;
-    else if (f != null) {
-      const h = f, o = Le(this._ddl.data, null, h, a.parseName());
-      let u = -1;
-      s != null && (u = s[h]), o != null && o[n] != null && (u = o[n]), u !== -1 && typeof u == "string" && (u = "'" + u + "'"), m = u !== -1 ? u : n + 1, l += i + m + `,
-`;
-    }
-    for (const h in a.fks ?? {}) {
-      const o = a.fks[h], { type: u, values: x } = this._resolveFkSampleValues(a, h, o, s, m, r), g = String(this._ddl.getOptionValue("Data Language") ?? "EN");
-      l += i + String(Me(g, Te(r, (D(o) ?? o) + "_id", u, x))) + `,
+    else if (c != null) {
+      const h = c, l = ze(this._ddl.data, null, h, e.parseName());
+      let m = -1;
+      r != null && (m = r[h]), l != null && l[n] != null && (m = l[n]), m !== -1 && typeof m == "string" && (m = "'" + m + "'"), u = m !== -1 ? m : n + 1, o += i + u + `,
 `;
     }
-    for (const h of a.regularColumns()) {
-      if (d != null && h.parseName() === "id" || h.parseName() === a.getExplicitPkName()) continue;
-      let o = h.parseValues();
-      const u = h.parseName();
-      if (s != null) {
-        const T = s[u];
-        T != null && (o = [T]);
+    for (const h in e.fks ?? {}) {
+      const l = e.fks[h], { type: m, values: p } = this._resolveFkSampleValues(e, h, l, r, u, t), g = String(this._ddl.getOptionValue("Data Language") ?? "EN");
+      o += i + String(Ee(g, De(t, ($(l) ?? l) + "_id", m, p))) + `,
+`;
+    }
+    for (const h of e.regularColumns()) {
+      if (d != null && h.parseName() === "id" || h.parseName() === e.getExplicitPkName()) continue;
+      let l = h.parseValues();
+      const m = h.parseName();
+      if (r != null) {
+        const A = r[m];
+        A != null && (l = [A]);
       }
-      const x = String(this._ddl.getOptionValue("Data Language") ?? "EN"), g = Te(r, u, this.colType(h._inferTypeFull()), o);
-      l += i + String(Me(x, g)) + `,
+      const p = String(this._ddl.getOptionValue("Data Language") ?? "EN"), g = De(t, m, this.colType(h._inferTypeFull()), l);
+      o += i + String(Ee(p, g)) + `,
 `;
     }
-    return l = we(l), l += `);
-`, l;
+    return o = Re(o), o += `);
+`, o;
   }
-  _resolveFkSampleValues(a, n, s, r, l, d) {
-    const f = this._ddl.find(s);
-    let m = [], h = "INTEGER";
-    for (let o = 1; o <= (f?.cardinality() ?? 0); o++) m.push(o);
-    if (r != null) {
-      const o = r, u = o[n];
-      if (u != null)
-        typeof u == "string" && (h = "STRING"), m = [u];
+  _resolveFkSampleValues(e, n, r, t, o, d) {
+    const c = this._ddl.find(r);
+    let u = [], h = "INTEGER";
+    for (let l = 1; l <= (c?.cardinality() ?? 0); l++) u.push(l);
+    if (t != null) {
+      const l = t, m = l[n];
+      if (m != null)
+        typeof m == "string" && (h = "STRING"), u = [m];
       else {
-        const x = d + "_" + s, g = this._ddl.data?.[x];
+        const p = d + "_" + r, g = this._ddl.data?.[p];
         if (g != null)
-          for (const T in g) {
-            const k = g[T];
-            if (k[d + "_id"] === l) {
-              const y = k[n];
-              y != null && (typeof y == "string" && (h = "STRING"), m = [y]);
+          for (const A in g) {
+            const S = g[A];
+            if (S[d + "_id"] === o) {
+              const v = S[n];
+              v != null && (typeof v == "string" && (h = "STRING"), u = [v]);
               break;
             }
           }
         else {
-          const T = f?.getPkName() ?? null, k = T != null ? o[T] : void 0;
-          k != null && (typeof k == "string" && (h = "STRING"), m = [k]);
+          const A = c?.getPkName() ?? null, S = A != null ? l[A] : void 0;
+          S != null && (typeof S == "string" && (h = "STRING"), u = [S]);
         }
       }
     }
-    return { type: h, values: m };
+    return { type: h, values: u };
   }
 }
-const ua = "generated by default on null as identity";
-function De(p, a, n) {
-  switch (p.base) {
+const xa = "generated by default on null as identity";
+function te(x, e, n) {
+  switch (x.base) {
     case "varchar":
-      return `varchar2(${p.varcharLen ?? 4e3}${a})`;
+      return `varchar2(${x.varcharLen ?? 4e3}${e})`;
     case "number":
-      return p.numericSpec ? `number${p.numericSpec}` : "number";
+      return x.numericSpec ? `number${x.numericSpec}` : "number";
     case "integer":
       return "integer";
     case "date":
@@ -12165,387 +12165,387 @@ function De(p, a, n) {
     case "geometry":
       return "sdo_geometry";
     case "json":
-      return n ? "json" : `clob check (${p.colName} is json)`;
+      return n ? "json" : `clob check (${x.colName} is json)`;
     case "vector":
-      return `vector${p.vectorSpec ?? "(*,*,*)"}`;
+      return `vector${x.vectorSpec ?? "(*,*,*)"}`;
     default:
-      return p.base;
+      return x.base;
   }
 }
-function Re(p) {
-  const a = p.getOptionValue("db");
-  return a != null && a.length > 0 && 23 <= (Y(a) ?? 0);
+function j(x) {
+  const e = x.getOptionValue("db");
+  return e != null && e.length > 0 && 23 <= (ae(e) ?? 0);
 }
-function Ge(p, a, n) {
-  return a.optionEQvalue("pk", "identityDataType") ? ua : a.optionEQvalue("pk", "seq") ? ("default on null " + p + n.seq + ".NEXTVAL ").toLowerCase() : a.optionEQvalue("pk", "guid") ? "default on null to_number(sys_guid(), 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') " : "not null";
+function Ve(x, e, n) {
+  return e.optionEQvalue("pk", "identityDataType") ? xa : e.optionEQvalue("pk", "seq") ? ("default on null " + x + n.seq + ".NEXTVAL ").toLowerCase() : e.optionEQvalue("pk", "guid") ? "default on null to_number(sys_guid(), 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') " : "not null";
 }
-function da(p) {
-  return p.lastIndexOf(`,
-`) === p.length - 2 && (p = p.substring(0, p.length - 2) + `
-`), p;
+function ba(x) {
+  return x.lastIndexOf(`,
+`) === x.length - 2 && (x = x.substring(0, x.length - 2) + `
+`), x;
 }
-class ma {
-  constructor(a, n) {
-    this.ctx = a, this.naming = n;
+class ga {
+  constructor(e, n) {
+    this.ctx = e, this.naming = n;
   }
-  generateView(a) {
-    if (a.inferType() !== "view" && a.inferType() !== "dv") return "";
-    if (this.ctx.optionEQvalue("Duality View", "yes") || a.inferType() === "dv")
+  generateView(e) {
+    if (e.inferType() !== "view" && e.inferType() !== "dv") return "";
+    if (this.ctx.optionEQvalue("Duality View", "yes") || e.inferType() === "dv")
       try {
-        return this.generateDualityView(a);
-      } catch (m) {
-        if (m.message === a.one2many2oneUnsupoorted) return "";
-        throw m;
+        return this.generateDualityView(e);
+      } catch (u) {
+        if (u.message === e.one2many2oneUnsupoorted) return "";
+        throw u;
       }
-    const n = this.ctx.objPrefix() + a.parseName(), s = a.src, r = this._buildViewSetup(a, s);
-    if (r === null) return "";
-    let l = "create or replace view " + n;
-    a.annotations !== null && (l += `
-annotations (` + a.annotations + ")"), l += ` as
-`, l += `select
-`, l += this._buildViewColList(a, s, r.aliasMap, r.tblCache, r.colCnts, r.tblTransCols, r.maxLen), l = da(l);
-    const { sortedTables: d, joinConditions: f } = this._sortViewTables(a, s, r.tblCache);
-    return l += `from
-`, l += this._buildViewFromClause(a, d, r.aliasMap, f, r.tblTransCols, r.tblCache), l = l.toLowerCase(), l.endsWith(`
-`) && (l = l.trimEnd()), l.endsWith(`
-`) || (l += `
-`), l += `/
-`, l.toLowerCase();
+    const n = this.ctx.objPrefix() + e.parseName(), r = e.src, t = this._buildViewSetup(e, r);
+    if (t === null) return "";
+    let o = "create or replace view " + n;
+    e.annotations !== null && (o += `
+annotations (` + e.annotations + ")"), o += ` as
+`, o += `select
+`, o += this._buildViewColList(e, r, t.aliasMap, t.tblCache, t.colCnts, t.tblTransCols, t.maxLen), o = ba(o);
+    const { sortedTables: d, joinConditions: c } = this._sortViewTables(e, r, t.tblCache);
+    return o += `from
+`, o += this._buildViewFromClause(e, d, t.aliasMap, c, t.tblTransCols, t.tblCache), o = o.toLowerCase(), o.endsWith(`
+`) && (o = o.trimEnd()), o.endsWith(`
+`) || (o += `
+`), o += `/
+`, o.toLowerCase();
   }
-  _buildViewSetup(a, n) {
-    const s = {}, r = {};
-    for (let m = 2; m < n.length; m++)
-      s[n[m].value] = pe(n[m].value), r[n[m].value] = this.ctx.find(n[m].value);
-    let l = 0;
-    for (let m = 2; m < n.length; m++) {
-      const h = r[n[m].value];
+  _buildViewSetup(e, n) {
+    const r = {}, t = {};
+    for (let u = 2; u < n.length; u++)
+      r[n[u].value] = Se(n[u].value), t[n[u].value] = this.ctx.find(n[u].value);
+    let o = 0;
+    for (let u = 2; u < n.length; u++) {
+      const h = t[n[u].value];
       if (h === null) return null;
-      const o = s[n[m].value];
-      let u = (o + ".id").length;
-      l < u && (l = u);
-      for (const x of h.children)
-        u = (o + "." + x.parseName()).length, l < u && (l = u);
+      const l = r[n[u].value];
+      let m = (l + ".id").length;
+      o < m && (o = m);
+      for (const p of h.children)
+        m = (l + "." + p.parseName()).length, o < m && (o = m);
     }
     const d = {};
-    for (let m = 2; m < n.length; m++) {
-      const h = r[n[m].value];
+    for (let u = 2; u < n.length; u++) {
+      const h = t[n[u].value];
       if (h !== null)
-        for (const o of h.children)
-          d[o.parseName()] = (d[o.parseName()] ?? 0) + 1;
+        for (const l of h.children)
+          d[l.parseName()] = (d[l.parseName()] ?? 0) + 1;
     }
-    for (let m = 2; m < n.length; m++) {
-      const h = (D(n[m].value) ?? n[m].value) + "_id";
+    for (let u = 2; u < n.length; u++) {
+      const h = ($(n[u].value) ?? n[u].value) + "_id";
       d[h] = (d[h] ?? 0) + 1;
     }
-    const f = {};
-    for (let m = 2; m < n.length; m++) {
-      const h = r[n[m].value];
+    const c = {};
+    for (let u = 2; u < n.length; u++) {
+      const h = t[n[u].value];
       if (h !== null) {
-        const o = h.getTransColumns();
-        if (o.length > 0) {
-          const u = {};
-          for (const x of o) u[x.parseName()] = !0;
-          f[n[m].value] = u;
+        const l = h.getTransColumns();
+        if (l.length > 0) {
+          const m = {};
+          for (const p of l) m[p.parseName()] = !0;
+          c[n[u].value] = m;
         }
       }
     }
-    return { aliasMap: s, tblCache: r, maxLen: l, colCnts: d, tblTransCols: f };
+    return { aliasMap: r, tblCache: t, maxLen: o, colCnts: d, tblTransCols: c };
   }
-  _buildViewColList(a, n, s, r, l, d, f) {
-    let m = "";
+  _buildViewColList(e, n, r, t, o, d, c) {
+    let u = "";
     for (let h = 2; h < n.length; h++) {
-      const o = r[n[h].value];
-      if (o === null) continue;
-      const u = n[h].value, x = s[u], g = d[u] ?? {}, T = " ".repeat(f - (x.length + 1 + 2));
-      m += i + x + ".id" + i + T + (D(u) ?? u) + `_id,
+      const l = t[n[h].value];
+      if (l === null) continue;
+      const m = n[h].value, p = r[m], g = d[m] ?? {}, A = " ".repeat(c - (p.length + 1 + 2));
+      u += i + p + ".id" + i + A + ($(m) ?? m) + `_id,
 `;
-      for (const k of o.children)
-        if (k.children.length === 0) {
-          const y = k.parseName();
-          let B = "";
-          if (1 < (l[y] ?? 0) && (B = (D(u) ?? u) + "_"), g[y]) {
-            const P = `coalesce(${"t_" + u}.trans_${y}, ${x}.${y})`;
-            m += i + P + i + B + y + `,
+      for (const S of l.children)
+        if (S.children.length === 0) {
+          const v = S.parseName();
+          let w = "";
+          if (1 < (o[v] ?? 0) && (w = ($(m) ?? m) + "_"), g[v]) {
+            const B = `coalesce(${"t_" + m}.trans_${v}, ${p}.${v})`;
+            u += i + B + i + w + v + `,
 `;
           } else {
-            const N = " ".repeat(f - (x.length + 1 + y.length));
-            m += i + x + "." + y + i + N + B + y + `,
+            const E = " ".repeat(c - (p.length + 1 + v.length));
+            u += i + p + "." + v + i + E + w + v + `,
 `;
           }
         }
-      if (o.hasRowVersion()) {
-        const k = i + " ".repeat(o.maxChildNameLen() - 11);
-        m += i + x + ".row_version" + k + (D(u) ?? u) + `_row_version,
+      if (l.hasRowVersion()) {
+        const S = i + " ".repeat(l.maxChildNameLen() - 11);
+        u += i + p + ".row_version" + S + ($(m) ?? m) + `_row_version,
 `;
       }
-      if (o.hasRowKey()) {
-        const k = i + " ".repeat(o.maxChildNameLen() - 7);
-        m += i + x + ".ROW_KEY" + k + (D(u) ?? u) + `_ROW_KEY,
+      if (l.hasRowKey()) {
+        const S = i + " ".repeat(l.maxChildNameLen() - 7);
+        u += i + p + ".ROW_KEY" + S + ($(m) ?? m) + `_ROW_KEY,
 `;
       }
-      if (o.hasAuditCols())
-        for (const k of ["createdcol", "createdbycol", "updatedcol", "updatedbycol"]) {
-          const y = String(this.ctx.getOptionValue(k) ?? ""), B = i + " ".repeat(o.maxChildNameLen() - y.length);
-          m += i + x + "." + y + B + (D(u) ?? u) + "_" + y + `,
+      if (l.hasAuditCols())
+        for (const S of ["createdcol", "createdbycol", "updatedcol", "updatedbycol"]) {
+          const v = String(this.ctx.getOptionValue(S) ?? ""), w = i + " ".repeat(l.maxChildNameLen() - v.length);
+          u += i + p + "." + v + w + ($(m) ?? m) + "_" + v + `,
 `;
         }
     }
-    return m;
+    return u;
   }
-  _sortViewTables(a, n, s) {
-    const r = {};
-    for (let h = 2; h < n.length; h++) r[n[h].value] = !0;
-    const l = {};
+  _sortViewTables(e, n, r) {
+    const t = {};
+    for (let h = 2; h < n.length; h++) t[n[h].value] = !0;
+    const o = {};
     for (let h = 2; h < n.length; h++) {
-      const o = n[h].value, u = s[o];
-      if (u !== null)
-        for (const x in u.fks) {
-          const g = u.fks[x];
-          r[g] && g !== o && (l[o] || (l[o] = []), l[o].push({ fkCol: x, parentTable: g }));
+      const l = n[h].value, m = r[l];
+      if (m !== null)
+        for (const p in m.fks) {
+          const g = m.fks[p];
+          t[g] && g !== l && (o[l] || (o[l] = []), o[l].push({ fkCol: p, parentTable: g }));
         }
     }
-    const d = {}, f = [];
+    const d = {}, c = [];
     for (let h = 2; h < n.length; h++) {
-      const o = n[h].value;
-      l[o] || (f.push(o), d[o] = !0);
+      const l = n[h].value;
+      o[l] || (c.push(l), d[l] = !0);
     }
-    let m = [];
+    let u = [];
     for (let h = 2; h < n.length; h++)
-      l[n[h].value] && m.push(n[h].value);
-    for (; m.length > 0; ) {
+      o[n[h].value] && u.push(n[h].value);
+    for (; u.length > 0; ) {
       let h = !1;
-      const o = [];
-      for (const u of m)
-        l[u].every((g) => d[g.parentTable]) ? (f.push(u), d[u] = !0, h = !0) : o.push(u);
-      if (m = o, !h) {
-        for (const u of m)
-          f.push(u), d[u] = !0;
+      const l = [];
+      for (const m of u)
+        o[m].every((g) => d[g.parentTable]) ? (c.push(m), d[m] = !0, h = !0) : l.push(m);
+      if (u = l, !h) {
+        for (const m of u)
+          c.push(m), d[m] = !0;
         break;
       }
     }
-    return { sortedTables: f, joinConditions: l };
+    return { sortedTables: c, joinConditions: o };
   }
-  _buildViewFromClause(a, n, s, r, l, d) {
-    let f = "";
-    const m = this.ctx.getOptionValue("transcontext");
+  _buildViewFromClause(e, n, r, t, o, d) {
+    let c = "";
+    const u = this.ctx.getOptionValue("transcontext");
     for (let h = 0; h < n.length; h++) {
-      const o = n[h], u = s[o];
-      let x = u;
-      if (this.ctx.objPrefix() && (x = this.ctx.objPrefix() + o + " " + u), h === 0)
-        f += i + x + `
+      const l = n[h], m = r[l];
+      let p = m;
+      if (this.ctx.objPrefix() && (p = this.ctx.objPrefix() + l + " " + m), h === 0)
+        c += i + p + `
 `;
-      else if (r[o]) {
-        const g = r[o];
-        f += i + "left join " + x + `
+      else if (t[l]) {
+        const g = t[l];
+        c += i + "left join " + p + `
 `;
-        for (let T = 0; T < g.length; T++) {
-          const k = s[g[T].parentTable], y = T === 0 ? "on " : "and ";
-          f += i + i + y + u + "." + g[T].fkCol + " = " + k + `.id
+        for (let A = 0; A < g.length; A++) {
+          const S = r[g[A].parentTable], v = A === 0 ? "on " : "and ";
+          c += i + i + v + m + "." + g[A].fkCol + " = " + S + `.id
 `;
         }
       } else
-        f += i + "cross join " + x + `
+        c += i + "cross join " + p + `
 `;
-      if (l[o]) {
-        const g = d[o], T = this.ctx.objPrefix() + o + "_trans", k = "t_" + o, y = (D(o) ?? o) + "_id", B = g.getGenIdColName() ?? g.getExplicitPkName() ?? "id";
-        f += i + "left join " + T + " " + k + `
-`, f += i + i + "on " + k + "." + y + " = " + u + "." + B + `
-`, f += i + i + "and " + k + ".language_code = " + m + `
+      if (o[l]) {
+        const g = d[l], A = this.ctx.objPrefix() + l + "_trans", S = "t_" + l, v = ($(l) ?? l) + "_id", w = g.getGenIdColName() ?? g.getExplicitPkName() ?? "id";
+        c += i + "left join " + A + " " + S + `
+`, c += i + i + "on " + S + "." + v + " = " + m + "." + w + `
+`, c += i + i + "and " + S + ".language_code = " + u + `
 `;
       }
     }
-    return f;
+    return c;
   }
-  generateDualityView(a) {
-    const n = a.src;
+  generateDualityView(e) {
+    const n = e.src;
     if (n.length < 3)
       return `/* duality view requires at least a view name and one table */
 `;
-    const s = this.ctx.objPrefix() + n[0].value, r = n[2].value, l = this.ctx.find(r);
-    if (l === null)
-      return "/* duality view: table " + r + ` not found */
+    const r = this.ctx.objPrefix() + n[0].value, t = n[2].value, o = this.ctx.find(t);
+    if (o === null)
+      return "/* duality view: table " + t + ` not found */
 `;
-    l.lateInitFks();
+    o.lateInitFks();
     const d = "@insert @update @delete";
-    let f = "create or replace json relational duality view " + s + ` as
+    let c = "create or replace json relational duality view " + r + ` as
 `;
-    f += this.ctx.objPrefix() + l.parseName() + " " + d + `
-`, f += `{
+    c += this.ctx.objPrefix() + o.parseName() + " " + d + `
+`, c += `{
 `;
-    const m = l.getGenIdColName() ?? l.getExplicitPkName() ?? "id";
+    const u = o.getGenIdColName() ?? o.getExplicitPkName() ?? "id";
     let h = 3;
-    for (const u of l.children) {
-      if (u.children.length > 0 || u.refId() !== null) continue;
-      const x = u.parseName().length;
-      x > h && (h = x);
+    for (const m of o.children) {
+      if (m.children.length > 0 || m.refId() !== null) continue;
+      const p = m.parseName().length;
+      p > h && (h = p);
     }
-    for (let u = 3; u < n.length; u++) {
-      const x = n[u].value.length;
-      x > h && (h = x);
+    for (let m = 3; m < n.length; m++) {
+      const p = n[m].value.length;
+      p > h && (h = p);
     }
-    f += i + "_id" + " ".repeat(h - 3) + " : " + m + `,
+    c += i + "_id" + " ".repeat(h - 3) + " : " + u + `,
 `;
-    const o = {};
-    if (l.fks !== null) for (const u in l.fks) o[u] = !0;
-    for (const u of l.regularColumns()) {
-      const x = u.parseName();
-      x === m || o[x] || (f += i + x + " ".repeat(h - x.length) + " : " + x + `,
+    const l = {};
+    if (o.fks !== null) for (const m in o.fks) l[m] = !0;
+    for (const m of o.regularColumns()) {
+      const p = m.parseName();
+      p === u || l[p] || (c += i + p + " ".repeat(h - p.length) + " : " + p + `,
 `);
     }
-    for (let u = 3; u < n.length; u++) {
-      const x = n[u].value, g = this.ctx.find(x);
+    for (let m = 3; m < n.length; m++) {
+      const p = n[m].value, g = this.ctx.find(p);
       if (g === null) continue;
       g.lateInitFks();
-      let T = !1;
+      let A = !1;
       if (g.fks !== null) {
-        for (const I in g.fks)
-          if (g.fks[I] === l.parseName()) {
-            T = !0;
+        for (const P in g.fks)
+          if (g.fks[P] === o.parseName()) {
+            A = !0;
             break;
           }
       }
-      const k = g.getGenIdColName() ?? g.getExplicitPkName() ?? "id";
-      let y = 3;
-      for (const I of g.children) {
-        if (I.children.length > 0 || I.refId() !== null) continue;
-        const $ = I.parseName().length;
-        $ > y && (y = $);
+      const S = g.getGenIdColName() ?? g.getExplicitPkName() ?? "id";
+      let v = 3;
+      for (const P of g.children) {
+        if (P.children.length > 0 || P.refId() !== null) continue;
+        const N = P.parseName().length;
+        N > v && (v = N);
       }
-      const B = {};
-      if (g.fks !== null) for (const I in g.fks) B[I] = !0;
-      const N = T ? `[{
+      const w = {};
+      if (g.fks !== null) for (const P in g.fks) w[P] = !0;
+      const E = A ? `[{
 ` : `{
-`, P = T ? "}]" : "}";
-      f += i + x + " ".repeat(h - x.length) + " : " + this.ctx.objPrefix() + g.parseName() + " " + d + `
-`, f += i + N, f += i + i + "_id" + " ".repeat(y - 3) + " : " + k + `,
+`, B = A ? "}]" : "}";
+      c += i + p + " ".repeat(h - p.length) + " : " + this.ctx.objPrefix() + g.parseName() + " " + d + `
+`, c += i + E, c += i + i + "_id" + " ".repeat(v - 3) + " : " + S + `,
 `;
-      for (const I of g.regularColumns()) {
-        const $ = I.parseName();
-        $ === k || B[$] || (f += i + i + $ + " ".repeat(y - $.length) + " : " + $ + `,
+      for (const P of g.regularColumns()) {
+        const N = P.parseName();
+        N === S || w[N] || (c += i + i + N + " ".repeat(v - N.length) + " : " + N + `,
 `);
       }
-      f = f.replace(/,\n$/, `
-`), f += i + P + `,
+      c = c.replace(/,\n$/, `
+`), c += i + B + `,
 `;
     }
-    return f = f.replace(/,\n$/, `
-`), f += `};
+    return c = c.replace(/,\n$/, `
+`), c += `};
 
-`, f.toLowerCase();
+`, c.toLowerCase();
   }
-  generateTransTable(a) {
-    if (a.inferType() !== "table") return "";
-    const n = a.getTransColumns();
+  generateTransTable(e) {
+    if (e.inferType() !== "table") return "";
+    const n = e.getTransColumns();
     if (n.length === 0) return "";
-    const s = this.ctx.objPrefix() + a.parseName(), r = s + "_trans", l = this.ctx.semantics(), d = Re(this.ctx);
-    let f = 13;
-    const m = (D(a.parseName()) ?? a.parseName()) + "_id";
-    m.length > f && (f = m.length);
-    for (const x of n) {
-      const g = "trans_" + x.parseName();
-      g.length > f && (f = g.length);
+    const r = this.ctx.objPrefix() + e.parseName(), t = r + "_trans", o = this.ctx.semantics(), d = j(this.ctx);
+    let c = 13;
+    const u = ($(e.parseName()) ?? e.parseName()) + "_id";
+    u.length > c && (c = u.length);
+    for (const p of n) {
+      const g = "trans_" + p.parseName();
+      g.length > c && (c = g.length);
     }
-    2 > f && (f = 2);
-    let h = "create table " + r + ` (
-`, o = i + " ".repeat(f - 2);
-    h += i + "id" + o + "number " + Ge(r, this.ctx, this.naming) + `
-`, h += i + i + " ".repeat(f) + "constraint " + r + "_id" + this.naming.pk + ` primary key,
-`, o = i + " ".repeat(f - m.length), h += i + m + o + `number not null,
-`, o = i + " ".repeat(f - 13), h += i + "language_code" + o + `varchar2(5${l}) not null,
+    2 > c && (c = 2);
+    let h = "create table " + t + ` (
+`, l = i + " ".repeat(c - 2);
+    h += i + "id" + l + "number " + Ve(t, this.ctx, this.naming) + `
+`, h += i + i + " ".repeat(c) + "constraint " + t + "_id" + this.naming.pk + ` primary key,
+`, l = i + " ".repeat(c - u.length), h += i + u + l + `number not null,
+`, l = i + " ".repeat(c - 13), h += i + "language_code" + l + `varchar2(5${o}) not null,
 `;
-    for (const x of n) {
-      const g = "trans_" + x.parseName();
-      o = i + " ".repeat(f - g.length);
-      const T = De(x._inferTypeFull(), l, d);
-      h += i + g + o + T + `,
+    for (const p of n) {
+      const g = "trans_" + p.parseName();
+      l = i + " ".repeat(c - g.length);
+      const A = te(p._inferTypeFull(), o, d);
+      h += i + g + l + A + `,
 `;
     }
-    h += i + "constraint " + r + this.naming.uk + " unique (" + m + `, language_code)
+    h += i + "constraint " + t + this.naming.uk + " unique (" + u + `, language_code)
 `, h += `);
 
 `;
-    let u = a.parseName();
-    return u.length > 2 && (u = u.substring(0, 2)), h += "alter table " + r + " add constraint " + r + "_" + u + "_id" + this.naming.fk + `
-`, h += i + "foreign key (" + m + ") references " + s + `;
+    let m = e.parseName();
+    return m.length > 2 && (m = m.substring(0, 2)), h += "alter table " + t + " add constraint " + t + "_" + m + "_id" + this.naming.fk + `
+`, h += i + "foreign key (" + u + ") references " + r + `;
 
-`, h += "alter table " + r + " add constraint " + r + "_lang" + this.naming.fk + `
+`, h += "alter table " + t + " add constraint " + t + "_lang" + this.naming.fk + `
 `, h += i + "foreign key (language_code) references " + this.ctx.objPrefix() + `language (code);
 
-`, h += "create index " + r + this.naming.idx + "1 on " + r + " (" + m + `);
-`, h += "create index " + r + this.naming.idx + "2 on " + r + ` (language_code);
+`, h += "create index " + t + this.naming.idx + "1 on " + t + " (" + u + `);
+`, h += "create index " + t + this.naming.idx + "2 on " + t + ` (language_code);
 
 `, h;
   }
-  generateResolvedView(a) {
-    if (a.inferType() !== "table") return "";
-    const n = a.getTransColumns();
+  generateResolvedView(e) {
+    if (e.inferType() !== "table") return "";
+    const n = e.getTransColumns();
     if (n.length === 0) return "";
-    const s = this.ctx.objPrefix() + a.parseName(), r = s + "_trans", l = s + "_resolved", d = (D(a.parseName()) ?? a.parseName()) + "_id", f = this.ctx.getOptionValue("transcontext");
-    let m = "create or replace view " + l + ` as
+    const r = this.ctx.objPrefix() + e.parseName(), t = r + "_trans", o = r + "_resolved", d = ($(e.parseName()) ?? e.parseName()) + "_id", c = this.ctx.getOptionValue("transcontext");
+    let u = "create or replace view " + o + ` as
 select `;
-    const h = [], o = a.getPkName();
-    o !== null && h.push("k." + o), a.lateInitFks();
-    for (const x in a.fks ?? {}) {
-      if (0 < x.indexOf(",")) continue;
-      const g = this.ctx.find(a.fks[x]);
-      let T = "";
-      g !== null && g.isMany2One && g.isMany2One() && !x.endsWith("_id") && (T = "_id"), h.push("k." + x + T);
+    const h = [], l = e.getPkName();
+    l !== null && h.push("k." + l), e.lateInitFks();
+    for (const p in e.fks ?? {}) {
+      if (0 < p.indexOf(",")) continue;
+      const g = this.ctx.find(e.fks[p]);
+      let A = "";
+      g !== null && g.isMany2One && g.isMany2One() && !p.endsWith("_id") && (A = "_id"), h.push("k." + p + A);
     }
-    const u = {};
-    for (const x of n) u[x.parseName()] = !0;
-    for (const x of a.regularColumns()) {
-      const g = x.parseName();
-      o !== null && g === "id" || g !== a.getExplicitPkName() && (u[g] ? h.push("coalesce(t.trans_" + g + ", k." + g + ") as " + g) : h.push("k." + g));
+    const m = {};
+    for (const p of n) m[p.parseName()] = !0;
+    for (const p of e.regularColumns()) {
+      const g = p.parseName();
+      l !== null && g === "id" || g !== e.getExplicitPkName() && (m[g] ? h.push("coalesce(t.trans_" + g + ", k." + g + ") as " + g) : h.push("k." + g));
     }
-    m += h[0] + `,
+    u += h[0] + `,
 `;
-    for (let x = 1; x < h.length; x++)
-      m += i + i + " " + h[x], x < h.length - 1 && (m += ","), m += `
+    for (let p = 1; p < h.length; p++)
+      u += i + i + " " + h[p], p < h.length - 1 && (u += ","), u += `
 `;
-    return m += "from " + s + ` k
-`, m += "left join " + r + ` t
-`, m += i + "on t." + d + " = k." + (o ?? a.getExplicitPkName()) + `
-`, m += i + "and t.language_code = " + f + `;
+    return u += "from " + r + ` k
+`, u += "left join " + t + ` t
+`, u += i + "on t." + d + " = k." + (l ?? e.getExplicitPkName()) + `
+`, u += i + "and t.language_code = " + c + `;
 
-`, m;
+`, u;
   }
 }
-function Be(p) {
-  return p.isOption("lower") ? "lower" : p.isOption("upper") ? "upper" : "";
+function $e(x) {
+  return x.isOption("lower") ? "lower" : x.isOption("upper") ? "upper" : "";
 }
-function ha(p) {
-  const a = p.getExplicitPkName();
-  if (a == null || a.includes(",")) return null;
-  const n = p.findChild(a);
-  return n != null ? n.getPlsqlType() : p.getPkType();
+function Ca(x) {
+  const e = x.getExplicitPkName();
+  if (e == null || e.includes(",")) return null;
+  const n = x.findChild(e);
+  return n != null ? n.getPlsqlType() : x.getPkType();
 }
-class xa {
-  constructor(a, n) {
-    this.ctx = a, this.naming = n;
+class se {
+  constructor(e, n) {
+    this.ctx = e, this.naming = n;
   }
   // ── ORDS ──────────────────────────────────────────────────────────────────
-  restEnable(a) {
-    if (a.inferType() !== "table" || !a.isOption("rest")) return "";
-    const n = a.parseName(), s = n.indexOf('"') === 0;
-    let r = this.ctx.objPrefix() + n;
-    return s ? r = this.ctx.objPrefix() + n.substring(1, n.length - 1) : r = (this.ctx.objPrefix() + n).toUpperCase(), `begin
-` + i + "ords.enable_object(p_enabled=>TRUE, p_object=>'" + r + `');
+  restEnable(e) {
+    if (e.inferType() !== "table" || !e.isOption("rest")) return "";
+    const n = e.parseName(), r = n.indexOf('"') === 0;
+    let t = this.ctx.objPrefix() + n;
+    return r ? t = this.ctx.objPrefix() + n.substring(1, n.length - 1) : t = (this.ctx.objPrefix() + n).toUpperCase(), `begin
+` + i + "ords.enable_object(p_enabled=>TRUE, p_object=>'" + t + `');
 end;
 /
 `;
   }
   // ── Triggers ──────────────────────────────────────────────────────────────
-  generateTrigger(a) {
-    return a.inferType() !== "table" || a.isOption("soda") ? "" : this._generateBITrigger(a) + this._generateBUTrigger(a);
+  generateTrigger(e) {
+    return e.inferType() !== "table" || e.isOption("soda") ? "" : this._generateBITrigger(e) + this._generateBUTrigger(e);
   }
-  _generateBITrigger(a) {
-    const n = this.ctx.optionEQvalue("editionable", "yes") ? " editionable" : "", s = (this.ctx.objPrefix() + a.parseName()).toLowerCase();
-    let r = `create or replace${n} trigger ${s}${this.naming.bi}
+  _generateBITrigger(e) {
+    const n = this.ctx.optionEQvalue("editionable", "yes") ? " editionable" : "", r = (this.ctx.objPrefix() + e.parseName()).toLowerCase();
+    let t = `create or replace${n} trigger ${r}${this.naming.bi}
 `;
-    r += `    before insert
-`, r += "    on " + s + `
-`, r += `    for each row
-`, a.hasRowKey() && (r += `declare
+    t += `    before insert
+`, t += "    on " + r + `
+`, t += `    for each row
+`, e.hasRowKey() && (t += `declare
     function compress_int (n in integer ) return varchar2
     as
         ret       varchar2(30);
@@ -12569,774 +12569,774 @@ end;
         if length(ret) < 5 then ret := lpad(ret, 4, 'A'); end if ;
         return upper(ret);
     end compress_int;
-`), r += `begin
+`), t += `begin
 `;
-    let l = !1;
-    const d = a.apexUser();
-    a.hasRowKey() && (r += `    :new.row_key := compress_int(row_key_seq.nextval);
-`, l = !0);
-    for (const m of a.children) {
-      const h = Be(m);
-      h !== "" && (r += "    :new." + m.parseName().toLowerCase() + " := " + h + "(:new." + m.parseName().toLowerCase() + `);
-`, l = !0);
+    let o = !1;
+    const d = e.apexUser();
+    e.hasRowKey() && (t += `    :new.row_key := compress_int(row_key_seq.nextval);
+`, o = !0);
+    for (const u of e.children) {
+      const h = $e(u);
+      h !== "" && (t += "    :new." + u.parseName().toLowerCase() + " := " + h + "(:new." + u.parseName().toLowerCase() + `);
+`, o = !0);
     }
-    if (a.hasRowVersion() && (r += `    :new.row_version := 1;
-`, l = !0), a.hasAuditCols()) {
-      const m = a.auditSysDateFn();
-      r += "    :new." + this.ctx.getOptionValue("createdcol") + " := " + m + `;
-`, r += "    :new." + this.ctx.getOptionValue("createdbycol") + " := " + d + `;
-`, r += "    :new." + this.ctx.getOptionValue("updatedcol") + " := " + m + `;
-`, r += "    :new." + this.ctx.getOptionValue("updatedbycol") + " := " + d + `;
-`, l = !0;
+    if (e.hasRowVersion() && (t += `    :new.row_version := 1;
+`, o = !0), e.hasAuditCols()) {
+      const u = e.auditSysDateFn();
+      t += "    :new." + this.ctx.getOptionValue("createdcol") + " := " + u + `;
+`, t += "    :new." + this.ctx.getOptionValue("createdbycol") + " := " + d + `;
+`, t += "    :new." + this.ctx.getOptionValue("updatedcol") + " := " + u + `;
+`, t += "    :new." + this.ctx.getOptionValue("updatedbycol") + " := " + d + `;
+`, o = !0;
     }
-    const f = this.ctx.additionalColumns();
-    for (const m in f) {
-      const h = f[m];
-      r += "    if :new." + m + ` is null then
-`, h.startsWith("INT") ? r += "        " + m + ` := 0;
-` : r += "        " + m + ` := 'N/A';
-`, r += `    end if;
-`, l = !0;
+    const c = this.ctx.additionalColumns();
+    for (const u in c) {
+      const h = c[u];
+      t += "    if :new." + u + ` is null then
+`, h.startsWith("INT") ? t += "        " + u + ` := 0;
+` : t += "        " + u + ` := 'N/A';
+`, t += `    end if;
+`, o = !0;
     }
-    return l ? (r += "end " + s + this.naming.bi + `;
+    return o ? (t += "end " + r + this.naming.bi + `;
 /
 
-`, r) : "";
+`, t) : "";
   }
-  _generateBUTrigger(a) {
-    if (a.isOption("immutable")) return "";
+  _generateBUTrigger(e) {
+    if (e.isOption("immutable")) return "";
     let n = !1;
-    for (const h of a.children)
+    for (const h of e.children)
       if (h.isOption("lower") || h.isOption("upper")) {
         n = !0;
         break;
       }
-    const s = a.hasRowVersion(), r = a.hasAuditCols();
-    if (!n && !s && !r) return "";
-    const l = this.ctx.optionEQvalue("editionable", "yes") ? " editionable" : "", d = (this.ctx.objPrefix() + a.parseName()).toLowerCase();
-    let f = `create or replace${l} trigger ${d}${this.naming.bu}
+    const r = e.hasRowVersion(), t = e.hasAuditCols();
+    if (!n && !r && !t) return "";
+    const o = this.ctx.optionEQvalue("editionable", "yes") ? " editionable" : "", d = (this.ctx.objPrefix() + e.parseName()).toLowerCase();
+    let c = `create or replace${o} trigger ${d}${this.naming.bu}
 `;
-    f += `    before update
+    c += `    before update
     on ` + d + `
     for each row
 begin
 `;
-    const m = a.apexUser();
-    for (const h of a.children) {
-      const o = Be(h);
-      o !== "" && (f += "    :new." + h.parseName().toLowerCase() + " := " + o + "(:new." + h.parseName().toLowerCase() + `);
+    const u = e.apexUser();
+    for (const h of e.children) {
+      const l = $e(h);
+      l !== "" && (c += "    :new." + h.parseName().toLowerCase() + " := " + l + "(:new." + h.parseName().toLowerCase() + `);
 `);
     }
-    if (s && (f += `    :new.row_version := nvl(:old.row_version, 0) + 1;
-`), r) {
-      const h = a.auditSysDateFn();
-      f += "    :new." + this.ctx.getOptionValue("updatedcol") + " := " + h + `;
-`, f += "    :new." + this.ctx.getOptionValue("updatedbycol") + " := " + m + `;
+    if (r && (c += `    :new.row_version := nvl(:old.row_version, 0) + 1;
+`), t) {
+      const h = e.auditSysDateFn();
+      c += "    :new." + this.ctx.getOptionValue("updatedcol") + " := " + h + `;
+`, c += "    :new." + this.ctx.getOptionValue("updatedbycol") + " := " + u + `;
 `;
     }
-    return f += "end " + d + this.naming.bu + `;
+    return c += "end " + d + this.naming.bu + `;
 /
 
-`, f;
+`, c;
   }
-  generateImmutableTrigger(a) {
-    if (a.inferType() !== "table" || !a.isOption("immutable")) return "";
+  generateImmutableTrigger(e) {
+    if (e.inferType() !== "table" || !e.isOption("immutable")) return "";
     const n = this.ctx.getOptionValue("db");
-    if (n && n.length > 0 && 23 <= (Y(n) ?? 0)) return "";
-    const s = this.ctx.objPrefix() + a.parseName();
-    let r = "create or replace trigger " + this.naming.immutable_prefix + s.toLowerCase() + this.naming.immutable_suffix + `
+    if (n && n.length > 0 && 23 <= (ae(n) ?? 0)) return "";
+    const r = this.ctx.objPrefix() + e.parseName();
+    let t = "create or replace trigger " + this.naming.immutable_prefix + r.toLowerCase() + this.naming.immutable_suffix + `
 `;
-    return r += `    before update or delete
-    on ` + s.toLowerCase() + `
+    return t += `    before update or delete
+    on ` + r.toLowerCase() + `
 declare
-`, r += `    co_immutable_err  constant pls_integer      := -20055;
-`, r += "    co_immutable_msg  constant varchar2(200 char) := '" + s.toLowerCase() + ` is immutable';
-`, r += `begin
+`, t += `    co_immutable_err  constant pls_integer      := -20055;
+`, t += "    co_immutable_msg  constant varchar2(200 char) := '" + r.toLowerCase() + ` is immutable';
+`, t += `begin
     raise_application_error(co_immutable_err, co_immutable_msg);
 end;
 /
 
-`, r;
+`, t;
   }
   // ── Table API (TAPI) ──────────────────────────────────────────────────────
   /** True when tenant_id is injected synthetically (global tenantid:yes, not via FK hierarchy). */
-  _hasSyntheticTenantId(a) {
-    return this.ctx.optionEQvalue("tenantid", !0) && !a.isOption("notenantid") && a.findChild("tenant_id") === null && !Object.prototype.hasOwnProperty.call(a.fks ?? {}, "tenant_id");
+  _hasSyntheticTenantId(e) {
+    return this.ctx.optionEQvalue("tenantid", !0) && !e.isOption("notenantid") && e.findChild("tenant_id") === null && !Object.prototype.hasOwnProperty.call(e.fks ?? {}, "tenant_id");
   }
-  procDecl(a, n) {
-    const s = n !== "get" ? " default null" : "", r = n !== "get" ? " in" : "out";
-    let l = i + "procedure " + n + `_row (
+  procDecl(e, n) {
+    const r = n !== "get" ? " default null" : "", t = n !== "get" ? " in" : "out";
+    let o = i + "procedure " + n + `_row (
 `;
-    const d = a.getPkName(), f = a.getGenIdColName() !== null ? null : a.findChild(a.getExplicitPkName()), m = f ? f.getPlsqlType() : a.getPkType();
-    l += i + i + "p_" + d + "        in  " + m + s, this._hasSyntheticTenantId(a) && (l += `,
-` + i + i + "p_tenant_id   " + r + "  integer" + s);
-    for (const h in a.fks ?? {}) {
-      const o = a.fks[h];
-      let u = "integer";
-      const x = this.ctx.find(o);
-      x !== null && (u = ha(x) ?? u), l += `,
-` + i + i + "P_" + h + "   " + r + "  " + u + s;
+    const d = e.getPkName(), c = e.getGenIdColName() !== null ? null : e.findChild(e.getExplicitPkName()), u = c ? c.getPlsqlType() : e.getPkType();
+    o += i + i + "p_" + d + "        in  " + u + r, this._hasSyntheticTenantId(e) && (o += `,
+` + i + i + "p_tenant_id   " + t + "  integer" + r);
+    for (const h in e.fks ?? {}) {
+      const l = e.fks[h];
+      let m = "integer";
+      const p = this.ctx.find(l);
+      p !== null && (m = Ca(p) ?? m), o += `,
+` + i + i + "P_" + h + "   " + t + "  " + m + r;
     }
-    for (const h of a.regularColumns())
-      l += `,
-` + i + i + "P_" + h.parseName() + "   " + r + "  " + h.getPlsqlType() + s;
-    return l += `
-    )`, l;
+    for (const h of e.regularColumns())
+      o += `,
+` + i + i + "P_" + h.parseName() + "   " + t + "  " + h.getPlsqlType() + r;
+    return o += `
+    )`, o;
   }
-  _getRowBody(a) {
-    const n = a.getPkName(), s = this.ctx.objPrefix() + a.parseName(), r = this._hasSyntheticTenantId(a);
-    let l = i + `is 
+  _getRowBody(e) {
+    const n = e.getPkName(), r = this.ctx.objPrefix() + e.parseName(), t = this._hasSyntheticTenantId(e);
+    let o = i + `is 
 ` + i + `begin 
 `;
-    const d = [], f = [];
-    r && (d.push("tenant_id"), f.push("p_tenant_id"));
-    for (const m in a.fks ?? {})
-      d.push(m), f.push("p_" + m);
-    for (const m of a.regularColumns()) {
-      const h = m.parseName().toLowerCase();
-      d.push(h), f.push("p_" + h);
+    const d = [], c = [];
+    t && (d.push("tenant_id"), c.push("p_tenant_id"));
+    for (const u in e.fks ?? {})
+      d.push(u), c.push("p_" + u);
+    for (const u of e.regularColumns()) {
+      const h = u.parseName().toLowerCase();
+      d.push(h), c.push("p_" + h);
     }
     if (d.length > 0) {
-      const m = i + i + "       ";
-      l += i + i + "select " + d.join(`,
-` + m) + `
-`, l += i + i + "  into " + f.join(`,
-` + m) + `
-`, l += i + i + "  from " + s + `
-`, l += i + i + " where " + n + " = p_" + n, r && (l += `
-` + i + i + "   and tenant_id = p_tenant_id"), l += `;
+      const u = i + i + "       ";
+      o += i + i + "select " + d.join(`,
+` + u) + `
+`, o += i + i + "  into " + c.join(`,
+` + u) + `
+`, o += i + i + "  from " + r + `
+`, o += i + i + " where " + n + " = p_" + n, t && (o += `
+` + i + i + "   and tenant_id = p_tenant_id"), o += `;
 `;
     }
-    return l += i + `exception
+    return o += i + `exception
 ` + i + i + `when no_data_found then
 ` + i + i + i + `null;
-`, l += i + `end get_row;
+`, o += i + `end get_row;
  
-`, l;
+`, o;
   }
-  _insertRowBody(a) {
-    const n = a.getPkName(), s = this.ctx.objPrefix() + a.parseName(), r = this._hasSyntheticTenantId(a);
-    let l = i + `is 
+  _insertRowBody(e) {
+    const n = e.getPkName(), r = this.ctx.objPrefix() + e.parseName(), t = this._hasSyntheticTenantId(e);
+    let o = i + `is 
 ` + i + `begin 
 `;
-    l += i + i + "insert into " + s + ` ( 
-` + i + i + i + n, r && (l += `,
+    o += i + i + "insert into " + r + ` ( 
+` + i + i + i + n, t && (o += `,
 ` + i + i + i + "tenant_id");
-    for (const d in a.fks ?? {}) l += `,
+    for (const d in e.fks ?? {}) o += `,
 ` + i + i + i + d;
-    for (const d of a.regularColumns()) l += `,
+    for (const d of e.regularColumns()) o += `,
 ` + i + i + i + d.parseName().toLowerCase();
-    l += `
+    o += `
 ` + i + i + `) values ( 
-` + i + i + i + "p_" + n, r && (l += `,
+` + i + i + i + "p_" + n, t && (o += `,
 ` + i + i + i + "p_tenant_id");
-    for (const d in a.fks ?? {}) l += `,
+    for (const d in e.fks ?? {}) o += `,
 ` + i + i + i + "p_" + d;
-    for (const d of a.regularColumns()) l += `,
+    for (const d of e.regularColumns()) o += `,
 ` + i + i + i + "p_" + d.parseName();
-    return l += `
-` + i + i + ");", l += `
+    return o += `
+` + i + i + ");", o += `
 ` + i + `end insert_row;
  
  
-`, l;
+`, o;
   }
-  _updateRowBody(a) {
-    const n = a.getPkName(), s = this.ctx.objPrefix() + a.parseName(), r = this._hasSyntheticTenantId(a);
-    let l = i + `is 
+  _updateRowBody(e) {
+    const n = e.getPkName(), r = this.ctx.objPrefix() + e.parseName(), t = this._hasSyntheticTenantId(e);
+    let o = i + `is 
 ` + i + `begin 
 `;
-    l += i + i + "update  " + s + ` set 
+    o += i + i + "update  " + r + ` set 
 ` + i + i + i + n + " = p_" + n;
-    for (const d in a.fks ?? {}) l += `,
+    for (const d in e.fks ?? {}) o += `,
 ` + i + i + i + d + " = P_" + d;
-    for (const d of a.regularColumns())
-      l += `,
+    for (const d of e.regularColumns())
+      o += `,
 ` + i + i + i + d.parseName().toLowerCase() + " = P_" + d.parseName().toLowerCase();
-    return l += `
-` + i + i + "where " + n + " = p_" + n, r && (l += `
-` + i + i + "  and tenant_id = p_tenant_id"), l += ";", l += `
+    return o += `
+` + i + i + "where " + n + " = p_" + n, t && (o += `
+` + i + i + "  and tenant_id = p_tenant_id"), o += ";", o += `
 ` + i + `end update_row;
  
  
-`, l;
+`, o;
   }
   // ── Layered TAPI ─────────────────────────────────────────────────────────
-  _hasAuditLog(a) {
-    return a.isOption("auditlog");
+  _hasAuditLog(e) {
+    return e.isOption("auditlog");
   }
-  _hasVersionCol(a) {
-    return a.hasRowVersion() || a.children.some(
+  _hasVersionCol(e) {
+    return e.hasRowVersion() || e.children.some(
       (n) => n.children.length === 0 && n.parseName().toLowerCase() === "row_version"
     );
   }
-  _hasUniqueCol(a) {
-    return a.children.some((n) => n.isOption("unique"));
+  _hasUniqueCol(e) {
+    return e.children.some((n) => n.isOption("unique"));
   }
   // Non-PK, non-version regular columns used as SVC scalar parameters.
-  _svcCols(a) {
-    return a.children.filter(
+  _svcCols(e) {
+    return e.children.filter(
       (n) => n.children.length === 0 && n.refId() === null && n.parseName().toLowerCase() !== "row_version"
     );
   }
-  _generateDalSpec(a) {
-    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_dal", r = a.children.filter((d) => d.isOption("unique"));
-    let l = `create or replace package ${s} as
+  _generateDalSpec(e) {
+    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), r = n + "_dal", t = e.children.filter((d) => d.isOption("unique"));
+    let o = `create or replace package ${r} as
 
 `;
-    l += `${i}subtype t_id is ${n}.id%type;
+    o += `${i}subtype t_id is ${n}.id%type;
 
-`, l += `${i}function get_by_id  (p_id in t_id) return ${n}%rowtype;
-`, l += `${i}function lock_by_id (p_id in t_id) return ${n}%rowtype;
-
-`;
-    for (const d of r) {
-      const f = d.parseName().toLowerCase();
-      l += `${i}function get_by_${f} (p_${f} in ${n}.${f}%type) return ${n}%rowtype;
+`, o += `${i}function get_by_id  (p_id in t_id) return ${n}%rowtype;
+`, o += `${i}function lock_by_id (p_id in t_id) return ${n}%rowtype;
 
 `;
-    }
-    return l += `${i}type t_cursor is ref cursor return ${n}%rowtype;
-`, l += `${i}function get_all return t_cursor;
-
-`, l += `${i}procedure insert_row (p_row in out nocopy ${n}%rowtype);
-
-`, l += `${i}procedure update_row (p_row in out nocopy ${n}%rowtype);
-
-`, l += `${i}procedure delete_row (p_id in t_id);
-
-`, l += `${i}c_err_stale_data constant pls_integer := -20001;
-`, l += `${i}c_err_not_found  constant pls_integer := -20002;
-`, l += `${i}c_err_locked     constant pls_integer := -20003;
-
-`, l += `end ${s};
-/
-`, l;
-  }
-  _generateDalBody(a) {
-    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_dal", r = (a.getPkName() ?? "id").toLowerCase(), l = this._hasVersionCol(a), d = a.hasAuditCols(), f = this._svcCols(a), m = Object.keys(a.fks ?? {}), h = a.children.filter((k) => k.isOption("unique"));
-    let o = `create or replace package body ${s} as
-
-`;
-    o += `${i}resource_busy exception;
-`, o += `${i}pragma exception_init(resource_busy, -54);
-
-`, o += `${i}function get_by_id (p_id in t_id) return ${n}%rowtype is
-`, o += `${i}${i}l_row ${n}%rowtype;
-`, o += `${i}begin
-`, o += `${i}${i}select * into l_row from ${n} where ${r} = p_id;
-`, o += `${i}${i}return l_row;
-`, o += `${i}end get_by_id;
-
-`, o += `${i}function lock_by_id (p_id in t_id) return ${n}%rowtype is
-`, o += `${i}${i}l_row ${n}%rowtype;
-`, o += `${i}begin
-`, o += `${i}${i}select * into l_row
-`, o += `${i}${i}from   ${n}
-`, o += `${i}${i}where  ${r} = p_id
-`, o += `${i}${i}for update nowait;
-`, o += `${i}${i}return l_row;
-`, o += `${i}exception
-`, o += `${i}${i}when no_data_found then
-`, o += `${i}${i}${i}raise_application_error(c_err_not_found, '${n}: record not found (id=' || p_id || ')');
-`, o += `${i}${i}when resource_busy then
-`, o += `${i}${i}${i}raise_application_error(c_err_locked, '${n}: record locked by another session');
-`, o += `${i}end lock_by_id;
-
-`;
-    for (const k of h) {
-      const y = k.parseName().toLowerCase();
-      o += `${i}function get_by_${y} (p_${y} in ${n}.${y}%type) return ${n}%rowtype is
-`, o += `${i}${i}l_row ${n}%rowtype;
-`, o += `${i}begin
-`, o += `${i}${i}select * into l_row from ${n} where ${y} = p_${y};
-`, o += `${i}${i}return l_row;
-`, o += `${i}end get_by_${y};
+    for (const d of t) {
+      const c = d.parseName().toLowerCase();
+      o += `${i}function get_by_${c} (p_${c} in ${n}.${c}%type) return ${n}%rowtype;
 
 `;
     }
-    o += `${i}function get_all return t_cursor is
-`, o += `${i}${i}l_cur t_cursor;
-`, o += `${i}begin
-`, o += `${i}${i}open l_cur for select * from ${n};
-`, o += `${i}${i}return l_cur;
-`, o += `${i}end get_all;
+    return o += `${i}type t_cursor is ref cursor return ${n}%rowtype;
+`, o += `${i}function get_all return t_cursor;
 
-`;
-    const u = this._hasSyntheticTenantId(a), x = [
-      ...u ? ["tenant_id"] : [],
-      ...m.map((k) => k.toLowerCase()),
-      ...f.map((k) => k.parseName().toLowerCase())
-    ], g = [
-      ...u ? ["p_row.tenant_id"] : [],
-      ...m.map((k) => `p_row.${k.toLowerCase()}`),
-      ...f.map((k) => `p_row.${k.parseName().toLowerCase()}`)
-    ];
-    if (o += `${i}procedure insert_row (p_row in out nocopy ${n}%rowtype) is
-`, o += `${i}begin
-`, o += `${i}${i}insert into ${n} (
-`, o += `${i}${i}${i}` + x.join(`,
-${i}${i}${i}`) + `
-`, o += `${i}${i}) values (
-`, o += `${i}${i}${i}` + g.join(`,
-${i}${i}${i}`) + `
-`, o += `${i}${i})`, l) {
-      const k = String(this.ctx.getOptionValue("createdcol") ?? "created"), y = String(this.ctx.getOptionValue("createdbycol") ?? "created_by"), B = [`${r}`, "row_version"], N = [`p_row.${r}`, "p_row.row_version"];
-      d && (B.push(k, y), N.push(`p_row.${k}`, `p_row.${y}`)), o += `
-${i}${i}returning ${B.join(", ")}
-`, o += `${i}${i}     into ${N.join(", ")}`;
-    } else
-      o += `
-${i}${i}returning ${r}
-`, o += `${i}${i}     into p_row.${r}`;
-    o += `;
-`, o += `${i}end insert_row;
+`, o += `${i}procedure insert_row (p_row in out nocopy ${n}%rowtype);
 
-`;
-    const T = [
-      ...m.map((k) => `${k.toLowerCase()} = p_row.${k.toLowerCase()}`),
-      ...f.map((k) => `${k.parseName().toLowerCase()} = p_row.${k.parseName().toLowerCase()}`)
-    ];
-    return o += `${i}procedure update_row (p_row in out nocopy ${n}%rowtype) is
-`, o += `${i}${i}l_id t_id;
-`, o += `${i}begin
-`, o += `${i}${i}l_id := p_row.${r};
-`, o += `${i}${i}update ${n} set
-`, o += `${i}${i}${i}` + T.join(`,
-${i}${i}${i}`) + `
-`, o += `${i}${i}where ${r} = l_id`, l && (o += `
-${i}${i}  and row_version = p_row.row_version`), o += `;
-`, l && (o += `${i}${i}if sql%rowcount = 0 then
-`, o += `${i}${i}${i}declare l_dummy pls_integer;
-`, o += `${i}${i}${i}begin
-`, o += `${i}${i}${i}${i}select 1 into l_dummy from ${n} where ${r} = l_id;
-`, o += `${i}${i}${i}${i}raise_application_error(c_err_stale_data, 'row modified by another session. reload and retry.');
-`, o += `${i}${i}${i}exception
-`, o += `${i}${i}${i}${i}when no_data_found then
-`, o += `${i}${i}${i}${i}${i}raise_application_error(c_err_not_found, 'record ' || l_id || ' does not exist.');
-`, o += `${i}${i}${i}end;
-`, o += `${i}${i}end if;
-`), o += `${i}end update_row;
+`, o += `${i}procedure update_row (p_row in out nocopy ${n}%rowtype);
 
-`, o += `${i}procedure delete_row (p_id in t_id) is
-`, o += `${i}begin
-`, o += `${i}${i}delete from ${n} where ${r} = p_id;
-`, o += `${i}end delete_row;
+`, o += `${i}procedure delete_row (p_id in t_id);
 
-`, o += `end ${s};
+`, o += `${i}c_err_stale_data constant pls_integer := -20001;
+`, o += `${i}c_err_not_found  constant pls_integer := -20002;
+`, o += `${i}c_err_locked     constant pls_integer := -20003;
+
+`, o += `end ${r};
 /
 `, o;
   }
-  _generateHksSpec(a) {
-    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_dal", r = n + "_hks";
-    let l = `create or replace package ${r} as
+  _generateDalBody(e) {
+    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), r = n + "_dal", t = (e.getPkName() ?? "id").toLowerCase(), o = this._hasVersionCol(e), d = e.hasAuditCols(), c = this._svcCols(e), u = Object.keys(e.fks ?? {}), h = e.children.filter((S) => S.isOption("unique"));
+    let l = `create or replace package body ${r} as
 
 `;
-    return l += `${i}procedure validate (
-`, l += `${i}${i}p_operation in varchar2,
-`, l += `${i}${i}p_row       in out nocopy ${n}%rowtype
-`, l += `${i});
+    l += `${i}resource_busy exception;
+`, l += `${i}pragma exception_init(resource_busy, -54);
 
-`, l += `${i}procedure before_insert (p_row in out nocopy ${n}%rowtype);
-`, l += `${i}procedure before_update (p_row in out nocopy ${n}%rowtype);
-`, l += `${i}procedure before_delete (p_id in ${s}.t_id);
+`, l += `${i}function get_by_id (p_id in t_id) return ${n}%rowtype is
+`, l += `${i}${i}l_row ${n}%rowtype;
+`, l += `${i}begin
+`, l += `${i}${i}select * into l_row from ${n} where ${t} = p_id;
+`, l += `${i}${i}return l_row;
+`, l += `${i}end get_by_id;
 
-`, l += `${i}procedure after_insert (p_row in ${n}%rowtype);
-`, l += `${i}procedure after_update (p_row in ${n}%rowtype);
-`, l += `${i}procedure after_delete (p_id in ${s}.t_id);
+`, l += `${i}function lock_by_id (p_id in t_id) return ${n}%rowtype is
+`, l += `${i}${i}l_row ${n}%rowtype;
+`, l += `${i}begin
+`, l += `${i}${i}select * into l_row
+`, l += `${i}${i}from   ${n}
+`, l += `${i}${i}where  ${t} = p_id
+`, l += `${i}${i}for update nowait;
+`, l += `${i}${i}return l_row;
+`, l += `${i}exception
+`, l += `${i}${i}when no_data_found then
+`, l += `${i}${i}${i}raise_application_error(c_err_not_found, '${n}: record not found (id=' || p_id || ')');
+`, l += `${i}${i}when resource_busy then
+`, l += `${i}${i}${i}raise_application_error(c_err_locked, '${n}: record locked by another session');
+`, l += `${i}end lock_by_id;
+
+`;
+    for (const S of h) {
+      const v = S.parseName().toLowerCase();
+      l += `${i}function get_by_${v} (p_${v} in ${n}.${v}%type) return ${n}%rowtype is
+`, l += `${i}${i}l_row ${n}%rowtype;
+`, l += `${i}begin
+`, l += `${i}${i}select * into l_row from ${n} where ${v} = p_${v};
+`, l += `${i}${i}return l_row;
+`, l += `${i}end get_by_${v};
+
+`;
+    }
+    l += `${i}function get_all return t_cursor is
+`, l += `${i}${i}l_cur t_cursor;
+`, l += `${i}begin
+`, l += `${i}${i}open l_cur for select * from ${n};
+`, l += `${i}${i}return l_cur;
+`, l += `${i}end get_all;
+
+`;
+    const m = this._hasSyntheticTenantId(e), p = [
+      ...m ? ["tenant_id"] : [],
+      ...u.map((S) => S.toLowerCase()),
+      ...c.map((S) => S.parseName().toLowerCase())
+    ], g = [
+      ...m ? ["p_row.tenant_id"] : [],
+      ...u.map((S) => `p_row.${S.toLowerCase()}`),
+      ...c.map((S) => `p_row.${S.parseName().toLowerCase()}`)
+    ];
+    if (l += `${i}procedure insert_row (p_row in out nocopy ${n}%rowtype) is
+`, l += `${i}begin
+`, l += `${i}${i}insert into ${n} (
+`, l += `${i}${i}${i}` + p.join(`,
+${i}${i}${i}`) + `
+`, l += `${i}${i}) values (
+`, l += `${i}${i}${i}` + g.join(`,
+${i}${i}${i}`) + `
+`, l += `${i}${i})`, o) {
+      const S = String(this.ctx.getOptionValue("createdcol") ?? "created"), v = String(this.ctx.getOptionValue("createdbycol") ?? "created_by"), w = [`${t}`, "row_version"], E = [`p_row.${t}`, "p_row.row_version"];
+      d && (w.push(S, v), E.push(`p_row.${S}`, `p_row.${v}`)), l += `
+${i}${i}returning ${w.join(", ")}
+`, l += `${i}${i}     into ${E.join(", ")}`;
+    } else
+      l += `
+${i}${i}returning ${t}
+`, l += `${i}${i}     into p_row.${t}`;
+    l += `;
+`, l += `${i}end insert_row;
+
+`;
+    const A = [
+      ...u.map((S) => `${S.toLowerCase()} = p_row.${S.toLowerCase()}`),
+      ...c.map((S) => `${S.parseName().toLowerCase()} = p_row.${S.parseName().toLowerCase()}`)
+    ];
+    return l += `${i}procedure update_row (p_row in out nocopy ${n}%rowtype) is
+`, l += `${i}${i}l_id t_id;
+`, l += `${i}begin
+`, l += `${i}${i}l_id := p_row.${t};
+`, l += `${i}${i}update ${n} set
+`, l += `${i}${i}${i}` + A.join(`,
+${i}${i}${i}`) + `
+`, l += `${i}${i}where ${t} = l_id`, o && (l += `
+${i}${i}  and row_version = p_row.row_version`), l += `;
+`, o && (l += `${i}${i}if sql%rowcount = 0 then
+`, l += `${i}${i}${i}declare l_dummy pls_integer;
+`, l += `${i}${i}${i}begin
+`, l += `${i}${i}${i}${i}select 1 into l_dummy from ${n} where ${t} = l_id;
+`, l += `${i}${i}${i}${i}raise_application_error(c_err_stale_data, 'row modified by another session. reload and retry.');
+`, l += `${i}${i}${i}exception
+`, l += `${i}${i}${i}${i}when no_data_found then
+`, l += `${i}${i}${i}${i}${i}raise_application_error(c_err_not_found, 'record ' || l_id || ' does not exist.');
+`, l += `${i}${i}${i}end;
+`, l += `${i}${i}end if;
+`), l += `${i}end update_row;
+
+`, l += `${i}procedure delete_row (p_id in t_id) is
+`, l += `${i}begin
+`, l += `${i}${i}delete from ${n} where ${t} = p_id;
+`, l += `${i}end delete_row;
 
 `, l += `end ${r};
 /
 `, l;
   }
-  _generateHksBody(a) {
-    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_dal", r = n + "_hks";
-    let l = `create or replace package body ${r} as
+  _generateHksSpec(e) {
+    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), r = n + "_dal", t = n + "_hks";
+    let o = `create or replace package ${t} as
+
 `;
-    return l += `-- warning: this file is generated once and must not be overwritten
+    return o += `${i}procedure validate (
+`, o += `${i}${i}p_operation in varchar2,
+`, o += `${i}${i}p_row       in out nocopy ${n}%rowtype
+`, o += `${i});
 
-`, l += `${i}procedure validate (
-`, l += `${i}${i}p_operation in varchar2,
-`, l += `${i}${i}p_row       in out nocopy ${n}%rowtype
-`, l += `${i}) is begin null; end validate;
+`, o += `${i}procedure before_insert (p_row in out nocopy ${n}%rowtype);
+`, o += `${i}procedure before_update (p_row in out nocopy ${n}%rowtype);
+`, o += `${i}procedure before_delete (p_id in ${r}.t_id);
 
-`, l += `${i}procedure before_insert (p_row in out nocopy ${n}%rowtype) is begin null; end;
-`, l += `${i}procedure before_update (p_row in out nocopy ${n}%rowtype) is begin null; end;
-`, l += `${i}procedure before_delete (p_id in ${s}.t_id) is begin null; end;
+`, o += `${i}procedure after_insert (p_row in ${n}%rowtype);
+`, o += `${i}procedure after_update (p_row in ${n}%rowtype);
+`, o += `${i}procedure after_delete (p_id in ${r}.t_id);
 
-`, l += `${i}procedure after_insert  (p_row in ${n}%rowtype) is begin null; end;
-`, l += `${i}procedure after_update  (p_row in ${n}%rowtype) is begin null; end;
-`, l += `${i}procedure after_delete  (p_id in ${s}.t_id)     is begin null; end;
-
-`, l += `end ${r};
+`, o += `end ${t};
 /
-`, l;
+`, o;
+  }
+  _generateHksBody(e) {
+    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), r = n + "_dal", t = n + "_hks";
+    let o = `create or replace package body ${t} as
+`;
+    return o += `-- warning: this file is generated once and must not be overwritten
+
+`, o += `${i}procedure validate (
+`, o += `${i}${i}p_operation in varchar2,
+`, o += `${i}${i}p_row       in out nocopy ${n}%rowtype
+`, o += `${i}) is begin null; end validate;
+
+`, o += `${i}procedure before_insert (p_row in out nocopy ${n}%rowtype) is begin null; end;
+`, o += `${i}procedure before_update (p_row in out nocopy ${n}%rowtype) is begin null; end;
+`, o += `${i}procedure before_delete (p_id in ${r}.t_id) is begin null; end;
+
+`, o += `${i}procedure after_insert  (p_row in ${n}%rowtype) is begin null; end;
+`, o += `${i}procedure after_update  (p_row in ${n}%rowtype) is begin null; end;
+`, o += `${i}procedure after_delete  (p_id in ${r}.t_id)     is begin null; end;
+
+`, o += `end ${t};
+/
+`, o;
   }
   /**
    * Ordered list of t_rec / APX parameter descriptors: FK cols → tenant_id → regular cols.
    * Single source of truth for SVC t_rec fields and APX parameter lists.
    */
-  _svcParamCols(a) {
+  _svcParamCols(e) {
     const n = [];
-    for (const s of Object.keys(a.fks ?? {}))
-      n.push({ name: s.toLowerCase(), nullable: !0 });
-    this._hasSyntheticTenantId(a) && n.push({ name: "tenant_id", nullable: !1 });
-    for (const s of this._svcCols(a))
-      n.push({ name: s.parseName().toLowerCase(), nullable: !s.isOption("nn") });
+    for (const r of Object.keys(e.fks ?? {}))
+      n.push({ name: r.toLowerCase(), nullable: !0 });
+    this._hasSyntheticTenantId(e) && n.push({ name: "tenant_id", nullable: !1 });
+    for (const r of this._svcCols(e))
+      n.push({ name: r.parseName().toLowerCase(), nullable: !r.isOption("nn") });
     return n;
   }
-  _generateSvcSpec(a) {
-    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_svc", r = (a.getPkName() ?? "id").toLowerCase(), l = this._hasVersionCol(a), d = this._svcParamCols(a);
-    let f = `create or replace package ${s} as
+  _generateSvcSpec(e) {
+    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), r = n + "_svc", t = (e.getPkName() ?? "id").toLowerCase(), o = this._hasVersionCol(e), d = this._svcParamCols(e);
+    let c = `create or replace package ${r} as
 
 `;
-    return f += `${i}type t_rec is record (
-`, f += d.map(({ name: m }) => `${i}${i}${m.padEnd(20)}${n}.${m}%type`).join(`,
+    return c += `${i}type t_rec is record (
+`, c += d.map(({ name: u }) => `${i}${i}${u.padEnd(20)}${n}.${u}%type`).join(`,
 `) + `
-`, f += `${i});
+`, c += `${i});
 
-`, f += `${i}function get (p_id in ${n}.${r}%type) return ${n}%rowtype;
+`, c += `${i}function get (p_id in ${n}.${t}%type) return ${n}%rowtype;
 
-`, f += `${i}procedure create_rec (
-`, f += `${i}${i}p_rec in  t_rec,
-`, f += `${i}${i}x_id  out ${n}.${r}%type
-`, f += `${i});
+`, c += `${i}procedure create_rec (
+`, c += `${i}${i}p_rec in  t_rec,
+`, c += `${i}${i}x_id  out ${n}.${t}%type
+`, c += `${i});
 
-`, f += `${i}procedure update_rec (
-`, f += `${i}${i}p_id  in ${n}.${r}%type,
-`, f += `${i}${i}p_rec in t_rec`, l && (f += `,
-${i}${i}p_row_version in ${n}.row_version%type`), f += `
+`, c += `${i}procedure update_rec (
+`, c += `${i}${i}p_id  in ${n}.${t}%type,
+`, c += `${i}${i}p_rec in t_rec`, o && (c += `,
+${i}${i}p_row_version in ${n}.row_version%type`), c += `
 ${i});
 
-`, f += `${i}procedure delete_rec (p_id in ${n}.${r}%type);
+`, c += `${i}procedure delete_rec (p_id in ${n}.${t}%type);
 
-`, f += `end ${s};
+`, c += `end ${r};
 /
-`, f;
+`, c;
   }
-  _generateSvcBody(a) {
-    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_dal", r = n + "_hks", l = n + "_svc", d = n + "_aud", f = (a.getPkName() ?? "id").toLowerCase(), m = this._hasVersionCol(a), h = this._hasUniqueCol(a), o = this._hasAuditLog(a), u = this._svcParamCols(a);
-    let x = `create or replace package body ${l} as
+  _generateSvcBody(e) {
+    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), r = n + "_dal", t = n + "_hks", o = n + "_svc", d = n + "_aud", c = (e.getPkName() ?? "id").toLowerCase(), u = this._hasVersionCol(e), h = this._hasUniqueCol(e), l = this._hasAuditLog(e), m = this._svcParamCols(e);
+    let p = `create or replace package body ${o} as
 
 `;
-    x += `${i}function get (p_id in ${n}.${f}%type) return ${n}%rowtype is
-`, x += `${i}begin
-`, x += `${i}${i}return ${s}.get_by_id(p_id => p_id);
-`, x += `${i}end get;
+    p += `${i}function get (p_id in ${n}.${c}%type) return ${n}%rowtype is
+`, p += `${i}begin
+`, p += `${i}${i}return ${r}.get_by_id(p_id => p_id);
+`, p += `${i}end get;
 
-`, x += `${i}procedure p_do_create (
-`, x += `${i}${i}p_rec in  t_rec,
-`, x += `${i}${i}l_row in out nocopy ${n}%rowtype
-`, x += `${i}) is
-`, x += `${i}begin
+`, p += `${i}procedure p_do_create (
+`, p += `${i}${i}p_rec in  t_rec,
+`, p += `${i}${i}l_row in out nocopy ${n}%rowtype
+`, p += `${i}) is
+`, p += `${i}begin
 `;
-    for (const { name: g } of u)
-      x += `${i}${i}l_row.${g} := p_rec.${g};
+    for (const { name: g } of m)
+      p += `${i}${i}l_row.${g} := p_rec.${g};
 `;
-    x += `${i}${i}${r}.validate(p_operation => 'insert', p_row => l_row);
-`, x += `${i}${i}${r}.before_insert(p_row => l_row);
-`, x += `${i}${i}${s}.insert_row(p_row => l_row);
-`, x += `${i}${i}${r}.after_insert(p_row => l_row);
-`, o && (x += `${i}${i}${d}.log_insert(p_row => l_row);
-`), x += `${i}end p_do_create;
+    p += `${i}${i}${t}.validate(p_operation => 'insert', p_row => l_row);
+`, p += `${i}${i}${t}.before_insert(p_row => l_row);
+`, p += `${i}${i}${r}.insert_row(p_row => l_row);
+`, p += `${i}${i}${t}.after_insert(p_row => l_row);
+`, l && (p += `${i}${i}${d}.log_insert(p_row => l_row);
+`), p += `${i}end p_do_create;
 
-`, x += `${i}procedure create_rec (
-`, x += `${i}${i}p_rec in  t_rec,
-`, x += `${i}${i}x_id  out ${n}.${f}%type
-`, x += `${i}) is
-`, x += `${i}${i}l_row ${n}%rowtype;
-`, x += `${i}begin
-`, x += `${i}${i}p_do_create(p_rec => p_rec, l_row => l_row);
-`, x += `${i}${i}x_id := l_row.${f};
-`, h && (x += `${i}exception
-`, x += `${i}${i}when dup_val_on_index then
-`, x += `${i}${i}${i}raise_application_error(-20010, 'duplicate value on unique constraint.');
-`), x += `${i}end create_rec;
+`, p += `${i}procedure create_rec (
+`, p += `${i}${i}p_rec in  t_rec,
+`, p += `${i}${i}x_id  out ${n}.${c}%type
+`, p += `${i}) is
+`, p += `${i}${i}l_row ${n}%rowtype;
+`, p += `${i}begin
+`, p += `${i}${i}p_do_create(p_rec => p_rec, l_row => l_row);
+`, p += `${i}${i}x_id := l_row.${c};
+`, h && (p += `${i}exception
+`, p += `${i}${i}when dup_val_on_index then
+`, p += `${i}${i}${i}raise_application_error(-20010, 'duplicate value on unique constraint.');
+`), p += `${i}end create_rec;
 
-`, x += `${i}procedure update_rec (
-`, x += `${i}${i}p_id  in ${n}.${f}%type,
-`, x += `${i}${i}p_rec in t_rec`, m && (x += `,
-${i}${i}p_row_version in ${n}.row_version%type`), x += `
+`, p += `${i}procedure update_rec (
+`, p += `${i}${i}p_id  in ${n}.${c}%type,
+`, p += `${i}${i}p_rec in t_rec`, u && (p += `,
+${i}${i}p_row_version in ${n}.row_version%type`), p += `
 ${i}) is
-`, x += `${i}${i}l_row ${n}%rowtype;
-`, o && (x += `${i}${i}l_old_row ${n}%rowtype;
-`), x += `${i}begin
-`, x += `${i}${i}l_row := ${s}.get_by_id(p_id => p_id);
-`, o && (x += `${i}${i}l_old_row := l_row;
+`, p += `${i}${i}l_row ${n}%rowtype;
+`, l && (p += `${i}${i}l_old_row ${n}%rowtype;
+`), p += `${i}begin
+`, p += `${i}${i}l_row := ${r}.get_by_id(p_id => p_id);
+`, l && (p += `${i}${i}l_old_row := l_row;
 `);
-    for (const { name: g } of u)
-      x += `${i}${i}l_row.${g} := p_rec.${g};
+    for (const { name: g } of m)
+      p += `${i}${i}l_row.${g} := p_rec.${g};
 `;
-    return m && (x += `${i}${i}l_row.row_version := p_row_version;
-`), x += `${i}${i}${r}.validate(p_operation => 'update', p_row => l_row);
-`, x += `${i}${i}${r}.before_update(p_row => l_row);
-`, x += `${i}${i}${s}.update_row(p_row => l_row);
-`, x += `${i}${i}${r}.after_update(p_row => l_row);
-`, o && (x += `${i}${i}${d}.log_update(p_old_row => l_old_row, p_new_row => l_row);
-`), x += `${i}end update_rec;
+    return u && (p += `${i}${i}l_row.row_version := p_row_version;
+`), p += `${i}${i}${t}.validate(p_operation => 'update', p_row => l_row);
+`, p += `${i}${i}${t}.before_update(p_row => l_row);
+`, p += `${i}${i}${r}.update_row(p_row => l_row);
+`, p += `${i}${i}${t}.after_update(p_row => l_row);
+`, l && (p += `${i}${i}${d}.log_update(p_old_row => l_old_row, p_new_row => l_row);
+`), p += `${i}end update_rec;
 
-`, x += `${i}procedure delete_rec (p_id in ${n}.${f}%type) is
-`, o && (x += `${i}${i}l_old_row ${n}%rowtype;
-`), x += `${i}begin
-`, o && (x += `${i}${i}l_old_row := ${s}.get_by_id(p_id => p_id);
-`), x += `${i}${i}${r}.before_delete(p_id => p_id);
-`, x += `${i}${i}${s}.delete_row(p_id => p_id);
-`, x += `${i}${i}${r}.after_delete(p_id => p_id);
-`, o && (x += `${i}${i}${d}.log_delete(p_old_row => l_old_row);
-`), x += `${i}end delete_rec;
+`, p += `${i}procedure delete_rec (p_id in ${n}.${c}%type) is
+`, l && (p += `${i}${i}l_old_row ${n}%rowtype;
+`), p += `${i}begin
+`, l && (p += `${i}${i}l_old_row := ${r}.get_by_id(p_id => p_id);
+`), p += `${i}${i}${t}.before_delete(p_id => p_id);
+`, p += `${i}${i}${r}.delete_row(p_id => p_id);
+`, p += `${i}${i}${t}.after_delete(p_id => p_id);
+`, l && (p += `${i}${i}${d}.log_delete(p_old_row => l_old_row);
+`), p += `${i}end delete_rec;
 
-`, x += `end ${l};
+`, p += `end ${o};
 /
-`, x;
+`, p;
   }
-  _generateApxSpec(a) {
-    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_apx", r = (a.getPkName() ?? "id").toLowerCase(), l = this._hasVersionCol(a), d = a.hasAuditCols(), f = this._svcParamCols(a), m = String(this.ctx.getOptionValue("createdcol") ?? "created"), h = String(this.ctx.getOptionValue("createdbycol") ?? "created_by"), o = String(this.ctx.getOptionValue("updatedcol") ?? "updated"), u = String(this.ctx.getOptionValue("updatedbycol") ?? "updated_by");
-    let x = `create or replace package ${s} as
+  _generateApxSpec(e) {
+    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), r = n + "_apx", t = (e.getPkName() ?? "id").toLowerCase(), o = this._hasVersionCol(e), d = e.hasAuditCols(), c = this._svcParamCols(e), u = String(this.ctx.getOptionValue("createdcol") ?? "created"), h = String(this.ctx.getOptionValue("createdbycol") ?? "created_by"), l = String(this.ctx.getOptionValue("updatedcol") ?? "updated"), m = String(this.ctx.getOptionValue("updatedbycol") ?? "updated_by");
+    let p = `create or replace package ${r} as
 
 `;
-    x += `${i}procedure get (
-`, x += `${i}${i}p_id          in  ${n}.${r}%type`;
-    for (const { name: k } of f)
-      x += `,
-${i}${i}p_${k.padEnd(13)} out ${n}.${k}%type`;
-    l && (x += `,
-${i}${i}p_row_version  out ${n}.row_version%type`), d && (x += `,
-${i}${i}p_${m.padEnd(13)} out ${n}.${m}%type`, x += `,
-${i}${i}p_${h.padEnd(13)} out ${n}.${h}%type`, x += `,
-${i}${i}p_${o.padEnd(13)} out ${n}.${o}%type`, x += `,
-${i}${i}p_${u.padEnd(13)} out ${n}.${u}%type`), x += `
+    p += `${i}procedure get (
+`, p += `${i}${i}p_id          in  ${n}.${t}%type`;
+    for (const { name: S } of c)
+      p += `,
+${i}${i}p_${S.padEnd(13)} out ${n}.${S}%type`;
+    o && (p += `,
+${i}${i}p_row_version  out ${n}.row_version%type`), d && (p += `,
+${i}${i}p_${u.padEnd(13)} out ${n}.${u}%type`, p += `,
+${i}${i}p_${h.padEnd(13)} out ${n}.${h}%type`, p += `,
+${i}${i}p_${l.padEnd(13)} out ${n}.${l}%type`, p += `,
+${i}${i}p_${m.padEnd(13)} out ${n}.${m}%type`), p += `
 ${i});
 
-`, x += `${i}procedure ins (
+`, p += `${i}procedure ins (
 `;
     const g = [];
-    for (const { name: k, nullable: y } of f)
-      g.push(`${i}${i}p_${k.padEnd(13)} in  ${n}.${k}%type${y ? " default null" : ""}`);
-    g.push(`${i}${i}p_id           out ${n}.${r}%type`), x += g.join(`,
+    for (const { name: S, nullable: v } of c)
+      g.push(`${i}${i}p_${S.padEnd(13)} in  ${n}.${S}%type${v ? " default null" : ""}`);
+    g.push(`${i}${i}p_id           out ${n}.${t}%type`), p += g.join(`,
 `) + `
 ${i});
 
-`, x += `${i}procedure upd (
+`, p += `${i}procedure upd (
 `;
-    const T = [];
-    T.push(`${i}${i}p_id           in  ${n}.${r}%type`);
-    for (const { name: k, nullable: y } of f)
-      T.push(`${i}${i}p_${k.padEnd(13)} in  ${n}.${k}%type${y ? " default null" : ""}`);
-    return l && T.push(`${i}${i}p_row_version  in  ${n}.row_version%type`), x += T.join(`,
+    const A = [];
+    A.push(`${i}${i}p_id           in  ${n}.${t}%type`);
+    for (const { name: S, nullable: v } of c)
+      A.push(`${i}${i}p_${S.padEnd(13)} in  ${n}.${S}%type${v ? " default null" : ""}`);
+    return o && A.push(`${i}${i}p_row_version  in  ${n}.row_version%type`), p += A.join(`,
 `) + `
 ${i});
 
-`, x += `${i}procedure del (p_id in ${n}.${r}%type);
+`, p += `${i}procedure del (p_id in ${n}.${t}%type);
 
-`, x += `end ${s};
+`, p += `end ${r};
 /
-`, x;
+`, p;
   }
-  _generateApxBody(a) {
-    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_svc", r = n + "_apx", l = (a.getPkName() ?? "id").toLowerCase(), d = this._hasVersionCol(a), f = a.hasAuditCols(), m = this._svcParamCols(a), h = String(this.ctx.getOptionValue("createdcol") ?? "created"), o = String(this.ctx.getOptionValue("createdbycol") ?? "created_by"), u = String(this.ctx.getOptionValue("updatedcol") ?? "updated"), x = String(this.ctx.getOptionValue("updatedbycol") ?? "updated_by");
-    let g = `create or replace package body ${r} as
+  _generateApxBody(e) {
+    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), r = n + "_svc", t = n + "_apx", o = (e.getPkName() ?? "id").toLowerCase(), d = this._hasVersionCol(e), c = e.hasAuditCols(), u = this._svcParamCols(e), h = String(this.ctx.getOptionValue("createdcol") ?? "created"), l = String(this.ctx.getOptionValue("createdbycol") ?? "created_by"), m = String(this.ctx.getOptionValue("updatedcol") ?? "updated"), p = String(this.ctx.getOptionValue("updatedbycol") ?? "updated_by");
+    let g = `create or replace package body ${t} as
 
 `;
     g += `${i}procedure get (
-`, g += `${i}${i}p_id          in  ${n}.${l}%type`;
-    for (const { name: y } of m)
+`, g += `${i}${i}p_id          in  ${n}.${o}%type`;
+    for (const { name: v } of u)
       g += `,
-${i}${i}p_${y.padEnd(13)} out ${n}.${y}%type`;
+${i}${i}p_${v.padEnd(13)} out ${n}.${v}%type`;
     d && (g += `,
-${i}${i}p_row_version  out ${n}.row_version%type`), f && (g += `,
+${i}${i}p_row_version  out ${n}.row_version%type`), c && (g += `,
 ${i}${i}p_${h.padEnd(13)} out ${n}.${h}%type`, g += `,
-${i}${i}p_${o.padEnd(13)} out ${n}.${o}%type`, g += `,
-${i}${i}p_${u.padEnd(13)} out ${n}.${u}%type`, g += `,
-${i}${i}p_${x.padEnd(13)} out ${n}.${x}%type`), g += `
+${i}${i}p_${l.padEnd(13)} out ${n}.${l}%type`, g += `,
+${i}${i}p_${m.padEnd(13)} out ${n}.${m}%type`, g += `,
+${i}${i}p_${p.padEnd(13)} out ${n}.${p}%type`), g += `
 ${i}) is
 `, g += `${i}${i}l_row ${n}%rowtype;
 `, g += `${i}begin
 `, g += `${i}${i}if p_id is null then return; end if;  -- INSERT mode: leave OUT params null
-`, g += `${i}${i}l_row := ${s}.get(p_id => p_id);
+`, g += `${i}${i}l_row := ${r}.get(p_id => p_id);
 `;
-    for (const { name: y } of m)
-      g += `${i}${i}p_${y} := l_row.${y};
+    for (const { name: v } of u)
+      g += `${i}${i}p_${v} := l_row.${v};
 `;
     d && (g += `${i}${i}p_row_version := l_row.row_version;
-`), f && (g += `${i}${i}p_${h} := l_row.${h};
-`, g += `${i}${i}p_${o} := l_row.${o};
-`, g += `${i}${i}p_${u} := l_row.${u};
-`, g += `${i}${i}p_${x} := l_row.${x};
+`), c && (g += `${i}${i}p_${h} := l_row.${h};
+`, g += `${i}${i}p_${l} := l_row.${l};
+`, g += `${i}${i}p_${m} := l_row.${m};
+`, g += `${i}${i}p_${p} := l_row.${p};
 `), g += `${i}end get;
 
 `, g += `${i}procedure ins (
 `;
-    const T = [];
-    for (const { name: y, nullable: B } of m)
-      T.push(`${i}${i}p_${y.padEnd(13)} in  ${n}.${y}%type${B ? " default null" : ""}`);
-    T.push(`${i}${i}p_id           out ${n}.${l}%type`), g += T.join(`,
+    const A = [];
+    for (const { name: v, nullable: w } of u)
+      A.push(`${i}${i}p_${v.padEnd(13)} in  ${n}.${v}%type${w ? " default null" : ""}`);
+    A.push(`${i}${i}p_id           out ${n}.${o}%type`), g += A.join(`,
 `) + `
 ${i}) is
-`, g += `${i}${i}l_rec ${s}.t_rec;
+`, g += `${i}${i}l_rec ${r}.t_rec;
 `, g += `${i}begin
 `;
-    for (const { name: y } of m)
-      g += `${i}${i}l_rec.${y} := p_${y};
+    for (const { name: v } of u)
+      g += `${i}${i}l_rec.${v} := p_${v};
 `;
-    g += `${i}${i}${s}.create_rec(p_rec => l_rec, x_id => p_id);
+    g += `${i}${i}${r}.create_rec(p_rec => l_rec, x_id => p_id);
 `, g += `${i}end ins;
 
 `, g += `${i}procedure upd (
 `;
-    const k = [];
-    k.push(`${i}${i}p_id           in  ${n}.${l}%type`);
-    for (const { name: y, nullable: B } of m)
-      k.push(`${i}${i}p_${y.padEnd(13)} in  ${n}.${y}%type${B ? " default null" : ""}`);
-    d && k.push(`${i}${i}p_row_version  in  ${n}.row_version%type`), g += k.join(`,
+    const S = [];
+    S.push(`${i}${i}p_id           in  ${n}.${o}%type`);
+    for (const { name: v, nullable: w } of u)
+      S.push(`${i}${i}p_${v.padEnd(13)} in  ${n}.${v}%type${w ? " default null" : ""}`);
+    d && S.push(`${i}${i}p_row_version  in  ${n}.row_version%type`), g += S.join(`,
 `) + `
 ${i}) is
-`, g += `${i}${i}l_rec ${s}.t_rec;
+`, g += `${i}${i}l_rec ${r}.t_rec;
 `, g += `${i}begin
 `;
-    for (const { name: y } of m)
-      g += `${i}${i}l_rec.${y} := p_${y};
+    for (const { name: v } of u)
+      g += `${i}${i}l_rec.${v} := p_${v};
 `;
-    return g += `${i}${i}${s}.update_rec(
+    return g += `${i}${i}${r}.update_rec(
 `, g += `${i}${i}${i}p_id  => p_id,
 `, g += `${i}${i}${i}p_rec => l_rec`, d && (g += `,
 ${i}${i}${i}p_row_version => p_row_version`), g += `
 ${i}${i});
 `, g += `${i}end upd;
 
-`, g += `${i}procedure del (p_id in ${n}.${l}%type) is
+`, g += `${i}procedure del (p_id in ${n}.${o}%type) is
 `, g += `${i}begin
-`, g += `${i}${i}${s}.delete_rec(p_id => p_id);
+`, g += `${i}${i}${r}.delete_rec(p_id => p_id);
 `, g += `${i}end del;
 
-`, g += `end ${r};
+`, g += `end ${t};
 /
 `, g;
   }
-  _generateAuditSpec(a) {
-    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_aud";
-    let r = `create or replace package ${s} as
+  _generateAuditSpec(e) {
+    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), r = n + "_aud";
+    let t = `create or replace package ${r} as
 
 `;
-    return r += `${i}g_enabled boolean := true;
+    return t += `${i}g_enabled boolean := true;
 
-`, r += `${i}procedure log_insert (p_row     in ${n}%rowtype);
-`, r += `${i}procedure log_update (p_old_row in ${n}%rowtype, p_new_row in ${n}%rowtype);
-`, r += `${i}procedure log_delete (p_old_row in ${n}%rowtype);
+`, t += `${i}procedure log_insert (p_row     in ${n}%rowtype);
+`, t += `${i}procedure log_update (p_old_row in ${n}%rowtype, p_new_row in ${n}%rowtype);
+`, t += `${i}procedure log_delete (p_old_row in ${n}%rowtype);
 
-`, r += `end ${s};
+`, t += `end ${r};
 /
-`, r;
+`, t;
   }
-  _generateAuditBody(a) {
-    const n = (this.ctx.objPrefix() + a.parseName()).toLowerCase(), s = n + "_dal", r = n + "_aud", l = (a.getPkName() ?? "id").toLowerCase(), d = String(a.getOptionValue("auditlog") || "").trim() || "app_audit_log", f = (this.ctx.objPrefix() + d).toLowerCase(), m = f + "_svc", h = this._hasVersionCol(a), o = Object.keys(a.fks ?? {}).map((B) => B.toLowerCase()), u = this._svcCols(a).map((B) => B.parseName().toLowerCase()), g = (this.ctx.find(d)?.children ?? []).some((B) => B.parseName().toLowerCase() === "old_values"), T = this._hasSyntheticTenantId(a), k = [l, ...T ? ["tenant_id"] : [], ...o, ...u];
-    h && k.push("row_version");
-    let y = `create or replace package body ${r} as
+  _generateAuditBody(e) {
+    const n = (this.ctx.objPrefix() + e.parseName()).toLowerCase(), r = n + "_dal", t = n + "_aud", o = (e.getPkName() ?? "id").toLowerCase(), d = String(e.getOptionValue("auditlog") || "").trim() || "app_audit_log", c = (this.ctx.objPrefix() + d).toLowerCase(), u = c + "_svc", h = this._hasVersionCol(e), l = Object.keys(e.fks ?? {}).map((w) => w.toLowerCase()), m = this._svcCols(e).map((w) => w.parseName().toLowerCase()), g = (this.ctx.find(d)?.children ?? []).some((w) => w.parseName().toLowerCase() === "old_values"), A = this._hasSyntheticTenantId(e), S = [o, ...A ? ["tenant_id"] : [], ...l, ...m];
+    h && S.push("row_version");
+    let v = `create or replace package body ${t} as
 
 `;
     if (g) {
-      const B = k.map((N) => `${i}${i}${i}'${N}' value p_row.${N}`);
-      y += `${i}function f_to_json (p_row in ${n}%rowtype) return clob is
-`, y += `${i}${i}l_result clob;
-`, y += `${i}begin
-`, y += `${i}${i}select json_object(
-`, y += B.join(`,
+      const w = S.map((E) => `${i}${i}${i}'${E}' value p_row.${E}`);
+      v += `${i}function f_to_json (p_row in ${n}%rowtype) return clob is
+`, v += `${i}${i}l_result clob;
+`, v += `${i}begin
+`, v += `${i}${i}select json_object(
+`, v += w.join(`,
 `) + `
-`, y += `${i}${i}${i}returning clob
-`, y += `${i}${i}) into l_result from dual;
-`, y += `${i}${i}return l_result;
-`, y += `${i}end f_to_json;
+`, v += `${i}${i}${i}returning clob
+`, v += `${i}${i}) into l_result from dual;
+`, v += `${i}${i}return l_result;
+`, v += `${i}end f_to_json;
 
 `;
     }
-    return y += `${i}procedure p_log (
-`, y += `${i}${i}p_operation  in varchar2,
-`, y += `${i}${i}p_id         in ${s}.t_id`, g ? (y += `,
+    return v += `${i}procedure p_log (
+`, v += `${i}${i}p_operation  in varchar2,
+`, v += `${i}${i}p_id         in ${r}.t_id`, g ? (v += `,
 ${i}${i}p_old_values in clob default null,
-`, y += `${i}${i}p_new_values in clob default null
-`) : y += `
-`, y += `${i}) is
-`, y += `${i}${i}pragma autonomous_transaction;
-`, y += `${i}${i}l_rec ${m}.t_rec;
-`, y += `${i}${i}l_id ${f}.id%type;
-`, y += `${i}begin
-`, y += `${i}${i}if not g_enabled then return; end if;
-`, y += `${i}${i}l_rec.entity    := '${n}';
-`, y += `${i}${i}l_rec.entity_id := p_id;
-`, y += `${i}${i}l_rec.operation := p_operation;
-`, g && (y += `${i}${i}l_rec.old_values := p_old_values;
-`, y += `${i}${i}l_rec.new_values := p_new_values;
-`), y += `${i}${i}${m}.create_rec(p_rec => l_rec, x_id => l_id);
-`, y += `${i}${i}-- l_id holds the generated audit record id.
-`, y += `${i}${i}-- use it here if needed, e.g. to notify, correlate, or route downstream:
-`, y += `${i}${i}-- your_pkg.on_audit(p_audit_id => l_id, p_entity => '${n}', p_operation => p_operation);
-`, y += `${i}${i}commit;
-`, y += `${i}end p_log;
+`, v += `${i}${i}p_new_values in clob default null
+`) : v += `
+`, v += `${i}) is
+`, v += `${i}${i}pragma autonomous_transaction;
+`, v += `${i}${i}l_rec ${u}.t_rec;
+`, v += `${i}${i}l_id ${c}.id%type;
+`, v += `${i}begin
+`, v += `${i}${i}if not g_enabled then return; end if;
+`, v += `${i}${i}l_rec.entity    := '${n}';
+`, v += `${i}${i}l_rec.entity_id := p_id;
+`, v += `${i}${i}l_rec.operation := p_operation;
+`, g && (v += `${i}${i}l_rec.old_values := p_old_values;
+`, v += `${i}${i}l_rec.new_values := p_new_values;
+`), v += `${i}${i}${u}.create_rec(p_rec => l_rec, x_id => l_id);
+`, v += `${i}${i}-- l_id holds the generated audit record id.
+`, v += `${i}${i}-- use it here if needed, e.g. to notify, correlate, or route downstream:
+`, v += `${i}${i}-- your_pkg.on_audit(p_audit_id => l_id, p_entity => '${n}', p_operation => p_operation);
+`, v += `${i}${i}commit;
+`, v += `${i}end p_log;
 
-`, y += `${i}procedure log_insert (p_row in ${n}%rowtype) is
-`, y += `${i}begin
-`, g ? y += `${i}${i}p_log(p_operation => 'INSERT', p_id => p_row.${l}, p_new_values => f_to_json(p_row));
-` : y += `${i}${i}p_log(p_operation => 'INSERT', p_id => p_row.${l});
-`, y += `${i}end log_insert;
+`, v += `${i}procedure log_insert (p_row in ${n}%rowtype) is
+`, v += `${i}begin
+`, g ? v += `${i}${i}p_log(p_operation => 'INSERT', p_id => p_row.${o}, p_new_values => f_to_json(p_row));
+` : v += `${i}${i}p_log(p_operation => 'INSERT', p_id => p_row.${o});
+`, v += `${i}end log_insert;
 
-`, y += `${i}procedure log_update (p_old_row in ${n}%rowtype, p_new_row in ${n}%rowtype) is
-`, y += `${i}begin
-`, g ? y += `${i}${i}p_log(p_operation => 'UPDATE', p_id => p_new_row.${l}, p_old_values => f_to_json(p_old_row), p_new_values => f_to_json(p_new_row));
-` : y += `${i}${i}p_log(p_operation => 'UPDATE', p_id => p_new_row.${l});
-`, y += `${i}end log_update;
+`, v += `${i}procedure log_update (p_old_row in ${n}%rowtype, p_new_row in ${n}%rowtype) is
+`, v += `${i}begin
+`, g ? v += `${i}${i}p_log(p_operation => 'UPDATE', p_id => p_new_row.${o}, p_old_values => f_to_json(p_old_row), p_new_values => f_to_json(p_new_row));
+` : v += `${i}${i}p_log(p_operation => 'UPDATE', p_id => p_new_row.${o});
+`, v += `${i}end log_update;
 
-`, y += `${i}procedure log_delete (p_old_row in ${n}%rowtype) is
-`, y += `${i}begin
-`, g ? y += `${i}${i}p_log(p_operation => 'DELETE', p_id => p_old_row.${l}, p_old_values => f_to_json(p_old_row));
-` : y += `${i}${i}p_log(p_operation => 'DELETE', p_id => p_old_row.${l});
-`, y += `${i}end log_delete;
+`, v += `${i}procedure log_delete (p_old_row in ${n}%rowtype) is
+`, v += `${i}begin
+`, g ? v += `${i}${i}p_log(p_operation => 'DELETE', p_id => p_old_row.${o}, p_old_values => f_to_json(p_old_row));
+` : v += `${i}${i}p_log(p_operation => 'DELETE', p_id => p_old_row.${o});
+`, v += `${i}end log_delete;
 
-`, y += `end ${r};
+`, v += `end ${t};
 /
-`, y;
+`, v;
   }
-  generateLayeredTAPI(a) {
-    if (a.inferType() !== "table" || a.children.length === 0) return "";
-    const n = this._hasAuditLog(a), s = String(this.ctx.getOptionValue("ifc") ?? "apex").toLowerCase();
-    let r = this._generateDalSpec(a) + `
-` + this._generateDalBody(a) + `
-` + this._generateHksSpec(a) + `
-` + this._generateHksBody(a) + `
-` + this._generateSvcSpec(a) + `
+  generateLayeredTAPI(e) {
+    if (e.inferType() !== "table" || e.children.length === 0) return "";
+    const n = this._hasAuditLog(e), r = String(this.ctx.getOptionValue("ifc") ?? "apex").toLowerCase();
+    let t = this._generateDalSpec(e) + `
+` + this._generateDalBody(e) + `
+` + this._generateHksSpec(e) + `
+` + this._generateHksBody(e) + `
+` + this._generateSvcSpec(e) + `
 `;
-    return n && (r += this._generateAuditSpec(a) + `
-`), r += this._generateSvcBody(a), n && (r += `
-` + this._generateAuditBody(a)), (s === "apex" || s === "") && (r += `
-` + this._generateApxSpec(a) + `
-` + this._generateApxBody(a)), r;
+    return n && (t += this._generateAuditSpec(e) + `
+`), t += this._generateSvcBody(e), n && (t += `
+` + this._generateAuditBody(e)), (r === "apex" || r === "") && (t += `
+` + this._generateApxSpec(e) + `
+` + this._generateApxBody(e)), t;
   }
-  generateTAPI(a) {
-    if (a.children.length === 0) return "";
-    const n = this.ctx.objPrefix() + a.parseName(), s = a.getPkName(), r = this._hasSyntheticTenantId(a), l = r ? `,
-        p_tenant_id           in integer` : "", d = s + " = p_" + s + (r ? " and tenant_id = p_tenant_id" : "");
-    let f = ("create or replace package " + n.toLowerCase() + `_API
+  generateTAPI(e) {
+    if (e.children.length === 0) return "";
+    const n = this.ctx.objPrefix() + e.parseName(), r = e.getPkName(), t = this._hasSyntheticTenantId(e), o = t ? `,
+        p_tenant_id           in integer` : "", d = r + " = p_" + r + (t ? " and tenant_id = p_tenant_id" : "");
+    let c = ("create or replace package " + n.toLowerCase() + `_API
 is
 
 `).toLowerCase();
-    return f += this.procDecl(a, "get") + `;
+    return c += this.procDecl(e, "get") + `;
 
-`, f += this.procDecl(a, "insert") + `;
+`, c += this.procDecl(e, "insert") + `;
 
-`, f += this.procDecl(a, "update") + `;
+`, c += this.procDecl(e, "update") + `;
 
-`, f += `    procedure delete_row (
-        p_` + s + "              in integer" + l + `
+`, c += `    procedure delete_row (
+        p_` + r + "              in integer" + o + `
     );
 end ` + n.toLowerCase() + `_api;
 /
 
-`, f += ("create or replace package body " + n.toLowerCase() + `_API
+`, c += ("create or replace package body " + n.toLowerCase() + `_API
 is
 
-`).toLowerCase(), f += this.procDecl(a, "get") + `
-` + this._getRowBody(a), f += this.procDecl(a, "insert") + `
-` + this._insertRowBody(a), f += this.procDecl(a, "update") + `
-` + this._updateRowBody(a), f += `    procedure delete_row (
-        p_` + s + "              in integer" + l + `
+`).toLowerCase(), c += this.procDecl(e, "get") + `
+` + this._getRowBody(e), c += this.procDecl(e, "insert") + `
+` + this._insertRowBody(e), c += this.procDecl(e, "update") + `
+` + this._updateRowBody(e), c += `    procedure delete_row (
+        p_` + r + "              in integer" + o + `
     )
     is
     begin
@@ -13344,863 +13344,1463 @@ is
     end delete_row;
 end ` + n.toLowerCase() + `_api;
 /
-`, f.toLowerCase();
+`, c.toLowerCase();
   }
 }
-const pa = " not null";
-function ba(p) {
-  return p.lastIndexOf(`,
-`) === p.length - 2 && (p = p.substring(0, p.length - 2) + `
-`), p;
+const va = " not null";
+function ya(x) {
+  return x.lastIndexOf(`,
+`) === x.length - 2 && (x = x.substring(0, x.length - 2) + `
+`), x;
 }
-class ga extends fa {
-  constructor(a, n) {
-    super(a), this._naming = n ?? se, this._view = new ma(a, this._naming), this._plsql = new xa(a, this._naming);
+class ke extends pa {
+  constructor(e, n) {
+    super(e), this._naming = n ?? Y, this._view = new ga(e, this._naming), this._plsql = new se(e, this._naming);
   }
   /** Map a SemanticType to an Oracle DDL column type string. */
-  colType(a) {
-    return this._toOracleType(a);
+  colType(e) {
+    return this._toOracleType(e);
   }
-  _pkTypeModifier(a, n) {
-    return Ge(a, this._ddl, n ?? this._naming);
+  _pkTypeModifier(e, n) {
+    return Ve(e, this._ddl, n ?? this._naming);
   }
   _globalOnDelete() {
-    const a = this._ddl.getOptionValue("ondelete") ?? "";
-    return a === "cascade" ? " on delete cascade" : a === "set null" ? " on delete set null" : a === "restrict" ? " on delete restrict" : "";
+    const e = this._ddl.getOptionValue("ondelete") ?? "";
+    return e === "cascade" ? " on delete cascade" : e === "set null" ? " on delete set null" : e === "restrict" ? " on delete restrict" : "";
   }
   /** Constraint-line prefix — aligns 'constraint' keyword under the type column. */
-  _cpad(a) {
-    return i + i + " ".repeat(a.parent.maxChildNameLen());
+  _cpad(e) {
+    return i + i + " ".repeat(e.parent.maxChildNameLen());
   }
-  _fkColType(a) {
-    const n = a.getExplicitPkName();
+  _fkColType(e) {
+    const n = e.getExplicitPkName();
     if (n === null || n.includes(",")) return null;
-    const s = a.findChild(n);
-    return s !== null ? this._toOracleType(s._inferTypeFull()) : a.getPkType();
+    const r = e.findChild(n);
+    return r !== null ? this._toOracleType(r._inferTypeFull()) : e.getPkType();
   }
-  _toOracleType(a) {
-    return De(a, this._ddl.semantics(), Re(this._ddl));
+  _toOracleType(e) {
+    return te(e, this._ddl.semantics(), j(this._ddl));
   }
-  _buildColumnConstraints(a, n, s) {
-    if (a.isOption("unique") || a.isOption("uk")) {
-      const l = a.parent !== null && a.parent.isOption("notenantid");
-      (!this._ddl.optionEQvalue("tenantid", !0) || l) && (n += `
-`, n += this._cpad(a) + "constraint " + z(this._ddl.objPrefix(), s.parent_child, this._naming.unq) + " unique");
+  _buildColumnConstraints(e, n, r) {
+    if (e.isOption("unique") || e.isOption("uk")) {
+      const o = e.parent !== null && e.parent.isOption("notenantid");
+      (!this._ddl.optionEQvalue("tenantid", !0) || o) && (n += `
+`, n += this._cpad(e) + "constraint " + U(this._ddl.objPrefix(), r.parent_child, this._naming.unq) + " unique");
     }
-    let r = "'";
-    if ((n.startsWith("integer") || n.startsWith("number") || n.startsWith("date")) && (r = ""), a.isOption("default")) {
-      const l = a.getDefaultValue() ?? "", d = ["sysdate", "current_date", "current_timestamp", "systimestamp", "localtimestamp"];
-      if (s.isNativeBoolean) {
-        const f = l.toUpperCase() === "Y" || l.toLowerCase() === "true" ? "true" : "false";
-        n += " default on null " + f;
-      } else d.includes(l.toLowerCase()) ? n += " default on null " + l : n += " default on null " + r + l + r;
+    let t = "'";
+    if ((n.startsWith("integer") || n.startsWith("number") || n.startsWith("date")) && (t = ""), e.isOption("default")) {
+      const o = e.getDefaultValue() ?? "", d = ["sysdate", "current_date", "current_timestamp", "systimestamp", "localtimestamp"];
+      if (r.isNativeBoolean) {
+        const c = o.toUpperCase() === "Y" || o.toLowerCase() === "true" ? "true" : "false";
+        n += " default on null " + c;
+      } else d.includes(o.toLowerCase()) ? n += " default on null " + o : n += " default on null " + t + o + t;
     }
-    if ((a.isOption("nn") || a.indexOf("not") + 1 === a.indexOf("null")) && a.indexOf("pk") < 0 && (n += " not null"), (a.isOption("hidden") || a.isOption("invincible")) && (n += " invisible"), s.isNativeBoolean || (n += a.genConstraint(r)), s.needsBoolCheck && (n += `
-` + this._cpad(a) + "constraint " + z(this._ddl.objPrefix(), s.parent_child) + ` check (${a.parseName()} in ('Y','N'))`), a.isOption("between")) {
-      const l = a.getBetweenClause() ?? "";
-      n += " constraint " + z(s.parent_child, this._naming.bet) + `
-`, n += "           check (" + a.parseName() + " between " + l + ")";
+    if ((e.isOption("nn") || e.indexOf("not") + 1 === e.indexOf("null")) && e.indexOf("pk") < 0 && (n += " not null"), (e.isOption("hidden") || e.isOption("invincible")) && (n += " invisible"), r.isNativeBoolean || (n += e.genConstraint(t)), r.needsBoolCheck && (n += `
+` + this._cpad(e) + "constraint " + U(this._ddl.objPrefix(), r.parent_child) + ` check (${e.parseName()} in ('Y','N'))`), e.isOption("between")) {
+      const o = e.getBetweenClause() ?? "";
+      n += " constraint " + U(r.parent_child, this._naming.bet) + `
+`, n += "           check (" + e.parseName() + " between " + o + ")";
     }
-    if (a.isOption("pk")) {
-      const l = n.startsWith("number") ? " " + this._pkTypeModifier(this._ddl.objPrefix() + a.parent.parseName()) : " not null";
-      n += l + `
-`, n += this._cpad(a) + "constraint " + z(this._ddl.objPrefix(), s.parent_child, this._naming.pk) + " primary key";
+    if (e.isOption("pk")) {
+      const o = n.startsWith("number") ? " " + this._pkTypeModifier(this._ddl.objPrefix() + e.parent.parseName()) : " not null";
+      n += o + `
+`, n += this._cpad(e) + "constraint " + U(this._ddl.objPrefix(), r.parent_child, this._naming.pk) + " primary key";
     }
-    return a.annotations !== null && (0 <= n.indexOf(`
+    return e.annotations !== null && (0 <= n.indexOf(`
 `) ? n += `
-` + this._cpad(a) + "annotations (" + a.annotations + ")" : n += " annotations (" + a.annotations + ")"), n;
+` + this._cpad(e) + "annotations (" + e.annotations + ")" : n += " annotations (" + e.annotations + ")"), n;
   }
-  _genSequence(a, n) {
+  _genSequence(e, n) {
     return this._ddl.optionEQvalue("pk", "SEQ") && this._ddl.optionEQvalue("genpk", !0) ? "create sequence  " + n + `_seq;
 
 ` : "";
   }
-  _genTableHeader(a, n, s, r) {
-    let l = "create " + s + "table " + n + ` (
+  _genTableHeader(e, n, r, t) {
+    let o = "create " + r + "table " + n + ` (
 `;
-    const d = i + " ".repeat(a.maxChildNameLen() - 2);
-    if (r !== null && !a.isOption("pk")) {
-      l += i + r + d + "number " + this._pkTypeModifier(n) + `
+    const d = i + " ".repeat(e.maxChildNameLen() - 2);
+    if (t !== null && !e.isOption("pk")) {
+      o += i + t + d + "number " + this._pkTypeModifier(n) + `
 `;
-      const f = z(this._ddl.objPrefix("no schema") + a.parseName(), "_", r);
-      l += i + i + " ".repeat(a.maxChildNameLen()) + "constraint " + z(f, this._naming.pk) + ` primary key,
+      const c = U(this._ddl.objPrefix("no schema") + e.parseName(), "_", t);
+      o += i + i + " ".repeat(e.maxChildNameLen()) + "constraint " + U(c, this._naming.pk) + ` primary key,
 `;
     } else {
-      const f = a.getExplicitPkName();
-      if (f !== null && f.indexOf(",") < 0) {
-        const m = i + " ".repeat(a.maxChildNameLen() - f.length);
+      const c = e.getExplicitPkName();
+      if (c !== null && c.indexOf(",") < 0) {
+        const u = i + " ".repeat(e.maxChildNameLen() - c.length);
         let h = "number";
-        const o = a.findChild(f);
-        o !== null && (h = this.parseType(o)), l += i + f + m + h + `,
+        const l = e.findChild(c);
+        l !== null && (h = this.parseType(l)), o += i + c + u + h + `,
 `;
       }
     }
-    return l;
+    return o;
   }
-  _genFkColumns(a, n) {
-    let s = "";
-    for (let r in a.fks) {
-      let l = a.fks[r];
-      if (0 < r.indexOf(",")) {
-        const T = this._ddl.find(l), k = ce(r, ", ");
-        for (let y = 0; y < k.length; y++) {
-          const B = k[y];
-          if (B === ",") continue;
-          const N = T?.findChild(B), P = i + " ".repeat(a.maxChildNameLen() - B.length);
-          s += i + B + P + (N ? this._toOracleType(N._inferTypeFull()) : "number") + `,
+  _genFkColumns(e, n) {
+    let r = "";
+    for (let t in e.fks) {
+      let o = e.fks[t];
+      if (0 < t.indexOf(",")) {
+        const A = this._ddl.find(o), S = xe(t, ", ");
+        for (let v = 0; v < S.length; v++) {
+          const w = S[v];
+          if (w === ",") continue;
+          const E = A?.findChild(w), B = i + " ".repeat(e.maxChildNameLen() - w.length);
+          r += i + w + B + (E ? this._toOracleType(E._inferTypeFull()) : "number") + `,
 `;
         }
         continue;
       }
       let d = "number";
-      const f = a.findChild(r);
-      f !== null && (d = f.inferType());
-      let m = this._ddl.find(l), h = "";
-      m !== null ? d = this._fkColType(m) ?? d : (m = this._ddl.find(r), m?.isMany2One?.() && !r.endsWith("_id") && (l = r, r = D(r) ?? r, h = "_id"));
-      const o = i + " ".repeat(a.maxChildNameLen() - r.length);
-      s += i + r + h + o + d;
-      const u = this._ddl.find(l) !== null ? this._ddl.objPrefix() : "", x = r + h;
-      if (this._ddl.optionEQvalue("tenantid", !0) && !a.isOption("notenantid") && m !== null && !m.isOption("notenantid") && x !== "tenant_id") {
-        s += `,
+      const c = e.findChild(t);
+      c !== null && (d = c.inferType());
+      let u = this._ddl.find(o), h = "";
+      u !== null ? d = this._fkColType(u) ?? d : (u = this._ddl.find(t), u?.isMany2One?.() && !t.endsWith("_id") && (o = t, t = $(t) ?? t, h = "_id"));
+      const l = i + " ".repeat(e.maxChildNameLen() - t.length);
+      r += i + t + h + l + d;
+      const m = this._ddl.find(o) !== null ? this._ddl.objPrefix() : "", p = t + h;
+      if (this._ddl.optionEQvalue("tenantid", !0) && !e.isOption("notenantid") && u !== null && !u.isOption("notenantid") && p !== "tenant_id") {
+        r += `,
 `;
-        const T = u + l, k = T + "_tid_id_uix", y = T + "_tid_id_uq", B = `create unique index ${k}
-    on ${T} (tenant_id, id);
-`, N = `alter table ${T}
-    add constraint ${y}
-    unique (tenant_id, id) using index ${k};
+        const A = m + o, S = A + "_tid_id_uix", v = A + "_tid_id_uq", w = `create unique index ${S}
+    on ${A} (tenant_id, id);
+`, E = `alter table ${A}
+    add constraint ${v}
+    unique (tenant_id, id) using index ${S};
 `;
-        this._ddl.postponedAltersSet.has(B) || (this._ddl.postponedAlters.push(B), this._ddl.postponedAltersSet.add(B), this._ddl.postponedAlters.push(N), this._ddl.postponedAltersSet.add(N));
-        let P = "";
-        a.isOption("cascade") ? P = " on delete cascade" : a.isOption("setnull") && (P = " on delete set null");
-        for (const fe in a.children) {
-          const X = a.children[fe];
-          if (x === X.parseName()) {
-            X.isOption("cascade") ? P = " on delete cascade" : X.isOption("setnull") && (P = " on delete set null");
+        this._ddl.postponedAltersSet.has(w) || (this._ddl.postponedAlters.push(w), this._ddl.postponedAltersSet.add(w), this._ddl.postponedAlters.push(E), this._ddl.postponedAltersSet.add(E));
+        let B = "";
+        e.isOption("cascade") ? B = " on delete cascade" : e.isOption("setnull") && (B = " on delete set null");
+        for (const O in e.children) {
+          const z = e.children[O];
+          if (p === z.parseName()) {
+            z.isOption("cascade") ? B = " on delete cascade" : z.isOption("setnull") && (B = " on delete set null");
             break;
           }
         }
-        P || (P = this._globalOnDelete());
-        const I = n + "_" + x + this._naming.fk, $ = "alter table " + n + " add constraint " + I + `
-    foreign key (tenant_id, ` + x + `)
-    references ` + u + l + " (tenant_id, id)" + P + `;
+        B || (B = this._globalOnDelete());
+        const P = n + "_" + p + this._naming.fk, N = "alter table " + n + " add constraint " + P + `
+    foreign key (tenant_id, ` + p + `)
+    references ` + m + o + " (tenant_id, id)" + B + `;
 `;
-        this._ddl.postponedAltersSet.has($) || (this._ddl.postponedAlters.push($), this._ddl.postponedAltersSet.add($));
-      } else if (m !== null && (m.line < a.line || m.isMany2One())) {
-        s += i + i + " ".repeat(a.maxChildNameLen()) + "constraint " + n + "_" + r + this._naming.fk + `
+        this._ddl.postponedAltersSet.has(N) || (this._ddl.postponedAlters.push(N), this._ddl.postponedAltersSet.add(N));
+      } else if (u !== null && (u.line < e.line || u.isMany2One())) {
+        r += i + i + " ".repeat(e.maxChildNameLen()) + "constraint " + n + "_" + t + this._naming.fk + `
 `;
-        let T = "";
-        a.isOption("cascade") ? T = " on delete cascade" : a.isOption("setnull") && (T = " on delete set null");
-        let k = "";
-        for (const y in a.children) {
-          const B = a.children[y];
-          if (r === B.parseName()) {
-            (B.isOption("nn") || B.isOption("notnull")) && (k = pa), B.isOption("cascade") ? T = " on delete cascade" : B.isOption("setnull") && (T = " on delete set null");
+        let A = "";
+        e.isOption("cascade") ? A = " on delete cascade" : e.isOption("setnull") && (A = " on delete set null");
+        let S = "";
+        for (const v in e.children) {
+          const w = e.children[v];
+          if (t === w.parseName()) {
+            (w.isOption("nn") || w.isOption("notnull")) && (S = va), w.isOption("cascade") ? A = " on delete cascade" : w.isOption("setnull") && (A = " on delete set null");
             break;
           }
         }
-        T || (T = this._globalOnDelete()), s += i + i + " ".repeat(a.maxChildNameLen()) + "references " + u + l + T + k + `,
+        A || (A = this._globalOnDelete()), r += i + i + " ".repeat(e.maxChildNameLen()) + "references " + m + o + A + S + `,
 `;
       } else {
-        s += `,
+        r += `,
 `;
-        let T = "";
-        a.isOption("cascade") ? T = " on delete cascade" : a.isOption("setnull") && (T = " on delete set null");
-        for (const y in a.children) {
-          const B = a.children[y];
-          if (r === B.parseName()) {
-            B.isOption("cascade") ? T = " on delete cascade" : B.isOption("setnull") && (T = " on delete set null");
+        let A = "";
+        e.isOption("cascade") ? A = " on delete cascade" : e.isOption("setnull") && (A = " on delete set null");
+        for (const v in e.children) {
+          const w = e.children[v];
+          if (t === w.parseName()) {
+            w.isOption("cascade") ? A = " on delete cascade" : w.isOption("setnull") && (A = " on delete set null");
             break;
           }
         }
-        T || (T = this._globalOnDelete());
-        const k = "alter table " + n + " add constraint " + n + "_" + r + "_fk foreign key (" + r + ") references " + u + l + T + `;
+        A || (A = this._globalOnDelete());
+        const S = "alter table " + n + " add constraint " + n + "_" + t + "_fk foreign key (" + t + ") references " + m + o + A + `;
 `;
-        this._ddl.postponedAltersSet.has(k) || (this._ddl.postponedAlters.push(k), this._ddl.postponedAltersSet.add(k));
+        this._ddl.postponedAltersSet.has(S) || (this._ddl.postponedAlters.push(S), this._ddl.postponedAltersSet.add(S));
       }
     }
-    return s;
+    return r;
   }
-  _genTenantIdColumn(a) {
-    if (!this._ddl.optionEQvalue("tenantid", !0) || a.isOption("notenantid") || a.findChild("tenant_id") !== null) return "";
-    const n = i + " ".repeat(a.maxChildNameLen() - 9), s = a.isOption("insert") ? "" : " not null";
-    return i + "tenant_id" + n + "number" + s + `,
+  _genTenantIdColumn(e) {
+    if (!this._ddl.optionEQvalue("tenantid", !0) || e.isOption("notenantid") || e.findChild("tenant_id") !== null) return "";
+    const n = i + " ".repeat(e.maxChildNameLen() - 9), r = e.isOption("insert") ? "" : " not null";
+    return i + "tenant_id" + n + "number" + r + `,
 `;
   }
-  _genTenantIdFk(a, n) {
-    if (!this._ddl.optionEQvalue("tenantid", !0) || a.isOption("notenantid") || a.findChild("tenant_id") !== null) return;
-    const s = String(this._ddl.getOptionValue("tenantref") || "tenants");
-    if (this._ddl.find(s) === null) return;
-    const r = this._ddl.objPrefix() + s, l = n + "_tenant_id" + this._naming.fk, d = `alter table ${n} add constraint ${l}
-    foreign key (tenant_id) references ${r} (id);
+  _genTenantIdFk(e, n) {
+    if (!this._ddl.optionEQvalue("tenantid", !0) || e.isOption("notenantid") || e.findChild("tenant_id") !== null) return;
+    const r = String(this._ddl.getOptionValue("tenantref") || "tenants");
+    if (this._ddl.find(r) === null) return;
+    const t = this._ddl.objPrefix() + r, o = n + "_tenant_id" + this._naming.fk, d = `alter table ${n} add constraint ${o}
+    foreign key (tenant_id) references ${t} (id);
 `;
     this._ddl.postponedAltersSet.has(d) || (this._ddl.postponedAlters.push(d), this._ddl.postponedAltersSet.add(d));
   }
-  _genRowKeyColumn(a, n) {
-    if (!a.hasRowKey()) return "";
-    const s = i + " ".repeat(a.maxChildNameLen() - 7);
-    let r = i + "row_key" + s + `varchar2(30${this._ddl.semantics()})
+  _genRowKeyColumn(e, n) {
+    if (!e.hasRowKey()) return "";
+    const r = i + " ".repeat(e.maxChildNameLen() - 7);
+    let t = i + "row_key" + r + `varchar2(30${this._ddl.semantics()})
 `;
-    return r += i + i + " ".repeat(a.maxChildNameLen()) + "constraint " + n + "_row_key" + this._naming.unq + ` unique not null,
-`, r;
+    return t += i + i + " ".repeat(e.maxChildNameLen()) + "constraint " + n + "_row_key" + this._naming.unq + ` unique not null,
+`, t;
   }
-  _genRegularColumns(a, n, s) {
-    let r = "";
-    for (let l = 0; l < a.children.length; l++) {
-      const d = a.children[l];
-      if (!(s !== null && d.parseName() === "id") && !(0 < d.children.length) && d.refId() === null) {
-        if (d.parseName() === a.getExplicitPkName()) continue;
-        r += i + this.generateTable(d) + `,
+  _genRegularColumns(e, n, r) {
+    let t = "";
+    for (let o = 0; o < e.children.length; o++) {
+      const d = e.children[o];
+      if (!(r !== null && d.parseName() === "id") && !(0 < d.children.length) && d.refId() === null) {
+        if (d.parseName() === e.getExplicitPkName()) continue;
+        t += i + this.generateTable(d) + `,
 `;
-        for (const f in le)
-          if (0 < d.indexOf(f)) {
-            const m = d.parseName().toUpperCase();
-            for (const h of le[f]) {
-              const o = m + h.suffix.toUpperCase(), u = i + " ".repeat(a.maxChildNameLen() - o.length);
-              r += i + o.toLowerCase() + u + h.type(this._ddl) + `,
+        for (const c in pe)
+          if (0 < d.indexOf(c)) {
+            const u = d.parseName().toUpperCase();
+            for (const h of pe[c]) {
+              const l = u + h.suffix.toUpperCase(), m = i + " ".repeat(e.maxChildNameLen() - l.length);
+              t += i + l.toLowerCase() + m + h.type(this._ddl) + `,
 `;
             }
             break;
           }
       }
     }
-    return r;
+    return t;
   }
-  _genRowVersionColumn(a) {
-    if (!a.hasRowVersion()) return "";
-    const n = i + " ".repeat(a.maxChildNameLen() - 11);
+  _genRowVersionColumn(e) {
+    if (!e.hasRowVersion()) return "";
+    const n = i + " ".repeat(e.maxChildNameLen() - 11);
     return i + "row_version" + n + `integer not null,
 `;
   }
-  _genAuditColumns(a) {
-    if (!a.hasAuditCols()) return "";
-    let n = String(this._ddl.getOptionValue("auditdate") || this._ddl.getOptionValue("Date Data Type") || "").toLowerCase(), s = "";
-    const r = String(this._ddl.getOptionValue("createdcol") ?? "");
-    s += i + r + i + " ".repeat(a.maxChildNameLen() - r.length) + n + ` not null,
+  _genAuditColumns(e) {
+    if (!e.hasAuditCols()) return "";
+    let n = String(this._ddl.getOptionValue("auditdate") || this._ddl.getOptionValue("Date Data Type") || "").toLowerCase(), r = "";
+    const t = String(this._ddl.getOptionValue("createdcol") ?? "");
+    r += i + t + i + " ".repeat(e.maxChildNameLen() - t.length) + n + ` not null,
 `;
-    const l = String(this._ddl.getOptionValue("createdbycol") ?? "");
-    s += i + l + i + " ".repeat(a.maxChildNameLen() - l.length) + `varchar2(255${this._ddl.semantics()}) not null,
+    const o = String(this._ddl.getOptionValue("createdbycol") ?? "");
+    r += i + o + i + " ".repeat(e.maxChildNameLen() - o.length) + `varchar2(255${this._ddl.semantics()}) not null,
 `;
     const d = String(this._ddl.getOptionValue("updatedcol") ?? "");
-    s += i + d + i + " ".repeat(a.maxChildNameLen() - d.length) + n + ` not null,
+    r += i + d + i + " ".repeat(e.maxChildNameLen() - d.length) + n + ` not null,
 `;
-    const f = String(this._ddl.getOptionValue("updatedbycol") ?? "");
-    return s += i + f + i + " ".repeat(a.maxChildNameLen() - f.length) + `varchar2(255${this._ddl.semantics()}) not null,
-`, s;
+    const c = String(this._ddl.getOptionValue("updatedbycol") ?? "");
+    return r += i + c + i + " ".repeat(e.maxChildNameLen() - c.length) + `varchar2(255${this._ddl.semantics()}) not null,
+`, r;
   }
-  _genAdditionalColumns(a) {
+  _genAdditionalColumns(e) {
     let n = "";
-    const s = this._ddl.additionalColumns();
-    for (const r in s) {
-      const l = s[r], d = i + " ".repeat(a.maxChildNameLen() - r.length);
-      n += i + r.toUpperCase() + d + l + ` not null,
+    const r = this._ddl.additionalColumns();
+    for (const t in r) {
+      const o = r[t], d = i + " ".repeat(e.maxChildNameLen() - t.length);
+      n += i + t.toUpperCase() + d + o + ` not null,
 `;
     }
     return n;
   }
-  _genTableFooter(a, n, s, r) {
-    const l = a.annotations !== null ? `
-annotations (` + a.annotations + ")" : "";
+  _genTableFooter(e, n, r, t) {
+    const o = e.annotations !== null ? `
+annotations (` + e.annotations + ")" : "";
     let d = "";
-    (this._ddl.optionEQvalue("compress", "yes") || a.isOption("compress")) && (d = r ? " row store compress advanced" : " compress");
-    let f = s !== "" ? `
+    (this._ddl.optionEQvalue("compress", "yes") || e.isOption("compress")) && (d = t ? " row store compress advanced" : " compress");
+    let c = r !== "" ? `
 no drop until 0 days idle
 no delete until 16 days after insert` : "";
-    f !== "" && d !== "" && (d = `
+    c !== "" && d !== "" && (d = `
 ` + d.trimStart());
-    let m = ")" + f + d + l + `;
+    let u = ")" + c + d + o + `;
 
 `;
-    if (a.isOption("audit") && !a.isOption("auditcols") && !a.isOption("audit", "col") && !a.isOption("audit", "cols") && !a.isOption("audit", "columns") && (m += "audit all on " + n + `;
+    if (e.isOption("audit") && !e.isOption("auditcols") && !e.isOption("audit", "col") && !e.isOption("audit", "cols") && !e.isOption("audit", "columns") && (u += "audit all on " + n + `;
 
-`), a.isOption("flashback") || a.isOption("fda")) {
-      const h = String(a.getOptionValue("flashback") || a.getOptionValue("fda") || "").trim();
-      m += "alter table " + n + " flashback archive" + (0 < h.length ? " " + h : "") + `;
+`), e.isOption("flashback") || e.isOption("fda")) {
+      const h = String(e.getOptionValue("flashback") || e.getOptionValue("fda") || "").trim();
+      u += "alter table " + n + " flashback archive" + (0 < h.length ? " " + h : "") + `;
 
 `;
     }
-    return m;
+    return u;
   }
-  _genMultiColFkAlters(a, n) {
-    let s = "";
-    for (const r in a.fks)
-      if (0 < r.indexOf(",")) {
-        const l = a.fks[r];
-        s += "alter table " + n + " add constraint " + l + "_" + n + "_fk foreign key (" + r + ") references " + l + `;
+  _genMultiColFkAlters(e, n) {
+    let r = "";
+    for (const t in e.fks)
+      if (0 < t.indexOf(",")) {
+        const o = e.fks[t];
+        r += "alter table " + n + " add constraint " + o + "_" + n + "_fk foreign key (" + t + ") references " + o + `;
 
 `;
       }
-    return s;
+    return r;
   }
-  _genIndexes(a, n, s) {
-    let r = "", l = 1;
-    const d = this._ddl.optionEQvalue("tenantid", !0), f = a.isOption("notenantid");
-    for (const o in a.fks)
-      if (!a.isMany2One()) {
-        const u = o ?? D(a.fks[o]) + "_id";
-        l === 1 && (r += `-- table index
+  _genIndexes(e, n, r) {
+    let t = "", o = 1;
+    const d = this._ddl.optionEQvalue("tenantid", !0), c = e.isOption("notenantid");
+    for (const l in e.fks)
+      if (!e.isMany2One()) {
+        const m = l ?? $(e.fks[l]) + "_id";
+        o === 1 && (t += `-- table index
 `);
-        const x = this._ddl.find(a.fks[o]), g = x !== null && x.isOption("notenantid"), k = !d || f || u === "tenant_id" || g ? u : `tenant_id, ${u}`;
-        r += "create index " + n + this._naming.idx + l++ + " on " + n + " (" + k + `);
+        const p = this._ddl.find(e.fks[l]), g = p !== null && p.isOption("notenantid"), S = !d || c || m === "tenant_id" || g ? m : `tenant_id, ${m}`;
+        t += "create index " + n + this._naming.idx + o++ + " on " + n + " (" + S + `);
 
 `;
       }
-    const m = a.getOptionValue("pk");
-    m && (r += "alter table " + n + " add constraint " + n + this._naming.pk + " primary key (" + m + `);
+    const u = e.getOptionValue("pk");
+    u && (t += "alter table " + n + " add constraint " + n + this._naming.pk + " primary key (" + u + `);
 
 `);
-    const h = a.getOptionValue("unique") ?? a.getOptionValue("uk");
+    const h = e.getOptionValue("unique") ?? e.getOptionValue("uk");
     if (h !== null) {
-      const o = d && !f ? `tenant_id, ${h}` : h;
-      r += "alter table " + n + " add constraint " + n + this._naming.uk + " unique (" + o + `);
+      const l = d && !c ? `tenant_id, ${h}` : h;
+      t += "alter table " + n + " add constraint " + n + this._naming.uk + " unique (" + l + `);
 
 `;
     }
-    if (d && !f)
-      for (let o = 0; o < a.children.length; o++) {
-        const u = a.children[o];
-        if (u.isOption("unique") || u.isOption("uk")) {
-          const x = u.parseName(), g = n + "_tid_" + x + "_uix";
-          r += `create unique index ${g}
-    on ${n} (tenant_id, ${x});
+    if (d && !c)
+      for (let l = 0; l < e.children.length; l++) {
+        const m = e.children[l];
+        if (m.isOption("unique") || m.isOption("uk")) {
+          const p = m.parseName(), g = n + "_tid_" + p + "_uix";
+          t += `create unique index ${g}
+    on ${n} (tenant_id, ${p});
 
 `;
         }
       }
-    for (let o = 0; o < a.children.length; o++) {
-      const u = a.children[o];
-      if (u.isOption("idx") || u.isOption("index")) {
-        l === 1 && (r += `-- table index
+    for (let l = 0; l < e.children.length; l++) {
+      const m = e.children[l];
+      if (m.isOption("idx") || m.isOption("index")) {
+        o === 1 && (t += `-- table index
 `);
-        const x = d && !f ? `tenant_id, ${u.parseName()}` : u.parseName();
-        r += "create index " + n + this._naming.idx + l++ + " on " + n + " (" + x + `);
+        const p = d && !c ? `tenant_id, ${m.parseName()}` : m.parseName();
+        t += "create index " + n + this._naming.idx + o++ + " on " + n + " (" + p + `);
 `;
       }
     }
-    if (s)
-      for (let o = 0; o < a.children.length; o++) {
-        const u = a.children[o];
-        u.children.length === 0 && u.inferType() === "vector" && (r += "create vector index " + n + "_vi" + l++ + " on " + n + " (" + u.parseName() + `)
-`, r += `    organization neighbor partitions
-`, r += `    with distance cosine;
+    if (r)
+      for (let l = 0; l < e.children.length; l++) {
+        const m = e.children[l];
+        m.children.length === 0 && m.inferType() === "vector" && (t += "create vector index " + n + "_vi" + o++ + " on " + n + " (" + m.parseName() + `)
+`, t += `    organization neighbor partitions
+`, t += `    with distance cosine;
 
 `);
       }
-    for (let o = 0; o < a.children.length; o++) {
-      const u = a.children[o];
-      u.children.length === 0 && u.inferType() === "geometry" && (r += "create index " + n + "_si" + l++ + " on " + n + " (" + u.parseName() + `)
-`, r += `    indextype is mdsys.spatial_index_v2;
+    for (let l = 0; l < e.children.length; l++) {
+      const m = e.children[l];
+      m.children.length === 0 && m.inferType() === "geometry" && (t += "create index " + n + "_si" + o++ + " on " + n + " (" + m.parseName() + `)
+`, t += `    indextype is mdsys.spatial_index_v2;
 
+`);
+    }
+    return t;
+  }
+  _genComments(e, n) {
+    let r = "";
+    const t = e.getAnnotationValue("DESCRIPTION") || e.comment;
+    t !== null && (r += "comment on table " + n + " is '" + t + `';
+`);
+    for (let o = 0; o < e.children.length; o++) {
+      const d = e.children[o], c = d.getAnnotationValue("DESCRIPTION") || d.comment;
+      c !== null && d.children.length === 0 && (r += "comment on column " + n + "." + d.parseName() + " is '" + c + `';
 `);
     }
     return r;
   }
-  _genComments(a, n) {
-    let s = "";
-    const r = a.getAnnotationValue("DESCRIPTION") || a.comment;
-    r !== null && (s += "comment on table " + n + " is '" + r + `';
-`);
-    for (let l = 0; l < a.children.length; l++) {
-      const d = a.children[l], f = d.getAnnotationValue("DESCRIPTION") || d.comment;
-      f !== null && d.children.length === 0 && (s += "comment on column " + n + "." + d.parseName() + " is '" + f + `';
-`);
-    }
-    return s;
-  }
-  parseType(a) {
-    if (a.children !== null && 0 < a.children.length) return "table";
-    const n = a.inferType();
+  parseType(e) {
+    if (e.children !== null && 0 < e.children.length) return "table";
+    const n = e.inferType();
     if (n === "view" || n === "dv") return n;
-    if (a.parent === null) return "table";
-    const s = a._inferTypeFull();
-    return this._buildColumnConstraints(a, this._toOracleType(s), s);
+    if (e.parent === null) return "table";
+    const r = e._inferTypeFull();
+    return this._buildColumnConstraints(e, this._toOracleType(r), r);
   }
-  generateTable(a) {
-    if (a.children.length === 0 && 0 < a.apparentDepth()) {
-      let m = i;
-      return a.parent !== void 0 && a.parent !== null && (m += " ".repeat(a.parent.maxChildNameLen() - a.parseName().length)), a.parseName() + m + this.parseType(a);
+  generateTable(e) {
+    if (e.children.length === 0 && 0 < e.apparentDepth()) {
+      let u = i;
+      return e.parent !== void 0 && e.parent !== null && (u += " ".repeat(e.parent.maxChildNameLen() - e.parseName().length)), e.parseName() + u + this.parseType(e);
     }
-    a.lateInitFks();
-    const n = this._ddl.objPrefix() + a.parseName();
-    if (a.isOption("soda")) {
-      let m = "create table " + n + ` (
+    e.lateInitFks();
+    const n = this._ddl.objPrefix() + e.parseName();
+    if (e.isOption("soda")) {
+      let u = "create table " + n + ` (
 `;
-      return m += i + "id              varchar2(255" + this._ddl.semantics() + `) not null
-`, m += i + "                constraint " + n + `_id_pk primary key,
-`, m += i + `created_on      timestamp default sys_extract_utc(systimestamp) not null,
-`, m += i + `last_modified   timestamp default sys_extract_utc(systimestamp) not null,
-`, m += i + "version         varchar2(255" + this._ddl.semantics() + `) not null,
-`, m += i + `json_document   json
-`, m += `);
+      return u += i + "id              varchar2(255" + this._ddl.semantics() + `) not null
+`, u += i + "                constraint " + n + `_id_pk primary key,
+`, u += i + `created_on      timestamp default sys_extract_utc(systimestamp) not null,
+`, u += i + `last_modified   timestamp default sys_extract_utc(systimestamp) not null,
+`, u += i + "version         varchar2(255" + this._ddl.semantics() + `) not null,
+`, u += i + `json_document   json
+`, u += `);
 
-`, m;
+`, u;
     }
-    const s = this._ddl.getOptionValue("db"), r = s !== null && s.length > 0 && 23 <= (Y(s) ?? 0);
-    let l = "";
-    a.isOption("immutable") && r && (l = "immutable ");
-    const d = a.getGenIdColName();
-    let f = this._genSequence(a, n);
-    return f += this._genTableHeader(a, n, l, d), f += this._genTenantIdColumn(a), f += this._genFkColumns(a, n), f += this._genRowKeyColumn(a, n), f += this._genRegularColumns(a, n, d), f += this._genRowVersionColumn(a), f += this._genAuditColumns(a), f += this._genAdditionalColumns(a), f += a.genConstraint(), f = ba(f), f += this._genTableFooter(a, n, l, r), f += this._genMultiColFkAlters(a, n), f += this._genIndexes(a, n, r), this._genTenantIdFk(a, n), f += this._genComments(a, n), f += `
-`, f;
+    const r = this._ddl.getOptionValue("db"), t = r !== null && r.length > 0 && 23 <= (ae(r) ?? 0);
+    let o = "";
+    e.isOption("immutable") && t && (o = "immutable ");
+    const d = e.getGenIdColName();
+    let c = this._genSequence(e, n);
+    return c += this._genTableHeader(e, n, o, d), c += this._genTenantIdColumn(e), c += this._genFkColumns(e, n), c += this._genRowKeyColumn(e, n), c += this._genRegularColumns(e, n, d), c += this._genRowVersionColumn(e), c += this._genAuditColumns(e), c += this._genAdditionalColumns(e), c += e.genConstraint(), c = ya(c), c += this._genTableFooter(e, n, o, t), c += this._genMultiColFkAlters(e, n), c += this._genIndexes(e, n, t), this._genTenantIdFk(e, n), c += this._genComments(e, n), c += `
+`, c;
   }
-  generateDDL(a) {
-    if (a.inferType() === "view" || a.inferType() === "dv") return "";
-    const n = this._orderedTableNodes(a);
-    let s = "";
-    for (let r = 0; r < n.length; r++) s += this.generateTable(n[r]);
-    return s;
+  generateDDL(e) {
+    if (e.inferType() === "view" || e.inferType() === "dv") return "";
+    const n = this._orderedTableNodes(e);
+    let r = "";
+    for (let t = 0; t < n.length; t++) r += this.generateTable(n[t]);
+    return r;
   }
-  generateDrop(a) {
-    const n = this._ddl.objPrefix() + a.parseName(), s = this._ddl.getOptionValue("db"), r = s && s.length > 0 && 23 <= (Y(s) ?? 0) ? "if exists " : "";
-    let l = "";
-    return a.inferType() === "view" && (l = "drop view " + r + n + `;
-`), a.inferType() === "table" && (l = "drop table " + r + n + ` cascade constraints;
-`, this._ddl.optionEQvalue("api", "layered") && a.trimmedContent().toLowerCase().includes("/api") ? (l += "drop package " + r + n + `_dal;
-`, l += "drop package " + r + n + `_hks;
-`, l += "drop package " + r + n + `_svc;
-`, a.isOption("auditlog") && (l += "drop package " + r + n + `_aud;
-`), l += "drop package " + r + n + `_apx;
-`) : this._ddl.optionEQvalue("api", "yes") && (l += "drop package " + r + n + `_api;
-`), this._ddl.optionEQvalue("pk", "SEQ") && (l += "drop sequence " + r + n + this._naming.seq + `;
-`)), l.toLowerCase();
+  generateDrop(e) {
+    const n = this._ddl.objPrefix() + e.parseName(), r = this._ddl.getOptionValue("db"), t = r && r.length > 0 && 23 <= (ae(r) ?? 0) ? "if exists " : "";
+    let o = "";
+    return e.inferType() === "view" && (o = "drop view " + t + n + `;
+`), e.inferType() === "table" && (o = "drop table " + t + n + ` cascade constraints;
+`, this._ddl.optionEQvalue("api", "layered") && e.trimmedContent().toLowerCase().includes("/api") ? (o += "drop package " + t + n + `_dal;
+`, o += "drop package " + t + n + `_hks;
+`, o += "drop package " + t + n + `_svc;
+`, e.isOption("auditlog") && (o += "drop package " + t + n + `_aud;
+`), o += "drop package " + t + n + `_apx;
+`) : this._ddl.optionEQvalue("api", "yes") && (o += "drop package " + t + n + `_api;
+`), this._ddl.optionEQvalue("pk", "SEQ") && (o += "drop sequence " + t + n + this._naming.seq + `;
+`)), o.toLowerCase();
   }
-  identityRestartSql(a, n, s) {
-    return "alter table " + a + `
-modify ` + n + " generated always  as identity restart start with " + s + `;
+  identityRestartSql(e, n, r) {
+    return "alter table " + e + `
+modify ` + n + " generated always  as identity restart start with " + r + `;
 
 `;
   }
   // ── View / trans-table delegates ──────────────────────────────────────────
-  generateView(a) {
-    return this._view.generateView(a);
+  generateView(e) {
+    return this._view.generateView(e);
   }
-  generateDualityView(a) {
-    return this._view.generateDualityView(a);
+  generateDualityView(e) {
+    return this._view.generateDualityView(e);
   }
-  generateTransTable(a) {
-    return this._view.generateTransTable(a);
+  generateTransTable(e) {
+    return this._view.generateTransTable(e);
   }
-  generateResolvedView(a) {
-    return this._view.generateResolvedView(a);
+  generateResolvedView(e) {
+    return this._view.generateResolvedView(e);
   }
   // ── PL/SQL / ORDS / triggers delegates ───────────────────────────────────────
-  restEnable(a) {
-    return this._plsql.restEnable(a);
+  restEnable(e) {
+    return this._plsql.restEnable(e);
   }
-  generateTrigger(a) {
-    return this._plsql.generateTrigger(a);
+  generateTrigger(e) {
+    return this._plsql.generateTrigger(e);
   }
-  generateImmutableTrigger(a) {
-    return this._plsql.generateImmutableTrigger(a);
+  generateImmutableTrigger(e) {
+    return this._plsql.generateImmutableTrigger(e);
   }
-  generateTAPI(a) {
-    return this._plsql.generateTAPI(a);
+  generateTAPI(e) {
+    return this._plsql.generateTAPI(e);
   }
-  generateLayeredTAPI(a) {
-    return this._plsql.generateLayeredTAPI(a);
+  generateLayeredTAPI(e) {
+    return this._plsql.generateLayeredTAPI(e);
   }
   generateFullDDL() {
-    const a = this._ddl.forest, n = this._ddl.descendants();
-    let s = "";
+    const e = this._ddl.forest, n = this._ddl.descendants();
+    let r = "";
     if (this._ddl.optionEQvalue("Include Drops", "yes"))
-      for (const o of n) {
-        const u = this.generateDrop(o);
-        u && (s += u);
+      for (const l of n) {
+        const m = this.generateDrop(l);
+        m && (r += m);
       }
     if (this._ddl.optionEQvalue("rowkey", !0))
-      s += `create sequence  row_key_seq;
+      r += `create sequence  row_key_seq;
 
 `;
     else
-      for (const o of a)
-        if (o.trimmedContent().toUpperCase().includes("/ROWKEY")) {
-          s += `create sequence  row_key_seq;
+      for (const l of e)
+        if (l.trimmedContent().toUpperCase().includes("/ROWKEY")) {
+          r += `create sequence  row_key_seq;
 
 `;
           break;
         }
-    s += `-- create tables
+    r += `-- create tables
 
 `;
-    for (const o of a)
-      s += this.generateDDL(o) + `
+    for (const l of e)
+      r += this.generateDDL(l) + `
 `;
-    for (const o of this._ddl.postponedAlters)
-      s += o + `
+    for (const l of this._ddl.postponedAlters)
+      r += l + `
 `;
-    if (n.some((o) => o.getTransColumns().length > 0)) {
-      const o = this._ddl.semantics(), u = this._ddl.objPrefix();
-      s += `-- translation support
+    if (n.some((l) => l.getTransColumns().length > 0)) {
+      const l = this._ddl.semantics(), m = this._ddl.objPrefix();
+      r += `-- translation support
 
-`, s += `create table ${u}language (
-`, s += `    code           varchar2(5${o}) not null
-`, s += `                   constraint ${u}language_code_pk primary key,
-`, s += `    locale         varchar2(28${o}) not null
-`, s += `                   constraint ${u}language_locale_unq unique,
-`, s += `    name           varchar2(1024${o}),
-`, s += `    native_name    varchar2(1024${o})
-`, s += `);
+`, r += `create table ${m}language (
+`, r += `    code           varchar2(5${l}) not null
+`, r += `                   constraint ${m}language_code_pk primary key,
+`, r += `    locale         varchar2(28${l}) not null
+`, r += `                   constraint ${m}language_locale_unq unique,
+`, r += `    name           varchar2(1024${l}),
+`, r += `    native_name    varchar2(1024${l})
+`, r += `);
 
-`, s += `create index ${u}language_i1 on ${u}language (locale);
+`, r += `create index ${m}language_i1 on ${m}language (locale);
 
 `;
-      for (const x of n) {
-        const g = this.generateTransTable(x);
-        g && (s += g);
+      for (const p of n) {
+        const g = this.generateTransTable(p);
+        g && (r += g);
       }
     }
-    let l = 0;
-    for (const o of n) {
-      const u = this.generateTrigger(o);
-      u && (l++ === 0 && (s += `-- triggers
-`), s += u + `
+    let o = 0;
+    for (const l of n) {
+      const m = this.generateTrigger(l);
+      m && (o++ === 0 && (r += `-- triggers
+`), r += m + `
 `);
     }
-    for (const o of n) {
-      const u = this.generateImmutableTrigger(o);
-      u && (l++ === 0 && (s += `-- immutable triggers
-`), s += u);
+    for (const l of n) {
+      const m = this.generateImmutableTrigger(l);
+      m && (o++ === 0 && (r += `-- immutable triggers
+`), r += m);
     }
-    for (const o of n) {
-      const u = this.restEnable(o);
-      u && (s += u + `
+    for (const l of n) {
+      const m = this.restEnable(l);
+      m && (r += m + `
 `);
     }
-    l = 0;
+    o = 0;
     const d = this._ddl.optionEQvalue("api", "layered");
-    for (const o of n) {
-      const u = o.trimmedContent().toLowerCase().includes("/api");
+    for (const l of n) {
+      const m = l.trimmedContent().toLowerCase().includes("/api");
       if (d) {
-        if (!u) continue;
-        const x = this.generateLayeredTAPI(o);
-        x && (l++ === 0 && (s += `-- APIs
-`), s += x + `
+        if (!m) continue;
+        const p = this.generateLayeredTAPI(l);
+        p && (o++ === 0 && (r += `-- APIs
+`), r += p + `
 `);
       } else {
-        if (this._ddl.optionEQvalue("api", !1) && !u) continue;
-        const x = this.generateTAPI(o);
-        x && (l++ === 0 && (s += `-- APIs
-`), s += x + `
+        if (this._ddl.optionEQvalue("api", !1) && !m) continue;
+        const p = this.generateTAPI(l);
+        p && (o++ === 0 && (r += `-- APIs
+`), r += p + `
 `);
       }
     }
-    l = 0;
-    for (const o of a) {
-      const u = this.generateView(o);
-      u && (l++ === 0 && (s += `-- create views
-`), s += u + `
+    o = 0;
+    for (const l of e) {
+      const m = this.generateView(l);
+      m && (o++ === 0 && (r += `-- create views
+`), r += m + `
 `);
     }
-    for (const o of n) {
-      const u = this.generateResolvedView(o);
-      u && (l++ === 0 && (s += `-- create views
-`), s += u);
+    for (const l of n) {
+      const m = this.generateResolvedView(l);
+      m && (o++ === 0 && (r += `-- create views
+`), r += m);
     }
-    const f = {};
-    for (const o of n) {
-      if (o.inferType() !== "table") continue;
-      const u = o.getAnnotationValue("TGROUP");
-      u != null && (f[u] || (f[u] = []), f[u].push(this._ddl.objPrefix() + o.parseName()));
+    const c = {};
+    for (const l of n) {
+      if (l.inferType() !== "table") continue;
+      const m = l.getAnnotationValue("TGROUP");
+      m != null && (c[m] || (c[m] = []), c[m].push(this._ddl.objPrefix() + l.parseName()));
     }
-    const m = Object.keys(f);
-    if (m.length > 0) {
-      s += `-- table groups
+    const u = Object.keys(c);
+    if (u.length > 0) {
+      r += `-- table groups
 `;
-      for (const o of m) {
-        s += `insert into user_annotations_groups$ (group_name) values ('${o}');
+      for (const l of u) {
+        r += `insert into user_annotations_groups$ (group_name) values ('${l}');
 `;
-        for (const u of f[o])
-          s += `insert into user_annotations_group_members$ (group_name, object_name) values ('${o}', '${u.toUpperCase()}');
+        for (const m of c[l])
+          r += `insert into user_annotations_group_members$ (group_name, object_name) values ('${l}', '${m.toUpperCase()}');
 `;
       }
-      s += `
+      r += `
 `;
     }
     const h = this._ddl.getOptionValue("db");
-    if (this._ddl.optionEQvalue("aienrichment", !0) && h != null && h.length >= 2 && (Y(h) ?? 0) >= 26) {
-      const o = [], u = {}, x = this._ddl.objPrefix();
-      for (const g of a) {
-        const T = g.inferType(), k = g.getAnnotationPairs(), y = (x + g.parseName()).toUpperCase();
-        if (T === "table") {
-          for (const B of k) {
-            if (B.label.toUpperCase() === "TGROUP") {
-              B.value != null && (u[B.value] || (u[B.value] = []), u[B.value].push(y));
+    if (this._ddl.optionEQvalue("aienrichment", !0) && h != null && h.length >= 2 && (ae(h) ?? 0) >= 26) {
+      const l = [], m = {}, p = this._ddl.objPrefix();
+      for (const g of e) {
+        const A = g.inferType(), S = g.getAnnotationPairs(), v = (p + g.parseName()).toUpperCase();
+        if (A === "table") {
+          for (const w of S) {
+            if (w.label.toUpperCase() === "TGROUP") {
+              w.value != null && (m[w.value] || (m[w.value] = []), m[w.value].push(v));
               continue;
             }
-            B.value != null && o.push(`    metadata_annotations.set('${B.label}', '${B.value}', '${y}');`);
+            w.value != null && l.push(`    metadata_annotations.set('${w.label}', '${w.value}', '${v}');`);
           }
-          for (const B of g.children) {
-            if (B.children.length > 0) continue;
-            const N = B.getAnnotationPairs(), P = y + "." + B.parseName().toUpperCase();
-            for (const I of N)
-              I.value != null && o.push(`    metadata_annotations.set('${I.label}', '${I.value}', '${P}', 'TABLE COLUMN');`);
+          for (const w of g.children) {
+            if (w.children.length > 0) continue;
+            const E = w.getAnnotationPairs(), B = v + "." + w.parseName().toUpperCase();
+            for (const P of E)
+              P.value != null && l.push(`    metadata_annotations.set('${P.label}', '${P.value}', '${B}', 'TABLE COLUMN');`);
           }
-        } else if (T === "view")
-          for (const B of k)
-            B.value != null && o.push(`    metadata_annotations.set('${B.label}', '${B.value}', '${y}', 'VIEW');`);
+        } else if (A === "view")
+          for (const w of S)
+            w.value != null && l.push(`    metadata_annotations.set('${w.label}', '${w.value}', '${v}', 'VIEW');`);
       }
-      for (const g of Object.keys(u)) {
-        o.push(`    metadata_annotations.create_group('${g}');`);
-        for (const T of u[g])
-          o.push(`    metadata_annotations.add_to_group('${g}', '${T}', 'TABLE');`);
+      for (const g of Object.keys(m)) {
+        l.push(`    metadata_annotations.create_group('${g}');`);
+        for (const A of m[g])
+          l.push(`    metadata_annotations.add_to_group('${g}', '${A}', 'TABLE');`);
       }
-      o.length > 0 && (s += `-- AI enrichment
+      l.length > 0 && (r += `-- AI enrichment
 begin
-` + o.join(`
+` + l.join(`
 `) + `
 end;
 /
 
 `);
     }
-    l = 0;
-    for (const o of a) {
-      const u = this.generateData(o, this._ddl.data);
-      u && (l++ === 0 && (s += `-- load data
+    o = 0;
+    for (const l of e) {
+      const m = this.generateData(l, this._ddl.data);
+      m && (o++ === 0 && (r += `-- load data
 
-`), s += u + `
+`), r += m + `
 `);
     }
-    return s;
+    return r;
   }
 }
-const ge = {
-  oracle: (p) => new ga(p)
+const Aa = {
+  drop_package: 1,
+  drop_view: 2,
+  drop_fk: 3,
+  transient_drop_fk: 3,
+  drop_table: 4,
+  drop_index: 5,
+  drop_sequence: 6,
+  create_table: 7,
+  add_sequence: 8,
+  add_column: 9,
+  rename_hint: 9,
+  modify_column: 10,
+  set_unused: 11,
+  drop_unused_columns: 12,
+  add_fk: 13,
+  transient_add_fk: 13,
+  add_index: 14,
+  create_package: 15,
+  // overridden to 17 for bodies in _step()
+  create_view: 16
 };
-function Fa(p, a) {
-  ge[p.toLowerCase()] = a;
+function L(x, e, n, r, t = !1) {
+  const o = { kind: x, table: e, sql: n, requiresManualIntervention: t };
+  return r !== void 0 && (o.column = r), o;
 }
-function Ie(p) {
-  const a = String(p.getOptionValue("dialect") ?? "oracle").toLowerCase(), n = ge[a];
-  if (n == null) {
-    const s = Object.keys(ge).join(", ");
-    throw new Error(`Unknown SQL dialect: "${a}". Registered dialects: ${s}`);
+function ee(x, e, n, r, t = !1) {
+  const o = { level: x, table: e, message: n, requiresManualIntervention: t };
+  return r !== void 0 && (o.column = r), o;
+}
+class Sa {
+  compute(e, n) {
+    const r = [], t = [], o = this._tableMap(e), d = this._tableMap(n), c = this._viewMap(e), u = this._viewMap(n), h = [];
+    for (const [A, S] of o)
+      d.has(A) || h.push(S);
+    for (const A of this._reverseTopoSort(h, e))
+      r.push(...this._dropTable(A, e)), t.push(ee("DESTRUCTIVE", A.parseName(), `table dropped: ${A.parseName()}`));
+    const l = [];
+    for (const [A, S] of d)
+      o.has(A) || l.push(S);
+    for (const A of this._topoSort(l, n))
+      r.push(...this._createTable(A, n));
+    for (const [A, S] of d) {
+      const v = o.get(A);
+      if (v == null) continue;
+      const { stmts: w, warns: E } = this._diffTable(v, S, e, n);
+      r.push(...w), t.push(...E);
+    }
+    r.push(...this._diffViews(c, u, n));
+    const m = this._order(r), p = this._buildPreamble(m, t), g = m.map((A) => A.sql.endsWith(`
+`) ? A.sql : A.sql + `
+`).join(`
+`);
+    return {
+      sql: p + g,
+      statements: m,
+      warnings: t,
+      summary: this._summary(m, t, o, d)
+    };
   }
-  return n(p);
+  // ── Map builders ──────────────────────────────────────────────────────────
+  _tableMap(e) {
+    const n = /* @__PURE__ */ new Map();
+    for (const r of e.forest)
+      r.inferType() === "table" && n.set(r.parseName(), r);
+    return n;
+  }
+  _viewMap(e) {
+    const n = /* @__PURE__ */ new Map();
+    for (const r of e.forest)
+      (r.inferType() === "view" || r.inferType() === "dv") && n.set(r.parseName(), r);
+    return n;
+  }
+  // ── Topological sort ──────────────────────────────────────────────────────
+  _topoSort(e, n) {
+    const r = new Set(e.map((c) => c.parseName())), t = /* @__PURE__ */ new Set(), o = [], d = (c) => {
+      const u = c.parseName();
+      if (!t.has(u)) {
+        if (t.add(u), c.fks)
+          for (const h in c.fks) {
+            const l = c.fks[h];
+            if (r.has(l)) {
+              const m = n.find(l);
+              m != null && d(m);
+            }
+          }
+        o.push(c);
+      }
+    };
+    for (const c of e) d(c);
+    return o;
+  }
+  _reverseTopoSort(e, n) {
+    return [...this._topoSort(e, n)].reverse();
+  }
+  // ── Drop table ────────────────────────────────────────────────────────────
+  _dropTable(e, n) {
+    const r = [], t = e.parseName(), o = n.objPrefix() + t, c = j(n) ? "if exists " : "", u = e.trimmedContent().toLowerCase().includes("/api");
+    if (n.optionEQvalue("api", "layered") && u)
+      for (const h of this._layeredPkgNames(e, n))
+        r.push(L("drop_package", t, `drop package ${c}${h};
+`));
+    else (n.optionEQvalue("api", "yes") || u) && r.push(L("drop_package", t, `drop package ${c}${o}_api;
+`));
+    return n.optionEQvalue("pk", "SEQ") && r.push(L(
+      "drop_sequence",
+      t,
+      `drop sequence ${c}${o}${Y.seq};
+`
+    )), r.push(L(
+      "drop_table",
+      t,
+      `drop table ${c}${o} cascade constraints;
+`
+    )), r;
+  }
+  // ── Create table ──────────────────────────────────────────────────────────
+  _createTable(e, n) {
+    const r = [], t = e.parseName(), o = n.objPrefix() + t, d = new ke(n);
+    n.optionEQvalue("pk", "SEQ") && r.push(L(
+      "add_sequence",
+      t,
+      `create sequence  ${o}${Y.seq};
+`
+    )), e.lateInitFks();
+    const c = n.postponedAlters.length;
+    let u = d.generateTable(e);
+    const h = n.postponedAlters.slice(c);
+    for (const m of h) u += m + `
+`;
+    r.push(L("create_table", t, u));
+    const l = e.trimmedContent().toLowerCase().includes("/api");
+    if (n.optionEQvalue("api", "layered") && l) {
+      const m = new se(n, Y);
+      r.push(...this._splitPkgBlocks(m.generateLayeredTAPI(e), t));
+    } else if ((n.optionEQvalue("api", "yes") || l) && !n.optionEQvalue("api", "layered")) {
+      const m = new se(n, Y);
+      r.push(...this._splitPkgBlocks(m.generateTAPI(e), t));
+    }
+    return r;
+  }
+  // ── Diff table ────────────────────────────────────────────────────────────
+  _diffTable(e, n, r, t) {
+    const o = [], d = [], c = n.parseName(), u = t.objPrefix() + c;
+    e.lateInitFks(), n.lateInitFks();
+    const h = e.getPkName() ?? e.getGenIdColName() ?? "id", l = n.getPkName() ?? n.getGenIdColName() ?? "id";
+    if (h !== l)
+      throw new Error(`PK column change not supported on table "${c}": ${h} \u2192 ${l}`);
+    const m = this._colMap(e), p = this._colMap(n), g = [];
+    for (const [N, O] of m)
+      p.has(N) || g.push(O);
+    const A = [];
+    for (const [N, O] of p)
+      m.has(N) || A.push(O);
+    const S = this._detectRenames(g, A), v = new Set([...S.keys()].map((N) => N.parseName())), w = new Set([...S.values()].map((N) => N.parseName()));
+    for (const [N, O] of S)
+      o.push(L(
+        "rename_hint",
+        c,
+        `-- alter table ${u} rename column ${N.parseName()} to ${O.parseName()};
+`,
+        N.parseName()
+      )), d.push(ee(
+        "INFO",
+        c,
+        `suspected rename: ${N.parseName()} \u2192 ${O.parseName()} (verify before applying)`,
+        N.parseName()
+      ));
+    for (const N of g)
+      v.has(N.parseName()) || (o.push(...this._dropColumn(u, c, N)), d.push(ee("DESTRUCTIVE", c, `column dropped: ${N.parseName()}`, N.parseName())));
+    for (const N of A) {
+      if (w.has(N.parseName())) continue;
+      const { stmts: O, warns: z } = this._addColumn(u, c, N, t);
+      o.push(...O), d.push(...z);
+    }
+    for (const [N, O] of p) {
+      const z = m.get(N);
+      if (z == null) continue;
+      const { stmts: be, warns: fe } = this._modifyColumn(u, c, z, O, r, t);
+      o.push(...be), d.push(...fe);
+    }
+    o.push(...this._diffFKs(e, n, r, t)), o.push(...this._diffIndexes(e, n, r, t));
+    const E = g.some((N) => !v.has(N.parseName())) || A.some((N) => !w.has(N.parseName())) || o.some((N) => N.kind === "modify_column"), { stmts: B, warns: P } = this._diffPackages(e, n, r, t, E);
+    return o.push(...B), d.push(...P), { stmts: o, warns: d };
+  }
+  // ── Column helpers ────────────────────────────────────────────────────────
+  _colMap(e) {
+    const n = /* @__PURE__ */ new Map();
+    for (const r of e.regularColumns())
+      n.set(r.parseName(), r);
+    return n;
+  }
+  _isNotNull(e) {
+    return e.isOption("nn") || e.indexOf("not") >= 0 && e.indexOf("not") + 1 === e.indexOf("null");
+  }
+  // ── Rename detection ──────────────────────────────────────────────────────
+  _detectRenames(e, n) {
+    const r = /* @__PURE__ */ new Map(), t = /* @__PURE__ */ new Map(), o = /* @__PURE__ */ new Map();
+    for (const d of e) {
+      const c = d._inferTypeFull().base;
+      t.has(c) || t.set(c, []), t.get(c).push(d);
+    }
+    for (const d of n) {
+      const c = d._inferTypeFull().base;
+      o.has(c) || o.set(c, []), o.get(c).push(d);
+    }
+    for (const [d, c] of t) {
+      const u = o.get(d);
+      u != null && c.length === 1 && u.length === 1 && r.set(c[0], u[0]);
+    }
+    return r;
+  }
+  // ── Add column ────────────────────────────────────────────────────────────
+  _addColumn(e, n, r, t) {
+    const o = [], d = [], c = j(t), u = r._inferTypeFull(), h = te(u, t.semantics(), c), l = r.parseName();
+    return this._isNotNull(r) ? (o.push(L(
+      "add_column",
+      n,
+      `alter table ${e} add (${l} ${h});
+`,
+      l
+    )), o.push(L(
+      "add_column",
+      n,
+      `-- \u26A0 MANUAL INTERVENTION REQUIRED
+-- Populate existing rows before step 3. Replace ??? with the correct expression.
+-- update ${e} set ${l} = ??? where ${l} is null;
+-- commit;
+`,
+      l,
+      !0
+    )), o.push(L(
+      "modify_column",
+      n,
+      `alter table ${e} modify (${l} not null);
+`,
+      l
+    )), d.push(ee(
+      "DESTRUCTIVE",
+      n,
+      `added NOT NULL column ${l} \u2014 requires manual data population`,
+      l,
+      !0
+    ))) : o.push(L(
+      "add_column",
+      n,
+      `alter table ${e} add (${l} ${h});
+`,
+      l
+    )), { stmts: o, warns: d };
+  }
+  // ── Drop column ───────────────────────────────────────────────────────────
+  _dropColumn(e, n, r) {
+    const t = r.parseName();
+    return [
+      L(
+        "set_unused",
+        n,
+        `alter table ${e} set unused column ${t};
+`,
+        t
+      ),
+      L(
+        "drop_unused_columns",
+        n,
+        `-- [MAINTENANCE] safe to defer to a maintenance window
+alter table ${e} drop unused columns;
+`,
+        t
+      )
+    ];
+  }
+  // ── Modify column ─────────────────────────────────────────────────────────
+  _modifyColumn(e, n, r, t, o, d) {
+    const c = [], u = [], h = r._inferTypeFull(), l = t._inferTypeFull(), m = j(d), p = te(h, o.semantics(), j(o)), g = te(l, d.semantics(), m), A = this._isNotNull(r), S = this._isNotNull(t), v = t.parseName(), w = p !== g, E = A !== S;
+    if (!w && !E) return { stmts: c, warns: u };
+    if (h.base !== l.base) {
+      const B = S ? " not null" : A ? " null" : "";
+      c.push(L(
+        "modify_column",
+        n,
+        `alter table ${e} modify (${v} ${g}${B});
+`,
+        v
+      )), u.push(ee(
+        "LOSSY",
+        n,
+        `base type changed on ${v}: ${h.base} \u2192 ${l.base}`,
+        v
+      ));
+    } else {
+      const B = [];
+      w && B.push(g), E && B.push(S ? "not null" : "null");
+      const P = B.join(" ");
+      if (!A && S)
+        c.push(L(
+          "modify_column",
+          n,
+          `-- \u26A0 MANUAL INTERVENTION REQUIRED
+-- Ensure all rows have a non-null value before executing.
+-- alter table ${e} modify (${v} ${P});
+`,
+          v,
+          !0
+        )), u.push(ee(
+          "DESTRUCTIVE",
+          n,
+          `adding NOT NULL on ${v} \u2014 requires manual verification`,
+          v,
+          !0
+        ));
+      else if (c.push(L(
+        "modify_column",
+        n,
+        `alter table ${e} modify (${v} ${P});
+`,
+        v
+      )), w && h.base === "varchar") {
+        const O = h.varcharLen ?? 4e3, z = l.varcharLen ?? 4e3;
+        z < O && u.push(ee(
+          "LOSSY",
+          n,
+          `varchar size reduced on ${v}: ${O} \u2192 ${z}`,
+          v
+        ));
+      }
+    }
+    return { stmts: c, warns: u };
+  }
+  // ── Diff FKs ──────────────────────────────────────────────────────────────
+  _diffFKs(e, n, r, t) {
+    const o = [], d = n.parseName(), c = r.objPrefix() + d, u = t.objPrefix() + d, h = j(t), l = e.fks ?? {}, m = n.fks ?? {};
+    for (const p in l)
+      p in m || (o.push(L(
+        "drop_fk",
+        d,
+        `alter table ${c} drop constraint ${c}_${p}_fk;
+`
+      )), o.push(L(
+        "set_unused",
+        d,
+        `alter table ${c} set unused column ${p};
+`,
+        p
+      )), o.push(L(
+        "drop_unused_columns",
+        d,
+        `-- [MAINTENANCE] safe to defer to a maintenance window
+alter table ${c} drop unused columns;
+`,
+        p
+      )));
+    for (const p in m) {
+      if (p in l) continue;
+      const g = m[p], A = t.find(g) != null ? t.objPrefix() : "", S = `${u}_${p}_fk`, v = this._fkColType(g, t) ?? "number", w = `alter table ${u} add constraint ${S}
+    foreign key (${p})
+    references ${A}${g};
+`;
+      o.push(L(
+        "add_column",
+        d,
+        `alter table ${u} add (${p} ${v});
+`,
+        p
+      )), o.push(L(
+        "add_fk",
+        d,
+        h ? w : this._wrapConstraint(w)
+      ));
+    }
+    return o;
+  }
+  _fkColType(e, n) {
+    const r = n.find(e);
+    if (r == null) return null;
+    const t = r.getExplicitPkName();
+    if (t == null || t.includes(",")) return null;
+    const o = r.findChild(t);
+    return o != null ? te(o._inferTypeFull(), n.semantics(), j(n)) : r.getPkType() || null;
+  }
+  // ── Diff indexes ──────────────────────────────────────────────────────────
+  _diffIndexes(e, n, r, t) {
+    const o = [], d = n.parseName(), c = t.objPrefix() + d, u = r.objPrefix() + d, h = j(t), l = this._colMap(e), m = this._colMap(n);
+    for (const [p, g] of m) {
+      const A = l.get(p);
+      if (A == null) continue;
+      const S = A.isOption("idx") || A.isOption("index"), v = g.isOption("idx") || g.isOption("index"), w = A.isOption("unique") || A.isOption("uk"), E = g.isOption("unique") || g.isOption("uk");
+      if (!S && v) {
+        const B = `${c}_${p}_i`, P = `create index ${B} on ${c} (${p});
+`;
+        o.push(L(
+          "add_index",
+          d,
+          h ? `create index if not exists ${B} on ${c} (${p});
+` : this._wrapIndex(P)
+        ));
+      }
+      if (S && !v) {
+        const B = `${u}_${p}_i`;
+        o.push(L("drop_index", d, `drop index ${B};
+`));
+      }
+      if (!w && E) {
+        const B = `${c}_${p}_unq`, P = `create unique index ${B} on ${c} (${p});
+`;
+        o.push(L(
+          "add_index",
+          d,
+          h ? `create unique index if not exists ${B} on ${c} (${p});
+` : this._wrapIndex(P)
+        ));
+      }
+      if (w && !E) {
+        const B = `${u}_${p}_unq`;
+        o.push(L("drop_index", d, `drop index ${B};
+`));
+      }
+    }
+    return o;
+  }
+  // ── Diff views ────────────────────────────────────────────────────────────
+  _diffViews(e, n, r) {
+    const t = [], d = j(r) ? "if exists " : "";
+    for (const [u] of e)
+      if (!n.has(u)) {
+        const h = r.objPrefix() + u;
+        t.push(L("drop_view", u, `drop view ${d}${h};
+`));
+      }
+    const c = [];
+    for (const [u, h] of n) {
+      const l = e.get(u);
+      (l == null || l.trimmedContent() !== h.trimmedContent()) && c.push(h);
+    }
+    for (const u of this._topoSortViews(c, n)) {
+      const l = new ke(r).generateView(u);
+      l && t.push(L("create_view", u.parseName(), l));
+    }
+    return t;
+  }
+  _topoSortViews(e, n) {
+    const r = new Set(e.map((c) => c.parseName())), t = /* @__PURE__ */ new Set(), o = [], d = (c) => {
+      const u = c.parseName();
+      if (t.has(u)) return;
+      t.add(u);
+      const h = c.trimmedContent().toLowerCase();
+      for (const l of n.values()) {
+        const m = l.parseName();
+        m !== u && r.has(m) && h.includes(m) && d(l);
+      }
+      o.push(c);
+    };
+    for (const c of e) d(c);
+    return o;
+  }
+  // ── Diff packages ─────────────────────────────────────────────────────────
+  _diffPackages(e, n, r, t, o) {
+    const d = [], c = [], u = n.parseName(), l = j(t) ? "if exists " : "", m = this._apiKind(e, r), p = this._apiKind(n, t);
+    for (const v of this._droppedPkgs(e, n, r, t, m, p))
+      d.push(L("drop_package", u, `drop package ${l}${v};
+`));
+    const g = e.isOption("auditlog") !== n.isOption("auditlog"), A = (e.isOption("apex") || e.isOption("apx")) !== (n.isOption("apex") || n.isOption("apx")), S = o || m !== p || g || A;
+    if (p === "layered" && S) {
+      const v = new se(t, Y);
+      d.push(...this._splitPkgBlocks(v.generateLayeredTAPI(n), u));
+    } else if (p === "simple" && S) {
+      const v = new se(t, Y);
+      d.push(...this._splitPkgBlocks(v.generateTAPI(n), u));
+    }
+    return { stmts: d, warns: c };
+  }
+  _apiKind(e, n) {
+    const r = e.trimmedContent().toLowerCase().includes("/api");
+    return n.optionEQvalue("api", "layered") && r ? "layered" : (n.optionEQvalue("api", "yes") || r) && !n.optionEQvalue("api", "layered") ? "simple" : "none";
+  }
+  _layeredPkgNames(e, n) {
+    const r = n.objPrefix() + e.parseName(), t = [`${r}_dal`, `${r}_hks`, `${r}_svc`, `${r}_apx`];
+    return e.isOption("auditlog") && t.unshift(`${r}_aud`), t;
+  }
+  _droppedPkgs(e, n, r, t, o, d) {
+    const c = [], u = r.objPrefix() + e.parseName();
+    return o === "layered" && (d === "simple" || d === "none") ? (c.push(`${u}_dal`, `${u}_hks`, `${u}_svc`, `${u}_apx`), e.isOption("auditlog") && c.push(`${u}_aud`)) : o === "simple" && (d === "layered" || d === "none") ? c.push(`${u}_api`) : o === "layered" && d === "layered" && e.isOption("auditlog") && !n.isOption("auditlog") && c.push(`${u}_aud`), c;
+  }
+  // ── Package block splitting ───────────────────────────────────────────────
+  _splitPkgBlocks(e, n) {
+    const r = [], t = e.split(/\n\/\s*(?:\n|$)/);
+    for (let o of t)
+      o = o.trim(), o && r.push(L("create_package", n, o + `
+/
+`));
+    return r;
+  }
+  // ── Idempotency wrappers ──────────────────────────────────────────────────
+  _wrapIndex(e) {
+    return `begin
+    execute immediate '${e.trim().replace(/;\s*$/, "").replace(/\n/g, " ").replace(/\s+/g, " ").replace(/'/g, "''")}';
+exception
+    when others then
+        if sqlcode = -955 then null;
+        else raise;
+        end if;
+end;
+/
+`;
+  }
+  _wrapConstraint(e) {
+    return `begin
+    execute immediate '${e.trim().replace(/;\s*$/, "").replace(/\n/g, " ").replace(/\s+/g, " ").replace(/'/g, "''")}';
+exception
+    when others then
+        if sqlcode = -2261 then null;
+        else raise;
+        end if;
+end;
+/
+`;
+  }
+  // ── Statement ordering ────────────────────────────────────────────────────
+  _order(e) {
+    return [...e].sort((n, r) => this._step(n) - this._step(r));
+  }
+  _step(e) {
+    return e.kind === "create_package" ? e.sql.toLowerCase().includes("package body ") ? 17 : 15 : Aa[e.kind] ?? 99;
+  }
+  // ── Summary ───────────────────────────────────────────────────────────────
+  _summary(e, n, r, t) {
+    let o = 0, d = 0, c = 0;
+    for (const [h] of t) r.has(h) || o++;
+    for (const [h] of r) t.has(h) || d++;
+    const u = /* @__PURE__ */ new Set();
+    for (const h of e)
+      h.kind !== "create_table" && h.kind !== "drop_table" && h.kind !== "create_package" && h.kind !== "drop_package" && h.kind !== "create_view" && h.kind !== "drop_view" && h.kind !== "add_sequence" && h.kind !== "drop_sequence" && r.has(h.table) && t.has(h.table) && u.add(h.table);
+    return c = u.size, {
+      tablesAdded: o,
+      tablesDropped: d,
+      tablesModified: c,
+      statementsTotal: e.length,
+      statementsRequiringIntervention: e.filter((h) => h.requiresManualIntervention).length,
+      warningsTotal: n.length
+    };
+  }
+  // ── Preamble ──────────────────────────────────────────────────────────────
+  _buildPreamble(e, n) {
+    const r = e.filter((u) => u.requiresManualIntervention), t = n.filter((u) => u.level === "INFO"), o = e.filter((u) => u.kind === "drop_table").map((u) => u.table), d = n.filter((u) => u.message.startsWith("column dropped"));
+    let c = "";
+    if (c += `-- ============================================================
+`, c += `-- QuickSQL Migration Script
+`, c += `-- Generated : ${(/* @__PURE__ */ new Date()).toISOString()}
+`, c += `-- ============================================================
+`, r.length > 0) {
+      c += `--
+`, c += `-- \u26A0 MANUAL STEPS REQUIRED (statementsRequiringIntervention = ${r.length})
+`, c += `--
+`;
+      for (const u of r) {
+        c += `--   [${u.table}${u.column ? "." + u.column : ""}]
+`;
+        const h = u.sql.split(`
+`).filter((l) => l.startsWith("-- "));
+        for (const l of h) c += `--   ${l.replace(/^--\s*/, "")}
+`;
+        c += `--
+`;
+      }
+    }
+    if (t.length > 0) {
+      c += `--
+`, c += `-- \u26A0 POSSIBLE RENAMES \u2014 verify before applying
+`, c += `--
+`;
+      for (const u of t)
+        c += `--   [${u.table}] ${u.message}
+`;
+      c += `--
+`;
+    }
+    return (o.length > 0 || d.length > 0) && (c += `--
+`, c += `-- \u26A0 DESTRUCTIVE OPERATIONS
+`, o.length > 0 && (c += `--   Tables dropped  : ${o.length}
+`), d.length > 0 && (c += `--   Columns dropped : ${d.length}
+`), c += `--   Apply during a maintenance window.
+`, c += `--
+`), c += `-- ============================================================
+`, c += `
+`, c;
+  }
 }
-function re(p) {
-  let a = "";
-  for (let n = 0; n < p; n++)
-    a += "   ";
-  return a;
+const Me = {
+  oracle: (x) => new ke(x)
+}, Te = {
+  oracle: (x) => new Sa()
+};
+function Ja(x, e) {
+  Me[x.toLowerCase()] = e;
 }
-function Ca(p, a) {
-  for (const n in p)
-    if (JSON.stringify(p[n]) === JSON.stringify(a))
+function Ge(x) {
+  const e = String(x.getOptionValue("dialect") ?? "oracle").toLowerCase(), n = Me[e];
+  if (n == null) {
+    const r = Object.keys(Me).join(", ");
+    throw new Error(`Unknown SQL dialect: "${e}". Registered dialects: ${r}`);
+  }
+  return n(x);
+}
+function ja(x, e) {
+  Te[x.toLowerCase()] = e;
+}
+function _a(x) {
+  const e = String(x.getOptionValue("dialect") ?? "oracle").toLowerCase(), n = Te[e];
+  if (n == null) {
+    const r = Object.keys(Te).join(", ");
+    throw new Error(`Unknown SQL dialect for diff: "${e}". Registered dialects: ${r}`);
+  }
+  return n(x);
+}
+function me(x) {
+  let e = "";
+  for (let n = 0; n < x; n++)
+    e += "   ";
+  return e;
+}
+function ka(x, e) {
+  for (const n in x)
+    if (JSON.stringify(x[n]) === JSON.stringify(e))
       return !0;
   return !1;
 }
-function xe(p) {
-  const a = ["_id", "Id"];
-  if (p.id != null)
-    return { key: "id", value: p.id };
-  for (let n = 0; n < a.length; n++) {
-    const s = a[n];
-    for (const r in p)
-      if (r.endsWith(s))
-        return { key: r, value: p[r] };
+function Ae(x) {
+  const e = ["_id", "Id"];
+  if (x.id != null)
+    return { key: "id", value: x.id };
+  for (let n = 0; n < e.length; n++) {
+    const r = e[n];
+    for (const t in x)
+      if (t.endsWith(r))
+        return { key: t, value: x[t] };
   }
   return null;
 }
-function va(p) {
-  if (p == null || typeof p != "object") return !1;
-  for (const a in p)
-    if (!(p[a] != null && typeof p[a] == "object"))
+function Ma(x) {
+  if (x == null || typeof x != "object") return !1;
+  for (const e in x)
+    if (!(x[e] != null && typeof x[e] == "object"))
       return !0;
   return !1;
 }
-function ya(p) {
-  let a = null;
-  e: for (const n in p)
+function Ta(x) {
+  let e = null;
+  e: for (const n in x)
     if (n === "0")
-      for (const s in p[n]) {
-        a = s;
+      for (const r in x[n]) {
+        e = r;
         break e;
       }
     else {
-      a = n;
+      e = n;
       break e;
     }
-  return a == null || a.toLowerCase() === "id" ? null : a.toLowerCase().endsWith("_id") ? a.substring(0, a.length - 3) : a.endsWith("Id") ? a.substring(0, a.length - 2) : null;
+  return e == null || e.toLowerCase() === "id" ? null : e.toLowerCase().endsWith("_id") ? e.substring(0, e.length - 3) : e.endsWith("Id") ? e.substring(0, e.length - 2) : null;
 }
-function Aa(p, a, n) {
-  let s = !1, r = !1;
-  for (const l in p)
-    for (let d = 0; d < l; d++)
-      if (p[l][a] === p[d][a] && p[l][n] !== p[d][n] ? s = !0 : p[l][a] !== p[d][a] && p[l][n] === p[d][n] && (r = !0), s && r) return !0;
+function wa(x, e, n) {
+  let r = !1, t = !1;
+  for (const o in x)
+    for (let d = 0; d < o; d++)
+      if (x[o][e] === x[d][e] && x[o][n] !== x[d][n] ? r = !0 : x[o][e] !== x[d][e] && x[o][n] === x[d][n] && (t = !0), r && t) return !0;
   return !1;
 }
-function q(p) {
-  if (p == null || typeof p != "object") return "";
-  let a = "(";
-  for (const n in p) {
+function ne(x) {
+  if (x == null || typeof x != "object") return "";
+  let e = "(";
+  for (const n in x) {
     if (n === "0")
-      return q(p[n]);
-    p[n] != null && typeof p[n] == "object" || (a += n + ",");
+      return ne(x[n]);
+    x[n] != null && typeof x[n] == "object" || (e += n + ",");
   }
-  return a.lastIndexOf(",") === a.length - 1 && (a = a.substring(0, a.length - 1)), a + ")";
+  return e.lastIndexOf(",") === e.length - 1 && (e = e.substring(0, e.length - 1)), e + ")";
 }
-function Pe(p, a) {
-  let n = p, s = a;
-  const r = n.indexOf("(");
-  0 < r && (n = n.substring(0, r));
-  const l = s.indexOf("(");
-  return 0 < l && (s = s.substring(0, l)), n + "_" + s + "(" + n + "_id," + s + "_id)";
+function Oe(x, e) {
+  let n = x, r = e;
+  const t = n.indexOf("(");
+  0 < t && (n = n.substring(0, t));
+  const o = r.indexOf("(");
+  return 0 < o && (r = r.substring(0, o)), n + "_" + r + "(" + n + "_id," + r + "_id)";
 }
-class Sa {
+class Ia {
   constructor() {
     this.tableContent = {}, this.notNormalized = [], this.tableSignatures = [], this.child2parent = {}, this.objCounts = {}, this.idSeq = 1;
   }
-  output(a, n, s, r) {
-    if (r !== !1 && this.notNormalized.includes(a)) {
-      const f = Pe(this.parent(a) ?? "", a), m = this.tableContent[f];
-      if (m != null) {
+  output(e, n, r, t) {
+    if (t !== !1 && this.notNormalized.includes(e)) {
+      const c = Oe(this.parent(e) ?? "", e), u = this.tableContent[c];
+      if (u != null) {
         const h = `
-` + re(s) + this.tableName(f) + " /insert " + m.length;
-        if (Aa(m, this.refIdName(this.parent(a) ?? ""), this.refIdName(a)))
-          return h + this.output(a, n, s + 1, !1);
+` + me(r) + this.tableName(c) + " /insert " + u.length;
+        if (wa(u, this.refIdName(this.parent(e) ?? ""), this.refIdName(e)))
+          return h + this.output(e, n, r + 1, !1);
       }
     }
-    const l = this.notNormalized.includes(a) ? ">" : "";
+    const o = this.notNormalized.includes(e) ? ">" : "";
     let d = `
-` + re(s) + l + this.tableName(a);
-    if (typeof n == "number" && (d += " num", a.endsWith("_id") || a.endsWith("Id")))
+` + me(r) + o + this.tableName(e);
+    if (typeof n == "number" && (d += " num", e.endsWith("_id") || e.endsWith("Id")))
       return d += " /pk", d;
-    if (a === "id")
+    if (e === "id")
       return `
-` + re(s) + "id vc32 /pk";
+` + me(r) + "id vc32 /pk";
     e: if (n != null && typeof n == "object") {
       if (Array.isArray(n))
-        for (const m in n) {
-          if (1 <= m)
+        for (const u in n) {
+          if (1 <= u)
             break;
-          const h = n[m];
-          d = this.output(a, h, s, r);
+          const h = n[u];
+          d = this.output(e, h, r, t);
           break e;
         }
       else
-        a !== "" && (this.tableContent[a] == null, d += "  /insert " + this.tableContent[a].length);
-      let f = "";
-      this.tableSignatures.includes(a) || (d = "", s--);
-      for (const m in n) {
-        const h = n[m];
-        if (m != null) {
-          const u = D(a) ?? "", x = m.toLowerCase();
-          if (a != null && u + "_id" === x && 0 < s && (f = m), u + "_id" === x || !isNaN(m) && !Array.isArray(n))
+        e !== "" && (this.tableContent[e] == null, d += "  /insert " + this.tableContent[e].length);
+      let c = "";
+      this.tableSignatures.includes(e) || (d = "", r--);
+      for (const u in n) {
+        const h = n[u];
+        if (u != null) {
+          const m = $(e) ?? "", p = u.toLowerCase();
+          if (e != null && m + "_id" === p && 0 < r && (c = u), m + "_id" === p || !isNaN(u) && !Array.isArray(n))
             continue;
         }
-        const o = this.output(m + q(h), h, s + 1);
-        d += o;
+        const l = this.output(u + ne(h), h, r + 1);
+        d += l;
       }
-      f !== "" && (d += `
-` + re(s) + f);
+      c !== "" && (d += `
+` + me(r) + c);
     }
     return d;
   }
-  flatten(a, n, s) {
-    const r = {};
-    for (const f in n) {
-      const m = n[f];
-      if (m != null && typeof m == "object") {
-        let h = a, o = s;
-        if (isNaN(f)) {
-          h = f + q(m);
-          const u = xe(r);
-          u != null && (o = u);
+  flatten(e, n, r) {
+    const t = {};
+    for (const c in n) {
+      const u = n[c];
+      if (u != null && typeof u == "object") {
+        let h = e, l = r;
+        if (isNaN(c)) {
+          h = c + ne(u);
+          const m = Ae(t);
+          m != null && (l = m);
         }
-        this.flatten(h, m, o);
+        this.flatten(h, u, l);
       } else
-        r[f] = m;
+        t[c] = u;
     }
-    !this.notNormalized.includes(a) && s != null && Object.keys(r).length && (r[s.key] = s.value);
-    const l = 0 < Object.keys(r).length;
-    let d = this.tableContent[a];
-    if (l) {
-      if (d == null && (d = []), Ca(d, r) || d.push(r), this.notNormalized.includes(a)) {
-        const f = this.parent(a);
-        if (f != null) {
-          const m = Pe(f, a);
-          let h = this.tableContent[m];
+    !this.notNormalized.includes(e) && r != null && Object.keys(t).length && (t[r.key] = r.value);
+    const o = 0 < Object.keys(t).length;
+    let d = this.tableContent[e];
+    if (o) {
+      if (d == null && (d = []), ka(d, t) || d.push(t), this.notNormalized.includes(e)) {
+        const c = this.parent(e);
+        if (c != null) {
+          const u = Oe(c, e);
+          let h = this.tableContent[u];
           h == null && (h = []);
-          const o = {};
-          o[this.refIdName(f)] = s?.value;
-          let u = xe(r);
-          u == null && (r.id = this.idSeq++, u = xe(r)), o[this.refIdName(a)] = u.value, h.push(o), this.tableContent[m] = h;
+          const l = {};
+          l[this.refIdName(c)] = r?.value;
+          let m = Ae(t);
+          m == null && (t.id = this.idSeq++, m = Ae(t)), l[this.refIdName(e)] = m.value, h.push(l), this.tableContent[u] = h;
         }
       }
-      this.tableContent[a] = d;
-    } else d == null && (this.tableContent[a] = []);
+      this.tableContent[e] = d;
+    } else d == null && (this.tableContent[e] = []);
   }
-  duplicatesAndParents(a, n) {
-    const s = '"' + a + '":' + JSON.stringify(n);
-    let r = this.objCounts[s] ?? 0, l = !1;
-    for (const f in n) {
-      const m = n[f];
-      if (m != null && typeof m == "object") {
-        let h = a;
-        if (isNaN(f))
-          h = f + q(m);
+  duplicatesAndParents(e, n) {
+    const r = '"' + e + '":' + JSON.stringify(n);
+    let t = this.objCounts[r] ?? 0, o = !1;
+    for (const c in n) {
+      const u = n[c];
+      if (u != null && typeof u == "object") {
+        let h = e;
+        if (isNaN(c))
+          h = c + ne(u);
         else if (!Array.isArray(n))
           continue;
-        h !== a && (this.child2parent[h] = a), this.duplicatesAndParents(h, m), l = !0;
+        h !== e && (this.child2parent[h] = e), this.duplicatesAndParents(h, u), o = !0;
       }
     }
-    va(n) && !this.tableSignatures.includes(a) && this.tableSignatures.push(a), l || (this.objCounts[s] = r + 1), 1 < this.objCounts[s] && !this.notNormalized.includes(a) && this.notNormalized.push(a);
+    Ma(n) && !this.tableSignatures.includes(e) && this.tableSignatures.push(e), o || (this.objCounts[r] = t + 1), 1 < this.objCounts[r] && !this.notNormalized.includes(e) && this.notNormalized.push(e);
   }
-  parent(a) {
-    const n = this.child2parent[a];
+  parent(e) {
+    const n = this.child2parent[e];
     return n != null && !this.tableSignatures.includes(n) ? this.parent(n) : n ?? null;
   }
-  tableName(a) {
-    const n = a.indexOf("(");
-    if (n < 0) return a;
-    const s = a.substring(0, n);
-    let r = 0, l = -1;
+  tableName(e) {
+    const n = e.indexOf("(");
+    if (n < 0) return e;
+    const r = e.substring(0, n);
+    let t = 0, o = -1;
     for (const d in this.tableSignatures) {
-      const f = this.tableSignatures[d];
-      f.substring(0, f.indexOf("(")) === s && r++, f === a && (l = r);
+      const c = this.tableSignatures[d];
+      c.substring(0, c.indexOf("(")) === r && t++, c === e && (o = t);
     }
-    return r < 2 ? s : s + l;
+    return t < 2 ? r : r + o;
   }
-  refIdName(a) {
-    return (D(this.tableName(a)) ?? this.tableName(a)) + "_id";
+  refIdName(e) {
+    return ($(this.tableName(e)) ?? this.tableName(e)) + "_id";
   }
 }
-function _a(p, a) {
-  const n = JSON.parse(p), s = ya(n);
-  s != null && (a = s), a == null && (a = "root_tbl");
-  const r = new Sa();
-  r.duplicatesAndParents(a + q(n), n), r.flatten(a + q(n), n);
-  let l = r.output(a + q(n), n, 0);
-  l += `
+function Pa(x, e) {
+  const n = JSON.parse(x), r = Ta(n);
+  r != null && (e = r), e == null && (e = "root_tbl");
+  const t = new Ia();
+  t.duplicatesAndParents(e + ne(n), n), t.flatten(e + ne(n), n);
+  let o = t.output(e + ne(n), n, 0);
+  o += `
 
-#settings = { genpk: false, drop: true, pk: identityDataType, semantics: char }`, l += `
+#settings = { genpk: false, drop: true, pk: identityDataType, semantics: char }`, o += `
 
 #flattened = 
 `;
   const d = {};
-  for (const m in r.tableContent)
-    d[r.tableName(m)] = r.tableContent[m];
-  return l += JSON.stringify(d, null, 3), l += `
-`, l += `
+  for (const u in t.tableContent)
+    d[t.tableName(u)] = t.tableContent[u];
+  return o += JSON.stringify(d, null, 3), o += `
+`, o += `
 
 -- Generated by json2qsql.js ` + "2.0.0" + " " + (/* @__PURE__ */ new Date()).toLocaleString() + `
 
-`, l += `#document = 
-`, l += JSON.stringify(n, null, 3), l += `
-`, l;
+`, o += `#document = 
+`, o += JSON.stringify(n, null, 3), o += `
+`, o;
 }
-class j {
-  constructor(a, n, s, r) {
-    this.from = n, this.to = s ?? new O(n.line, n.depth + 1), this.message = a, this.severity = r ?? "error";
+class X {
+  constructor(e, n, r, t) {
+    this.from = n, this.to = r ?? new H(n.line, n.depth + 1), this.message = e, this.severity = t ?? "error";
   }
 }
-class O {
+class H {
   // 0-based
-  constructor(a, n) {
-    this.line = a, this.depth = n;
+  constructor(e, n) {
+    this.line = e, this.depth = n;
   }
 }
-const Ma = [
+const Ba = [
   "api",
   "audit",
   "auditcols",
@@ -14221,7 +14821,7 @@ const Ma = [
   "pk",
   "cascade",
   "setnull"
-], ka = [
+], Na = [
   "idx",
   "index",
   "indexed",
@@ -14248,7 +14848,7 @@ const Ma = [
   "trans",
   "translation",
   "translations"
-], K = {
+], Z = {
   duplicateId: "Explicit ID column conflicts with genpk",
   invalidDatatype: "Invalid Datatype",
   undefinedObject: "Undefined Object: ",
@@ -14256,129 +14856,129 @@ const Ma = [
   tableDirectiveTypo: "Unknown Table directive",
   columnDirectiveTypo: "Unknown Column directive"
 };
-function Ta(p) {
-  const a = p;
-  let n = [], s = [];
-  for (let l = 0; l < p.forest.length; l++)
-    p.forest[l].inferType() === "table" && (s = s.concat(p.forest[l].descendants()));
-  n = n.concat(Pa(s));
-  const r = a.descendants();
-  for (let l = 0; l < r.length; l++) {
-    const d = r[l];
-    if (a.optionEQvalue("genpk", !0) && r[l].parseName() === "id") {
+function Ea(x) {
+  const e = x;
+  let n = [], r = [];
+  for (let o = 0; o < x.forest.length; o++)
+    x.forest[o].inferType() === "table" && (r = r.concat(x.forest[o].descendants()));
+  n = n.concat($a(r));
+  const t = e.descendants();
+  for (let o = 0; o < t.length; o++) {
+    const d = t[o];
+    if (e.optionEQvalue("genpk", !0) && t[o].parseName() === "id") {
       const h = d.content.toLowerCase().indexOf("id");
-      n.push(new j(K.duplicateId, new O(d.line, h), new O(d.line, h + 2)));
+      n.push(new X(Z.duplicateId, new H(d.line, h), new H(d.line, h + 2)));
       continue;
     }
-    const f = d.src[2];
-    if (2 < d.src.length && f.value === "-") {
-      const h = f.begin;
-      n.push(new j(K.invalidDatatype, new O(d.line, h), new O(d.line, h + 2)));
+    const c = d.src[2];
+    if (2 < d.src.length && c.value === "-") {
+      const h = c.begin;
+      n.push(new X(Z.invalidDatatype, new H(d.line, h), new H(d.line, h + 2)));
       continue;
     }
-    const m = d.src[1];
-    if (1 < d.src.length && m.value === "vc0") {
-      const h = m.begin;
-      n.push(new j(K.invalidDatatype, new O(d.line, h)));
+    const u = d.src[1];
+    if (1 < d.src.length && u.value === "vc0") {
+      const h = u.begin;
+      n.push(new X(Z.invalidDatatype, new H(d.line, h)));
       continue;
     }
-    n = n.concat(Ba(a, d)), n = n.concat(Ia(a, d)), n = n.concat(wa(a, d));
+    n = n.concat(Da(e, d)), n = n.concat(Ra(e, d)), n = n.concat(La(e, d));
   }
   return n;
 }
-function wa(p, a) {
-  const n = a.inferType() === "table", s = [], r = a.src;
-  let l = !1;
-  for (let d = 1; d < r.length; d++) {
-    if (r[d].value === "/") {
-      l = !0;
+function La(x, e) {
+  const n = e.inferType() === "table", r = [], t = e.src;
+  let o = !1;
+  for (let d = 1; d < t.length; d++) {
+    if (t[d].value === "/") {
+      o = !0;
       continue;
     }
-    l && (l = !1, n && Ma.indexOf(r[d].value.toLowerCase()) < 0 && s.push(new j(
-      K.tableDirectiveTypo,
-      new O(a.line, r[d].begin),
-      new O(a.line, r[d].begin + r[d].value.length)
-    )), !n && ka.indexOf(r[d].value.toLowerCase()) < 0 && s.push(new j(
-      K.columnDirectiveTypo,
-      new O(a.line, r[d].begin),
-      new O(a.line, r[d].begin + r[d].value.length)
+    o && (o = !1, n && Ba.indexOf(t[d].value.toLowerCase()) < 0 && r.push(new X(
+      Z.tableDirectiveTypo,
+      new H(e.line, t[d].begin),
+      new H(e.line, t[d].begin + t[d].value.length)
+    )), !n && Na.indexOf(t[d].value.toLowerCase()) < 0 && r.push(new X(
+      Z.columnDirectiveTypo,
+      new H(e.line, t[d].begin),
+      new H(e.line, t[d].begin + t[d].value.length)
     )));
   }
-  return s;
+  return r;
 }
-function Ba(p, a) {
+function Da(x, e) {
   const n = [];
-  if (a.inferType() === "view") {
-    const s = a.src;
-    for (let r = 2; r < s.length; r++)
-      p.find(s[r].value) == null && n.push(new j(
-        K.undefinedObject + s[r].value,
-        new O(a.line, s[r].begin),
-        new O(a.line, s[r].begin + s[r].value.length)
+  if (e.inferType() === "view") {
+    const r = e.src;
+    for (let t = 2; t < r.length; t++)
+      x.find(r[t].value) == null && n.push(new X(
+        Z.undefinedObject + r[t].value,
+        new H(e.line, r[t].begin),
+        new H(e.line, r[t].begin + r[t].value.length)
       ));
   }
   return n;
 }
-function Ia(p, a) {
+function Ra(x, e) {
   const n = [];
-  if (a.isOption("fk") || 0 < a.indexOf("reference", !0)) {
-    let s = a.indexOf("fk");
-    if (s < 0 && (s = a.indexOf("reference")), s++, a.src.length - 1 < s || a.src[s].value === "/")
+  if (e.isOption("fk") || 0 < e.indexOf("reference", !0)) {
+    let r = e.indexOf("fk");
+    if (r < 0 && (r = e.indexOf("reference")), r++, e.src.length - 1 < r || e.src[r].value === "/")
       return n;
-    p.find(a.src[s].value) == null && n.push(new j(
-      K.undefinedObject + a.src[s].value,
-      new O(a.line, a.src[s].begin),
-      new O(a.line, a.src[s].begin + a.src[s].value.length)
+    x.find(e.src[r].value) == null && n.push(new X(
+      Z.undefinedObject + e.src[r].value,
+      new H(e.line, e.src[r].begin),
+      new H(e.line, e.src[r].begin + e.src[r].value.length)
     ));
   }
   return n;
 }
-function Pa(p) {
-  const a = [], n = Ea(p);
-  for (let s = 1; s < p.length; s++) {
-    const r = p[s], l = $e(r);
-    n !== null && l % n !== 0 && a.push(new j(
-      K.misalignedAttribute + n,
-      new O(r.line, l)
+function $a(x) {
+  const e = [], n = Ga(x);
+  for (let r = 1; r < x.length; r++) {
+    const t = x[r], o = We(t);
+    n !== null && o % n !== 0 && e.push(new X(
+      Z.misalignedAttribute + n,
+      new H(t.line, o)
     ));
   }
-  return a;
+  return e;
 }
-function Ea(p) {
-  const a = [];
-  for (let r = 0; r < p.length; r++)
-    a[r] = $e(p[r]);
+function Ga(x) {
+  const e = [];
+  for (let t = 0; t < x.length; t++)
+    e[t] = We(x[t]);
   const n = {};
-  for (let r = 0; r < a.length; r++) {
-    const l = Na(a, r);
-    if (l != null) {
-      const d = a[r] - a[l];
+  for (let t = 0; t < e.length; t++) {
+    const o = Oa(e, t);
+    if (o != null) {
+      const d = e[t] - e[o];
       n[d] = (n[d] ?? 0) + 1;
     }
   }
-  let s = null;
-  for (const r in n) {
-    const l = parseInt(r);
-    (s === null || n[s] <= n[l]) && (s = l);
+  let r = null;
+  for (const t in n) {
+    const o = parseInt(t);
+    (r === null || n[r] <= n[o]) && (r = o);
   }
-  return s;
+  return r;
 }
-function $e(p) {
-  return p.src[0].begin;
+function We(x) {
+  return x.src[0].begin;
 }
-function Na(p, a) {
-  for (let n = a; 0 <= n; n--)
-    if (p[n] < p[a])
+function Oa(x, e) {
+  for (let n = e; 0 <= n; n--)
+    if (x[n] < x[e])
       return n;
   return null;
 }
-const La = Ta, Da = { findErrors: La, messages: K }, Oe = "identityDataType", Ce = "guid", Fe = "Timestamp with time zone", He = "Timestamp with local time zone";
-function Ee(p) {
-  if (p == null) return null;
-  const a = typeof p == "string" ? p.toLowerCase() : p;
-  return a === "yes" || a === "y" || a === "true" || a === !0 ? !0 : a === "no" || a === "n" || a === "false" || a === !1 ? !1 : a === Oe.toLowerCase() ? "identity" : a === Ce.toLowerCase() ? "guid" : a === Fe.toLowerCase() ? "tswtz" : a === He.toLowerCase() ? "tswltz" : typeof a == "string" ? a : String(a);
+const Fa = Ea, Ha = { findErrors: Fa, messages: Z }, Ue = "identityDataType", we = "guid", Ke = "Timestamp with time zone", Je = "Timestamp with local time zone";
+function Fe(x) {
+  if (x == null) return null;
+  const e = typeof x == "string" ? x.toLowerCase() : x;
+  return e === "yes" || e === "y" || e === "true" || e === !0 ? !0 : e === "no" || e === "n" || e === "false" || e === !1 ? !1 : e === Ue.toLowerCase() ? "identity" : e === we.toLowerCase() ? "guid" : e === Ke.toLowerCase() ? "tswtz" : e === Je.toLowerCase() ? "tswltz" : typeof e == "string" ? e : String(e);
 }
-const oe = {
+const he = {
   apex: { label: "APEX", value: "no", check: ["yes", "no"] },
   auditcols: { label: "Audit Columns", value: "no", check: ["yes", "no"] },
   createdcol: { label: "Created Column Name", value: "created" },
@@ -14392,7 +14992,7 @@ const oe = {
   semantics: { label: "Character Strings", value: "CHAR", check: ["BYTE", "CHAR", "Default"] },
   language: { label: "Data Language", value: "EN", check: ["EN", "JP", "KO"] },
   datalimit: { label: "Data Limit Rows", value: 1e4 },
-  date: { label: "Date Data Type", value: "DATE", check: ["DATE", "TIMESTAMP", Fe, He] },
+  date: { label: "Date Data Type", value: "DATE", check: ["DATE", "TIMESTAMP", Ke, Je] },
   db: { label: "Database Version", value: "not set" },
   dv: { label: "Duality View", value: "no", check: ["yes", "no"] },
   drop: { label: "Include Drops", value: "no", check: ["yes", "no"] },
@@ -14401,7 +15001,7 @@ const oe = {
   namelen: { label: "Name Character Length", value: 255 },
   overridesettings: { label: "Ignore toDDL() second parameter", value: "no", check: ["yes", "no"] },
   prefix: { label: "Object Prefix", value: "" },
-  pk: { label: "Primary Key Maintenance", value: Ce, check: [Oe, Ce, "SEQ", "NONE"] },
+  pk: { label: "Primary Key Maintenance", value: we, check: [Ue, we, "SEQ", "NONE"] },
   prefixpkwithtname: { label: "Prefix primary keys with table name", value: "no", check: ["yes", "no"] },
   rowkey: { label: "Alphanumeric Row Identifier", value: "no", check: ["yes", "no"] },
   rowversion: { label: "Row Version Number", value: "no", check: ["yes", "no"] },
@@ -14416,162 +15016,170 @@ const oe = {
   tenantref: { label: "Tenant Reference Table", value: "" },
   verbose: { label: "Verbose Output", value: "no", check: ["yes", "no"] }
 };
-class J {
-  constructor(a, n) {
-    this._ddl = null, this._erd = null, this._errors = null, this.postponedAlters = [], this.postponedAltersSet = /* @__PURE__ */ new Set(), this._labelToKey = {}, this.name2node = null, this.options = JSON.parse(JSON.stringify(oe)), this.input = a;
-    for (const r in this.options) {
-      const l = this.options[r].label;
-      l != null && (this._labelToKey[l.toLowerCase()] = r);
+class K {
+  constructor(e, n) {
+    this._ddl = null, this._erd = null, this._errors = null, this.postponedAlters = [], this.postponedAltersSet = /* @__PURE__ */ new Set(), this._labelToKey = {}, this.name2node = null, this.options = JSON.parse(JSON.stringify(he)), this.input = e;
+    for (const t in this.options) {
+      const o = this.options[t].label;
+      o != null && (this._labelToKey[o.toLowerCase()] = t);
     }
-    let s = "";
-    a.toLowerCase().includes("overridesettings") && Ae(this), n !== void 0 && this.optionEQvalue("overrideSettings", !1) && (s = "# settings = " + String(n) + `
+    let r = "";
+    e.toLowerCase().includes("overridesettings") && Pe(this), n !== void 0 && this.optionEQvalue("overrideSettings", !1) && (r = "# settings = " + String(n) + `
 
-`), this.input = s + a, this.forest = Ae(this);
+`), this.input = r + e, this.forest = Pe(this);
   }
   // ── Option access ─────────────────────────────────────────────────────────
-  getOptionValue(a) {
-    const n = a.toLowerCase();
-    let s = this.options[n];
+  getOptionValue(e) {
+    const n = e.toLowerCase();
+    let r = this.options[n];
     if (!(n in this.options)) {
-      const r = this._labelToKey[n];
-      r != null && (s = this.options[r]);
+      const t = this._labelToKey[n];
+      t != null && (r = this.options[t]);
     }
-    return s?.value ?? null;
+    return r?.value ?? null;
   }
-  optionEQvalue(a, n) {
-    return Ee(this.getOptionValue(a)) == Ee(n);
+  optionEQvalue(e, n) {
+    return Fe(this.getOptionValue(e)) == Fe(n);
   }
-  setOptionValue(a, n) {
-    const s = a.toLowerCase();
-    if (!(s in this.options)) {
+  setOptionValue(e, n) {
+    const r = e.toLowerCase();
+    if (!(r in this.options)) {
       for (const d in this.options)
-        if (this.options[d].label === a) {
+        if (this.options[d].label === e) {
           this.options[d].value = n ?? "";
           return;
         }
     }
-    const r = n ?? "";
-    let l = this.options[s];
-    l == null ? (l = { label: s, value: r }, this.options[s] = l) : l.value = r;
+    const t = n ?? "";
+    let o = this.options[r];
+    o == null ? (o = { label: r, value: t }, this.options[r] = o) : o.value = t;
   }
   nonDefaultOptions() {
-    const a = {};
+    const e = {};
     for (const n in this.options)
-      oe[n] && !this.optionEQvalue(n, oe[n].value) && (a[n] = this.options[n].value);
-    return a;
+      he[n] && !this.optionEQvalue(n, he[n].value) && (e[n] = this.options[n].value);
+    return e;
   }
   unknownOptions() {
-    const a = [];
+    const e = [];
     for (const n in this.options)
-      oe[n] == null && a.push(n);
-    return a;
+      he[n] == null && e.push(n);
+    return e;
   }
-  setOptions(a) {
-    a = a.trim(), a.startsWith("#") && (a = a.substring(1).trim());
-    const n = a.indexOf("=");
-    let s = a.substring(n + 1).trim();
-    s.includes("{") || (s = "{" + a + "}");
-    let r = "";
-    const l = Q(s, !0, !0, "");
-    for (const f of l)
-      f.type === "identifier" && f.value !== "true" && f.value !== "false" && f.value !== "null" || f.type === "constant.numeric" && !/^\d+(\.\d+)?$/.test(f.value) ? r += '"' + f.value + '"' : r += f.value;
-    const d = JSON.parse(r);
-    for (const f in d)
-      this.setOptionValue(f.toLowerCase(), d[f]);
+  setOptions(e) {
+    e = e.trim(), e.startsWith("#") && (e = e.substring(1).trim());
+    const n = e.indexOf("=");
+    let r = e.substring(n + 1).trim();
+    r.includes("{") || (r = "{" + e + "}");
+    let t = "";
+    const o = re(r, !0, !0, "");
+    for (const c of o)
+      c.type === "identifier" && c.value !== "true" && c.value !== "false" && c.value !== "null" || c.type === "constant.numeric" && !/^\d+(\.\d+)?$/.test(c.value) ? t += '"' + c.value + '"' : t += c.value;
+    const d = JSON.parse(t);
+    for (const c in d)
+      this.setOptionValue(c.toLowerCase(), d[c]);
   }
   // ── Semantic helpers ──────────────────────────────────────────────────────
   semantics() {
     return this.optionEQvalue("semantics", "CHAR") ? " char" : this.optionEQvalue("semantics", "BYTE") ? " byte" : "";
   }
-  objPrefix(a) {
+  objPrefix(e) {
     let n = this.getOptionValue("schema") ?? "";
-    n = n !== "" && a == null ? n + "." : "";
-    const s = this.getOptionValue("prefix") ?? "", r = s !== "" && !s.endsWith("_") ? "_" : "";
-    return (n + s + r).toLowerCase();
+    n = n !== "" && e == null ? n + "." : "";
+    const r = this.getOptionValue("prefix") ?? "", t = r !== "" && !r.endsWith("_") ? "_" : "";
+    return (n + r + t).toLowerCase();
   }
   // ── Node lookup ───────────────────────────────────────────────────────────
-  find(a) {
+  find(e) {
     if (this.name2node != null)
-      return this.name2node[ae(a)] ?? null;
+      return this.name2node[le(e)] ?? null;
     this.name2node = {};
     for (const n of this.forest)
-      for (const s of n.descendants())
-        this.name2node[s.parseName()] = s;
-    return this.name2node[ae(a)] ?? null;
+      for (const r of n.descendants())
+        this.name2node[r.parseName()] = r;
+    return this.name2node[le(e)] ?? null;
   }
   descendants() {
-    const a = [];
+    const e = [];
     for (const n of this.forest)
-      a.push(...n.descendants());
-    return a;
+      e.push(...n.descendants());
+    return e;
   }
   additionalColumns() {
-    const a = {}, n = this.getOptionValue("Auxiliary Columns");
-    if (n == null) return a;
-    for (const s of n.split(",")) {
-      const r = s.trim(), l = r.indexOf(" ");
-      l > 0 ? a[r.substring(0, l)] = r.substring(l + 1).toUpperCase() : a[r] = "VARCHAR2(4000)";
+    const e = {}, n = this.getOptionValue("Auxiliary Columns");
+    if (n == null) return e;
+    for (const r of n.split(",")) {
+      const t = r.trim(), o = t.indexOf(" ");
+      o > 0 ? e[t.substring(0, o)] = t.substring(o + 1).toUpperCase() : e[t] = "VARCHAR2(4000)";
     }
-    return a;
+    return e;
   }
   // ── Output generators ─────────────────────────────────────────────────────
   getERD() {
-    return this._erd != null ? this._erd : (this._erd = Ie(this).generateERD(), this._erd);
+    return this._erd != null ? this._erd : (this._erd = Ge(this).generateERD(), this._erd);
   }
   getDDL() {
-    return this._ddl != null ? this._ddl : (this._ddl = Ie(this).generateFullDDL() + this._makeFooter(), this._ddl);
+    return this._ddl != null ? this._ddl : (this._ddl = Ge(this).generateFullDDL() + this._makeFooter(), this._ddl);
   }
   _makeFooter() {
-    const a = (s) => s.replace(/#.+/g, `
+    const e = (r) => r.replace(/#.+/g, `
 `).replace(/\/\*/g, "--<--").replace(/\*\//g, "-->--").replace(/\/*\s*Non-default options:/g, "");
     let n = `-- Generated by Radicle QuickSQL ${this.version()} ${(/* @__PURE__ */ new Date()).toLocaleString()}
 
 `;
     n += `/*
-`, n += a(this.input), n += `
+`, n += e(this.input), n += `
 `;
-    for (const s of this.unknownOptions())
-      n += "*** Unknown setting: " + s + `
+    for (const r of this.unknownOptions())
+      n += "*** Unknown setting: " + r + `
 `;
     return n += `
 */`, n;
   }
   getErrors() {
-    return this._errors != null ? this._errors : (this._errors = Da.findErrors(this), this._errors);
+    return this._errors != null ? this._errors : (this._errors = Ha.findErrors(this), this._errors);
   }
   version() {
-    return ze();
+    return je();
   }
 }
-function Ra(p, a) {
-  return _a(p, a);
+function za(x, e) {
+  return Pa(x, e);
 }
-function Ga(p, a) {
-  return new J(p, a).getERD();
+function Va(x, e) {
+  return new K(x, e).getERD();
 }
-function $a(p, a) {
-  return new J(p, a).getDDL();
+function Wa(x, e) {
+  return new K(x, e).getDDL();
 }
-function Oa(p, a) {
-  return new J(p, a).getErrors();
+function Ua(x, e) {
+  return new K(x, e).getErrors();
 }
-function ze() {
+function Ka(x, e, n) {
+  const r = new K(e, n), t = new K(x, n);
+  return _a(r).compute(t, r);
+}
+function je() {
   return "2.0.0";
 }
-J.toDDL = $a;
-J.toERD = Ga;
-J.toErrors = Oa;
-J.fromJSON = Ra;
-J.version = ze;
-J.lexer = Q;
+K.toDDL = Wa;
+K.toERD = Va;
+K.toErrors = Ua;
+K.toDiff = Ka;
+K.fromJSON = za;
+K.version = je;
+K.lexer = re;
 export {
-  fa as BaseGenerator,
-  J as default,
-  Ra as fromJSON,
-  ze as qsql_version,
-  J as quicksql,
-  Fa as registerGenerator,
-  $a as toDDL,
-  Ga as toERD,
-  Oa as toErrors
+  pa as BaseGenerator,
+  _a as createDiffGenerator,
+  K as default,
+  za as fromJSON,
+  je as qsql_version,
+  K as quicksql,
+  ja as registerDiffGenerator,
+  Ja as registerGenerator,
+  Wa as toDDL,
+  Ka as toDiff,
+  Va as toERD,
+  Ua as toErrors
 };
