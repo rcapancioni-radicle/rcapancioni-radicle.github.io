@@ -508,7 +508,7 @@ footer.status-error  { background: var(--error-bg); color: var(--error-text); bo
 }
 .sett-group:first-child { margin-top: 0; }
 .sett-row { display: flex; align-items: center; margin-bottom: 6px; gap: 8px; font-size: 11px; }
-.sett-row label { color: var(--text-muted); min-width: 148px; }
+.sett-row label:not(.sett-toggle) { color: var(--text-muted); min-width: 148px; }
 .sett-row select,
 .sett-row input[type=text] {
     flex: 1; background: var(--bg); border: 1px solid var(--border);
@@ -554,7 +554,7 @@ footer.status-error  { background: var(--error-bg); color: var(--error-text); bo
     border-left: 2px solid var(--sql-keyword);
     padding-left: 4px;
 }
-.sett-row--dirty > label { color: var(--text); }
+.sett-row--dirty > label:not(.sett-toggle) { color: var(--text); }
 
 /* ── Autocomplete popup ───────────────────────────────────────────── */
 #autocomplete {
