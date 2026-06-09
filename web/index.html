@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>100 mq Fronte Mare — Via I Maggio, Porto Recanati</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1a2e4a;--gold:#c9a84c;--gold-light:#f0e6c8;--bg:#f8f7f4;--text:#2d2d2d;--muted:#6b6b6b;--white:#fff;--r:12px;--sh:0 2px 16px rgba(0,0,0,.08)}
+html{scroll-behavior:smooth}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+/* LANG SYSTEM */
+[data-lang="it"] .de,[data-lang="it"] .en{display:none!important}
+[data-lang="de"] .it,[data-lang="de"] .en{display:none!important}
+[data-lang="en"] .it,[data-lang="en"] .de{display:none!important}
+.it,.de,.en{display:block}
+span.it,span.de,span.en{display:inline}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:100;background:var(--navy);color:var(--white);padding:12px 32px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{font-size:14px;font-weight:500;letter-spacing:.04em;opacity:.9;white-space:nowrap}
+.logo span{color:var(--gold)}
+.lang-sw{display:flex;gap:4px;flex-shrink:0}
+.lb{padding:5px 12px;font-size:12px;font-weight:600;letter-spacing:.06em;border:1px solid rgba(255,255,255,.25);border-radius:20px;cursor:pointer;background:transparent;color:rgba(255,255,255,.6);transition:all .2s;font-family:inherit}
+.lb:hover{border-color:var(--gold);color:var(--gold)}
+.lb.active{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+
+/* HERO */
+.hero{min-height:88vh;display:flex;align-items:center;justify-content:center;background:url('img/0443371a-3c35-4d8b-ac61-9e5106b3b3f0.jpeg') center/cover no-repeat;position:relative;overflow:hidden;padding:80px 32px;text-align:center;color:var(--white)}
+.hero::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(10,25,45,.78) 0%,rgba(15,40,70,.65) 50%,rgba(20,55,90,.50) 100%)}
+.hc{position:relative;z-index:1;max-width:760px;margin:0 auto}
+.badge{display:inline-block;background:rgba(201,168,76,.2);border:1px solid var(--gold);color:var(--gold);font-size:12px;letter-spacing:.1em;padding:5px 16px;border-radius:20px;margin-bottom:24px;text-transform:uppercase}
+.hero h1{font-size:clamp(26px,4.5vw,50px);font-weight:600;line-height:1.2;margin-bottom:20px}
+.hero h2{font-size:clamp(14px,2.2vw,19px);font-weight:400;opacity:.85;margin-bottom:32px;max-width:600px;margin-left:auto;margin-right:auto}
+.price{font-size:clamp(17px,2.8vw,24px);font-weight:600;color:var(--gold);margin-bottom:36px}
+.cta{display:inline-block;background:var(--gold);color:var(--navy);font-size:15px;font-weight:600;padding:16px 40px;border-radius:8px;text-decoration:none;letter-spacing:.02em;transition:opacity .2s,transform .2s}
+.cta:hover{opacity:.9;transform:translateY(-1px)}
+.hmeta{margin-top:48px;display:flex;gap:28px;justify-content:center;flex-wrap:wrap;font-size:13px;opacity:.7}
+.hmeta span::before{content:'✓ ';color:var(--gold);opacity:1}
+
+/* SECTIONS */
+section{padding:72px 32px}
+.si{max-width:960px;margin:0 auto}
+.slabel{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600}
+.stitle{font-size:clamp(22px,3.5vw,34px);font-weight:600;color:var(--navy);margin-bottom:12px}
+.ssub{font-size:16px;color:var(--muted);max-width:580px}
+
+/* SCENARI */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px}
+.sc{background:var(--white);border-radius:var(--r);padding:36px 32px;box-shadow:var(--sh);border-top:4px solid var(--gold)}
+.sc h3{font-size:18px;font-weight:600;color:var(--navy);margin-bottom:8px}
+.sc p{font-size:14px;color:var(--muted);line-height:1.7}
+.stag{display:inline-block;margin-top:16px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);padding:4px 12px;border-radius:20px}
+
+/* GALLERY */
+.gg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:40px}
+.ph{aspect-ratio:4/3;border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;font-size:12px;font-weight:500;color:rgba(255,255,255,.85);background:linear-gradient(135deg,#1a3a5c,#2a6e9e);transition:transform .2s}
+.ph:hover{transform:scale(1.02)}
+.ph:nth-child(2n){background:linear-gradient(135deg,#0d2538,#1a4d6e)}
+.ph:nth-child(3n){background:linear-gradient(135deg,#1e3f5a,#245f80)}
+
+/* DISTANCES */
+.ds{background:var(--navy);color:var(--white)}
+.ds .stitle{color:var(--white)}
+.dt{width:100%;border-collapse:collapse;margin-top:36px}
+.dt th{text-align:left;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);padding:10px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
+.dt td{padding:16px;border-bottom:1px solid rgba(255,255,255,.07);font-size:14px}
+.dt tr:last-child td{border-bottom:none}
+.dt td:last-child{font-weight:600;color:var(--gold);font-size:16px;text-align:right}
+.dtype{font-size:12px;color:rgba(255,255,255,.5);display:block;margin-top:2px}
+.ddesc{font-size:13px;color:rgba(255,255,255,.6)}
+
+/* SCARSITA */
+.sbox{margin-top:40px;border-left:4px solid var(--gold);background:var(--gold-light);padding:28px 32px;border-radius:0 var(--r) var(--r) 0}
+.sbox p{font-size:15px;color:var(--navy);font-style:italic;line-height:1.7}
+.slbl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+
+/* FAQ */
+.fl{margin-top:36px;display:flex;flex-direction:column;gap:8px}
+.fi{background:var(--white);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.fq{width:100%;text-align:left;padding:20px 24px;font-size:15px;font-weight:500;color:var(--navy);background:none;border:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;font-family:inherit}
+.fq:hover{background:rgba(26,46,74,.03)}
+.fi-icon{font-size:20px;color:var(--gold);flex-shrink:0;transition:transform .25s}
+.fa{max-height:0;overflow:hidden;transition:max-height .35s ease,padding .3s;font-size:14px;color:var(--muted);line-height:1.7;padding:0 24px}
+.fi.open .fa{max-height:200px;padding:0 24px 20px}
+.fi.open .fi-icon{transform:rotate(45deg)}
+
+/* FORM */
+.fs{background:var(--navy)}
+.fp{background:rgba(255,255,255,.06);border:1px solid rgba(201,168,76,.4);border-radius:var(--r);padding:48px;text-align:center;margin-top:40px;color:var(--white)}
+.fp h3{font-size:22px;font-weight:500;margin-bottom:12px}
+.ff{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:560px;margin:0 auto}
+.fi2{padding:13px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;font-size:14px;color:var(--white);outline:none;font-family:inherit}
+.fi2::placeholder{color:rgba(255,255,255,.4)}
+.fi2:focus{border-color:var(--gold)}
+.fi2.full{grid-column:1/-1}
+.fsel{padding:13px 16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:8px;font-size:14px;color:rgba(255,255,255,.8);outline:none;font-family:inherit;cursor:pointer;grid-column:1/-1;appearance:none}
+.fsel option{background:var(--navy);color:var(--white)}
+.fsub{grid-column:1/-1;background:var(--gold);color:var(--navy);border:none;padding:15px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px;font-family:inherit;transition:opacity .2s}
+.fsub:hover{opacity:.88}
+
+/* FOOTER */
+footer{background:#0d1825;color:rgba(255,255,255,.5);padding:48px 32px;font-size:12px;line-height:1.8}
+.fi3{max-width:960px;margin:0 auto}
+.fdis{border-top:1px solid rgba(255,255,255,.08);padding-top:24px;margin-top:24px;font-style:italic}
+.fdis strong{color:rgba(255,255,255,.7);font-style:normal}
+
+/* LIGHTBOX */
+.lb-ov{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.lb-ov.open{opacity:1;pointer-events:all}
+.lb-img{max-width:92vw;max-height:88vh;object-fit:contain;border-radius:6px;user-select:none;display:block}
+.lb-close{position:absolute;top:16px;right:20px;font-size:32px;color:#fff;cursor:pointer;line-height:1;opacity:.7;transition:opacity .15s;background:none;border:none;font-family:inherit}
+.lb-close:hover{opacity:1}
+.lb-arr{position:absolute;top:50%;transform:translateY(-50%);font-size:36px;color:#fff;cursor:pointer;opacity:.6;transition:opacity .15s;background:rgba(0,0,0,.3);border:none;border-radius:50%;width:52px;height:52px;display:flex;align-items:center;justify-content:center;font-family:inherit}
+.lb-arr:hover{opacity:1}
+.lb-prev{left:12px}
+.lb-next{right:12px}
+.lb-counter{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.6);font-size:13px;letter-spacing:.06em}
+.gg img{cursor:zoom-in}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  section{padding:52px 20px}
+  header{padding:12px 20px}
+  .hero{padding:60px 20px}
+  .sg{grid-template-columns:1fr}
+  .gg{grid-template-columns:repeat(2,1fr)}
+  .ff{grid-template-columns:1fr}
+  .fi2.full,.fsel,.fsub{grid-column:1}
+  .dt td,.dt th{padding:12px 10px}
+}
+@media(max-width:480px){
+  .gg{grid-template-columns:1fr}
+  .hmeta{gap:16px}
+}
+</style>
+</head>
+<body id="page-body" data-lang="it">
+
+<header>
+  <div class="logo">Via I Maggio <span>|</span> Porto Recanati</div>
+  <div class="lang-sw">
+    <button class="lb active" onclick="setLang('it')">IT</button>
+    <button class="lb" onclick="setLang('de')">DE</button>
+    <button class="lb" onclick="setLang('en')">EN</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hc">
+    <div class="badge">
+      <span class="it">Prima linea — Adriatico</span>
+      <span class="de">Erste Meereslinie — Adria</span>
+      <span class="en">First row — Adriatic Sea</span>
+    </div>
+    <h1>
+      <span class="it">100 mq in prima linea<br>sul mare a Porto Recanati.</span>
+      <span class="de">Exklusive Wohnung in erster<br>Meereslinie an der Adria.</span>
+      <span class="en">100 sqm on the Adriatic seafront.<br>First row, no compromises.</span>
+    </h1>
+    <h2>
+      <span class="it">Secondo piano con ascensore, vista aperta sull'Adriatico e studio di trasformazione architettonica incluso.</span>
+      <span class="de">100 m² mit Aufzug, freiem Meerblick und architektonischer Konzeptstudie inklusive.</span>
+      <span class="en">Second floor with lift, unobstructed sea view and complimentary architectural transformation study.</span>
+    </h2>
+    <div class="price">
+      <span class="it">Investimento stimato nello stato di fatto: €440.000 – €475.000</span>
+      <span class="de">Auslandsinvestition im Ist-Zustand: €440.000 – €475.000</span>
+      <span class="en">Asking price as-is: €440,000 – €475,000</span>
+    </div>
+    <a href="#form" class="cta">
+      <span class="it">Scarica il Progetto &amp; la Brochure</span>
+      <span class="de">Projektstudie &amp; Exposé herunterladen</span>
+      <span class="en">Download the Project &amp; Brochure</span>
+    </a>
+    <div class="hmeta">
+      <span class="it">2° piano con ascensore</span><span class="de">2. OG mit Aufzug</span><span class="en">2nd floor with lift</span>
+      <span class="it">Meno di 15 m dal mare</span><span class="de">Weniger als 15 m vom Meer</span><span class="en">Less than 15 m from the sea</span>
+      <span class="it">Vista 180° sull'Adriatico</span><span class="de">180° Meerblick auf die Adria</span><span class="en">180° Adriatic sea view</span>
+      <span class="it">Due diligence completata</span><span class="de">Due-Diligence abgeschlossen</span><span class="en">Due diligence completed</span>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--bg)">
+  <div class="si">
+    <div class="slabel"><span class="it">Due opzioni di acquisto</span><span class="de">Zwei Kaufoptionen</span><span class="en">Two purchase options</span></div>
+    <h2 class="stitle"><span class="it">Scegli il tuo scenario d'investimento</span><span class="de">Wählen Sie Ihr Investitionsszenario</span><span class="en">Choose your investment scenario</span></h2>
+    <div class="sg">
+      <div class="sc">
+        <div style="font-size:32px;margin-bottom:16px">🏠</div>
+        <h3><span class="it">Scenario A — Acquisto Immediato</span><span class="de">Szenario A — Sofortkauf</span><span class="en">Scenario A — Immediate Purchase</span></h3>
+        <p><span class="it">Acquisti l'appartamento nello stato di fatto per utilizzarlo da subito o ristrutturarlo autonomamente. Gli impianti sono funzionanti e l'immobile è pronto per la stagione estiva senza interventi obbligatori.</span><span class="de">Sie erwerben die Wohnung im Ist-Zustand zur sofortigen Nutzung oder eigenständigen Renovierung. Alle Anlagen funktionieren und das Objekt ist sofort für die Sommersaison bezugsfertig.</span><span class="en">Purchase the apartment as-is for immediate use or independent renovation. All systems are operational and the property is ready for the summer season with no mandatory works.</span></p>
+        <span class="stag"><span class="it">Uso immediato</span><span class="de">Sofort nutzbar</span><span class="en">Move-in ready</span></span>
+      </div>
+      <div class="sc">
+        <div style="font-size:32px;margin-bottom:16px">📐</div>
+        <h3><span class="it">Scenario B — Con Studio Architettonico</span><span class="de">Szenario B — Mit Architekturkonzept</span><span class="en">Scenario B — With Architectural Study</span></h3>
+        <p><span class="it">Insieme all'acquisto ricevi gratuitamente un Concept Architettonico: open-space fronte mare di oltre 40 mq, master suite con vista sull'Adriatico e stima parametrica dei costi di ristrutturazione.</span><span class="de">Zum Kauf erhalten Sie kostenlos eine Konzeptstudie: Open-Space mit Meerblick über 40 m², Master-Suite mit Adriablick und parametrische Kostenschätzung für die Renovierung.</span><span class="en">With your purchase you receive a free Architectural Concept: an open-plan seafront area over 40 sqm, a master suite with sea view, and a parametric renovation cost estimate.</span></p>
+        <span class="stag"><span class="it">Concept incluso</span><span class="de">Konzept inklusive</span><span class="en">Concept included</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#eef0f3">
+  <div class="si">
+    <div class="slabel"><span class="it">Galleria fotografica</span><span class="de">Fotogalerie</span><span class="en">Photo gallery</span></div>
+    <h2 class="stitle"><span class="it">Scopri l'appartamento</span><span class="de">Die Wohnung entdecken</span><span class="en">Explore the apartment</span></h2>
+    <div class="gg">
+      <img src="img/6cd2e0cd-7dca-46c8-bdf1-f05639009b69.jpeg" alt="Vista mare dal soggiorno" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+      <img src="img/57321649-4d49-4e30-b203-4d926a40e3bf.jpeg" alt="Cucina con vista mare" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+      <img src="img/0443371a-3c35-4d8b-ac61-9e5106b3b3f0.jpeg" alt="Panoramica sull'Adriatico" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+      <img src="img/36654ef9-4157-4592-88bd-917cbbab345b.jpeg" alt="Vista mare dal balcone" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+      <img src="img/3dbb7de5-008e-4bec-aae3-54707037982c.jpeg" alt="Spiaggia e mare" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+      <img src="img/dac8c606-d68a-4c46-badd-1c126d6ca4a9.jpeg" alt="Soggiorno — zona divano" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+      <img src="img/216b3e83-8936-4586-9379-5e7c1bc52b64.jpeg" alt="Soggiorno — libreria e TV" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+      <img src="img/c3cd1ebc-f14c-4da6-b2a4-25af20fb143e.jpeg" alt="Camera da letto principale" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+      <img src="img/705ed29b-5f08-4617-a9ee-d6c57f8d3fc0.jpeg" alt="Camera da letto principale — altra angolazione" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+      <img src="img/474f6db1-1eb4-42bf-946c-67ff777e5dd4.jpeg" alt="Camera secondaria" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+      <img src="img/5171cfdb-da5a-40e5-bcd7-e57fe6753b57.jpeg" alt="Camera bambini" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+      <img src="img/5d82c120-4d76-4172-bdd9-b62e70a25dc7.jpeg" alt="Bagno principale" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+      <img src="img/694dddb7-1c13-49f3-bf68-63965944cd1d.jpeg" alt="Bagno secondario" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+      <img src="img/95433133-428a-4754-b5ac-863fae7157a2.jpeg" alt="Ingresso e corridoio" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+      <img src="img/8254687a-018b-4fc2-b1a4-92c9167198b6.jpeg" alt="Terrazzo" style="width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px">
+    </div>
+  </div>
+</section>
+
+<section class="ds">
+  <div class="si">
+    <div class="slabel"><span class="it">Posizione strategica</span><span class="de">Strategische Lage</span><span class="en">Strategic location</span></div>
+    <h2 class="stitle"><span class="it">Tutto a portata di mano</span><span class="de">Alles in Reichweite</span><span class="en">Everything within reach</span></h2>
+    <table class="dt">
+      <thead><tr>
+        <th><span class="it">Destinazione</span><span class="de">Ziel</span><span class="en">Destination</span></th>
+        <th><span class="it">Attrattiva</span><span class="de">Highlight</span><span class="en">Highlight</span></th>
+        <th style="text-align:right"><span class="it">Tempo auto</span><span class="de">Fahrzeit</span><span class="en">Drive time</span></th>
+      </tr></thead>
+      <tbody>
+        <tr><td><strong>Sirolo</strong><span class="dtype"><span class="it">Riviera del Conero</span><span class="de">Riviera del Conero</span><span class="en">Conero Riviera</span></span></td><td class="ddesc"><span class="it">Borgo medievale, spiagge esclusive</span><span class="de">Mittelalterliches Dorf, exklusive Strände</span><span class="en">Medieval village, exclusive beaches</span></td><td>10 min</td></tr>
+        <tr><td><strong>Numana</strong><span class="dtype"><span class="it">Porto turistico</span><span class="de">Touristenhafen</span><span class="en">Tourist marina</span></span></td><td class="ddesc"><span class="it">Bandiera Blu, porto, spiagge attrezzate</span><span class="de">Blaue Flagge, Hafen, Strände</span><span class="en">Blue Flag, marina, equipped beaches</span></td><td>12 min</td></tr>
+        <tr><td><strong>Loreto</strong><span class="dtype"><span class="it">Centro storico</span><span class="de">Historisches Zentrum</span><span class="en">Historic centre</span></span></td><td class="ddesc"><span class="it">Polo culturale e religioso internazionale</span><span class="de">Internationales Wallfahrtszentrum</span><span class="en">International cultural landmark</span></td><td>10 min</td></tr>
+        <tr><td><strong>Ancona</strong><span class="dtype"><span class="it">Capoluogo</span><span class="de">Landeshauptstadt</span><span class="en">Regional capital</span></span></td><td class="ddesc"><span class="it">Centro direzionale, porto per la Croazia</span><span class="de">Geschäftszentrum, Hafen nach Kroatien</span><span class="en">Business hub, ferry port to Croatia</span></td><td>25 min</td></tr>
+        <tr><td><strong><span class="it">Aeroporto Falconara</span><span class="de">Flughafen Falconara</span><span class="en">Falconara Airport</span></strong><span class="dtype"><span class="it">Hub aereo</span><span class="de">Flughafen</span><span class="en">Airport</span></span></td><td class="ddesc"><span class="it">Voli diretti Monaco, Francoforte e altri</span><span class="de">Direktflüge München, Frankfurt u.a.</span><span class="en">Direct flights to Munich, Frankfurt and more</span></td><td>25 min</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section style="background:var(--bg)">
+  <div class="si">
+    <div class="slabel"><span class="it">Consulenza esclusiva</span><span class="de">Exklusive Beratung</span><span class="en">Exclusive advisory</span></div>
+    <h2 class="stitle"><span class="it">Accesso limitato</span><span class="de">Begrenzter Zugang</span><span class="en">Limited access</span></h2>
+    <div class="sbox">
+      <div class="slbl">⏳ <span class="it">Disponibilità riservata</span><span class="de">Reservierte Verfügbarkeit</span><span class="en">Reserved availability</span></div>
+      <p>
+        <span class="it">L'immobile viene gestito con un numero limitato di visite qualificate. Per garantire un confronto tecnico approfondito direttamente con l'Ingegnere, vengono organizzati soltanto pochi appuntamenti selezionati ogni settimana.</span>
+        <span class="de">Diese Immobilie wird mit einer begrenzten Anzahl qualifizierter Besichtigungen betreut. Um eine fundierte fachliche Beratung direkt mit dem Ingenieur zu gewährleisten, werden jede Woche nur wenige ausgewählte Termine vergeben.</span>
+        <span class="en">This property is handled with a strictly limited number of qualified viewings. To ensure a thorough technical consultation directly with the Engineer, only a few selected appointments are arranged each week.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section style="background:var(--white)">
+  <div class="si">
+    <div class="slabel">FAQ</div>
+    <h2 class="stitle"><span class="it">Hai dei dubbi?</span><span class="de">Haben Sie Fragen?</span><span class="en">Got questions?</span></h2>
+    <div class="fl">
+      <div class="fi"><button class="fq" onclick="tFaq(this)"><span><span class="it">La planimetria è disponibile?</span><span class="de">Ist der Grundriss verfügbar?</span><span class="en">Is the floor plan available?</span></span><span class="fi-icon">+</span></button><div class="fa"><span class="it">Sì, viene inviata immediatamente via email insieme al dossier completo appena compili il form.</span><span class="de">Ja, er wird sofort per E-Mail mit dem vollständigen Dossier zugesandt, sobald Sie das Formular ausfüllen.</span><span class="en">Yes, it is sent immediately by email with the complete dossier as soon as you fill in the form.</span></div></div>
+      <div class="fi"><button class="fq" onclick="tFaq(this)"><span><span class="it">L'appartamento è abitabile subito?</span><span class="de">Ist die Wohnung sofort bezugsfertig?</span><span class="en">Is the apartment move-in ready?</span></span><span class="fi-icon">+</span></button><div class="fa"><span class="it">Sì, gli impianti sono funzionanti. Può essere utilizzato per la stagione estiva senza interventi obbligatori.</span><span class="de">Ja, alle Anlagen sind funktionsfähig. Es kann sofort für die Sommersaison genutzt werden.</span><span class="en">Yes, all systems are operational. It can be used for the summer season without mandatory works.</span></div></div>
+      <div class="fi"><button class="fq" onclick="tFaq(this)"><span><span class="it">Lo studio architettonico è incluso senza costi?</span><span class="de">Ist die Architekturstudie wirklich kostenlos?</span><span class="en">Is the architectural study included at no cost?</span></span><span class="fi-icon">+</span></button><div class="fa"><span class="it">Sì, viene fornito gratuitamente come valore aggiunto della consulenza tecnica, a scopo puramente illustrativo.</span><span class="de">Ja, er wird kostenlos als Mehrwert der technischen Beratung und ausschließlich zu Illustrationszwecken bereitgestellt.</span><span class="en">Yes, it is provided free of charge as added value of the technical advisory service, for illustrative purposes only.</span></div></div>
+      <div class="fi"><button class="fq" onclick="tFaq(this)"><span><span class="it">L'acquisto è subordinato alla ristrutturazione?</span><span class="de">Ist der Kauf an eine Renovierung gebunden?</span><span class="en">Is purchase conditional on renovation?</span></span><span class="fi-icon">+</span></button><div class="fa"><span class="it">No. Il concept è una pura possibilità di valorizzazione futura. L'acquirente è libero di mantenere il layout attuale.</span><span class="de">Nein. Das Konzept stellt eine reine Möglichkeit zur Wertsteigerung dar. Der Käufer kann das aktuelle Layout beibehalten.</span><span class="en">No. The concept is a pure future enhancement option. The buyer is free to keep the current layout.</span></div></div>
+      <div class="fi"><button class="fq" onclick="tFaq(this)"><span><span class="it">La documentazione urbanistica è verificata?</span><span class="de">Wurden die städtebaulichen Unterlagen geprüft?</span><span class="en">Has planning documentation been verified?</span></span><span class="fi-icon">+</span></button><div class="fa"><span class="it">Sì, tutta la documentazione è già disponibile in archivio per la due diligence dell'acquirente.</span><span class="de">Ja, alle Unterlagen stehen bereits für die Due-Diligence des Käufers im Archiv bereit.</span><span class="en">Yes, all documentation is already archived and available for the buyer's due diligence.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="fs" id="form">
+  <div class="si">
+    <div class="slabel" style="color:var(--gold)"><span class="it">Richiedi il dossier</span><span class="de">Dossier anfordern</span><span class="en">Request the dossier</span></div>
+    <h2 class="stitle" style="color:var(--white)"><span class="it">Scarica il Progetto &amp; la Brochure</span><span class="de">Projektstudie &amp; Exposé herunterladen</span><span class="en">Download the Project &amp; Brochure</span></h2>
+    <p class="ssub" style="color:rgba(255,255,255,.55)"><span class="it">Compila il form per ricevere planimetria, concept architettonico e analisi dei costi.</span><span class="de">Füllen Sie das Formular aus, um Grundriss, Konzept und Kostenanalyse zu erhalten.</span><span class="en">Fill in the form to receive the floor plan, architectural concept and cost analysis.</span></p>
+    <!-- SOSTITUIRE con snippet embed CRM (Brevo / HubSpot) -->
+    <div class="fp" id="crm-form-placeholder">
+      <h3><span class="it">Ricevi il dossier completo</span><span class="de">Vollständiges Dossier erhalten</span><span class="en">Receive the complete dossier</span></h3>
+      <div class="ff">
+        <input class="fi2" type="text" placeholder="Nome / Name / First name">
+        <input class="fi2" type="text" placeholder="Cognome / Nachname / Last name">
+        <input class="fi2 full" type="email" placeholder="Email">
+        <input class="fi2 full" type="tel" placeholder="+39 / +49 / +44 …">
+        <select class="fsel">
+          <option value="" disabled selected><span class="it">Capacità finanziaria</span><span class="de">Finanzkraft</span><span class="en">Financial capacity</span></option>
+          <option value="own"><span class="it">Fondi propri (nessun mutuo)</span><span class="de">Eigenmittel (keine Hypothek)</span><span class="en">Own funds (no mortgage)</span></option>
+          <option value="approved"><span class="it">Mutuo già approvato</span><span class="de">Hypothek bereits genehmigt</span><span class="en">Mortgage already approved</span></option>
+          <option value="needed"><span class="it">Devo richiedere un mutuo</span><span class="de">Hypothek erforderlich</span><span class="en">Need to apply for mortgage</span></option>
+        </select>
+        <select class="fsel">
+          <option value="" disabled selected><span class="it">Tempistiche di acquisto</span><span class="de">Kaufzeitrahmen</span><span class="en">Purchase timeline</span></option>
+          <option value="now"><span class="it">Immediata (entro 3 mesi)</span><span class="de">Sofort (innerhalb 3 Monate)</span><span class="en">Immediate (within 3 months)</span></option>
+          <option value="short"><span class="it">Breve termine (3–6 mesi)</span><span class="de">Kurzfristig (3–6 Monate)</span><span class="en">Short term (3–6 months)</span></option>
+          <option value="watch"><span class="it">Sto monitorando il mercato</span><span class="de">Ich beobachte den Markt</span><span class="en">Monitoring the market</span></option>
+        </select>
+        <button class="fsub"><span class="it">Scarica il Progetto &amp; la Brochure →</span><span class="de">Projektstudie &amp; Exposé herunterladen →</span><span class="en">Download the Project &amp; Brochure →</span></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="lb-ov" id="lb" onclick="lbBg(event)">
+  <button class="lb-close" onclick="lbClose()">✕</button>
+  <button class="lb-arr lb-prev" onclick="lbMove(-1)">&#8249;</button>
+  <img class="lb-img" id="lb-img" src="" alt="">
+  <button class="lb-arr lb-next" onclick="lbMove(1)">&#8250;</button>
+  <div class="lb-counter" id="lb-counter"></div>
+</div>
+
+<footer>
+  <div class="fi3">
+    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:20px">
+      <div>
+        <div style="color:var(--white);font-size:15px;font-weight:500;margin-bottom:6px">Via I Maggio — Porto Recanati (MC)</div>
+        <div><span class="it">Consulente Tecnico — Parte Venditrice</span><span class="de">Technischer Berater — Verkäuferseite</span><span class="en">Technical Advisor — Seller's Side</span> · Ing. Roberto Capancioni</div>
+        <div>+39 351 645 4302 · <a href="mailto:sviluppo@capancioni.com" style="color:inherit">sviluppo@capancioni.com</a></div>
+      </div>
+      <div style="text-align:right;font-size:11px"><div>PR-01-2026 · Marche, Italia</div></div>
+    </div>
+    <div class="fdis">
+      <strong><span class="it">Nota tecnica: </span><span class="de">Technischer Hinweis: </span><span class="en">Technical note: </span></strong>
+      <span class="it">Sulla base della documentazione disponibile e dei rilievi effettuati, l'attuale configurazione lascia ipotizzare ampie possibilità di ridistribuzione degli spazi interni, da confermare nelle successive fasi progettuali e di verifica strutturale.</span>
+      <span class="de">Auf der Grundlage der verfügbaren Unterlagen und der durchgeführten Erhebungen lässt die aktuelle Konfiguration weitreichende Möglichkeiten der Neuaufteilung der Innenräume vermuten, die in den nachfolgenden Planungs- und Strukturprüfungsphasen zu bestätigen sind.</span>
+      <span class="en">Based on the available documentation and surveys carried out, the current configuration suggests extensive possibilities for the redistribution of internal spaces, to be confirmed in subsequent design and structural verification phases.</span>
+    </div>
+    <div style="margin-top:16px;font-size:11px">© 2026 · <span class="it">Tutti i diritti riservati</span><span class="de">Alle Rechte vorbehalten</span><span class="en">All rights reserved</span></div>
+  </div>
+</footer>
+
+<script>
+var lbImgs=[],lbIdx=0;
+(function(){
+  var imgs=document.querySelectorAll('.gg img');
+  imgs.forEach(function(img,i){
+    lbImgs.push({src:img.src,alt:img.alt});
+    img.addEventListener('click',function(){lbOpen(i)});
+  });
+})();
+function lbOpen(i){
+  lbIdx=i;lbRender();
+  document.getElementById('lb').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function lbClose(){
+  document.getElementById('lb').classList.remove('open');
+  document.body.style.overflow='';
+}
+function lbBg(e){if(e.target===document.getElementById('lb'))lbClose();}
+function lbMove(d){lbIdx=(lbIdx+d+lbImgs.length)%lbImgs.length;lbRender();}
+function lbRender(){
+  var el=document.getElementById('lb-img');
+  el.src=lbImgs[lbIdx].src;el.alt=lbImgs[lbIdx].alt;
+  document.getElementById('lb-counter').textContent=(lbIdx+1)+' / '+lbImgs.length;
+}
+document.addEventListener('keydown',function(e){
+  var lb=document.getElementById('lb');
+  if(!lb.classList.contains('open'))return;
+  if(e.key==='ArrowRight'||e.key==='ArrowDown')lbMove(1);
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp')lbMove(-1);
+  else if(e.key==='Escape')lbClose();
+});
+
+function setLang(l){
+  document.getElementById('page-body').setAttribute('data-lang',l);
+  document.querySelectorAll('.lb').forEach(b=>b.classList.toggle('active',b.textContent.trim().toLowerCase()===l));
+}
+function tFaq(btn){
+  const item=btn.closest('.fi');
+  const open=item.classList.contains('open');
+  document.querySelectorAll('.fi').forEach(i=>i.classList.remove('open'));
+  if(!open)item.classList.add('open');
+}
+</script>
+</body>
+</html>
